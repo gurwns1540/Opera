@@ -8,6 +8,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 <title>Insert title here</title>
 <style>
 	body, html {
@@ -223,15 +224,15 @@
 			<li class="topMenu">
 				<h3><span class="icon-tasks"></span>리서치 관리</h3>
 				<ul>
-					<li class="innerMenu"><a href="researchApprovalWaitList.admin" style="border-top: 0;">리서치 승인 대기 목록</a></li>
-					<li class="innerMenu"><a href="#">리서치 결제 대기 목록</a></li>
-					<li class="innerMenu"><a href="#">서베이 문항 재구성 대기 목록</a></li>
-					<li class="innerMenu"><a href="#">단체 메일링 대기 목록</a></li>
-					<li class="innerMenu"><a href="#">폐기 응답 관리</a></li>
-					<li class="innerMenu"><a href="#">불량 응답 이의신청 관리</a></li>
-					<li class="innerMenu"><a href="#">리서치 보고서 작성 대기 목록</a></li>
-					<li class="innerMenu"><a href="#">완료된 리서치 목록</a></li>
-					<li class="innerMenu"><a href="#">TS 질문 관리</a></li>
+					<li class="innerMenu"><a href="researchApprovalWaitList.admin">리서치 승인 대기 목록</a></li>
+					<li class="innerMenu"><a href="researchWaitingPayment.admin" >리서치 결제 대기 목록</a></li>
+					<li class="innerMenu"><a href="serveyReconstructionList.admin">서베이 문항 재구성 대기 목록</a></li>
+					<li class="innerMenu"><a href="groupMailingWaitingList.admin">단체 메일링 대기 목록</a></li>
+					<li class="innerMenu"><a href="disposalResponseManagement.admin">폐기 응답 관리</a></li>
+					<li class="innerMenu"><a href="applicationForDefectiveResponse.admin">불량 응답 이의신청 관리</a></li>
+					<li class="innerMenu"><a href="researchReportStandbyList.admin">리서치 보고서 작성 대기 목록</a></li>
+					<li class="innerMenu"><a href="researchCompletedProcessingList.admin">완료된 리서치 목록</a></li>
+					<li class="innerMenu"><a href="tsQaManagement.admin">TS 질문 관리</a></li>
 					<li class="innerMenu"><a href="#" style="border-bottom: 0;">패널 PC 환경조사 질문 관리</a></li>
 				</ul>
 			</li>
