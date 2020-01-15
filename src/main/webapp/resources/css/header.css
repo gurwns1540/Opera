@@ -1,17 +1,21 @@
 @charset "UTF-8";
 .headerLoginArea, .logoArea {
-	display: inline-flex;
+	display: inline-block;
 }
 
 .logoArea {
-	width: 200px;
-	height: 80px;
+	display: inline-block;
+	width: 150px;
+	height: 60px;
+	margin-top: 0.4%;
+	margin-left: 3.7%;
 }
 
 .imgArea {
-	display: inline-flex;	
-	width: 90px;
-	height: 90px;
+	display: inline-block;	
+	width: 65px;
+	height: 65px;
+	margin-top: 0.4%;
 }
 
 .headerLoginArea {
