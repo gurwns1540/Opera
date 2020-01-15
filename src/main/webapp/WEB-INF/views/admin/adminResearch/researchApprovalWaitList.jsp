@@ -87,7 +87,7 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/adminMenuBar.jsp"/>
+	<jsp:include page="../../common/adminMenuBar.jsp"/>
 	
 	<div id="adminBox">
 		<table id="adminBoxTable">
