@@ -17,7 +17,7 @@
 			</c:when>
 			<c:otherwise>
 				<a href="#">로그인</a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="#">회원가입</a>
+				<a href="panelSignup.panel">회원가입</a>
 			</c:otherwise>
 		</c:choose>
 	</div>  <!-- headerLoginArea end -->

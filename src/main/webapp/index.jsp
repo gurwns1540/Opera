@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="WEB-INF/views/common/head.jsp" %>
+
 </head>
 <body>
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
