@@ -51,7 +51,7 @@
 		<span id="stitle">정보입력</span>&nbsp;&nbsp;
 		<span id="stitle">가입완료</span>&nbsp;&nbsp;
 		
-		<hr>
+		<hr style="color:">
 	</div>
 		<br />
 		</section>  <!-- container end -->
