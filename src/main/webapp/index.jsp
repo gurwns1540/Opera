@@ -8,7 +8,7 @@
 </head>
 <body>
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
-	<jsp:forward page="WEB-INF/views/main/adminMain.jsp"/>
+	<jsp:forward page="WEB-INF/views/admin/common/adminMain.jsp"/>
 	<%-- <div class="wrap">
 		<%@ include file="WEB-INF/views/common/header.jsp" %>
 		<section class="container">
