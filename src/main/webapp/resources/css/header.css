@@ -1,0 +1,48 @@
+@charset "UTF-8";
+.headerLoginArea, .logoArea {
+	display: inline-flex;
+}
+
+.logoArea {
+	width: 200px;
+	height: 80px;
+}
+
+.imgArea {
+	display: inline-flex;	
+	width: 90px;
+	height: 90px;
+}
+
+.headerLoginArea {
+	font-size: 17px;
+}
+
+.headerLoginArea a, .headerLoginArea a:hover  {
+	color: white;
+	text-decoration: none;
+}
+
+.navArea {
+	height: 40px;
+	background-color: #008499;
+}
+.navContainer {
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+
+#nav {
+	background-color: #008499;
+}
+
+#logoImg {
+	height: inherit;
+	width: inherit;
+}
+
+#logo2Img {
+	height: inherit;
+	width: inherit;
+}
