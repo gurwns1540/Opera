@@ -13,6 +13,6 @@ public class AdminForwardController {
 	
 	@RequestMapping("adminMain.admin")
 	public String forwardMain() {
-		return "main/adminMain";
+		return "common/adminMain";
 	}
 }

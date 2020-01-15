@@ -11,7 +11,7 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../admin/common/adminMenuBar.jsp"/>
+	<jsp:include page="adminMenuBar.jsp"/>
 	
 	<div id="adminBox">
 		<!-- <div id="adminTitle">
