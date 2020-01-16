@@ -85,6 +85,63 @@
 		width: 80px;
 		height: 30px;
 	}
+	#sortable { 
+  		list-style-type: none; 
+  		margin: 0; 
+  		padding: 0; 
+  		width: 60%;
+  		margin: 0 auto; 
+  		margin-bottom: 30px;
+  	}
+  	#sortable li { 
+  		margin: 0 5px 12px 5px;
+  		padding: 10px; 
+  		font-size: 1.2em; 
+  		height: fit-content;
+  		border-radius: 7px;
+  	}
+ 	html>body #sortable li { 
+	  	height: fit-content;
+	  	line-height: 1.2em; 
+	}
+  	.ui-state-highlight { 
+  		height: 3.5em; 
+  		line-height: 1.2em; 
+  	}
+  	.ui-sortable-placeholder {
+  		background: white !important;
+  		border-color: white !important;
+  	}
+  	#outbreak {
+  		margin: 20px auto;
+  		width: 70%;
+  		height: 10%;
+  		border-radius: 7px;
+  		border: 1px solid #C5C5C5;
+  		background: #F6F6F6;
+  		padding: 15px;
+  		margin-top: 30px;
+  	}
+  	#choice, .choice {
+  		margin: 0 auto;
+  		margin-top: 20px;
+  		width: fit-content;
+  	}
+  	#corpTable {
+  		width: 70%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#corpTable th {
+  		width: 20%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+  	#corpTable td {
+  		width: 80%;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
 </style>
 </head>
 <body>
@@ -151,10 +208,223 @@
 		</div>
 	</div>
 		
-	
+	<div class="ui modal" id="research">
+		<div class="header">리서치 제목</div>
+		<div class="scrolling content">
+			<div>
+				<ul id="sortable">
+					<li class="ui-state-default">Q1.
+						<div class="choice">
+							<div class="ui input">
+ 	 							<input type="text" placeholder="보기 작성">
+							</div>
+						</div>
+					</li>
+			  		<li class="ui-state-default">Q2.
+						<div class="choice">
+							<div class="choice">
+								<div class="ui input">
+	 	 							<input type="text" placeholder="보기 작성">
+								</div>
+							</div>
+						</div>
+					</li>
+			  		<li class="ui-state-default">Q3.
+						<div class="choice">
+							<div class="choice">
+								<div class="ui input">
+	 	 							<input type="text" placeholder="보기 작성">
+								</div>
+							</div>
+						</div>
+					</li>
+			  		<li class="ui-state-default">Q4.
+						<div class="choice">
+							<div class="choice">
+								<div class="ui input">
+	 	 							<input type="text" placeholder="보기 작성">
+								</div>
+							</div>
+						</div>
+					</li>
+			  		<li class="ui-state-default">Q5.
+						<div class="choice">
+							<div class="choice">
+								<div class="ui input">
+	 	 							<input type="text" placeholder="보기 작성">
+								</div>
+							</div>
+						</div>
+					</li>
+			  		<li class="ui-state-default">Q6.
+						<div class="choice">
+							<div class="choice">
+								<div class="ui input">
+	 	 							<input type="text" placeholder="보기 작성">
+								</div>
+							</div>
+						</div>
+					</li>
+			  		<li class="ui-state-default">Q7.
+			  			<div class="choice">
+			  				<div class="choice">
+								<div class="ui input">
+	 	 							<input type="text" placeholder="보기 작성">
+								</div>
+							</div>
+			  			</div>
+			  		</li>
+			  		<li class="ui-state-default">Q8.
+				  		<div class="choice">
+				  			<div class="choice">
+								<div class="ui input">
+	 	 							<input type="text" placeholder="보기 작성">
+								</div>
+							</div>
+				  		</div>
+				  	</li>
+				</ul>
+				<hr>
+				<div id="outbreak">
+					<big style="font-weight: bold">돌발퀴즈</big>
+					<div id="outbreakQuestion">
+						문제
+					</div>
+					<div id="choice">
+						보기
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="actions">
+		    <div class="ui approve button" id="approvalBtn">Approve</div>
+		    <div class="ui approve button" id="referBtn">Refer</div>
+		    <div class="ui cancel button">Cancel</div>
+  		</div>
+	</div>
+	<div class="ui modal" id="corp">
+		<div class="header">기업 명</div>
+		<div class="scrolling content">
+			<div>
+				<table id="corpTable">
+					<tr>
+						<th>프로젝트 명</th>
+						<td>피자 선호도 조사</td>
+					</tr>
+					<tr>
+						<th>목적</th>
+						<td>우리 브랜드 피자 선호도는 얼마나 되는가 궁금한 점과 앞으로 나아갈 피자의 방향</td>
+					</tr>
+					<tr>
+						<th>목표 인원</th>
+						<td>200명</td>
+					</tr>
+					<tr>
+						<th>조사 대상 성별</th>
+						<td>전체</td>
+					</tr>
+					<tr>
+						<th>조사 대상 연령</th>
+						<td>20~29</td>
+					</tr>
+					<tr>
+						<th>조사 대상 지역</th>
+						<td>서울 및 수도권</td>
+					</tr>
+					<tr>
+						<th>조사 예상 기간</th>
+						<td>2020-01-20 ~ 2020-01-27</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="actions">
+		    <div class="ui approve button" id="nextBtn">Next</div>
+		    <div class="ui cancel button">Cancel</div>
+  		</div>
+	</div>
 	<script>
+		$("#nextBtn").on("click", function(){
+			$('#research').modal('show');
+		});
+		$(".detail").on("click", function(){
+			var num = $(this).parent().siblings().eq(0).text();
+			$('#corp').modal('show');
+			//console.log(num);
+		});
+		$("#approvalBtn").on("click", function(){
+			Swal.fire({
+			  title: '정말 승인하시겠습니까?',
+			  text: "이 결정은 되돌릴 수 없습니다!",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes'
+			}).then((result) => {
+			  if (result.value) {
+			    Swal.fire(
+			      '승인!',
+			      '이 리서치는 승인되었습니다.',
+			      'success'
+			    )
+			  }else {
+				  $('#research').modal('show');
+			  }
+			})
+		});
+		$("#referBtn").on("click", function(){
+			const start = async function() {
+				const { value: text } = await Swal.fire({
+					  input: 'textarea',
+					  inputPlaceholder: '반려 사유를 적어주세요..',
+					  inputAttributes: {
+					    'aria-label': 'Type your message here'
+					  },
+					  showCancelButton: true,
+					  inputValidator: (value) => {
+					    if (!value) {
+					      return '반려 사유를 꼭 적어주세요!'
+					    }
+					  }
+				});
+	
+				if (text) {
+					Swal.fire({
+					  title: '정말 반려하시겠습니까?',
+					  text: "이 결정은 되돌릴 수 없습니다!",
+					  icon: 'warning',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'Yes'
+					}).then((result) => {
+					  if (result.value) {
+						  Swal.fire(
+				      		'반려!',
+				      		'이 리서치는 반려되었습니다.',
+				      		'success'
+				    		)
+					  }else {
+						  $('#research').modal('show');
+					  }
+					})
+				}
+			}
+			start();
+		});
+	
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(3)").addClass("on");
 	</script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  	<script>
+  		$(function() {
+		 	$( "#sortable" ).sortable({
+		 		placeholder: "ui-state-highlight"
+		 	});
+		 	$( "#sortable" ).disableSelection();
+		 });
+  	</script>
 </body>
 </html>
