@@ -38,6 +38,14 @@
 		border-spacing: 0;
 		border-collapse: collapse;
 		margin-top: 10px;
+		
+		/* 드래그 방지용 소스*/
+		-ms-user-select: none; 
+		-moz-user-select: -moz-none; 
+		-webkit-user-select: none; 
+		-khtml-user-select: none; 
+		user-select:none;
+		/* 드래그 방지용 소스*/
 	}
 	#listTable th {
 		font-size: 11pt;
@@ -121,21 +129,30 @@
 		</table>
 		<table id="listTable">
 			<tr id="tableTitle">
-				<th style="width: 15%;">폐기응답번호</th>
-				<th style="width: 15%;">패널회원번호</th> <!-- 아이디아님 -->
-				<th style="width: 15%;">리서치 번호</th>
-				<th style="width: 35%;">분류</th>
-				<th style="width: 20%;">상세보기</th>
+				<th id="allCheck" style="width: 5%">전체 체크<br><input type="checkbox" id="allCheckMailing" style="display: none;"></th>
+				<th style="width: 10%;">폐기응답번호</th>
+				<th style="width: 10%;">패널번호</th> <!-- 아이디아님 -->
+				<th style="width: 10%;">리서치 번호</th>
+				<th style="width: 20%;">분류</th>
+				<th style="width: 10%;">처리 상태</th>
+				<th style="width: 20%;">처리 날짜</th>
+				<th style="width: 15%;">상세보기</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
+					<td><input type="checkbox" class="checkPoorMailing"></td>
 					<td>폐기응답번호</td>
-					<td>패널회원번호</td>
+					<td>패널번호</td>
 					<td>리서치</td>
 					<td>분류</td>
+					<td>처리 상태</td>
+					<td>처리 날짜</td>
 					<td><button class="detail">상세보기</button></td>
 				</tr>
 			</c:forEach>
+			<tr>
+				<td colspan="8"><input type="button" value="메일 전송" id="sendBtn"></td>
+			</tr>
 		</table>
 		<div id="pagingArea" align="center">
 			<span>[처음]</span>
@@ -148,8 +165,46 @@
 		</div>
 	</div>
 		
-	
+	<div class="ui tiny modal" id="sendMailModal">
+		<div class="header">메일 전송중</div>
+		<div class="content" style="margin: 0 auto; width: fit-content;">
+			<img alt="sendMail.gif" src="${ contextPath }/resources/images/sendMail.gif" style="width: 400px;">
+		</div>
+	</div>
 	<script>
+		$("#sendBtn").on("click", function(){
+			Swal.fire({
+			  	title: '정말 메일을 보내시겠습니까?',
+			  	text: "이 결정은 되돌릴 수 없습니다!",
+			  	icon: 'warning',
+			  	showCancelButton: true,
+			  	confirmButtonColor: '#3085d6',
+			  	cancelButtonColor: '#d33',
+			  	confirmButtonText: 'Yes'
+			}).then((result) => {
+			  	if (result.value) {
+				  	$("#sendMailModal").modal("show");
+				  	setTimeout(function() {
+				  		$("#sendMailModal").modal("hide");
+				  		Swal.fire(
+							'메일 전송 완료!',
+							'해당 회원에서 불량응답기록 메일을 전송하였습니다.',
+							'success'
+						)
+					}, 3000);
+			  }
+			})
+		});
+		$(document).on("click", "#allCheck", function(){
+			$('#allCheckMailing').prop('checked',function(){
+		        return !$(this).prop('checked');
+		    });
+			if($("#allCheckMailing").prop("checked")){
+	        	$(".checkPoorMailing").prop("checked",true);
+	        }else{
+	        	$(".checkPoorMailing").prop("checked",false);
+	        }
+		});
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(5)").addClass("on");
 	</script>

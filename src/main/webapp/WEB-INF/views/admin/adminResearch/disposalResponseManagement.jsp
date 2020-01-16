@@ -38,6 +38,14 @@
 		border-spacing: 0;
 		border-collapse: collapse;
 		margin-top: 10px;
+		
+		/* 드래그 방지용 소스*/
+		-ms-user-select: none; 
+		-moz-user-select: -moz-none; 
+		-webkit-user-select: none; 
+		-khtml-user-select: none; 
+		user-select:none;
+		/* 드래그 방지용 소스*/
 	}
 	#listTable th {
 		font-size: 11pt;
@@ -84,6 +92,21 @@
 		width: 80px;
 		height: 30px;
 	}
+	#disposalResponseTable {
+  		width: 70%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#disposalResponseTable th {
+  		width: 20%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+  	#disposalResponseTable td {
+  		width: 80%;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
 </style>
 </head>
 <body>
@@ -122,7 +145,7 @@
 		<table id="listTable">
 			<tr id="tableTitle">
 				<th style="width: 15%;">폐기응답번호</th>
-				<th style="width: 15%;">패널회원번호</th> <!-- 아이디아님 -->
+				<th style="width: 15%;">패널번호</th> <!-- 아이디아님 -->
 				<th style="width: 15%;">리서치 번호</th>
 				<th style="width: 35%;">분류</th>
 				<th style="width: 20%;">상세보기</th>
@@ -130,7 +153,7 @@
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
 					<td>폐기응답번호</td>
-					<td>패널회원번호</td>
+					<td>패널번호</td>
 					<td>리서치</td>
 					<td>분류</td>
 					<td><button class="detail">상세보기</button></td>
@@ -148,8 +171,45 @@
 		</div>
 	</div>
 		
+	<div class="ui modal" id="disposalResponse">
+		<div class="header">폐기응답 내용</div>
+		<div class="scrolling content">
+			<div>
+				<table id="disposalResponseTable">
+					<tr>
+						<th style="width: 10%">번호</th>
+						<td style="width: 40%">2378</td>
+						<th style="width: 10%">날짜</th>
+						<td style="width: 40%">2020-01-10</td>
+					</tr>
+					<tr>
+						<th>패널 번호</th>
+						<td colspan="3">98772</td>
+					</tr>
+					<tr>
+						<th>리서치 번호</th>
+						<td colspan="3">279</td>
+					</tr>
+					<tr>
+						<th>분류</th>
+						<td colspan="3">응답시간 하위 5%</td>
+					</tr>
+					<tr>
+						<th>상세보기</th>
+						<td colspan="3"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="actions">
+		    <div class="ui cancel button">Close</div>
+  		</div>
+	</div>
 	
 	<script>
+		$(document).on("click", ".detail", function(){
+			$("#disposalResponse").modal("show");
+		});
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(5)").addClass("on");
 	</script>

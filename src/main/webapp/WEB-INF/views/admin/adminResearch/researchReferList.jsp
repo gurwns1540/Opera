@@ -38,6 +38,14 @@
 		border-spacing: 0;
 		border-collapse: collapse;
 		margin-top: 10px;
+		
+		/* 드래그 방지용 소스*/
+		-ms-user-select: none; 
+		-moz-user-select: -moz-none; 
+		-webkit-user-select: none; 
+		-khtml-user-select: none; 
+		user-select:none;
+		/* 드래그 방지용 소스*/
 	}
 	#listTable th {
 		font-size: 11pt;
@@ -142,7 +150,7 @@
 				<th style="width: 10%;">신청일</th>
 				<th style="width: 10%;">처리일</th>
 				<th style="width: 10%;">결과</th>
-				<th style="width: 10%;"> 상세보기</th>
+				<th style="width: 10%;">상세보기</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">

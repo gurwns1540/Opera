@@ -3,7 +3,30 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <header class="headerArea">
-	<div class="logoArea">
+	<table class="headerTableArea" align="center">
+		<tr>
+			<td class="headerLogoArea">
+				<a href="panelMain.panel"><img src="resources/images/headerLogo.png" alt="" id="logoImg" /></a>
+			</td>
+			<td class="smallLogoArea">
+				<img src="resources/images/smallLogo.png" alt="" id="logo2Img" />
+			</td>
+			<td class="headerLoginArea">
+				<c:choose>
+					<c:when test="${ not empty loginMember }">
+						<a href="#" style="margin-right: 5%;">로그아웃</a>
+						<a href="#">내 정보 관리</a>
+					</c:when>
+					<c:otherwise>
+						<a href="panelLogin.panel" style="margin-right: 5%;">로그인</a>
+						<a href="panelSignup.panel">회원가입</a>
+					</c:otherwise>
+				</c:choose>
+			</td>
+		</tr>
+	</table>  <!-- headerTableArea end -->
+	
+	<%-- <div class="logoArea">
 		<img src="resources/images/headerLogo.png" alt="" id="logoImg" />
 	</div>
 	<div class="imgArea">
@@ -20,7 +43,7 @@
 				<a href="panelSignup.panel">회원가입</a>
 			</c:otherwise>
 		</c:choose>
-	</div>  <!-- headerLoginArea end -->
+	</div>  <!-- headerLoginArea end --> --%>
 </header>  <!-- headerArea end -->
 <nav class="navArea">
 	<div class="navContainer">
