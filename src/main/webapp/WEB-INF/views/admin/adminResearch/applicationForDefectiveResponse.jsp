@@ -121,20 +121,18 @@
 		</table>
 		<table id="listTable">
 			<tr id="tableTitle">
-				<th style="width: 15%;">패널회원번호</th>
-				<th style="width: 15%;">참여리서치번호</th> <!-- 아이디아님 -->
-				<th style="width: 30%;">이의신청메일제목</th>
-				<th style="width: 15%;">수신날짜</th>
-				<th style="width: 15%;">상태</th>
-				<th style="width: 10%;">상세보기</th>
+				<th style="width: 10%;">회원번호</th>
+				<th style="width: 20%;">참여리서치번호</th> <!-- 아이디아님 -->
+				<th style="width: 40%;">이의신청 제목</th>
+				<th style="width: 15%;">이의신청 날짜</th>
+				<th style="width: 15%;">상세보기</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
 					<td>패널회원번호</td>
 					<td>참여리서치번호</td>
-					<td>이의신청메일제목</td>
-					<td>수신날짜</td>
-					<td>상태</td>
+					<td>이의신청 제목</td>
+					<td>이의신청 날짜</td>
 					<td><button class="detail">상세보기</button></td>
 				</tr>
 			</c:forEach>

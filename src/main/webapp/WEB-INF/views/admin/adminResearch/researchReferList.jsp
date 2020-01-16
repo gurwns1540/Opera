@@ -84,11 +84,21 @@
 		width: 80px;
 		height: 30px;
 	}
-	
-	.reason{
-	
-			border: 1px, solid:black;
-		}
+	.reason {
+  		width: 70%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	.reason th {
+  		width: 20%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+  	.reason td {
+  		width: 80%;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
 </style>
 </head>
 <body>
@@ -100,7 +110,7 @@
 				<td>
 					<div id="approvalBtnArea">
 						<button onclick="location.href='researchApprovalWaitList.admin'">미처리 목록</button>
-						<button onclick="location.href='researchReferList.admin'">반려 목록</button>
+						<button onclick="location.href='researchReferList.admin'" id="clickBtn">반려 목록</button>
 					</div>
 				</td>
 			</tr>
@@ -157,21 +167,29 @@
 		</div>
 	</div>
 	<div class="ui modal">
-	  	<div class="header">Header</div>
+	  	<div class="header">기업명</div>
   		<div class="scrolling content">
   			<table class="reason">
-  				<tr>
-  					<td>원두맛 선호도</td>
-  				</tr>
-  				<tr>
-  					<td>신맛vs깔끔한맛</td>
-  				</tr>
-  				<tr>
-  					<td>반려사유</td>
-  					<td>대상 분석결과 데이터 부족</td>
-  				</tr>
-  			
-  			</table>
+					<tr>
+						<th>프로젝트 명</th>
+						<td>피자 선호도 조사</td>
+					</tr>
+					<tr>
+						<th>목적</th>
+						<td>우리 브랜드 피자 선호도는 얼마나 되는가 궁금한 점과 앞으로 나아갈 피자의 방향</td>
+					</tr>
+					<tr>
+						<th>목표 인원</th>
+						<td>200명</td>
+					</tr>
+					<tr>
+						<th>반려 사유</th>
+						<td>외설된 질문 포함</td>
+					</tr>
+				</table>
+  		</div>
+  		<div class="actions">
+		    <div class="ui cancel button">Close</div>
   		</div>
 	</div>
 		

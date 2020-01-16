@@ -10,6 +10,7 @@
 	#approvalBtnArea {
 		position: relative;
 		right: 10px;
+		height: 30px;
 		float: right;
 		margin-bottom: 10px;
 	}
@@ -163,8 +164,8 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button>미처리 목록</button>
-						<button>반려 목록</button>
+						<button onclick="location.href='researchApprovalWaitList.admin'" id="clickBtn">미처리 목록</button>
+						<button onclick="location.href='researchReferList.admin'">반려 목록</button>
 					</div>
 				</td>
 			</tr>
@@ -253,7 +254,7 @@
 		</div>
 		<div class="actions">
 		    <div class="ui approve button" id="approvalBtn">Approve</div>
-		    <div class="ui button" id="referBtn">Refer</div>
+		    <div class="ui approve button" id="referBtn">Refer</div>
 		    <div class="ui cancel button">Cancel</div>
   		</div>
 	</div>
@@ -307,7 +308,67 @@
 			$('#corp').modal('show');
 			//console.log(num);
 		});
-		
+		$("#approvalBtn").on("click", function(){
+			Swal.fire({
+			  title: '정말 승인하시겠습니까?',
+			  text: "이 결정은 되돌릴 수 없습니다!",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes'
+			}).then((result) => {
+			  if (result.value) {
+			    Swal.fire(
+			      '승인!',
+			      '이 리서치는 승인되었습니다.',
+			      'success'
+			    )
+			  }else {
+				  $('#research').modal('show');
+			  }
+			})
+		});
+		$("#referBtn").on("click", function(){
+			const start = async function() {
+				const { value: text } = await Swal.fire({
+					  input: 'textarea',
+					  inputPlaceholder: '반려 사유를 적어주세요..',
+					  inputAttributes: {
+					    'aria-label': 'Type your message here'
+					  },
+					  showCancelButton: true,
+					  inputValidator: (value) => {
+					    if (!value) {
+					      return '반려 사유를 꼭 적어주세요!'
+					    }
+					  }
+				});
+	
+				if (text) {
+					Swal.fire({
+					  title: '정말 반려하시겠습니까?',
+					  text: "이 결정은 되돌릴 수 없습니다!",
+					  icon: 'warning',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'Yes'
+					}).then((result) => {
+					  if (result.value) {
+						  Swal.fire(
+				      		'반려!',
+				      		'이 리서치는 반려되었습니다.',
+				      		'success'
+				    		)
+					  }else {
+						  $('#research').modal('show');
+					  }
+					})
+				}
+			}
+			start();
+		});
 		
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(1)").addClass("on");

@@ -11,6 +11,7 @@
 		position: relative;
 		right: 10px;
 		float: right;
+		height: 30px;
 		margin-bottom: 10px;
 	}
 	#approvalBtnArea button {
@@ -91,14 +92,14 @@
 	
 	<div id="adminBox">
 		<table id="adminBoxTable">
-			<!-- <tr>
+			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='researchWaitingPayment.admin'">협의중</button>
-						<button onclick="location.href='researchConsultationCompleted.admin'">협의완료</button>
+						<!-- <button onclick="location.href='researchWaitingPayment.admin'">협의중</button>
+						<button onclick="location.href='researchConsultationCompleted.admin'">협의완료</button> -->
 					</div>
 				</td>
-			</tr> -->
+			</tr>
 			<tr>
 				<td>
 					<div id="adminTitle">

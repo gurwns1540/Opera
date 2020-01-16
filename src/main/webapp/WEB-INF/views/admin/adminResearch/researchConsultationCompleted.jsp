@@ -95,14 +95,14 @@
 				<td>
 					<div id="approvalBtnArea">
 						<button onclick="location.href='researchWaitingPayment.admin'">협의중</button>
-						<button onclick="location.href='researchReferList.admin'">협의완료</button>
+						<button onclick="location.href='researchConsultationCompleted.admin'" id="clickBtn">협의완료</button>
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="adminTitle">
-						리서치 결제 대기 목록
+						리서치 협의 완료 목록
 					</div>
 				</td>
 			</tr>
@@ -121,12 +121,12 @@
 		</table>
 		<table id="listTable">
 			<tr id="tableTitle">
-				<th style="width: 20%;">리서치 번호</th>
-				<th style="width: 15%;">기업명</th>
-				<th style="width: 30%;">리서치 제목</th>
+				<th style="width: 10%;">리서치 번호</th>
+				<th style="width: 20%;">기업명</th>
+				<th style="width: 40%;">리서치 제목</th>
 				<th style="width: 10%;">승인일</th>
 				<th style="width: 10%;">상태</th>
-				<th style="width: 15%;"> 상세보기</th>
+				<th style="width: 10%;"> 상세보기</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
