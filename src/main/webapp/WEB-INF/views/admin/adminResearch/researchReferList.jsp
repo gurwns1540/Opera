@@ -137,12 +137,12 @@
 		<table id="listTable">
 			<tr id="tableTitle">
 				<th style="width: 10%;">리서치 번호</th>
-				<th style="width: 15%;">기업명</th>
+				<th style="width: 20%;">기업명</th>
 				<th style="width: 30%;">리서치 제목</th>
 				<th style="width: 10%;">신청일</th>
 				<th style="width: 10%;">처리일</th>
 				<th style="width: 10%;">결과</th>
-				<th style="width: 15%;"> 상세보기</th>
+				<th style="width: 10%;"> 상세보기</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
