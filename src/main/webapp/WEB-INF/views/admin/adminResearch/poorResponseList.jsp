@@ -94,15 +94,15 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='disposalResponseManagement.admin'" id="clickBtn">폐기응답 목록</button>
-						<button onclick="location.href='poorResponseList.admin'">불량응답 목록</button>
+						<button onclick="location.href='disposalResponseManagement.admin'">폐기응답 목록</button>
+						<button onclick="location.href='poorResponseList.admin'" id="clickBtn">불량응답 목록</button>
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="adminTitle">
-						폐기 응답 목록
+						불량 응답 목록
 					</div>
 				</td>
 			</tr>

@@ -48,10 +48,15 @@ public class AdminForwardController {
 		return "adminResearch/groupMailingWaitingList";
 	}
 
-	//폐기응답관리
+	//폐기응답목록
 	@RequestMapping("disposalResponseManagement.admin")
 		public String forwarddisposalResponseManagement() {
 		return "adminResearch/disposalResponseManagement";
+	}
+	//불량응답목록
+	@RequestMapping("poorResponseList.admin")
+	public String forwardPoorResponseList() {
+		return "adminResearch/poorResponseList";
 	}
 	
 	//불량응답이의신청관리
