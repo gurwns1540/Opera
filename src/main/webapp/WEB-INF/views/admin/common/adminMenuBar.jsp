@@ -10,6 +10,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
 <title>Insert title here</title>
 <style>
 	body, html {
@@ -186,6 +189,10 @@
 	button:focus {
 		outline:none;
 	}
+	#clickBtn {
+  		background: #00679A !important;
+  		color: white;
+  	}
 </style>
 </head>
 <body>

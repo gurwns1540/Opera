@@ -11,6 +11,7 @@
 		position: relative;
 		right: 10px;
 		float: right;
+		height: 30px;
 		margin-bottom: 10px;
 	}
 	#approvalBtnArea button {
