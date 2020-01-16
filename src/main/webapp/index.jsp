@@ -4,11 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <body>
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
-	<jsp:forward page="WEB-INF/views/admin/common/adminMain.jsp"/>
+<%-- 	<jsp:forward page="WEB-INF/views/admin/common/adminMain.jsp"/> --%>
 	<%-- <div class="wrap">
 		<%@ include file="WEB-INF/views/common/header.jsp" %>
 		<section class="container">
@@ -18,5 +18,7 @@
 		</section>  <!-- container end -->
 		<%@ include file="WEB-INF/views/common/footer.jsp" %>
 	</div>  <!-- wrap end --> --%>
+	<a href="adminMain.admin">관리자메인으로</a>
+	<a href="panelMain.panel">패널메인으로</a>
 </body>
 </html>
