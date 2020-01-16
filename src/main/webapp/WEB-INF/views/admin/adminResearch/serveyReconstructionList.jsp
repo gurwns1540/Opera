@@ -142,6 +142,49 @@
   		width: 80%;
   		border-bottom: 1px solid #C5C5C5;
   	}
+  	.choiceInput {
+  		width: 100px;
+  	}
+  	#nextBtn, #nextBtn2 {
+  		background: #00679A;
+  		color: white;
+  	}
+  	#approvalBtn {
+  		background: #00679A;
+  		color: white;
+  	}
+  	#referBtn {
+  		background: #C1332A;
+  		color: white;
+  	}
+  	.add, .delete:hover {
+  		cursor: pointer;
+  		width: 25px;
+  	}
+  	#surveyQuizAccordion {
+  		margin: 0 auto;
+  		font-size: 13pt;
+  	}
+  	.surveyQuizTitle, .surveyQuizContext {
+  		background: none;
+  		border: none;
+  		width: 80%;
+  		
+  	}
+  	.surveyQuizTitle:focus, .surveyQuizContext:focus {
+		outline: none;  		
+  	}
+  	#addQuiz {
+  		width: 150px;
+  		height: 50px;
+  		font-size: 16pt;
+  		text-align: center;
+  		margin: 0 auto;
+  		margin-top: 30px;
+  	}
+  	#addQuiz:hover {
+  		cursor: pointer;
+  	}
 </style>
 </head>
 <body>
@@ -214,74 +257,124 @@
 			<div>
 				<ul id="sortable">
 					<li class="ui-state-default">Q1.
-						<div class="choice">
-							<div class="ui input">
- 	 							<input type="text" placeholder="보기 작성">
+						<div class="choiceArea">
+							<div class="choice">
+								<div class="ui input">
+	 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
+								</div>
+								<span class="add">
+									<i class="plus circle icon"></i>
+								</span>
+								<span class="delete">
+									<i class="minus circle icon"></i>
+								</span>
 							</div>
 						</div>
 					</li>
 			  		<li class="ui-state-default">Q2.
-						<div class="choice">
+						<div class="choiceArea">
 							<div class="choice">
 								<div class="ui input">
-	 	 							<input type="text" placeholder="보기 작성">
+	 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
 								</div>
+								<span class="add">
+									<i class="plus circle icon"></i>
+								</span>
+								<span class="delete">
+									<i class="minus circle icon"></i>
+								</span>
 							</div>
 						</div>
 					</li>
 			  		<li class="ui-state-default">Q3.
-						<div class="choice">
+						<div class="choiceArea">
 							<div class="choice">
 								<div class="ui input">
-	 	 							<input type="text" placeholder="보기 작성">
+	 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
 								</div>
+								<span class="add">
+									<i class="plus circle icon"></i>
+								</span>
+								<span class="delete">
+									<i class="minus circle icon"></i>
+								</span>
 							</div>
 						</div>
 					</li>
 			  		<li class="ui-state-default">Q4.
-						<div class="choice">
+						<div class="choiceArea">
 							<div class="choice">
 								<div class="ui input">
-	 	 							<input type="text" placeholder="보기 작성">
+	 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
 								</div>
+								<span class="add">
+									<i class="plus circle icon"></i>
+								</span>
+								<span class="delete">
+									<i class="minus circle icon"></i>
+								</span>
 							</div>
 						</div>
 					</li>
 			  		<li class="ui-state-default">Q5.
-						<div class="choice">
+						<div class="choiceArea">
 							<div class="choice">
 								<div class="ui input">
-	 	 							<input type="text" placeholder="보기 작성">
+	 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
 								</div>
+								<span class="add">
+									<i class="plus circle icon"></i>
+								</span>
+								<span class="delete">
+									<i class="minus circle icon"></i>
+								</span>
 							</div>
 						</div>
 					</li>
 			  		<li class="ui-state-default">Q6.
-						<div class="choice">
+						<div class="choiceArea">
 							<div class="choice">
 								<div class="ui input">
-	 	 							<input type="text" placeholder="보기 작성">
+	 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
 								</div>
+								<span class="add">
+									<i class="plus circle icon"></i>
+								</span>
+								<span class="delete">
+									<i class="minus circle icon"></i>
+								</span>
 							</div>
 						</div>
 					</li>
 			  		<li class="ui-state-default">Q7.
-			  			<div class="choice">
-			  				<div class="choice">
+			  			<div class="choiceArea">
+							<div class="choice">
 								<div class="ui input">
-	 	 							<input type="text" placeholder="보기 작성">
+	 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
 								</div>
+								<span class="add">
+									<i class="plus circle icon"></i>
+								</span>
+								<span class="delete">
+									<i class="minus circle icon"></i>
+								</span>
 							</div>
-			  			</div>
+						</div>
 			  		</li>
 			  		<li class="ui-state-default">Q8.
-				  		<div class="choice">
-				  			<div class="choice">
+				  		<div class="choiceArea">
+							<div class="choice">
 								<div class="ui input">
-	 	 							<input type="text" placeholder="보기 작성">
+	 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
 								</div>
+								<span class="add">
+									<i class="plus circle icon"></i>
+								</span>
+								<span class="delete">
+									<i class="minus circle icon"></i>
+								</span>
 							</div>
-				  		</div>
+						</div>
 				  	</li>
 				</ul>
 				<hr>
@@ -297,8 +390,7 @@
 			</div>
 		</div>
 		<div class="actions">
-		    <div class="ui approve button" id="approvalBtn">Approve</div>
-		    <div class="ui approve button" id="referBtn">Refer</div>
+		    <div class="ui approve button" id="nextBtn2">Next</div>
 		    <div class="ui cancel button">Cancel</div>
   		</div>
 	</div>
@@ -343,10 +435,79 @@
 		    <div class="ui cancel button">Cancel</div>
   		</div>
 	</div>
+	
+	<div class="ui modal" id="surveyQuiz">
+		<div class="header">조사 대상자 퀴즈</div>
+		<div class="scrolling content">
+			<div>
+				<div class="ui styled accordion" id="surveyQuizAccordion">
+					<div class="title">
+						<i class="dropdown icon"></i>
+						<input type="text" placeholder="질문 작성" class="surveyQuizTitle">
+					</div>
+					<div class="content">
+						<p class="transition hidden">
+							<div class="choiceArea">
+								<div class="choice">
+									<div class="ui input">
+		 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
+									</div>
+									<span class="add">
+										<i class="plus circle icon"></i>
+									</span>
+									<span class="delete">
+										<i class="minus circle icon"></i>
+									</span>
+								</div>
+							</div>
+						</p>
+					</div>
+				</div>
+				<div>
+					<div id="addQuiz">
+						<i class="primary large plus circle icon"></i>질문  추가
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="actions">
+		    <div class="ui approve button" id="approvalBtn">Approve</div>
+		    <div class="ui approve button" id="referBtn">Refer</div>
+		    <div class="ui cancel button">Cancel</div>
+  		</div>
+	</div>
 	<script>
+		$("#addQuiz").on("click", function(){
+			var $quiz = $("<div class='title'> <i class='dropdown icon'></i> <input type='text' placeholder='질문 작성' class='surveyQuizTitle'> </div> <div class='content'> <p class='transition hidden'> <div class='choiceArea'> <div class='choice'> <div class='ui input'> <input type='text' placeholder='보기 작성' class='choiceInput' value='보기'> </div> <span class='add'> <i class='plus circle icon'></i> </span> <span class='delete'> <i class='minus circle icon'></i> </span> </div> </div> </p> </div>")
+			var $accordian = $("#surveyQuizAccordion");
+			$accordian.append($quiz);
+			
+		});
+		$(document).on("click", ".add", function(){
+			var $choice = $("<div class='ui input'><input type='text' placeholder='보기 작성' class='choiceInput' value='보기'></div>");
+			var $add = $("<span class='add'><i class='plus circle icon'></i></span>");
+			var $delete = $("<span class='delete'><i class='minus circle icon'></i></span>");
+			
+			var $choiceDiv = $("<div class='choice'>");
+			$choiceDiv.append($choice);
+			$choiceDiv.append($add);
+			$choiceDiv.append($delete);
+			
+			$(this).parent().parent().append($choiceDiv);
+		});
+		
+		$('.ui.accordion').accordion();
+		
+		$(document).on("click", ".delete", function(){
+			$(this).parent().remove();
+		})
 		$("#nextBtn").on("click", function(){
 			$('#research').modal('show');
 		});
+		$("#nextBtn2").on("click", function(){
+			$('#surveyQuiz').modal('show');
+		});
+		
 		$(".detail").on("click", function(){
 			var num = $(this).parent().siblings().eq(0).text();
 			$('#corp').modal('show');
