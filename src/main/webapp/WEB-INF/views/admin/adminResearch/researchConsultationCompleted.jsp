@@ -38,6 +38,14 @@
 		border-spacing: 0;
 		border-collapse: collapse;
 		margin-top: 10px;
+		
+		/* 드래그 방지용 소스*/
+		-ms-user-select: none; 
+		-moz-user-select: -moz-none; 
+		-webkit-user-select: none; 
+		-khtml-user-select: none; 
+		user-select:none;
+		/* 드래그 방지용 소스*/
 	}
 	#listTable th {
 		font-size: 11pt;
@@ -171,7 +179,7 @@
 				<th style="width: 40%;">리서치 제목</th>
 				<th style="width: 10%;">승인일</th>
 				<th style="width: 10%;">상태</th>
-				<th style="width: 10%;"> 상세보기</th>
+				<th style="width: 10%;">상세보기</th>
 			</tr>
 			<tr class="tableContext">
 				<td>리서치 번호</td>

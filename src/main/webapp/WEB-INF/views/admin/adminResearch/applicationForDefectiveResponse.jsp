@@ -38,6 +38,14 @@
 		border-spacing: 0;
 		border-collapse: collapse;
 		margin-top: 10px;
+		
+		/* 드래그 방지용 소스*/
+		-ms-user-select: none; 
+		-moz-user-select: -moz-none; 
+		-webkit-user-select: none; 
+		-khtml-user-select: none; 
+		user-select:none;
+		/* 드래그 방지용 소스*/
 	}
 	#listTable th {
 		font-size: 11pt;
@@ -121,7 +129,7 @@
 		</table>
 		<table id="listTable">
 			<tr id="tableTitle">
-				<th style="width: 10%;">회원번호</th>
+				<th style="width: 10%;">패널번호</th>
 				<th style="width: 20%;">참여리서치번호</th> <!-- 아이디아님 -->
 				<th style="width: 40%;">이의신청 제목</th>
 				<th style="width: 15%;">이의신청 날짜</th>
@@ -129,7 +137,7 @@
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
-					<td>패널회원번호</td>
+					<td>패널번호</td>
 					<td>참여리서치번호</td>
 					<td>이의신청 제목</td>
 					<td>이의신청 날짜</td>

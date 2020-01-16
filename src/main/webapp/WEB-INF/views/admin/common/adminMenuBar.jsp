@@ -193,6 +193,13 @@
   		background: #00679A !important;
   		color: white;
   	}
+  	input[type="checkbox"]{
+	  	-ms-transform: scale(1.5); /* IE */
+  		-moz-transform: scale(1.5); /* FF */
+  		-webkit-transform: scale(1.5); /* Safari and Chrome */
+  		-o-transform: scale(1.5); /* Opera */
+  		margin: 5px;
+  	}
 </style>
 </head>
 <body>
