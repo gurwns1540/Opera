@@ -175,47 +175,6 @@
 			<span>[마지막]</span>
 		</div>
 	</div>
-		
-	<div class="ui modal" id="research">
-		<div class="header">리서치 제목</div>
-		<div class="scrolling content">
-			<div>
-				<ul id="sortable">
-					<li class="ui-state-default">Q1.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q2.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q3.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q4.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q5.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q6.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q7.
-			  			<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q8.
-				  		<div class="choice">보기</div></li>
-				</ul>
-				<hr>
-				<div id="outbreak">
-					<big style="font-weight: bold">돌발퀴즈</big>
-					<div id="outbreakQuestion">
-						문제
-					</div>
-					<div id="choice">
-						보기
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="actions">
-		    <div class="ui approve button" id="approvalBtn">Approve</div>
-		    <div class="ui approve button" id="referBtn">Refer</div>
-		    <div class="ui cancel button">Cancel</div>
-  		</div>
-	</div>
 	<div class="ui modal" id="corp">
 		<div class="header">이의신청 내용</div>
 		<div class="scrolling content">
@@ -266,14 +225,12 @@
 			</div>
 		</div>
 		<div class="actions">
-		    <div class="ui approve button" id="nextBtn">Next</div>
+		    <div class="ui approve button" id="approvalBtn">Approve</div>
+		    <div class="ui approve button" id="referBtn">Refer</div>
 		    <div class="ui cancel button">Cancel</div>
   		</div>
 	</div>
 	<script>
-		$("#nextBtn").on("click", function(){
-			$('#research').modal('show');
-		});
 		$(".detail").on("click", function(){
 			var num = $(this).parent().siblings().eq(0).text();
 			$('#corp').modal('show');
@@ -292,7 +249,7 @@
 			  if (result.value) {
 			    Swal.fire(
 			      '승인!',
-			      '이 리서치는 승인되었습니다.',
+			      '이의신청이 승인되었습니다.',
 			      'success'
 			    )
 			  }else {
@@ -329,7 +286,7 @@
 					  if (result.value) {
 						  Swal.fire(
 				      		'반려!',
-				      		'이 리서치는 반려되었습니다.',
+				      		'이의신청이 반려되었습니다.',
 				      		'success'
 				    		)
 					  }else {

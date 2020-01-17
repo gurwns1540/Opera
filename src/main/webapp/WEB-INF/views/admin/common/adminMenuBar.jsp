@@ -201,6 +201,18 @@
   		-o-transform: scale(1.5); /* Opera */
   		margin: 5px;
   	}
+  	#nextBtn {
+  		background: #00679A;
+  		color: white;
+  	}
+  	#approvalBtn {
+  		background: #00679A;
+  		color: white;
+  	}
+  	#referBtn {
+  		background: #C1332A;
+  		color: white;
+  	}
 </style>
 </head>
 <body>
@@ -260,7 +272,7 @@
 				<h3><span class="icon-calendar"></span>패널 리워드 관리</h3>
 				<ul>
 					<li class="innerMenu"><a href="#" style="border-top: 0;">월별 패널 리워드 사용 추이</a></li>
-					<li class="innerMenu"><a href="#" style="border-bottom: 0;">리워드 기프티콘 신청 관리</a></li>
+					<li class="innerMenu"><a href="#" style="border-bottom: 0;">리워드 캐시아웃 신청 관리</a></li>
 				</ul>
 			</li>
 			<li class="topMenu">
