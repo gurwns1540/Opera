@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>리서치 승인 대기 목록</title>
 <style>
 	#approvalBtnArea {
 		position: relative;
@@ -93,6 +92,60 @@
 		width: 80px;
 		height: 30px;
 	}
+	#sortable { 
+  		list-style-type: none; 
+  		margin: 0; 
+  		padding: 0; 
+  		width: 50%;
+  		margin: 0 auto; 
+  		margin-bottom: 30px;
+  	}
+  	#sortable li { 
+  		margin: 0 5px 12px 5px;
+  		padding: 10px; 
+  		font-size: 0.8em;
+  		height: fit-content;
+  		border-radius: 7px;
+  	}
+ 	html>body #sortable li { 
+	  	height: fit-content;
+	  	line-height: 1.2em; 
+	}
+  	.ui-state-highlight { 
+  		height: 3.5em; 
+  		line-height: 1.2em; 
+  	}
+  	.ui-sortable-placeholder {
+  		background: white !important;
+  		border-color: white !important;
+  	}
+  	#choice, .choice {
+  		margin: 0 auto;
+  		margin-top: 20px;
+  		width: fit-content;
+  	}
+  	.choiceInput {
+  		width: 100px;
+  	}
+  	.choiceNameInput {
+  		width: 100% !important;
+  		background: none !important;
+  		border: 0 !important;
+  	}
+  	.ui.input {
+  		margin-right: 5px;
+  	}
+  	#addQuiz {
+  		width: 150px;
+  		height: 50px;
+  		font-size: 13pt;
+  		text-align: center;
+  		margin: 0 auto;
+  		margin-top: 30px;
+  	}
+  	#addQuiz:hover {
+  		cursor: pointer;
+  	}
 </style>
 </head>
 <body>
@@ -103,8 +156,8 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						
-					<!-- 	<button>결과 전송 목록</button>				 -->		
+						<button id="editTs">수정하기</button>	
+						<button id="editTsComplete" style="display: none">수정완료</button>
 					</div>
 				</td>
 			</tr>
@@ -115,52 +168,60 @@
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<td>
-					<div id="searchInput">
-						<div class="ui action input">
-			  				<input type="text" placeholder="Search...">
-							<button class="ui icon button">
-								<i class="search icon"></i>
-							</button>
+		</table>
+		<ul id="sortable">
+			<li class="ui-state-default">Q1.
+				<div class="ui input" style="width: 90%;">
+					<input type="text" placeholder="문항 작성" class="choiceNameInput">
+				</div>
+				<div class="choiceArea">
+					<div class="choice">
+						<div class="ui input">
+ 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
 						</div>
+						<span class="add">
+							<i class="plus circle icon"></i>
+						</span><span class="delete"><i class="minus circle icon"></i></span>
 					</div>
-				</td>
-			</tr>
-		</table>
-		<table id="listTable">
-			<tr id="tableTitle">
-				<th style="width: 20%;">리서치번호</th>
-				<th style="width: 20%;">기업명</th> 
-				<th style="width: 30%;">리서치제목</th>
-				<th style="width: 15%;">리서치마감일</th>
-				<th style="width: 15%;">상세보기</th>
-			</tr>
-			<c:forEach var="i" begin="0" end="9">
-				<tr class="tableContext">
-					<td>리서치번호</td>
-					<td>기업명</td>
-					<td>리서치제목</td>
-					<td>리서치마감일</td>
-					<td><button class="detail">상세보기</button></td>
-				</tr>
-			</c:forEach>
-		</table>
-		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
-			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
+				</div>
+			</li>
+		</ul>
+		<div>
+			<div id="addQuiz">
+				<i class="primary large plus circle icon"></i>질문  추가
+			</div>
 		</div>
 	</div>
-		
-	
+
 	<script>
+		$("#addQuiz").on("click", function(){
+			var $quiz = $('<li class="ui-state-default">Q1. <div class="ui input" style="width: 90%;"> <input type="text" placeholder="문항 작성" class="choiceNameInput"> </div> <div class="choiceArea"> <div class="choice"> <div class="ui input"> <input type="text" placeholder="보기 작성" class="choiceInput" value="보기"> </div> <span class="add"> <i class="plus circle icon"></i> </span><span class="delete"><i class="minus circle icon"></i></span> </div> </div> </li>')
+			var $accordian = $("#sortable");
+			$accordian.append($quiz);
+		});
+		
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(9)").addClass("on");
 	</script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  	<script>
+  		$("#editTs").on("click", function(){
+  			
+  			sortable();
+  			$(this).css("display", "none");
+  			$("#editTsComplete").css("display", "inline-block");
+  		});
+  		$("#editTsComplete").on("click", function(){
+			
+  			$(this).css("display", "none");
+  			$("#editTs").css("display", "inline-block");
+  		});
+  		function sortable() {
+		 	$( "#sortable" ).sortable({
+		 		placeholder: "ui-state-highlight"
+		 	});
+		 	$( "#sortable" ).disableSelection();
+		}
+  	</script>
 </body>
 </html>

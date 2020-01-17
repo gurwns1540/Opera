@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>리서치 승인 대기 목록</title>
 <style>
 	#approvalBtnArea {
 		position: relative;
@@ -92,6 +91,21 @@
 		width: 80px;
 		height: 30px;
 	}
+	#corpTable {
+  		width: 70%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#corpTable th {
+  		width: 20%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+  	#corpTable td {
+  		width: 80%;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
 </style>
 </head>
 <body>
@@ -159,8 +173,88 @@
 		</div>
 	</div>
 		
+	<div class="ui modal" id="corp">
+		<div class="header">기업 명</div>
+		<div class="scrolling content">
+			<div>
+				<table id="corpTable">
+					<tr>
+						<th>프로젝트 명</th>
+						<td>피자 선호도 조사</td>
+					</tr>
+					<tr>
+						<th>목적</th>
+						<td>우리 브랜드 피자 선호도는 얼마나 되는가 궁금한 점과 앞으로 나아갈 피자의 방향</td>
+					</tr>
+					<tr>
+						<th>목표 인원</th>
+						<td>200명</td>
+					</tr>
+					<tr>
+						<th>조사 대상 성별</th>
+						<td>전체</td>
+					</tr>
+					<tr>
+						<th>조사 대상 연령</th>
+						<td>20~29</td>
+					</tr>
+					<tr>
+						<th>조사 대상 지역</th>
+						<td>서울 및 수도권</td>
+					</tr>
+					<tr>
+						<th>조사 예상 기간</th>
+						<td>2020-01-20 ~ 2020-01-27</td>
+					</tr>
+					<tr>
+						<td colspan="2"><hr></td>
+					</tr>
+					<tr>
+						<th>그래프 들어갈 예정</th>
+						<td>그래프</td>
+					</tr>
+					<tr>
+						<th>Raw Data 들어갈 예정</th>
+						<td>Raw Data</td>
+					</tr>
+				</table>
+				<div id="uploadFileName" style="width: fit-content; margin: 10px auto;">파일 명</div>
+			</div>
+		</div>
+		<div class="actions">
+		    <div class="ui approve button" id="approvalBtn">Complete</div>
+		    <div class="ui cancel button">Cancel</div>
+  		</div>
+	</div>
 	
 	<script>
+		$(".detail").on("click", function(){
+			var num = $(this).parent().siblings().eq(0).text();
+			$('#corp').modal('show');
+			//console.log(num);
+		});
+		$("#approvalBtn").on("click", function(){
+			Swal.fire({
+			  title: '이대로 반영하시겠습니까?',
+			  text: "이 결정은 되돌릴 수 없습니다!",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes'
+			}).then((result) => {
+			  if (result.value) {
+			    Swal.fire(
+			      '반영!',
+			      '기업에게 결과를 전달하였습니다.',
+			      'success'
+			    )
+			  }else {
+				  $('#research').modal('show');
+			  }
+			})
+		});
+		
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(7)").addClass("on");
 	</script>

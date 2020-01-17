@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>리서치 승인 대기 목록</title>
 <style>
 	#approvalBtnArea {
 		position: relative;
@@ -185,36 +184,52 @@
 			<div>
 				<table id="complitedTable" >
 					<tr>
-						<th>번호: </th>
-						<td colspan="3">1</td>
+						<th>프로젝트 명</th>
+						<td>피자 선호도 조사</td>
 					</tr>
 					<tr>
-						<th>리서치명: </th>
-						<td colspan="3">소비자 브랜드 인지도 조사</td>
+						<th>목적</th>
+						<td>우리 브랜드 피자 선호도는 얼마나 되는가 궁금한 점과 앞으로 나아갈 피자의 방향</td>
 					</tr>
 					<tr>
-						<th style="width:10%">신청자</th>
-						<td style="width:40%">A기업</td>
-						<th style="width:10%">날짜: </th>
-						<td style="width:40%">2019-12-31</td>
+						<th>목표 인원</th>
+						<td>200명</td>
 					</tr>
 					<tr>
-						<th style="width:10%">상태: </th>
-						<td style="width:40%">완료</td>
-						<th style="width:10%">사유:</th>
-						<td style="width:40%"></td>						
-						
-					
-					</tr>						
+						<th>조사 대상 성별</th>
+						<td>전체</td>
+					</tr>
 					<tr>
+						<th>조사 대상 연령</th>
+						<td>20~29</td>
+					</tr>
+					<tr>
+						<th>조사 대상 지역</th>
+						<td>서울 및 수도권</td>
+					</tr>
+					<tr>
+						<th>조사 예상 기간</th>
+						<td>2020-01-20 ~ 2020-01-27</td>
+					</tr>
+					<tr>
+						<td colspan="2"><hr></td>
+					</tr>
+					<tr>
+						<th>그래프 들어갈 예정</th>
+						<td>그래프</td>
+					</tr>
+					<tr>
+						<th>Raw Data 들어갈 예정</th>
+						<td>Raw Data</td>
 					</tr>
 				</table>
+				<div id="uploadFileName" style="width: fit-content; margin: 10px auto;">파일 명</div>
 			</div>
 		</div>
 		<div class="actions">
-		    <div class="ui cancel button">close</div>
-  		</div>		
-	
+			<div class="ui button">Download</div>
+		    <div class="ui cancel button">Cancel</div>
+  		</div>
 	</div>		
 		
 	

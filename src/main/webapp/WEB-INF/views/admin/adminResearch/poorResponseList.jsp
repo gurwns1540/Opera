@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>리서치 승인 대기 목록</title>
 <style>
 	#approvalBtnArea {
 		position: relative;

@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>리서치 승인 대기 목록</title>
 <style>
 	#approvalBtnArea {
 		position: relative;
@@ -92,6 +91,21 @@
 		width: 80px;
 		height: 30px;
 	}
+	#corpTable {
+  		width: 70%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#corpTable th {
+  		width: 20%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+  	#corpTable td {
+  		width: 80%;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
 </style>
 </head>
 <body>
@@ -158,9 +172,77 @@
 			<span>[마지막]</span>
 		</div>
 	</div>
-		
+	
+	<div class="ui modal" id="corp">
+		<div class="header">기업 명</div>
+		<div class="scrolling content">
+			<div>
+				<table id="corpTable">
+					<tr>
+						<th>그래프 들어갈 예정</th>
+						<td>그래프</td>
+					</tr>
+					<tr>
+						<th>Raw Data 들어갈 예정</th>
+						<td>Raw Data</td>
+					</tr>
+				</table>
+				<div id="uploadFileName" style="width: fit-content; margin: 10px auto;">파일 명</div>
+				<input type="file" style="display: none" id="report">
+			</div>
+		</div>
+		<div class="actions">
+			<div class="ui button" id="uploadBtn">Upload</div>
+			<div class="ui approve button" id="pdfBtn">DownLoad</div>
+		    <div class="ui approve button" id="approvalBtn">Apply</div>
+		    <div class="ui cancel button">Cancel</div>
+  		</div>
+	</div>
 	
 	<script>
+		$("#uploadBtn").on("click", function(e){
+			e.preventDefault();
+			$('#report').click();
+		});
+		
+		var fileTarget = $('#report');
+
+		fileTarget.on('change', function(){ // 값이 변경되면
+		if(window.FileReader){ // modern browser
+			var filename = this.files[0].name;
+		}else { // old IE
+		 	var filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출
+		}  // 추출한 파일명 삽입
+		$("#uploadFileName").text(filename);
+		});
+		
+		$(".detail").on("click", function(){
+			var num = $(this).parent().siblings().eq(0).text();
+			$('#corp').modal('show');
+			//console.log(num);
+		});
+		
+		$("#approvalBtn").on("click", function(){
+			Swal.fire({
+			  title: '이대로 반영하시겠습니까?',
+			  text: "이 결정은 되돌릴 수 없습니다!",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes'
+			}).then((result) => {
+			  if (result.value) {
+			    Swal.fire(
+			      '반영!',
+			      '이 리포트는 반영되었습니다.',
+			      'success'
+			    )
+			  }else {
+				  $('#research').modal('show');
+			  }
+			})
+		});
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(7)").addClass("on");
 	</script>
