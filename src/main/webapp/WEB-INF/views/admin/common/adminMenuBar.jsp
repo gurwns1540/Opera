@@ -160,6 +160,7 @@
 		/* 드래그 방지용 소스*/
 		
 		position: fixed;
+		z-index: 3;
 	}
 	#adminBox {
 		display: inline-block;

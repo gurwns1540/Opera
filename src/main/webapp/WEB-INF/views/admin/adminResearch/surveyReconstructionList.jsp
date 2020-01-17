@@ -153,6 +153,9 @@
   	.choiceInput {
   		width: 100px;
   	}
+  	.ui.input {
+  		margin-right: 5px;
+  	}
   	#nextBtn, #nextBtn2 {
   		background: #00679A;
   		color: white;
@@ -165,9 +168,15 @@
   		background: #C1332A;
   		color: white;
   	}
-  	.add, .delete:hover {
-  		cursor: pointer;
+  	.add, .delete {
+  		display:inline-block; 
   		width: 25px;
+  	}
+  	.add {
+  		margin-right: 2px;
+  	}
+  	.add:hover, .delete:hover {
+  		cursor: pointer;
   	}
   	#surveyQuizAccordion {
   		margin: 0 auto;
@@ -272,10 +281,7 @@
 								</div>
 								<span class="add">
 									<i class="plus circle icon"></i>
-								</span>
-								<span class="delete">
-									<i class="minus circle icon"></i>
-								</span>
+								</span><span class="delete"><i class="minus circle icon"></i></span>
 							</div>
 						</div>
 					</li>
@@ -287,10 +293,7 @@
 								</div>
 								<span class="add">
 									<i class="plus circle icon"></i>
-								</span>
-								<span class="delete">
-									<i class="minus circle icon"></i>
-								</span>
+								</span><span class="delete"><i class="minus circle icon"></i></span>
 							</div>
 						</div>
 					</li>
@@ -302,10 +305,7 @@
 								</div>
 								<span class="add">
 									<i class="plus circle icon"></i>
-								</span>
-								<span class="delete">
-									<i class="minus circle icon"></i>
-								</span>
+								</span><span class="delete"><i class="minus circle icon"></i></span>
 							</div>
 						</div>
 					</li>
@@ -317,10 +317,7 @@
 								</div>
 								<span class="add">
 									<i class="plus circle icon"></i>
-								</span>
-								<span class="delete">
-									<i class="minus circle icon"></i>
-								</span>
+								</span><span class="delete"><i class="minus circle icon"></i></span>
 							</div>
 						</div>
 					</li>
@@ -332,10 +329,7 @@
 								</div>
 								<span class="add">
 									<i class="plus circle icon"></i>
-								</span>
-								<span class="delete">
-									<i class="minus circle icon"></i>
-								</span>
+								</span><span class="delete"><i class="minus circle icon"></i></span>
 							</div>
 						</div>
 					</li>
@@ -347,10 +341,7 @@
 								</div>
 								<span class="add">
 									<i class="plus circle icon"></i>
-								</span>
-								<span class="delete">
-									<i class="minus circle icon"></i>
-								</span>
+								</span><span class="delete"><i class="minus circle icon"></i></span>
 							</div>
 						</div>
 					</li>
@@ -362,10 +353,7 @@
 								</div>
 								<span class="add">
 									<i class="plus circle icon"></i>
-								</span>
-								<span class="delete">
-									<i class="minus circle icon"></i>
-								</span>
+								</span><span class="delete"><i class="minus circle icon"></i></span>
 							</div>
 						</div>
 			  		</li>
@@ -377,10 +365,7 @@
 								</div>
 								<span class="add">
 									<i class="plus circle icon"></i>
-								</span>
-								<span class="delete">
-									<i class="minus circle icon"></i>
-								</span>
+								</span><span class="delete"><i class="minus circle icon"></i></span>
 							</div>
 						</div>
 				  	</li>
@@ -458,14 +443,11 @@
 							<div class="choiceArea">
 								<div class="choice">
 									<div class="ui input">
-		 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
-									</div>
-									<span class="add">
-										<i class="plus circle icon"></i>
-									</span>
-									<span class="delete">
-										<i class="minus circle icon"></i>
-									</span>
+	 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
+								</div>
+								<span class="add">
+									<i class="plus circle icon"></i>
+								</span><span class="delete"><i class="minus circle icon"></i></span>
 								</div>
 							</div>
 						</p>
@@ -493,7 +475,7 @@
 		});
 		$(document).on("click", ".add", function(){
 			var $choice = $("<div class='ui input'><input type='text' placeholder='보기 작성' class='choiceInput' value='보기'></div>");
-			var $add = $("<span class='add'><i class='plus circle icon'></i></span>");
+			var $add = $("<span class='add'><i class='plus circle icon'></i></span>&nbsp;");
 			var $delete = $("<span class='delete'><i class='minus circle icon'></i></span>");
 			
 			var $choiceDiv = $("<div class='choice'>");

@@ -92,21 +92,6 @@
 		width: 80px;
 		height: 30px;
 	}
-	#disposalResponseTable {
-  		width: 70%;
-  		margin: 0 auto;
-  		border-spacing: 0;
-		border-collapse: collapse;
-  	}
-  	#disposalResponseTable th {
-  		width: 20%;
-  		height: 70px;
-  		border-bottom: 1px solid #C5C5C5;
-  	}
-  	#disposalResponseTable td {
-  		width: 80%;
-  		border-bottom: 1px solid #C5C5C5;
-  	}
 </style>
 </head>
 <body>
@@ -117,15 +102,15 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='disposalResponseManagement.admin'" id="clickBtn">폐기응답 목록</button>
-						<button onclick="location.href='poorResponseList.admin'">불량응답 목록</button>
+						<button onclick="location.href='applicationForDefectiveResponse.admin'">이의신청 목록</button>
+						<button onclick="location.href='poorResponseComplete.admin'" id="clickBtn">처리완료 목록</button>
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="adminTitle">
-						폐기 응답 목록
+						불량응답 이의 신청 처리완료 목록
 					</div>
 				</td>
 			</tr>
@@ -144,18 +129,18 @@
 		</table>
 		<table id="listTable">
 			<tr id="tableTitle">
-				<th style="width: 15%;">폐기응답번호</th>
-				<th style="width: 15%;">패널번호</th> <!-- 아이디아님 -->
-				<th style="width: 15%;">리서치 번호</th>
-				<th style="width: 35%;">분류</th>
-				<th style="width: 20%;">상세보기</th>
+				<th style="width: 10%;">패널번호</th>
+				<th style="width: 20%;">참여리서치번호</th> <!-- 아이디아님 -->
+				<th style="width: 40%;">이의신청 제목</th>
+				<th style="width: 15%;">이의신청 날짜</th>
+				<th style="width: 15%;">상세보기</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
-					<td>폐기응답번호</td>
 					<td>패널번호</td>
-					<td>리서치</td>
-					<td>분류</td>
+					<td>참여리서치번호</td>
+					<td>이의신청 제목</td>
+					<td>이의신청 날짜</td>
 					<td><button class="detail">상세보기</button></td>
 				</tr>
 			</c:forEach>
@@ -171,47 +156,10 @@
 		</div>
 	</div>
 		
-	<div class="ui modal" id="disposalResponse">
-		<div class="header">폐기응답 내용</div>
-		<div class="scrolling content">
-			<div>
-				<table id="disposalResponseTable">
-					<tr>
-						<th style="width: 10%">번호</th>
-						<td style="width: 40%">2378</td>
-						<th style="width: 10%">날짜</th>
-						<td style="width: 40%">2020-01-10</td>
-					</tr>
-					<tr>
-						<th>패널 번호</th>
-						<td colspan="3">98772</td>
-<!-- 					</tr> -->
-					<tr>
-						<th>리서치 번호</th>
-						<td colspan="3">279</td>
-					</tr>
-					<tr>
-						<th>분류</th>
-						<td colspan="3">응답시간 하위 5%</td>
-					</tr>
-					<tr>
-						<th>상세보기</th>
-						<td colspan="3"></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div class="actions">
-		    <div class="ui cancel button">Close</div>
-  		</div>
-	</div>
 	
 	<script>
-		$(document).on("click", ".detail", function(){
-			$("#disposalResponse").modal("show");
-		});
 		$(".topMenu:nth-child(2)").addClass("active");
-		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(5)").addClass("on");
+		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(6)").addClass("on");
 	</script>
 </body>
 </html>

@@ -38,7 +38,7 @@ public class AdminForwardController {
 	//서베이 문항 재구성 대기문항
 	@RequestMapping("serveyReconstructionList.admin")
 		public String forwardserveyReconstructionList() {
-			return "adminResearch/serveyReconstructionList";
+			return "adminResearch/surveyReconstructionList";
 		}
 	
 	
@@ -60,9 +60,14 @@ public class AdminForwardController {
 	}
 	
 	//불량응답이의신청관리
-	@RequestMapping("applicationForDefectiveResponse")
+	@RequestMapping("applicationForDefectiveResponse.admin")
 		public String forwardapplicationForDefectiveResponse() {
 		return "adminResearch/applicationForDefectiveResponse";
+	}
+	//불량응답이의신청 처리완료
+	@RequestMapping("poorResponseComplete.admin")
+	public String forwardPoorResponseComplete() {
+		return "adminResearch/poorResponseComplete";
 	}
 	//리서치 보고서 작성 대기 목록-통계처리
 	@RequestMapping("researchReportStandbyList")
