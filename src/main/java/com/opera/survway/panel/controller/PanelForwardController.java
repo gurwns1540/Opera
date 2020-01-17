@@ -76,9 +76,14 @@ public class PanelForwardController {
 		return "signPanel/panelLogin";
 	}
 	//2. 회원가입
-	@GetMapping("panelSignUp.panel")
+	@GetMapping("panelSignup.panel")
 	public String showPanelSignUp() {
 		return "signPanel/panelSignUp";
+	}
+	//3. 회원가입
+	@GetMapping("panelSignup2.panel")
+	public String showPanelSignUp2() {
+		return "signPanel/panelSignUp2";
 	}
 	
 	
