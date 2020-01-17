@@ -65,4 +65,7 @@
 .ui.menu.four.item.item {
     margin-top: 5px; 
 }
+.surveyMenu {
+	size:inherit;
+}
   
