@@ -2,6 +2,7 @@ package com.opera.survway.panel.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -75,15 +76,20 @@ public class PanelForwardController {
 	public String showPanelLogin() {
 		return "signPanel/panelLogin";
 	}
-	//2. 회원가입
+	//2. 회원가입(이용약관)
 	@GetMapping("panelSignup.panel")
 	public String showPanelSignUp() {
 		return "signPanel/panelSignUp";
 	}
-	//3. 회원가입
+	//3. 회원가입(정보입력)
 	@GetMapping("panelSignup2.panel")
 	public String showPanelSignUp2() {
 		return "signPanel/panelSignUp2";
+	}
+	//3. 회원가입(가입완료)
+	@GetMapping("panelSignup3.panel")
+	public String showPanelSignUp3() {
+		return "signPanel/panelSignUp3";
 	}
 	
 	
