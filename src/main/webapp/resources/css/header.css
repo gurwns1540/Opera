@@ -43,6 +43,10 @@
 #nav {
 	background-color: #008499;
 	height: 30px;
+	min-height: 30px;
+}
+.ui.menu>.item:first-child {
+	border-radius: 0;
 }
 
 #logoImg {

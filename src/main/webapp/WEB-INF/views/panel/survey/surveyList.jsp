@@ -5,18 +5,78 @@
 <head>
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
+<style>
+	
+	#titleTable {
+		marin 0 auto;
+	}
+	
+	#menuTitle {
+		height:30px;
+		width:400px;
+		font-size:13pt;
+	}
+	
+	#pagePath {
+		width:700px;
+	}
+	
+	
+		
+	
+</style>
 <body>
 	<div class="wrap">
 		<%@ include file="/WEB-INF/views/panel/common/header.jsp" %>
 		<section class="container">
 		<br />
-			진행중인 설문조사 전체 목록페이지
+		
+		
+		<table id="titleTable" border="1px solid black">
+			<tr >
+				<td id="menuTitle">참여한 설문조사</td>		<td id="pagePath">HOME > 마이페이지 > 참여한 설문조사</td>
+			</tr>
+		</table>
+		
+		
+		
+		
+		
 		<br />
 		</section>  <!-- container end -->
 		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
 	</div>  <!-- wrap end -->
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

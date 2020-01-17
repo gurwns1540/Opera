@@ -23,8 +23,8 @@ html, body {
 	margin-right: auto;
 	margin-top: 5px;
 	width: 60%;
-	min-height: 530px;
-	border: 1px solid black;
+	min-height: 850px;
+	/* border: 1px solid black; */
 }
 
 .footerArea {
