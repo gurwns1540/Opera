@@ -8,6 +8,11 @@ public class PanelForwardController {
 	
 	@GetMapping("panelSignup.panel")
 	public String showPanelSignup() {
-		return "user/panelSignup";
+		return "signPanel/panelSignUp";
+	}
+	
+	@GetMapping("panelSignup2.panel")
+	public String showPanelSignup2() {
+		return "signPanel/panelSignUp2";
 	}
 }
