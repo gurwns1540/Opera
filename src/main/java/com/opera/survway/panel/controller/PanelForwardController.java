@@ -134,16 +134,45 @@ public class PanelForwardController {
 	public String showSruveyList() {
 		return "survey/surveyList";
 	}
-	//2. 설문조사 진행 페이지
-	@GetMapping("surveyQuestions.panel")
-	public String showSurveyQuestions() {
-		return "survey/surveyQuestions";
-
+	//2. 참여한 설문조사 목록
+	@GetMapping("mySurveyList.panel")
+	public String showMySurveyList() {
+		return "survey/mySurveyList";
 	}
-	//3. 조사참여 가이드
-	@GetMapping("surveyStartGuide")
-	public String showSurveyStartGuide() {
-		return "survey/surveyStartGuide";
+	//3. 패널서베이
+	@GetMapping("panelSurvey.panel")
+	public String showPanelSurvey() {
+		return "survey/panelSurvey";
 	}
-	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
