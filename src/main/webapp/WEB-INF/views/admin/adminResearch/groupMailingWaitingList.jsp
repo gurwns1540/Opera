@@ -142,7 +142,7 @@
 					<td>기업명</td>
 					<td>리서치 제목</td>
 					<td>상태</td>
-					<td><button class="detail">메일전송</button></td>
+					<td colspan="8"><input type="button" value="메일 전송" id="sendBtn"></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -156,9 +156,44 @@
 			<span>[마지막]</span>
 		</div>
 	</div>
+	
+	<div class="ui tiny modal" id="sendMailModal">
+		<div class="header">메일 전송중</div>
+		<div class="content" style="margin: 0 auto; width: fit-content;">
+			<img alt="sendMail.gif" src="${ contextPath }/resources/images/sendMail.gif" style="width: 400px;">
+		</div>
+	</div>
 		
 	
 	<script>
+	
+	$("#sendBtn").on("click", function(){
+		Swal.fire({
+		  	title: '정말 메일을 보내시겠습니까?',
+		  	text: "이 결정은 되돌릴 수 없습니다!",
+		  	icon: 'warning',
+		  	showCancelButton: true,
+		  	confirmButtonColor: '#3085d6',
+		  	cancelButtonColor: '#d33',
+		  	confirmButtonText: 'Yes'
+		}).then((result) => {
+		  	if (result.value) {
+			  	$("#sendMailModal").modal("show");
+			  	setTimeout(function() {
+			  		$("#sendMailModal").modal("hide");
+			  		Swal.fire(
+						'메일 전송 완료!',
+						'메일 전송을 완료 하였습니다.',
+						'success'
+					)
+				}, 3000);
+		  }
+		})
+	});
+	
+	
+	
+	
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(4)").addClass("on");
 	</script>
