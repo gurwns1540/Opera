@@ -11,7 +11,6 @@
 		position: relative;
 		right: 10px;
 		float: right;
-		height: 30px;
 		margin-bottom: 10px;
 	}
 	#approvalBtnArea button {
@@ -103,15 +102,16 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<!-- <button onclick="location.href='researchWaitingPayment.admin'">협의중</button>
-						<button onclick="location.href='researchConsultationCompleted.admin'">협의완료</button> -->
+						<button onclick="location.href='researchReportStandbyList.admin'">통계 처리 목록</button>
+						<button onclick="location.href='researchReportWriteList.admin'">보고서 작성 목록</button>
+						<button onclick="location.href='researchReportSendList.admin'" id="clickBtn">결과 전송 목록</button>						
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="adminTitle">
-						단체 메일링 대기 목록
+						리서치 결과 전송 목록
 					</div>
 				</td>
 			</tr>
@@ -130,19 +130,21 @@
 		</table>
 		<table id="listTable">
 			<tr id="tableTitle">
-				<th style="width: 10%;">리서치 번호</th>
-				<th style="width: 15%;">기업명</th>
-				<th style="width: 40%;">리서치 제목</th>
-				<th style="width: 20%;">상태</th>
-				<th style="width: 15%;">메일전송</th>
+				<th style="width: 15%;">리서치번호</th>
+				<th style="width: 15%;">기업명</th> 
+				<th style="width: 30%;">리서치제목</th>
+				<th style="width: 15%;">통계처리완료일자</th>
+				<th style="width: 15%;">상태</th>
+				<th style="width: 10%;">상세보기</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
-					<td>리서치 번호</td>
+					<td>리서치번호</td>
 					<td>기업명</td>
-					<td>리서치 제목</td>
+					<td>리서치제목</td>
+					<td>통계처리완료일자</td>
 					<td>상태</td>
-					<td colspan="8"><input type="button" value="메일 전송" id="sendBtn"></td>
+					<td><button class="detail">상세보기</button></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -156,46 +158,11 @@
 			<span>[마지막]</span>
 		</div>
 	</div>
-	
-	<div class="ui tiny modal" id="sendMailModal">
-		<div class="header">메일 전송중</div>
-		<div class="content" style="margin: 0 auto; width: fit-content;">
-			<img alt="sendMail.gif" src="${ contextPath }/resources/images/sendMail.gif" style="width: 400px;">
-		</div>
-	</div>
 		
 	
 	<script>
-	
-	$("#sendBtn").on("click", function(){
-		Swal.fire({
-		  	title: '정말 메일을 보내시겠습니까?',
-		  	text: "이 결정은 되돌릴 수 없습니다!",
-		  	icon: 'warning',
-		  	showCancelButton: true,
-		  	confirmButtonColor: '#3085d6',
-		  	cancelButtonColor: '#d33',
-		  	confirmButtonText: 'Yes'
-		}).then((result) => {
-		  	if (result.value) {
-			  	$("#sendMailModal").modal("show");
-			  	setTimeout(function() {
-			  		$("#sendMailModal").modal("hide");
-			  		Swal.fire(
-						'메일 전송 완료!',
-						'메일 전송을 완료 하였습니다.',
-						'success'
-					)
-				}, 3000);
-		  }
-		})
-	});
-	
-	
-	
-	
 		$(".topMenu:nth-child(2)").addClass("active");
-		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(4)").addClass("on");
+		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(7)").addClass("on");
 	</script>
 </body>
 </html>

@@ -102,16 +102,16 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="#">통계 처리 목록</button>
-						<button onclick="#">보고서 작성 목록</button>
-						<button>결과 전송 목록</button>						
+						<button onclick="location.href='researchReportStandbyList.admin'" id="clickBtn">통계 처리 목록</button>
+						<button onclick="location.href='researchReportWriteList.admin'">보고서 작성 목록</button>
+						<button onclick="location.href='researchReportSendList.admin'">결과 전송 목록</button>						
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="adminTitle">
-						리서치 보고서 작성 대기 목록
+						리서치 통계 처리 목록
 					</div>
 				</td>
 			</tr>
@@ -132,9 +132,8 @@
 			<tr id="tableTitle">
 				<th style="width: 15%;">리서치번호</th>
 				<th style="width: 15%;">기업명</th> 
-				<th style="width: 30%;">리서치제목</th>
-				<th style="width: 15%;">통계처리완료일자</th>
-				<th style="width: 15%;">상태</th>
+				<th style="width: 40%;">리서치 제목</th>
+				<th style="width: 20%;">리서치 기간</th>
 				<th style="width: 10%;">상세보기</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
@@ -142,8 +141,7 @@
 					<td>리서치번호</td>
 					<td>기업명</td>
 					<td>리서치제목</td>
-					<td>통계처리완료일자</td>
-					<td>상태</td>
+					<td>리서치 기간</td>
 					<td><button class="detail">상세보기</button></td>
 				</tr>
 			</c:forEach>
