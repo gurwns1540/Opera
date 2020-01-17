@@ -6,11 +6,7 @@
 <%@ include file="/WEB-INF/views/panel/common/head.jsp"%>
 </head>
 <style>
-/* .agree {
-	margin-left: 20%;
-	margin-right: 15%;
-	margin-top: 3%;
-} */
+
 #title {
 	font-weight: bold;
 }
@@ -19,34 +15,7 @@
 	color: lightgray;
 }
 
-/* #hrlength {
-	margin-right: 19%;
-}
 
-#aco1 {
-	margin-left: 25%;
-}
-
-#personalagree {
-	margin-left: 20%;
-}
-
-#aco2 {
-	margin-left: 6.5%;
-}
-
-#agreePersonal {
-	margin-left: 6.5%;
-}
-
-#persontime {
-	margin-left: 20%;
-}
-
-#aco3 {
-	margin-left: 25%;
-}
-*/
 #agreetable {
 	margin-top: 50px;
 	margin-bottom: 50px;
@@ -55,6 +24,9 @@
 tr {
 	border-collapse: separate;
 	border-spacing: 100px;
+}
+h4{
+	font-weight: bold;
 }
 </style>
 <body>
@@ -65,10 +37,20 @@ tr {
 				<table id="agreetable" align="center">
 					<tr>
 						<td><h1>회원가입</h1></td>
-						<td style="width: 300px"></td>
-						<td id="title"><h3>이용약관</h3></td>
-						<td id="stitle"><h3>정보입력</h3></td>
-						<td id="stitle"><h3>가입완료</h3></td>
+						<td style="width: 100px;"></td>
+						<td style="width: 200px;"></td>
+						<td id="title" style="width: 100px;"><h4>이용약관</h4></td>
+						<td id="stitle" style="width: 100px;"><h4>정보입력</h4></td>
+						<td id="stitle" style="width: 100px;"><h4>가입완료</h4></td>
+					</tr>
+					<tr>
+						<td colspan="6"><hr></td>
+					</tr>
+					<tr>
+						<td><br></td>
+					</tr>
+					<tr>
+						<td colspan="6"><h3>이용약관 안내</h3></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -77,25 +59,7 @@ tr {
 						<td></td>
 					</tr>
 					<tr>
-						<td colspan="5"><hr></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td colspan="5"><h3>이용약관 안내</h3></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td colspan="5" align="center">
+						<td colspan="6" align="center">
 							<div class="ui styled accordion" id="aco1">
 
 								<div class="title">
@@ -121,7 +85,10 @@ tr {
 						</td>
 					</tr>
 					<tr>
-						<td></td>
+						<td><br><br></td>
+					</tr>
+					<tr>
+						<td colspan="6"><h3>개인정보 수집 및 이용안내</h3></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -130,34 +97,7 @@ tr {
 						<td></td>
 					</tr>
 					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td colspan="5"><h3>개인정보 수집 및 이용안내</h3></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td colspan="5" align="center">
+						<td colspan="6" align="center">
 
 
 							<div class="personalagree" id="personalagree">
@@ -231,7 +171,10 @@ tr {
 						</td>
 					</tr>
 					<tr>
-						<td></td>
+						<td><br><br></td>
+					</tr>
+					<tr>
+						<td colspan="6"><h3>개인정보 유효기간</h3></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -240,35 +183,7 @@ tr {
 						<td></td>
 					</tr>
 					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-
-					<tr>
-						<td colspan="5"><h3>개인정보 유효기간</h3></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td colspan="5" align="center">
+						<td colspan="6" align="center">
 							<div class="ui styled accordion" id="aco3">
 								<div class="title">
 									<label for="agree5" style="color: black"><input
@@ -290,19 +205,9 @@ tr {
 						</td>
 					</tr>
 					<tr>
-						<td></td>
-					</tr>
+						<td><br></td>
 					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td colspan="5" align="center"><button class="ui teal button" onclick="location.href='panelSignup2.panel'">다음</button></td>
+						<td colspan="6" align="center"><button class="ui teal button" onclick="location.href='panelSignup2.panel'">다음</button></td>
 					</tr>
 				</table>
 			</div>
