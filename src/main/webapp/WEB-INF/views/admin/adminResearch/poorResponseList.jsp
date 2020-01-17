@@ -10,6 +10,7 @@
 	#approvalBtnArea {
 		position: relative;
 		right: 10px;
+		height: 30px;
 		float: right;
 		margin-bottom: 10px;
 	}
@@ -92,6 +93,21 @@
 		width: 80px;
 		height: 30px;
 	}
+	#poorResponseTable {
+  		width: 70%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#poorResponseTable th {
+  		width: 20%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+  	#poorResponseTable td {
+  		width: 80%;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
 </style>
 </head>
 <body>
@@ -171,7 +187,44 @@
 			<img alt="sendMail.gif" src="${ contextPath }/resources/images/sendMail.gif" style="width: 400px;">
 		</div>
 	</div>
+	<div class="ui modal" id="disposalResponse">
+		<div class="header">불량응답 내용</div>
+		<div class="scrolling content">
+			<div>
+				<table id="poorResponseTable">
+					<tr>
+						<th style="width: 10%">번호</th>
+						<td style="width: 40%">2378</td>
+						<th style="width: 10%">날짜</th>
+						<td style="width: 40%">2020-01-10</td>
+					</tr>
+					<tr>
+						<th>패널 번호</th>
+						<td colspan="3">98772</td>
+					</tr>
+					<tr>
+						<th>리서치 번호</th>
+						<td colspan="3">279</td>
+					</tr>
+					<tr>
+						<th>분류</th>
+						<td colspan="3">응답시간 하위 5%</td>
+					</tr>
+					<tr>
+						<th>상세보기</th>
+						<td colspan="3"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="actions">
+		    <div class="ui cancel button">Close</div>
+  		</div>
+	</div>
 	<script>
+		$(document).on("click", ".detail", function(){
+			$("#disposalResponse").modal("show");
+		});
 		$("#sendBtn").on("click", function(){
 			Swal.fire({
 			  	title: '정말 메일을 보내시겠습니까?',

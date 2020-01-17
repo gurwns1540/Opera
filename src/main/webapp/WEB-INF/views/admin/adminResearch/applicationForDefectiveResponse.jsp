@@ -11,6 +11,7 @@
 		position: relative;
 		right: 10px;
 		float: right;
+		height: 30px;
 		margin-bottom: 10px;
 	}
 	#approvalBtnArea button {
@@ -92,6 +93,25 @@
 		width: 80px;
 		height: 30px;
 	}
+	#corpTable {
+  		width: 70%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#corpTable th {
+  		width: 10%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  		text-align: center;
+  	}
+  	#corpTable td {
+  		width: 90%;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+  	textarea:focus {
+  		outline: none;
+  	}
 </style>
 </head>
 <body>
@@ -102,15 +122,15 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="#">이의신청 목록</button>
-						<button onclick="#">처리완료 목록</button>
+						<button onclick="location.href='applicationForDefectiveResponse.admin'" id="clickBtn">이의신청 목록</button>
+						<button onclick="location.href='poorResponseComplete.admin'">처리완료 목록</button>
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="adminTitle">
-						불량응답 이의 신청 관리
+						불량응답 이의 신청 목록
 					</div>
 				</td>
 			</tr>
@@ -156,8 +176,170 @@
 		</div>
 	</div>
 		
-	
+	<div class="ui modal" id="research">
+		<div class="header">리서치 제목</div>
+		<div class="scrolling content">
+			<div>
+				<ul id="sortable">
+					<li class="ui-state-default">Q1.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q2.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q3.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q4.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q5.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q6.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q7.
+			  			<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q8.
+				  		<div class="choice">보기</div></li>
+				</ul>
+				<hr>
+				<div id="outbreak">
+					<big style="font-weight: bold">돌발퀴즈</big>
+					<div id="outbreakQuestion">
+						문제
+					</div>
+					<div id="choice">
+						보기
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="actions">
+		    <div class="ui approve button" id="approvalBtn">Approve</div>
+		    <div class="ui approve button" id="referBtn">Refer</div>
+		    <div class="ui cancel button">Cancel</div>
+  		</div>
+	</div>
+	<div class="ui modal" id="corp">
+		<div class="header">이의신청 내용</div>
+		<div class="scrolling content">
+			<div>
+				<table id="corpTable">
+					<tr>
+						<th style="width: 10%">패널 번호</th>
+						<td style="width: 20%">23789</td>
+						<th style="width: 15%">리서치 번호</th>
+						<td style="width: 20%">7723</td>
+						<th style="width: 15%">이의신청 날짜</th>
+						<td style="width: 20%">2020-01-11</td>
+					</tr>
+					<tr>
+						
+					</tr>
+					<tr>
+						<th>불량응답 내용</th>
+						<td colspan="5">
+							<table style="width: 70%; margin: 0 auto; margin-bottom: 20px; border-spacing: 0; border-collapse: collapse;">
+								<tr>
+									<th style="width: 20%">SQ2</th>
+									<td colspan="2">귀하의 성별은 무엇입니까?</td>
+								</tr>
+								<tr>
+									<td colspan="3" style="text-align: center; height: 50px;">
+										<input type="radio" name="gender" id="male"><label for="male" style="margin-right: 30px;">남</label>
+										<input type="radio" name="gender" id="female" checked="checked"><label for="female">여</label>
+									</td>
+									<td></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th>이의신청 제목</th>
+						<td colspan="5">제가 성별을 바꾸어서 여자로 체크했어요..</td>
+					</tr>
+					<tr>
+						<th>이의신청 내용</th>
+						<td colspan="5">
+							<div style="width: 100%">
+								<textarea id="appealContext" style="width: 80%; border: 0; height: 200px; resize: none;" readonly></textarea>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="actions">
+		    <div class="ui approve button" id="nextBtn">Next</div>
+		    <div class="ui cancel button">Cancel</div>
+  		</div>
+	</div>
 	<script>
+		$("#nextBtn").on("click", function(){
+			$('#research').modal('show');
+		});
+		$(".detail").on("click", function(){
+			var num = $(this).parent().siblings().eq(0).text();
+			$('#corp').modal('show');
+			//console.log(num);
+		});
+		$("#approvalBtn").on("click", function(){
+			Swal.fire({
+			  title: '정말 승인하시겠습니까?',
+			  text: "이 결정은 되돌릴 수 없습니다!",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes'
+			}).then((result) => {
+			  if (result.value) {
+			    Swal.fire(
+			      '승인!',
+			      '이 리서치는 승인되었습니다.',
+			      'success'
+			    )
+			  }else {
+				  $('#research').modal('show');
+			  }
+			})
+		});
+		$("#referBtn").on("click", function(){
+			const start = async function() {
+				const { value: text } = await Swal.fire({
+					  input: 'textarea',
+					  inputPlaceholder: '반려 사유를 적어주세요..',
+					  inputAttributes: {
+					    'aria-label': 'Type your message here'
+					  },
+					  showCancelButton: true,
+					  inputValidator: (value) => {
+					    if (!value) {
+					      return '반려 사유를 꼭 적어주세요!'
+					    }
+					  }
+				});
+	
+				if (text) {
+					Swal.fire({
+					  title: '정말 반려하시겠습니까?',
+					  text: "이 결정은 되돌릴 수 없습니다!",
+					  icon: 'warning',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'Yes'
+					}).then((result) => {
+					  if (result.value) {
+						  Swal.fire(
+				      		'반려!',
+				      		'이 리서치는 반려되었습니다.',
+				      		'success'
+				    		)
+					  }else {
+						  $('#research').modal('show');
+					  }
+					})
+				}
+			}
+			start();
+		});
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(6)").addClass("on");
 	</script>
