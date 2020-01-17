@@ -10,7 +10,7 @@
 		<%@ include file="/WEB-INF/views/panel/common/header.jsp" %>
 		<section class="container">
 		<br />
-			서베이 참여 안내
+			내 리워드 관리
 		<br />
 		</section>  <!-- container end -->
 		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
