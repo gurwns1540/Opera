@@ -25,37 +25,18 @@
 			</td>
 		</tr>
 	</table>  <!-- headerTableArea end -->
-	
-	<%-- <div class="logoArea">
-		<img src="resources/images/headerLogo.png" alt="" id="logoImg" />
-	</div>
-	<div class="imgArea">
-		<img src="resources/images/smallLogo.png" alt="" id="logo2Img" />
-	</div>
-	<div class="headerLoginArea">
-		<c:choose>
-			<c:when test="${ not empty loginMember }">
-				<a href="#">로그아웃</a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="#">내 정보 관리</a>
-			</c:when>
-			<c:otherwise>
-				<a href="#">로그인</a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="panelSignup.panel">회원가입</a>
-			</c:otherwise>
-		</c:choose>
-	</div>  <!-- headerLoginArea end --> --%>
 </header>  <!-- headerArea end -->
 <nav class="navArea">
 	<div class="navContainer">
 		<div class="ui four inverted item menu" id="nav">
-			<div class="ui simple dropdown item" style="border-left: 1px solid white;">
+			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px;">
 				안 &nbsp;&nbsp;&nbsp;&nbsp;내
 				<div class="menu">
 					<a href="#" class="item">혜택 안내</a>
 			    	<a href="#" class="item">조사참여 방법 안내</a>
 				</div>
 			</div>
-			<div class="ui simple dropdown item" style="border-left: 1px solid white;">
+			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px;">
 		   		 서베이
 		    	<div class="menu">
 			    	<a href="#" class="item">menu1</a>
@@ -63,7 +44,7 @@
 			    	<a href="#" class="item">menu3</a>
 		    	</div>
 		  	</div>
-			<div class="ui simple dropdown item" style="border-left: 1px solid white;">
+			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px;">
 		   		 마이페이지
 		    	<div class="menu">
 			    	<a href="#" class="item">menu1</a>
@@ -71,7 +52,7 @@
 			    	<a href="#" class="item">menu3</a>
 		    	</div>
 		  	</div>
-			<div class="ui simple dropdown item" style="border-left: 1px solid white; border-right: 1px solid white;">
+			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; border-right: 1px solid #b4b4b4; height: 35px;">
 		   		 고객센터
 		    	<div class="menu">
 			    	<a href="#" class="item">공지사항</a>

@@ -36,11 +36,13 @@
 .navContainer {
 	margin-left: auto;
 	margin-right: auto;
+	height: 30px;
 	width: 60%;
 }
 
 #nav {
 	background-color: #008499;
+	height: 30px;
 }
 
 #logoImg {
