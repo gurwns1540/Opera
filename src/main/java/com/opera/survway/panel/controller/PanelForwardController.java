@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PanelForwardController {
 	
-	
-	
 	// 고객센터 메뉴 페이지들
 	//1. 자주 묻는 질문
 	@GetMapping("faq.panel")
@@ -95,6 +93,7 @@ public class PanelForwardController {
 	@GetMapping("surveyQuestions.panel")
 	public String showSurveyQuestions() {
 		return "survey/surveyQuestions";
+
 	}
 	//3. 조사참여 가이드
 	@GetMapping("surveyStartGuide")
