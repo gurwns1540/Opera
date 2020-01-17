@@ -93,6 +93,26 @@
 		width: 80px;
 		height: 30px;
 	}
+	
+	
+	#complitedTable {
+  		width: 70%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#complitedTable th {
+  		width: 20%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+  	#complitedTable td {
+  		width: 80%;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+	
+	
+	
 </style>
 </head>
 <body>
@@ -158,7 +178,53 @@
 	</div>
 		
 	
+	<div class="ui modal" id="complited">
+		<div class="header">리서치 상세이력</div>
+		
+		<div class="scrolling content">
+			<div>
+				<table id="complitedTable" >
+					<tr>
+						<th>번호: </th>
+						<td colspan="3">1</td>
+					</tr>
+					<tr>
+						<th>리서치명: </th>
+						<td colspan="3">소비자 브랜드 인지도 조사</td>
+					</tr>
+					<tr>
+						<th style="width:10%">신청자</th>
+						<td style="width:40%">A기업</td>
+						<th style="width:10%">날짜: </th>
+						<td style="width:40%">2019-12-31</td>
+					</tr>
+					<tr>
+						<th style="width:10%">상태: </th>
+						<td style="width:40%">완료</td>
+						<th style="width:10%">사유:</th>
+						<td style="width:40%"></td>						
+						
+					
+					</tr>						
+					<tr>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="actions">
+		    <div class="ui cancel button">close</div>
+  		</div>		
+	
+	</div>		
+		
+	
 	<script>
+		$(".detail").on("click",function(){
+			var num =$(this).parent().siblings().eq(0).text();
+			$('#complited').modal('show');
+		});
+	
+	
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(8)").addClass("on");
 	</script>
