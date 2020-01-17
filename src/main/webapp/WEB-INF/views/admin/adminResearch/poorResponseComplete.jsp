@@ -92,6 +92,25 @@
 		width: 80px;
 		height: 30px;
 	}
+	#corpTable {
+  		width: 70%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#corpTable th {
+  		width: 10%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  		text-align: center;
+  	}
+  	#corpTable td {
+  		width: 90%;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+  	textarea:focus {
+  		outline: none;
+  	}
 </style>
 </head>
 <body>
@@ -131,16 +150,20 @@
 			<tr id="tableTitle">
 				<th style="width: 10%;">패널번호</th>
 				<th style="width: 20%;">참여리서치번호</th> <!-- 아이디아님 -->
-				<th style="width: 40%;">이의신청 제목</th>
-				<th style="width: 15%;">이의신청 날짜</th>
-				<th style="width: 15%;">상세보기</th>
+				<th style="width: 30%;">이의신청 제목</th>
+				<th style="width: 10%;">신청 날짜</th>
+				<th style="width: 10%;">처리 날짜</th>
+				<th style="width: 10%;">상태</th>
+				<th style="width: 10%;">상세보기</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
 					<td>패널번호</td>
 					<td>참여리서치번호</td>
 					<td>이의신청 제목</td>
-					<td>이의신청 날짜</td>
+					<td>신청 날짜</td>
+					<td>처리 날짜</td>
+					<td>상태</td>
 					<td><button class="detail">상세보기</button></td>
 				</tr>
 			</c:forEach>
@@ -155,9 +178,75 @@
 			<span>[마지막]</span>
 		</div>
 	</div>
-		
+	
+	<div class="ui modal" id="corp">
+		<div class="header">이의신청 내용</div>
+		<div class="scrolling content">
+			<div>
+				<table id="corpTable">
+					<tr>
+						<th style="width: 10%">패널 번호</th>
+						<td style="width: 20%">23789</td>
+						<th style="width: 15%">리서치 번호</th>
+						<td style="width: 20%">7723</td>
+						<th style="width: 15%">처리 날짜</th>
+						<td style="width: 20%">2020-01-11</td>
+					</tr>
+					<tr>
+						
+					</tr>
+					<tr>
+						<th>불량응답 내용</th>
+						<td colspan="5">
+							<table style="width: 70%; margin: 0 auto; margin-bottom: 20px; border-spacing: 0; border-collapse: collapse;">
+								<tr>
+									<th style="width: 20%">SQ2</th>
+									<td colspan="2">귀하의 성별은 무엇입니까?</td>
+								</tr>
+								<tr>
+									<td colspan="3" style="text-align: center; height: 50px;">
+										<input type="radio" name="gender" id="male"><label for="male" style="margin-right: 30px;">남</label>
+										<input type="radio" name="gender" id="female" checked="checked"><label for="female">여</label>
+									</td>
+									<td></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th>이의신청 제목</th>
+						<td colspan="5">제가 성별을 바꾸어서 여자로 체크했어요..</td>
+					</tr>
+					<tr>
+						<th>이의신청 내용</th>
+						<td colspan="5" style="text-align: center;">
+							<div style="width: 100%">
+								<textarea id="appealContext" style="width: 80%; border: 0; height: 200px; resize: none;" readonly></textarea>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>처리 상태</th>
+						<td colspan="5" style="text-align: center;">반려</td>
+					</tr>
+					<tr>
+						<th>반려 사유</th>
+						<td colspan="5" style="text-align: center;">반려 사유유유유</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="actions">
+		    <div class="ui cancel button">Cancel</div>
+  		</div>
+	</div>
 	
 	<script>
+		$(".detail").on("click", function(){
+			var num = $(this).parent().siblings().eq(0).text();
+			$('#corp').modal('show');
+			//console.log(num);
+		});
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(6)").addClass("on");
 	</script>

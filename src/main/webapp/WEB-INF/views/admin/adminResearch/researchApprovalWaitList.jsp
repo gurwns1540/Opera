@@ -150,18 +150,6 @@
   		width: 80%;
   		border-bottom: 1px solid #C5C5C5;
   	}
-  	#nextBtn {
-  		background: #00679A;
-  		color: white;
-  	}
-  	#approvalBtn {
-  		background: #00679A;
-  		color: white;
-  	}
-  	#referBtn {
-  		background: #C1332A;
-  		color: white;
-  	}
 </style>
 </head>
 <body>
