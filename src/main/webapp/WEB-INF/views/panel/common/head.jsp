@@ -9,4 +9,5 @@
 <link rel="stylesheet" href="resources/css/common.css" />
 <link rel="stylesheet" href="resources/css/header.css" />
 <link rel="stylesheet" href="resources/css/footer.css" />
+<link rel="stylesheet" href="resources/css/panelLogin.css" />
 <title>Opera - FinalProject</title>
