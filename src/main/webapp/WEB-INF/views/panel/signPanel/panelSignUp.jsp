@@ -319,7 +319,7 @@ tr {
 
 
 
-		<%@ include file="/WEB-INF/views/panel/common/footer.jsp"%>
+		
 	</div>
 	<!-- wrap end -->
 
