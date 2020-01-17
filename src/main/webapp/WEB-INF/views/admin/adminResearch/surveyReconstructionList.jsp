@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>리서치 승인 대기 목록</title>
 <style>
 	#approvalBtnArea {
 		position: relative;
@@ -130,11 +129,7 @@
   		padding: 15px;
   		margin-top: 30px;
   	}
-  	#choice, .choice {
-  		margin: 0 auto;
-  		margin-top: 20px;
-  		width: fit-content;
-  	}
+  	
   	#corpTable {
   		width: 70%;
   		margin: 0 auto;
@@ -149,6 +144,11 @@
   	#corpTable td {
   		width: 80%;
   		border-bottom: 1px solid #C5C5C5;
+  	}
+  	#choice, .choice {
+  		margin: 0 auto;
+  		margin-top: 20px;
+  		width: fit-content;
   	}
   	.choiceInput {
   		width: 100px;
@@ -201,6 +201,11 @@
   	}
   	#addQuiz:hover {
   		cursor: pointer;
+  	}
+  	#researchName {
+  		width: 65%;
+    	margin: 20px auto;
+    	display: block;
   	}
 </style>
 </head>
@@ -272,6 +277,10 @@
 		<div class="header">리서치 제목</div>
 		<div class="scrolling content">
 			<div>
+				<div style="width: fit-content; margin: 0 auto;"><h1>패널용 리서치 명</h1></div>
+				<div class="ui input" id="researchName">
+					<input type="text" placeholder="패널용 리서치 명" style="width: 100%">
+				</div>
 				<ul id="sortable">
 					<li class="ui-state-default">Q1.
 						<div class="choiceArea">

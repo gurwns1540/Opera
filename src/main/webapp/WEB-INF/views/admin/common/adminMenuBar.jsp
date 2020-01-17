@@ -5,6 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
@@ -13,7 +16,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
-<title>Insert title here</title>
+<title>Survway - 관리자</title>
 <style>
 	body, html {
 		margin: 0px;
@@ -167,7 +170,7 @@
 		position: relative;
 		width: 80%;
 		top: 110px;
-    	left: 15%;
+    	left: 320px;
 		margin: 30px auto;
 		font-size: 1.2vw;
 	}
