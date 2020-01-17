@@ -10,7 +10,7 @@
 		<%@ include file="/WEB-INF/views/panel/common/header.jsp" %>
 		<section class="container">
 		<br />
-			서베이 참여 안내
+			진행중인 설문조사 전체 목록페이지
 		<br />
 		</section>  <!-- container end -->
 		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
