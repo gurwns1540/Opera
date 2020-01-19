@@ -147,7 +147,7 @@
 				<th style="width: 15%;">리서치번호</th>
 				<th style="width: 15%;">기업명</th> 
 				<th style="width: 30%;">리서치제목</th>
-				<th style="width: 15%;">통계처리완료일자</th>
+				<th style="width: 15%;">통계처리 완료일</th>
 				<th style="width: 15%;">상태</th>
 				<th style="width: 10%;">상세보기</th>
 			</tr>
@@ -156,7 +156,7 @@
 					<td>리서치번호</td>
 					<td>기업명</td>
 					<td>리서치제목</td>
-					<td>통계처리완료일자</td>
+					<td>통계처리 완료일</td>
 					<td>상태</td>
 					<td><button class="detail">상세보기</button></td>
 				</tr>

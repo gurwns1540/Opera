@@ -9,8 +9,8 @@
 	#approvalBtnArea {
 		position: relative;
 		right: 10px;
-		float: right;
 		height: 30px;
+		float: right;
 		margin-bottom: 10px;
 	}
 	#approvalBtnArea button {
@@ -92,24 +92,77 @@
 		width: 80px;
 		height: 30px;
 	}
-	#corpTable {
+  	#sortable { 
+  		list-style-type: none; 
+  		margin: 0; 
+  		padding: 0; 
+  		width: 60%;
+  		margin: 0 auto; 
+  		margin-bottom: 30px;
+  	}
+  	#sortable li { 
+  		margin: 0 5px 12px 5px;
+  		padding: 10px; 
+  		font-size: 1.2em; 
+  		height: fit-content;
+  		border-radius: 7px;
+  	}
+ 	html>body #sortable li { 
+	  	height: fit-content;
+	  	line-height: 1.2em; 
+	}
+  	.ui-state-highlight { 
+  		height: 3.5em; 
+  		line-height: 1.2em; 
+  	}
+  	.ui-sortable-placeholder {
+  		background: white !important;
+  		border-color: white !important;
+  	}
+  	#outbreak {
+  		margin: 20px auto;
+  		width: 70%;
+  		height: 10%;
+  		border-radius: 7px;
+  		border: 1px solid #C5C5C5;
+  		background: #F6F6F6;
+  		padding: 15px;
+  		margin-top: 30px;
+  	}
+  	#choice, .choice {
+  		margin: 0 auto;
+  		margin-top: 20px;
+  		width: fit-content;
+  	}
+  	#corpTable {
   		width: 70%;
   		margin: 0 auto;
   		border-spacing: 0;
 		border-collapse: collapse;
   	}
   	#corpTable th {
-  		width: 10%;
-  		height: 70px;
+  		width: 30%;
+  		height: 50px;
   		border-bottom: 1px solid #C5C5C5;
-  		text-align: center;
   	}
   	#corpTable td {
-  		width: 90%;
+  		width: 40%;
   		border-bottom: 1px solid #C5C5C5;
   	}
-  	textarea:focus {
-  		outline: none;
+  	#panelTable {
+  		width: 70%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#panelTable th {
+  		width: 30%;
+  		height: 50px;
+  		border-bottom: 1px solid #C5C5C5;
+  	}
+  	#panelTable td {
+  		width: 40%;
+  		border-bottom: 1px solid #C5C5C5;
   	}
 </style>
 </head>
@@ -121,15 +174,14 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='applicationForDefectiveResponse.admin'" id="clickBtn">이의신청 목록</button>
-						<button onclick="location.href='poorResponseComplete.admin'">처리완료 목록</button>
+					
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="adminTitle">
-						불량응답 이의 신청 목록
+						신규 패널 관리
 					</div>
 				</td>
 			</tr>
@@ -148,19 +200,17 @@
 		</table>
 		<table id="listTable">
 			<tr id="tableTitle">
-				<th style="width: 10%;">패널번호</th>
-				<th style="width: 20%;">참여리서치번호</th> <!-- 아이디아님 -->
-				<th style="width: 40%;">이의신청 제목</th>
-				<th style="width: 15%;">이의신청 일</th>
-				<th style="width: 15%;">상세보기</th>
+				<th style="width: 10%;">회원 번호</th>
+				<th style="width: 40%;">패널명</th>
+				<th style="width: 40%;">가입일</th>
+				<th style="width: 10%;">상세보기</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
-					<td>패널번호</td>
-					<td>참여리서치번호</td>
-					<td>이의신청 제목</td>
-					<td>이의신청 일</td>
-					<td><button class="detail">상세보기</button></td>
+					<td>회원 번호</td>
+					<td>패널명</td>
+					<td>가입일</td>
+					<td><button class="detail">상세 보기</button></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -174,53 +224,74 @@
 			<span>[마지막]</span>
 		</div>
 	</div>
-	<div class="ui modal" id="corp">
-		<div class="header">이의신청 내용</div>
+	
+	<div class="ui modal" id="panel">
+		<div class="header">패널 회원</div>
 		<div class="scrolling content">
 			<div>
-				<table id="corpTable">
+				<table id="panelTable">
 					<tr>
-						<th style="width: 10%">패널 번호</th>
-						<td style="width: 20%">23789</td>
-						<th style="width: 15%">리서치 번호</th>
-						<td style="width: 20%">7723</td>
-						<th style="width: 15%">이의신청 일</th>
-						<td style="width: 20%">2020-01-11</td>
+						<th>패널 번호</th>
+						<td colspan="3">77092</td>
 					</tr>
 					<tr>
-						
+						<th>회원명</th>
+						<td colspan="3">윤재영</td>
 					</tr>
 					<tr>
-						<th>불량응답 내용</th>
-						<td colspan="5">
-							<table style="width: 70%; margin: 0 auto; margin-bottom: 20px; border-spacing: 0; border-collapse: collapse;">
-								<tr>
-									<th style="width: 20%">SQ2</th>
-									<td colspan="2">귀하의 성별은 무엇입니까?</td>
-								</tr>
-								<tr>
-									<td colspan="3" style="text-align: center; height: 50px;">
-										<input type="radio" name="gender" id="male"><label for="male" style="margin-right: 30px;">남</label>
-										<input type="radio" name="gender" id="female" checked="checked"><label for="female">여</label>
-									</td>
-									<td></td>
-								</tr>
-							</table>
-						</td>
+						<th>아이디</th>
+						<td colspan="3">yychani</td>
 					</tr>
 					<tr>
-						<th>이의신청 제목</th>
-						<td colspan="5">제가 성별을 바꾸어서 여자로 체크했어요..</td>
+						<th style="width: 10%">생년월일</th>
+						<td style="width: 40%">1994-11-12</td>
+						<th style="width: 10%">성별</th>
+						<td style="width: 40%">남성</td>
 					</tr>
 					<tr>
-						<th>이의신청 내용</th>
-						<td colspan="5">
-							<div style="width: 100%">
-								<textarea id="appealContext" style="width: 80%; border: 0; height: 200px; resize: none;" readonly></textarea>
-							</div>
-						</td>
+						<th>휴대폰 번호</th>
+						<td colspan="3">010-5534-8519</td>
+					</tr>
+					<tr>
+						<th>이메일</th>
+						<td colspan="3">yychani94@gmail.com</td>
+					</tr>
+					<tr>
+						<th>주소</th>
+						<td colspan="3">06269/서울 강남구 남부순환로363길 12-37/B102호</td>
 					</tr>
 				</table>
+			</div>
+		</div>
+		<div class="actions">
+			<div class="ui approve button" id="nextBtn">Next</div>
+		    <div class="ui cancel button">Cancel</div>
+  		</div>
+	</div>
+	
+	<div class="ui modal" id="research">
+		<div class="header">Thanks Survey</div>
+		<div class="scrolling content">
+			<div>
+				<ul id="sortable">
+					<li class="ui-state-default">Q1.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q2.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q3.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q4.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q5.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q6.
+						<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q7.
+			  			<div class="choice">보기</div></li>
+			  		<li class="ui-state-default">Q8.
+				  		<div class="choice">보기</div></li>
+				</ul>
+				<hr>
 			</div>
 		</div>
 		<div class="actions">
@@ -229,10 +300,14 @@
 		    <div class="ui cancel button">Cancel</div>
   		</div>
 	</div>
+	
 	<script>
+		$("#nextBtn").on("click", function(){
+			$('#research').modal('show');
+		});
 		$(".detail").on("click", function(){
 			var num = $(this).parent().siblings().eq(0).text();
-			$('#corp').modal('show');
+			$('#panel').modal('show');
 			//console.log(num);
 		});
 		$("#approvalBtn").on("click", function(){
@@ -248,7 +323,7 @@
 			  if (result.value) {
 			    Swal.fire(
 			      '승인!',
-			      '이의신청이 승인되었습니다.',
+			      '이 패널은 승인되었습니다.',
 			      'success'
 			    )
 			  }else {
@@ -285,7 +360,7 @@
 					  if (result.value) {
 						  Swal.fire(
 				      		'반려!',
-				      		'이의신청이 반려되었습니다.',
+				      		'이 패널은 반려되었습니다.',
 				      		'success'
 				    		)
 					  }else {
@@ -296,8 +371,18 @@
 			}
 			start();
 		});
-		$(".topMenu:nth-child(2)").addClass("active");
-		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(6)").addClass("on");
+		
+		$(".topMenu:nth-child(1)").addClass("active");
+		$(".topMenu:nth-child(1)").find(".innerMenu:nth-child(2)").addClass("on");
 	</script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  	<script>
+  		/* $(function() {
+		 	$( "#sortable" ).sortable({
+		 		placeholder: "ui-state-highlight"
+		 	});
+		 	$( "#sortable" ).disableSelection();
+		 }); */
+  	</script>
 </body>
 </html>

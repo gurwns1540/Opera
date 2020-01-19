@@ -47,6 +47,22 @@
 		<url-pattern>*.admin</url-pattern>
 	</servlet-mapping>
 	
+	<!-- Corp 서블릿 연결 -->
+	<servlet>
+		<servlet-name>corpServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/corp-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>corpServlet</servlet-name>
+		<url-pattern>*.corp</url-pattern>
+	</servlet-mapping>
+	
 	<!-- Panel 서블릿 연결 -->
 	<servlet>
 		<servlet-name>panelServlet</servlet-name>
