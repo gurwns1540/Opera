@@ -28,13 +28,24 @@ h4 {
 	background: #00679A !important;
 	margin: 0;
 }
+/* td{
+	border:1px solid red;
+} */
+#joinform td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.ui.selection.dropdown {
+	min-width: 80px;
+}
 </style>
 </head>
 <body>
 	<div class="wrap">
 		<%@ include file="/WEB-INF/views/panel/common/header.jsp"%>
 		<!-- <form action=""> -->
-			<table align="center" id="joinform">
+		<form action="panelSignup.me" method="post">
+			<table align="center" id="joinform" >
 				<tr>
 					<td><h1>회원가입</h1></td>
 					<td style="width: 100px;"></td>
@@ -60,13 +71,13 @@ h4 {
 				<tr>
 					<td colspan="2" align="center"><h4>비밀번호</h4></td>
 					<td><div class="ui input">
-							<input type="password" name="userPwd1">
+							<input type="password" name="userPwd">
 						</div></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center"><h4>비밀번호 확인</h4></td>
 					<td><div class="ui input">
-							<input type="password" name="userPwd2">
+							<input type="password" name="userPwdCheck">
 						</div></td>
 				</tr>
 				<tr>
@@ -93,19 +104,39 @@ h4 {
 					<td colspan="2" align="center"><h4>성별</h4></td>
 					<td>
 						<div class="ui selection dropdown">
-							<input type="hidden" name="gender"> <i
-								class="dropdown icon"></i>
-							<div class="default text">선택하세요</div>
+							<input type="hidden" name="panelGender">
+							<i class="dropdown icon"></i>
+							<div class="default text">성별</div>
 							<div class="menu">
-								<div class="item" data-value="1">남</div>
-								<div class="item" data-value="0">여</div>
+								<div class="item" data-value="M">남</div>
+								<div class="item" data-value="F">여</div>
 							</div>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center"><h4>휴대전화</h4></td>
-					<td><button class="ui blue button">인증하기</button></td>
+					<td colspan="3">
+						<div class="ui selection dropdown">
+							<input type="hidden" name="phone1">
+							<i class="dropdown icon"></i>
+							<div class="default text">선택</div>
+							<div class="menu">
+								<div class="item" data-value="010">010</div>
+								<div class="item" data-value="011">011</div>
+								<div class="item" data-value="016">016</div>
+								<div class="item" data-value="017">017</div>
+								<div class="item" data-value="019">019</div>
+							</div>
+						</div>
+						<div class="ui input">
+							<input type="text" name="phone2" style="width:80px;">
+						</div>
+						<div class="ui input">
+							<input type="text" name="phone3" style="width:80px;">
+						</div>
+						<button class="ui blue button">인증하기</button>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center"><h4>주소</h4></td>
@@ -123,7 +154,7 @@ h4 {
 					<td colspan="2"></td>
 					<td colspan="2">
 						<div class="ui input">
-							<input type="text" name="" size="35px;">
+							<input type="text" name="detailAddress" size="35px;">
 						</div>
 					</td>
 				</tr>
@@ -131,7 +162,7 @@ h4 {
 					<td colspan="2" align="center"><h4>이메일</h4></td>
 					<td>
 						<div class="ui input">
-							<input type="email" name="email">
+							<input type="email" name="userEmail">
 						</div>
 					</td>
 					<td colspan="3"><button class="ui blue button">중복확인</button></td>
@@ -139,7 +170,7 @@ h4 {
 				<tr>
 					<td colspan="2" align="center"><h4>추천인</h4></td>
 					<td><div class="ui input">
-							<input type="text" name="recommend">
+							<input type="text" name="nominee">
 						</div></td>
 				</tr>
 				<tr>
@@ -150,10 +181,10 @@ h4 {
 					<td colspan="6"><hr></td>
 				</tr>
 				<tr>
-					<td colspan="6" align="center"><button class="ui blue button"
-					onclick="location.href='panelSignUp3.panel'">회원가입</button></td>
+					<td colspan="6" align="center"><button type="submit" class="ui blue button">회원가입</button></td>
 				</tr>
 			</table>
+		</form>
 		<!-- </form> -->
 	</div>
 	<script>

@@ -21,7 +21,7 @@
 					</c:when>
 					<c:otherwise>
 						<a href="panelLogin.panel" style="margin-right: 5%;">로그인</a>
-						<a href="panelSignUp.panel">회원가입</a>
+						<a href="panelSignup.panel">회원가입</a>
 					</c:otherwise>
 				</c:choose>
 			</td>

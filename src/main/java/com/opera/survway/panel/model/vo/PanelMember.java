@@ -8,14 +8,23 @@ public class PanelMember {
 	private String userId;
 	private String userPwd;
 	private String userName;
+	private String post;
+	private String address;
+	private String detailAddress;
 	private String userAddress;
+	private String phone1;
+	private String phone2;
+	private String phone3;
 	private String userPhone;
 	private String userEmail;
 	private String userType;
 	private Date leaveDate;
 	private Date entDate;
 	private Date modifyDate;
-	private int panelBirthday;
+	private String year;
+	private String month;
+	private String day;
+	private String panelBirthday;
 	private char panelGender;
 	private String referPanelCode;
 	private String nominee;
@@ -25,22 +34,32 @@ public class PanelMember {
 	
 	public PanelMember() {}
 
-	public PanelMember(int mno, String userId, String userPwd, String userName, String userAddress, String userPhone,
-			String userEmail, String userType, Date leaveDate, Date entDate, Date modifyDate, int panelBirthday,
-			char panelGender, String referPanelCode, String nominee, String panelLevel, String occupationNo,
-			String withdrawAccount) {
+	public PanelMember(int mno, String userId, String userPwd, String userName, String post, String address,
+			String detailAddress, String userAddress, String phone1, String phone2, String phone3, String userPhone,
+			String userEmail, String userType, Date leaveDate, Date entDate, Date modifyDate, String year, String month,
+			String day, String panelBirthday, char panelGender, String referPanelCode, String nominee,
+			String panelLevel, String occupationNo, String withdrawAccount) {
 		super();
 		this.mno = mno;
 		this.userId = userId;
 		this.userPwd = userPwd;
 		this.userName = userName;
+		this.post = post;
+		this.address = address;
+		this.detailAddress = detailAddress;
 		this.userAddress = userAddress;
+		this.phone1 = phone1;
+		this.phone2 = phone2;
+		this.phone3 = phone3;
 		this.userPhone = userPhone;
 		this.userEmail = userEmail;
 		this.userType = userType;
 		this.leaveDate = leaveDate;
 		this.entDate = entDate;
 		this.modifyDate = modifyDate;
+		this.year = year;
+		this.month = month;
+		this.day = day;
 		this.panelBirthday = panelBirthday;
 		this.panelGender = panelGender;
 		this.referPanelCode = referPanelCode;
@@ -50,7 +69,6 @@ public class PanelMember {
 		this.withdrawAccount = withdrawAccount;
 	}
 
-	
 	public int getMno() {
 		return mno;
 	}
@@ -83,12 +101,60 @@ public class PanelMember {
 		this.userName = userName;
 	}
 
+	public String getPost() {
+		return post;
+	}
+
+	public void setPost(String post) {
+		this.post = post;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getDetailAddress() {
+		return detailAddress;
+	}
+
+	public void setDetailAddress(String detailAddress) {
+		this.detailAddress = detailAddress;
+	}
+
 	public String getUserAddress() {
 		return userAddress;
 	}
 
 	public void setUserAddress(String userAddress) {
 		this.userAddress = userAddress;
+	}
+
+	public String getPhone1() {
+		return phone1;
+	}
+
+	public void setPhone1(String phone1) {
+		this.phone1 = phone1;
+	}
+
+	public String getPhone2() {
+		return phone2;
+	}
+
+	public void setPhone2(String phone2) {
+		this.phone2 = phone2;
+	}
+
+	public String getPhone3() {
+		return phone3;
+	}
+
+	public void setPhone3(String phone3) {
+		this.phone3 = phone3;
 	}
 
 	public String getUserPhone() {
@@ -139,11 +205,35 @@ public class PanelMember {
 		this.modifyDate = modifyDate;
 	}
 
-	public int getPanelBirthday() {
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public String getDay() {
+		return day;
+	}
+
+	public void setDay(String day) {
+		this.day = day;
+	}
+
+	public String getPanelBirthday() {
 		return panelBirthday;
 	}
 
-	public void setPanelBirthday(int panelBirthday) {
+	public void setPanelBirthday(String panelBirthday) {
 		this.panelBirthday = panelBirthday;
 	}
 
@@ -198,14 +288,15 @@ public class PanelMember {
 	@Override
 	public String toString() {
 		return "PanelMember [mno=" + mno + ", userId=" + userId + ", userPwd=" + userPwd + ", userName=" + userName
-				+ ", userAddress=" + userAddress + ", userPhone=" + userPhone + ", userEmail=" + userEmail
-				+ ", userType=" + userType + ", leaveDate=" + leaveDate + ", entDate=" + entDate + ", modifyDate="
-				+ modifyDate + ", panelBirthday=" + panelBirthday + ", panelGender=" + panelGender + ", referPanelCode="
-				+ referPanelCode + ", nominee=" + nominee + ", panelLevel=" + panelLevel + ", occupationNo="
-				+ occupationNo + ", withdrawAccount=" + withdrawAccount + "]";
+				+ ", post=" + post + ", address=" + address + ", detailAddress=" + detailAddress + ", userAddress="
+				+ userAddress + ", phone1=" + phone1 + ", phone2=" + phone2 + ", phone3=" + phone3 + ", userPhone="
+				+ userPhone + ", userEmail=" + userEmail + ", userType=" + userType + ", leaveDate=" + leaveDate
+				+ ", entDate=" + entDate + ", modifyDate=" + modifyDate + ", year=" + year + ", month=" + month
+				+ ", day=" + day + ", panelBirthday=" + panelBirthday + ", panelGender=" + panelGender
+				+ ", referPanelCode=" + referPanelCode + ", nominee=" + nominee + ", panelLevel=" + panelLevel
+				+ ", occupationNo=" + occupationNo + ", withdrawAccount=" + withdrawAccount + "]";
 	}
-	
-	
+
 	
 }
 

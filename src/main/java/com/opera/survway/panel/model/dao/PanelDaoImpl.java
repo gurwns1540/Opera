@@ -21,6 +21,21 @@ public class PanelDaoImpl implements PanelDao{
 		return loginUser;
 	}
 
+	@Override
+	public int insertMemberTable(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.insert("Panel.insertMemberTable", pm);
+	}
+
+	@Override
+	public int insertPanelTable(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.insert("Panel.insertPanelTable", pm);
+	}
+
+	@Override
+	public int selectMno(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.selectOne("Panel.selectMno", pm);
+	}
+
 	
 	
 	

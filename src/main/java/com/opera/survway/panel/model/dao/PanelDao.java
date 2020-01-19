@@ -9,5 +9,11 @@ public interface PanelDao {
 
 	PanelMember loginCheck(SqlSessionTemplate sqlSession, PanelMember pm) throws LoginException;
 
+	int insertMemberTable(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int insertPanelTable(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int selectMno(SqlSessionTemplate sqlSession, PanelMember pm);
+
 
 }

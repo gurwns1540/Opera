@@ -36,9 +36,18 @@
 		AND LEAVE_DATE IS NULL
 	</select>
 	
+	<insert id="insertMemberTable" parameterType="PanelMember">
+		INSERT INTO MEMBER VALUES
+		(SEQ_MNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{userAddress}, #{userPhone}, #{userEmail}, '패널', NULL, SYSDATE, SYSDATE)
+	</insert>
+	<insert id="insertPanelTable" parameterType="PanelMember">
+		INSERT INTO PANEL VALUES
+		(#{mno}, #{panelBirthday}, #{panelGender}, 'qw12', #{nominee}, '1', NULL, NULL)
+	</insert>
 	
-	
-	
+	<select id="selectMno" parameterType="PanelMember" resultType="_int">
+		SELECT MNO FROM MEMBER WHERE USER_ID = #{userId}
+	</select>
 	
 </mapper>
 
