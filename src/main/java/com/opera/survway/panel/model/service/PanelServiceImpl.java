@@ -30,6 +30,29 @@ public class PanelServiceImpl implements PanelService {
 		return loginUser;
 	}
 
+
+	@Override
+	public int insertMember(PanelMember pm) throws LoginException {
+		
+		int resultMemberTable=0;
+		int resultPanelTable=0;
+		
+		resultMemberTable = pd.insertMemberTable(sqlSession, pm);
+		if(resultMemberTable>0) {
+			int mno = pd.selectMno(sqlSession, pm);
+			pm.setMno(mno);
+			resultPanelTable = pd.insertPanelTable(sqlSession, pm);
+		}
+		
+		if(!(resultMemberTable>0 && resultPanelTable>0)) {
+			throw new LoginException("회원가입 실패!");
+		}else {
+			return 0;
+		}
+	}
+
+
+
 }
 
 

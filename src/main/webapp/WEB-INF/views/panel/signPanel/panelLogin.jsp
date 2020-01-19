@@ -143,7 +143,7 @@ td.leftTable.second {
 									<tr class="rightTable inputs" >
 										<td class="rightTable first" style="width:300px;">아직 회원이 아니신가요?</td>
 										<td class="rightTable third" >
-											<button type="submit" class="ui button" style="padding:0px; float: left; width:180px; height:40px; border-radius:2px;">회원가입하기</button>
+											<button type="submit" class="ui button" style="padding:0px; float: left; width:180px; height:40px; border-radius:2px;" onclick="location.href='panelSignup.panel'">회원가입하기</button>
 										</td>
 									</tr>
 									<br>

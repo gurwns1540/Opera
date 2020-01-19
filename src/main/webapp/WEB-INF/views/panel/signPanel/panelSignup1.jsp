@@ -204,7 +204,7 @@ h4{
 					<tr>
 						<td><br></td>
 					<tr>
-						<td colspan="6" align="center"><button class="ui teal button" onclick="location.href='panelSignUp2.panel'">다음</button></td>
+						<td colspan="6" align="center"><button class="ui teal button" onclick="location.href='panelSignup2.panel'">다음</button></td>
 					</tr>
 				</table>
 			</div>

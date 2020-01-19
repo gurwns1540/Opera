@@ -110,20 +110,25 @@ public class PanelForwardController {
 	public String showPanelLogin() {
 		return "signPanel/panelLogin";
 	}
+	//2. 회원가입(패널 또는 기업)
+	@GetMapping("panelSignup.panel")
+	public String showPanelSignup() {
+		return "signPanel/panelSignup";
+	}
 	//2. 회원가입(이용약관)
-	@GetMapping("panelSignUp.panel")
-	public String showPanelSignUp() {
-		return "signPanel/panelSignUp";
+	@GetMapping("panelSignup1.panel")
+	public String showPanelSignup1() {
+		return "signPanel/panelSignup1";
 	}
 	//3. 회원가입(정보입력)
-	@GetMapping("panelSignUp2.panel")
-	public String showPanelSignUp2() {
-		return "signPanel/panelSignUp2";
+	@GetMapping("panelSignup2.panel")
+	public String showPanelSignup2() {
+		return "signPanel/panelSignup2";
 	}
 	//3. 회원가입(가입완료)
-	@GetMapping("panelSignUp3.panel")
-	public String showPanelSignUp3() {
-		return "signPanel/panelSignUp3";
+	@GetMapping("panelSignup3.panel")
+	public String showPanelSignup3() {
+		return "signPanel/panelSignup3";
 	}
 	
 	

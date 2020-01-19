@@ -10,4 +10,7 @@ public interface PanelService {
 
 	PanelMember loginMember(PanelMember pm) throws LoginException;
 
+	int insertMember(PanelMember pm) throws LoginException;
+
+
 }
