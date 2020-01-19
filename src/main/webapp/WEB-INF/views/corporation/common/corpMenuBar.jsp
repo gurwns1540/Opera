@@ -8,7 +8,10 @@
 
 <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.css">
+<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.js"></script>
 <meta charset="UTF-8">
 <title>Survway - 기업</title>
 <style>
@@ -31,33 +34,43 @@
 	.menu {
 		color: #616161;
 		font-size: 18px;
+		height: 30px;
+		line-height: 40px;
 	}
 	.menu:hover {
 		color: black;
 		font-weight: bold;
 		cursor: pointer;
 	}
-
+	#logout {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+	}
+	.logo:hover {
+		cursor: pointer;
+	}
 </style>
 </head>
 <body>
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 	<table id="corpHead">
 		<tr>
-			<td class="menu">
-				<div onclick="#">회사 및 사업 소개</div>
+			<td>
+				<div class="menu" onclick="#">회사 및 사업 소개</div>
 			</td>
-			<td class="menu">
-				<div onclick="#">신뢰성 확보 방법</div>
+			<td>
+				<div class="menu" onclick="#">신뢰성 확보 방법</div>
 			</td>
 			<td class="logo">
-				<div onclick="#"><img alt="corpLogo.png" src="${ contextPath }/resources/images/corpLogo.png"></div>
+				<div onclick="location.href='corpMain.corp'"><img alt="corpLogo.png" src="${ contextPath }/resources/images/corpLogo.png"></div>
 			</td>
-			<td class="menu">
-				<div onclick="#">리서치 관련 안내</div>
+			<td>
+				<div class="menu" onclick="#">리서치 관련 안내</div>
 			</td>
-			<td class="menu">
-				<div onclick="#">Survway 빅데이터</div>
+			<td>
+				<div class="menu" onclick="#">Survway 빅데이터</div>
+				<button id="logout">로그아웃</button>
 			</td>
 		</tr>
 	</table>
