@@ -25,9 +25,9 @@ public class PanelForwardController {
 	}
 	
 	//3. 1:1 문의하기
-	@GetMapping("panelNewOneOnOne.panel")
-	public String showNewOneOnOne2() {
-		return "customerCenter/panelNewOneOnOne";
+	@GetMapping("panelNewInquiry.panel")
+	public String showPanelNewInquiry() {
+		return "customerCenter/panelNewInquiry";
 	}
 	//4. 공지사항
 	@GetMapping("notice.panel")
@@ -35,14 +35,14 @@ public class PanelForwardController {
 		return "customerCenter/notice";
 	}
 	//5. 패널 1:1문의 목록
-	@GetMapping("panelOneOnOneList.panel")
-	public String showPanelOneOnOneList() {
-		return "customerCenter/panelOneOnOneList";
+	@GetMapping("panelInquiryList.panel")
+	public String showPanelInquiryList() {
+		return "customerCenter/panelInquiryList";
 	}
 	//5-1. 패널 1:1문의 상세보기
-	@GetMapping("panelOneOnOneDetail.panel")
-	public String showPanelOneOnOneDetail() {
-		return "customerCenter/panelOneOnOneDetail";
+	@GetMapping("panelInquiryDetail.panel")
+	public String showPanelInquiryDetail() {
+		return "customerCenter/panelInquiryDetail";
 	}
 	
 	
@@ -67,20 +67,20 @@ public class PanelForwardController {
 		return "myPage/myInfo";
 	}
 	//2. 내 1:1 문의 목록
-	@GetMapping("myOneOnOneList.panel")
-	public String showMyOneOnOneList() {
-		return "myPage/myOneOnOneList";
+	@GetMapping("myInquiryList.panel")
+	public String showMyInquiryList() {
+		return "myPage/myInquiryList";
 	}
 	//2-1. 내 1:1문의 상세보기
-	@GetMapping("myOneOnOneDetail.panel")
-	public String showMyOneOnOneDetail() {
-		return "myPage/myOneOnOneDetail";
+	@GetMapping("myInquiryDetail.panel")
+	public String showMyInquiryDetail() {
+		return "myPage/myInquiryDetail";
 	}
 	//2-2. 1:1 문의하기
-		@GetMapping("myNewOneOnOne.panel")
-		public String showNewOneOnOne() {
-			return "myPage/myNewOneOnOne";
-		}
+	@GetMapping("myNewInquiry.panel")
+	public String showNewInquiry() {
+		return "myPage/myNewInquiry";
+	}
 	//3. 내 리워드 관리
 	@GetMapping("myRewardMain.panel")
 	public String showMyRewardMain() {
@@ -111,17 +111,17 @@ public class PanelForwardController {
 		return "signPanel/panelLogin";
 	}
 	//2. 회원가입(이용약관)
-	@GetMapping("panelSignup.panel")
+	@GetMapping("panelSignUp.panel")
 	public String showPanelSignUp() {
 		return "signPanel/panelSignUp";
 	}
 	//3. 회원가입(정보입력)
-	@GetMapping("panelSignup2.panel")
+	@GetMapping("panelSignUp2.panel")
 	public String showPanelSignUp2() {
 		return "signPanel/panelSignUp2";
 	}
 	//3. 회원가입(가입완료)
-	@GetMapping("panelSignup3.panel")
+	@GetMapping("panelSignUp3.panel")
 	public String showPanelSignUp3() {
 		return "signPanel/panelSignUp3";
 	}

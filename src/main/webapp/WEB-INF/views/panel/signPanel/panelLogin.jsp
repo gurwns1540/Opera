@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,10 +27,10 @@
 	vertical-align: bottom;
 	font-weight: bold;
 }
-.sectionLine {
+.hr {
 	padding-bottom:10px;
 }
-.bottom {
+.bottomHr {
 	padding-top:10px;
 }
 /* 여기까지 페이지제목 및 경로 영역 */
@@ -95,7 +96,7 @@ td.leftTable.second {
 				</tr>
 			</table>
 			
-			<div class="sectionLine">
+			<div class="hr">
 				<hr>
 			</div>
 
@@ -105,13 +106,13 @@ td.leftTable.second {
 					<div class="ui vertical divider">Or</div>
 					<div class="middle aligned row">
 						<div class="column">
-							<form>
+							<form action="login.me" method="post">
 								<table style="width:95%; height:90px;">
 									<tr>
 										<td colspan="3" class="leftTable" style="text-align:left; padding-bottom:30px;">
-											<input type="radio" id="panelCheck" name="loginType" checked="checked" />
+											<input type="radio" id="panelCheck" name="loginMemberType" value="panelMember" checked="checked" />
 											<label for="panelCheck"><span style="font-size:13pt;">패널 회원</span></label>
-											<input type="radio" id="corpCheck" name="loginType" style="margin-left: 10%;" />
+											<input type="radio" id="corpCheck" name="loginMemberType" value="corpMember" style="margin-left: 10%;" />
 											<label for="corpCheck"><span style="font-size:13pt;">기업 회원</span></label>
 										</td>
 									</tr>
@@ -119,7 +120,7 @@ td.leftTable.second {
 										<td class="leftTable first">아이디</td>
 										<td class="leftTable second">
 											<div class="ui input" style="display: block; width:fit-content;">
-												<input type="text" placeholder="아이디" style="width:240px;">
+												<input type="text" name="userId" placeholder="아이디" style="width:240px;">
 											</div>
 										</td>
 										<td class="leftTable third" rowspan="2" style="width:fit-content;" >
@@ -130,7 +131,7 @@ td.leftTable.second {
 										<td class="leftTable first">비밀번호</td>
 										<td class="leftTable second">
 											<div class="ui input" style="display: block; width:fit-content;">
-												<input type="password" placeholder="비밀번호" style="width:240px;">
+												<input type="password" name="userPwd" placeholder="비밀번호" style="width:240px;">
 											</div>
 										</td>
 									</tr>
@@ -158,9 +159,12 @@ td.leftTable.second {
 				</div>
 			</div>
 			
-			<div class="sectionLine bottom">
+			<div class="hr bottomHr">
 				<hr>
 			</div>			
+			
+			
+			<button class="ui button" style="float:right; margin-top:10px; width:180px; height:40px; border-radius:2px;" onclick="location.href='panelMain.panel'">메인으로 돌아가기</button>
 			
 			<br />
 		</section>  <!-- container end -->

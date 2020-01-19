@@ -149,6 +149,9 @@
 		margin-bottom: 6px;
 		font-size: 9pt;
 	}
+	#logoutBtn:hover {
+		cursor:pointer;
+	}
 	#statusBar {
 		width: 100%;
 		height: 50px;
@@ -242,7 +245,7 @@
 			<table align="center">
 				<tr>
 					<td><div id="AdminImg"></div></td>
-					<td><div id="AdminInfo">오수민<button id="logoutBtn">로그아웃</button>
+					<td><div id="AdminInfo">오수민<button id="logoutBtn" onclick="location.href='logout.me'">로그아웃</button>
 						<br>as Administrator</div></td>
 				</tr>
 			</table>
