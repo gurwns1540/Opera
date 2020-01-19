@@ -38,24 +38,20 @@
 </style>
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/corporation/common/corpMenuBar.jsp" %>
+	<jsp:include page="/WEB-INF/views/corporation/common/corpMenuBar.jsp"/>
 	<div id="mainArea">
 		<div id="corpName">Welcome! (주)OrangeRed</div>
 		<div id="corpMainLetter"><img alt="corpMainLetter" src="${ contextPath }/resources/images/corpMainLetter.png"></div>
 		
 		<table id="btnArea">
 			<tr>
-				<td><div><img alt="sampleResearch" src="${ contextPath }/resources/images/sampleResearch.png"></div></td>
-				<td><div><img alt="newResearch" src="${ contextPath }/resources/images/newResearch.png"></div></td>
-				<td><div><img alt="previousResearch" src="${ contextPath }/resources/images/previousResearch.png"></div></td>
+				<td><div onclick="location.href='sampleResearchMain.corp'"><img alt="sampleResearch" src="${ contextPath }/resources/images/sampleResearch.png"></div></td>
+				<td><div onclick="location.href='newResearchMain.corp'"><img alt="newResearch" src="${ contextPath }/resources/images/newResearch.png"></div></td>
+				<td><div onclick="location.href='previousResearchMain.corp'"><img alt="previousResearch" src="${ contextPath }/resources/images/previousResearch.png"></div></td>
 			</tr>
 		</table>
 	</div>
 	
-	<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
-	
-	<script>
-		
-	</script>
+	<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 </body>
 </html>

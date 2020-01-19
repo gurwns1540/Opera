@@ -3,17 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
+	<jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
 </head>
 <body>
 	<div class="wrap">
-		<%@ include file="/WEB-INF/views/panel/common/header.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
 		<section class="container">
 		<br />
 		메인컨테이너 입니다.
 		<br />
 		</section>  <!-- container end -->
-		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
 </body>
 </html>
