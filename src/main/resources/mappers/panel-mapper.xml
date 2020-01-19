@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Panel">
+	
+	<resultMap type="com.opera.survway.panel.model.vo.PanelMember" id="panelMemberResultSet">
+		<id property="mno" column="MNO"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="userPwd" column="USER_PWD"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userAddress" column="USER_ADDRESS"/>
+		<result property="userPhone" column="USER_PHONE"/>
+		<result property="userEmail" column="USER_EMAIL"/>
+		<result property="userType" column="USER_TYPE"/>
+		<result property="leaveDate" column="LEAVE_DATE"/>
+		<result property="entDate" column="ENT_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<result property="panelBirthday" column="PANEL_BIRTHDAY"/>
+		<result property="panelGender" column="PANEL_GENDER"/>
+		<result property="referPanelCode" column="REFER_PANEL_CODE"/>
+		<result property="nominee" column="NOMINEE"/>
+		<result property="panelLevel" column="PANEL_LEVEL"/>
+		<result property="occupationNo" column="OCCUPATION_NO"/>
+		<result property="withdrawAccount" column="WITHDRAW_ACCOUNT"/>
+	</resultMap>
+	
+	
+	<select id="loginCheck" resultMap="panelMemberResultSet" parameterType="PanelMember">
+		SELECT *
+		FROM MEMBER M
+		JOIN PANEL P ON (M.MNO = P.MNO)
+		WHERE USER_ID = #{userId}
+		AND USER_PWD = #{userPwd}
+		AND LEAVE_DATE IS NULL
+	</select>
+	
+	
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

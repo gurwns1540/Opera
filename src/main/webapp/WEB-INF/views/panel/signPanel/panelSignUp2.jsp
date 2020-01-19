@@ -151,7 +151,7 @@ h4 {
 				</tr>
 				<tr>
 					<td colspan="6" align="center"><button class="ui blue button"
-					onclick="location.href='panelSignup3.panel'">회원가입</button></td>
+					onclick="location.href='panelSignUp3.panel'">회원가입</button></td>
 				</tr>
 			</table>
 		<!-- </form> -->

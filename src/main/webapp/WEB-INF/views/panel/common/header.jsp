@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <header class="headerArea">
+	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
+
 	<table class="headerTableArea" align="center">
 		<tr>
 			<td class="headerLogoArea">
@@ -13,13 +15,13 @@
 			</td>
 			<td class="headerLoginArea">
 				<c:choose>
-					<c:when test="${ not empty loginMember }">
-						<a href="#" style="margin-right: 5%;">로그아웃</a>
+					<c:when test="${ not empty sessionScope.loginUser }">
+						<a href="logout.me" style="margin-right: 5%;">로그아웃</a>
 						<a href="#">내 정보 관리</a>
 					</c:when>
 					<c:otherwise>
 						<a href="panelLogin.panel" style="margin-right: 5%;">로그인</a>
-						<a href="panelSignup.panel">회원가입</a>
+						<a href="panelSignUp.panel">회원가입</a>
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -49,7 +51,7 @@
 		    	<div class="menu">
 			    	<a href="myInfo.panel" class="item">내 정보 관리</a>
 			    	<a href="myRewardMain.panel" class="item">내 리워드 관리</a>
-			    	<a href="myOneOnOneList.panel" class="item">내 1:1 문의</a>
+			    	<a href="myInquiryList.panel" class="item">내 1:1 문의</a>
 			    	<a href="panelDrop.panel" class="item">패널 탈퇴</a>
 		    	</div>
 		  	</div>
@@ -58,7 +60,7 @@
 		    	<div class="menu">
 			    	<a href="notice.panel" class="item">공지사항</a>
 			    	<a href="faq.panel" class="item">자주묻는 질문</a>
-			    	<a href="panelOneOnOneList.panel" class="item">패널 1:1 문의</a>
+			    	<a href="panelInquiryList.panel" class="item">패널 1:1 문의</a>
 		    	</div>
 		  	</div>
 		</div>
