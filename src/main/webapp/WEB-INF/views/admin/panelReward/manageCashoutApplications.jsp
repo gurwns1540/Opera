@@ -92,18 +92,60 @@
 		width: 80px;
 		height: 30px;
 	}
-	#poorResponseTable {
+  	#sortable { 
+  		list-style-type: none; 
+  		margin: 0; 
+  		padding: 0; 
+  		width: 60%;
+  		margin: 0 auto; 
+  		margin-bottom: 30px;
+  	}
+  	#sortable li { 
+  		margin: 0 5px 12px 5px;
+  		padding: 10px; 
+  		font-size: 1.2em; 
+  		height: fit-content;
+  		border-radius: 7px;
+  	}
+ 	html>body #sortable li { 
+	  	height: fit-content;
+	  	line-height: 1.2em; 
+	}
+  	.ui-state-highlight { 
+  		height: 3.5em; 
+  		line-height: 1.2em; 
+  	}
+  	.ui-sortable-placeholder {
+  		background: white !important;
+  		border-color: white !important;
+  	}
+  	#outbreak {
+  		margin: 20px auto;
+  		width: 70%;
+  		height: 10%;
+  		border-radius: 7px;
+  		border: 1px solid #C5C5C5;
+  		background: #F6F6F6;
+  		padding: 15px;
+  		margin-top: 30px;
+  	}
+  	#choice, .choice {
+  		margin: 0 auto;
+  		margin-top: 20px;
+  		width: fit-content;
+  	}
+  	#corpTable {
   		width: 70%;
   		margin: 0 auto;
   		border-spacing: 0;
 		border-collapse: collapse;
   	}
-  	#poorResponseTable th {
+  	#corpTable th {
   		width: 20%;
   		height: 70px;
   		border-bottom: 1px solid #C5C5C5;
   	}
-  	#poorResponseTable td {
+  	#corpTable td {
   		width: 80%;
   		border-bottom: 1px solid #C5C5C5;
   	}
@@ -117,15 +159,15 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='disposalResponseManagement.admin'">폐기응답 목록</button>
-						<button onclick="location.href='poorResponseList.admin'" id="clickBtn">불량응답 목록</button>
+						<button onclick="location.href='manageCashoutApplication.admin'" id="clickBtn">신청 목록</button>
+						<button onclick="location.href='manageCashoutComplete.admin'">완료 목록</button>
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="adminTitle">
-						불량 응답 목록
+						리워드 캐시아웃 신청 관리
 					</div>
 				</td>
 			</tr>
@@ -145,28 +187,24 @@
 		<table id="listTable">
 			<tr id="tableTitle">
 				<th id="allCheck" style="width: 5%">전체 체크<br><input type="checkbox" id="allCheckMailing" style="display: none;"></th>
-				<th style="width: 10%;">폐기응답번호</th>
-				<th style="width: 10%;">패널번호</th> <!-- 아이디아님 -->
-				<th style="width: 10%;">리서치 번호</th>
-				<th style="width: 20%;">분류</th>
-				<th style="width: 10%;">처리 상태</th>
-				<th style="width: 20%;">처리 일</th>
-				<th style="width: 15%;">상세보기</th>
+				<th style="width: 10%;">패널번호</th>
+				<th style="width: 20%;">캐시아웃 신청 금액</th>
+				<th style="width: 30%;">신청 계좌</th>
+				<th style="width: 15%;">신청일</th>
+				<th style="width: 20%;">개별 캐시아웃</th>
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
 					<td><input type="checkbox" class="checkPoorMailing"></td>
-					<td>폐기응답번호</td>
 					<td>패널번호</td>
-					<td>리서치</td>
-					<td>분류</td>
-					<td>처리 상태</td>
-					<td>처리 일</td>
-					<td><button class="detail">상세보기</button></td>
+					<td>캐시아웃 신청 금액</td>
+					<td>신청 계좌</td>
+					<td>신청일</td>
+					<td><button class="detail">캐시아웃</button></td>
 				</tr>
 			</c:forEach>
 			<tr>
-				<td colspan="8"><input type="button" value="메일 전송" id="sendBtn"></td>
+				<td colspan="8"><input type="button" value="캐시아웃" id="cashOut"></td>
 			</tr>
 		</table>
 		<div id="pagingArea" align="center">
@@ -180,53 +218,11 @@
 		</div>
 	</div>
 		
-	<div class="ui tiny modal" id="sendMailModal">
-		<div class="header">메일 전송중</div>
-		<div class="content" style="margin: 0 auto; width: fit-content;">
-			<img alt="sendMail.gif" src="${ contextPath }/resources/images/sendMail.gif" style="width: 400px;">
-		</div>
-	</div>
-	<div class="ui modal" id="disposalResponse">
-		<div class="header">불량응답 내용</div>
-		<div class="scrolling content">
-			<div>
-				<table id="poorResponseTable">
-					<tr>
-						<th style="width: 10%">번호</th>
-						<td style="width: 40%">2378</td>
-						<th style="width: 10%">날짜</th>
-						<td style="width: 40%">2020-01-10</td>
-					</tr>
-					<tr>
-						<th>패널 번호</th>
-						<td colspan="3">98772</td>
-					</tr>
-					<tr>
-						<th>리서치 번호</th>
-						<td colspan="3">279</td>
-					</tr>
-					<tr>
-						<th>분류</th>
-						<td colspan="3">응답시간 하위 5%</td>
-					</tr>
-					<tr>
-						<th>상세보기</th>
-						<td colspan="3"></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div class="actions">
-		    <div class="ui cancel button">Close</div>
-  		</div>
-	</div>
+	
 	<script>
-		$(document).on("click", ".detail", function(){
-			$("#disposalResponse").modal("show");
-		});
-		$("#sendBtn").on("click", function(){
+		$("#cashOut").on("click", function(){
 			Swal.fire({
-			  	title: '정말 메일을 보내시겠습니까?',
+			  	title: '캐시아웃 처리를 하시겠습니까?',
 			  	text: "이 결정은 되돌릴 수 없습니다!",
 			  	icon: 'warning',
 			  	showCancelButton: true,
@@ -235,15 +231,31 @@
 			  	confirmButtonText: 'Yes'
 			}).then((result) => {
 			  	if (result.value) {
-				  	$("#sendMailModal").modal("show");
-				  	setTimeout(function() {
-				  		$("#sendMailModal").modal("hide");
-				  		Swal.fire(
-							'메일 전송 완료!',
-							'해당 회원에서 불량응답기록 메일을 전송하였습니다.',
-							'success'
-						)
-					}, 3000);
+			  		Swal.fire(
+						'캐시아웃 처리 완료!',
+						'해당 회원에 대한 캐시아웃처리를 하였습니다.',
+						'success'
+					)
+			  }
+			})
+		});
+		$(".detail").on("click", function(){
+			var num = $(this).parent().siblings().eq(0).text();
+			Swal.fire({
+			  	title: '캐시아웃 처리를 하시겠습니까?',
+			  	text: "이 결정은 되돌릴 수 없습니다!",
+			  	icon: 'warning',
+			  	showCancelButton: true,
+			  	confirmButtonColor: '#3085d6',
+			  	cancelButtonColor: '#d33',
+			  	confirmButtonText: 'Yes'
+			}).then((result) => {
+			  	if (result.value) {
+			  		Swal.fire(
+						'캐시아웃 처리 완료!',
+						'해당 회원에 대한 캐시아웃처리를 하였습니다.',
+						'success'
+					)
 			  }
 			})
 		});
@@ -257,8 +269,17 @@
 	        	$(".checkPoorMailing").prop("checked",false);
 	        }
 		});
-		$(".topMenu:nth-child(2)").addClass("active");
-		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(5)").addClass("on");
+		$(".topMenu:nth-child(3)").addClass("active");
+		$(".topMenu:nth-child(3)").find(".innerMenu:nth-child(2)").addClass("on");
 	</script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  	<script>
+  		/* $(function() {
+		 	$( "#sortable" ).sortable({
+		 		placeholder: "ui-state-highlight"
+		 	});
+		 	$( "#sortable" ).disableSelection();
+		 }); */
+  	</script>
 </body>
 </html>

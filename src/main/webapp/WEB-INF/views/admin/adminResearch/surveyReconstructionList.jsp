@@ -247,7 +247,7 @@
 				<th style="width: 10%;">리서치 번호</th>
 				<th style="width: 20%;">기업명</th>
 				<th style="width: 30%;">리서치 제목</th>
-				<th style="width: 10%;">최근작업일시</th>
+				<th style="width: 10%;">최근 작업일</th>
 				<th style="width: 15%;">상태</th>
 				<th style="width: 15%;">재구성하기</th>
 			</tr>
@@ -256,7 +256,7 @@
 					<td>리서치 번호</td>
 					<td>기업명</td>
 					<td>리서치 제목</td>
-					<td>최근작업일시</td>
+					<td>최근 작업일</td>
 					<td>상태</td>
 					<td><button class="detail">재구성하기</button></td>
 				</tr>

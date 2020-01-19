@@ -216,6 +216,9 @@
   		background: #C1332A;
   		color: white;
   	}
+  	#accordian ul ul li a {
+    padding-left: 40px !important;
+    text-align: left !important;
 </style>
 </head>
 <body>
@@ -252,8 +255,8 @@
 			<li class="topMenu">
 				<h3><span class="icon-dashboard"></span>회원관리</h3>
 				<ul>
-					<li class="innerMenu"><a href="#" style="border-top: 0;">회원정보 관리</a></li>
-					<li class="innerMenu"><a href="#" style="border-bottom: 0;">신규 패널 관리</a></li>
+					<li class="innerMenu"><a href="memberInfoManagement.admin" style="border-top: 0;">회원정보 관리</a></li>
+					<li class="innerMenu"><a href="newPanelManagement.admin" style="border-bottom: 0;">신규 패널 관리</a></li>
 				</ul>
 			</li>
 			<li class="topMenu">
@@ -275,7 +278,7 @@
 				<h3><span class="icon-calendar"></span>패널 리워드 관리</h3>
 				<ul>
 					<li class="innerMenu"><a href="#" style="border-top: 0;">월별 패널 리워드 사용 추이</a></li>
-					<li class="innerMenu"><a href="#" style="border-bottom: 0;">리워드 캐시아웃 신청 관리</a></li>
+					<li class="innerMenu"><a href="manageCashoutApplication.admin" style="border-bottom: 0;">리워드 캐시아웃 관리</a></li>
 				</ul>
 			</li>
 			<li class="topMenu">

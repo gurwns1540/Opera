@@ -143,9 +143,10 @@
   		margin: 0 auto;
   		margin-top: 30px;
   	}
-  	#addQuiz:hover {
+  	#addQuiz:hover, #deleteQuiz:hover {
   		cursor: pointer;
   	}
+  	
 </style>
 </head>
 <body>
@@ -156,8 +157,7 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button id="editTs">수정하기</button>	
-						<button id="editTsComplete" style="display: none">수정완료</button>
+						<button id="editTsComplete">상태 저장</button>
 					</div>
 				</td>
 			</tr>
@@ -170,9 +170,14 @@
 			</tr>
 		</table>
 		<ul id="sortable">
-			<li class="ui-state-default">Q1.
-				<div class="ui input" style="width: 90%;">
-					<input type="text" placeholder="문항 작성" class="choiceNameInput">
+			<li class="ui-state-default">
+				<div>
+					<div class="ui input" style="width: 85%;">
+						<input type="text" placeholder="문항 작성" class="choiceNameInput">
+					</div>
+					<div style="width: fit-content; float: right;" id="deleteQuiz">
+						<i class="large times icon"></i>
+					</div>
 				</div>
 				<div class="choiceArea">
 					<div class="choice">
@@ -195,33 +200,27 @@
 
 	<script>
 		$("#addQuiz").on("click", function(){
-			var $quiz = $('<li class="ui-state-default">Q1. <div class="ui input" style="width: 90%;"> <input type="text" placeholder="문항 작성" class="choiceNameInput"> </div> <div class="choiceArea"> <div class="choice"> <div class="ui input"> <input type="text" placeholder="보기 작성" class="choiceInput" value="보기"> </div> <span class="add"> <i class="plus circle icon"></i> </span><span class="delete"><i class="minus circle icon"></i></span> </div> </div> </li>')
+			var $quiz = $('<li class="ui-state-default"> <div><div class="ui input" style="width: 85%;"> <input type="text" placeholder="문항 작성" class="choiceNameInput"> </div> <div style="width: fit-content; float: right;" id="deleteQuiz"> <i class="large times icon"></i> </div> </div> <div class="choiceArea"> <div class="choice"> <div class="ui input"> <input type="text" placeholder="보기 작성" class="choiceInput" value="보기"> </div> <span class="add"> <i class="plus circle icon"></i> </span><span class="delete"><i class="minus circle icon"></i></span> </div> </div> </li>')
 			var $accordian = $("#sortable");
 			$accordian.append($quiz);
 		});
-		
+		$(document).on("click", "#deleteQuiz", function(){
+			$(this).parent().parent().remove();
+		});
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(9)").addClass("on");
 	</script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   	<script>
-  		$("#editTs").on("click", function(){
-  			
-  			sortable();
-  			$(this).css("display", "none");
-  			$("#editTsComplete").css("display", "inline-block");
-  		});
   		$("#editTsComplete").on("click", function(){
-			
-  			$(this).css("display", "none");
-  			$("#editTs").css("display", "inline-block");
+			//에이작스로 저장
   		});
-  		function sortable() {
+  		$(function(){
 		 	$( "#sortable" ).sortable({
 		 		placeholder: "ui-state-highlight"
 		 	});
 		 	$( "#sortable" ).disableSelection();
-		}
+		});
   	</script>
 </body>
 </html>

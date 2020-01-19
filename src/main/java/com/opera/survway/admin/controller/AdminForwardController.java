@@ -7,15 +7,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AdminForwardController {
+	@RequestMapping("adminMain.admin")
+	public String forwardMain() {
+		return "common/adminMain";
+	}
+	
+	// 회원 정보 관리
+	@RequestMapping("memberInfoManagement.admin")
+	public String forwardPanelInfoManagement() {
+		return "memberManagement/memberInfoManagement";
+	}
+	
+	// 신규 패널 관리
+	@RequestMapping("newPanelManagement.admin")
+	public String forwardNewPanelManagement() {
+		return "memberManagement/newPanelManagement";
+	}
+	
 	// 리서치 승인 대기중
 	@RequestMapping("researchApprovalWaitList.admin")
 	public String forwardResearchApprovalWaitList() {
 		return "adminResearch/researchApprovalWaitList";
-	}
-	
-	@RequestMapping("adminMain.admin")
-	public String forwardMain() {
-		return "common/adminMain";
 	}
 	
 	//반려
@@ -59,7 +71,7 @@ public class AdminForwardController {
 	
 	//불량응답이의신청관리
 	@RequestMapping("applicationForDefectiveResponse.admin")
-		public String forwardApplicationForDefectiveResponse() {
+	public String forwardApplicationForDefectiveResponse() {
 		return "adminResearch/applicationForDefectiveResponse";
 	}
 	
@@ -89,13 +101,25 @@ public class AdminForwardController {
 	
 	//완료된 리서치 목록
 	@RequestMapping("researchCompletedProcessingList.admin")
-		public String forwardResearchCompletedProcessingList() {
-			return "adminResearch/researchCompletedProcessingList";
+	public String forwardResearchCompletedProcessingList() {
+		return "adminResearch/researchCompletedProcessingList";
 	}
 	
 	//ts질문관리
 	@RequestMapping("tsQaManagement.admin")
 	public String forwardTsQaManagement() {
-			return "adminResearch/tsQaManagement";
+		return "adminResearch/tsQaManagement";
 	}
+	
+	// 패널 리워드 신청 목록
+	@RequestMapping("manageCashoutApplication.admin")
+	public String forwardManageCashoutApplication() {
+		return "panelReward/manageCashoutApplications";
+	}
+	// 패널 리워드 완료 목록
+	@RequestMapping("manageCashoutComplete.admin")
+	public String forwardManageCashoutComplete() {
+		return "panelReward/manageCashoutComplete";
+	}
+	
 }
