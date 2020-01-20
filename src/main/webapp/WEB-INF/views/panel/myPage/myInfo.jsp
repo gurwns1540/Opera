@@ -80,7 +80,7 @@
 					<td align="center">
 						비밀번호 : 
 						<div class="ui input" >
-							<input type="password" name="userPwd" >
+							<input type="password" name="userPwd" style="margin-left: 10px;">
 						</div>
 					</td>
 				</tr>

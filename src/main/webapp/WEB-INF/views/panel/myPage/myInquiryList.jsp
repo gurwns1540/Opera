@@ -36,8 +36,18 @@
 		width: 65px;
 		height: 30px;
 		color: white;
+		border: none;
+		cursor: pointer;
 	}
-	
+	#newInquiryBtn {
+		background-color: #00679A;
+		border-radius: 5px;
+		width: 120px;
+		height: 35px;
+		color: white;
+		border: none;
+		cursor: pointer;
+	}
 	/*페이징 css */
 	#pagingArea {
       margin-top: 40px;
@@ -109,45 +119,34 @@
 					</table>
 				</div>  <!-- inquirySearchArea end -->
 				<br />
-				<div class="inquiryArea" style="width: inherit;">	
-					<table id="inquiryTableArea" align="center" style="width: inherit;">
-						<thead id="inquiryTheadArea">
-							<tr>
-								<th style="width: 20%;">조사번호</th>
-								<th style="width: 60%;">조사명</th>
-								<th style="width: 20%;">응답일자</th>
-							</tr>
-						</thead>  <!-- #inquiryTheadArea end -->
-						<tbody id="inquiryTbodyArea">
-							<tr>
-								<td>84532</td>
-								<td>스낵 선호도 조사</td>
-								<td>2020.01.03</td>
-							</tr>
-							<tr>
-								<td>조사번호 입력</td>
-								<td>조사명 입력</td>
-								<td>응답일자 입력</td>
-							</tr>
-							<tr>
-								<td>조사번호 입력</td>
-								<td>조사명 입력</td>
-								<td>응답일자 입력</td>
-							</tr>
-							<tr>
-								<td>조사번호 입력</td>
-								<td>조사명 입력</td>
-								<td>응답일자 입력</td>
-							</tr>
-							<tr>
-								<td>조사번호 입력</td>
-								<td>조사명 입력</td>
-								<td>응답일자 입력</td>
-							</tr>
-						</tbody>  <!-- #inquiryTbodyArea end -->
-					</table>  <!-- #inquiryTableArea end -->
-				</div>  <!-- .inquiryArea end -->
-				<div id="pagingArea" align="center" style="margin-top: 50px;">
+				<div class="inquiryArea" style="width: inherit;">   
+	               <table id="inquiryTableArea" align="center" style="width: inherit;">
+	                  <thead id="inquiryTheadArea">
+	                     <tr>
+	                        <th style="width: 10%;">문의번호</th>
+	                        <th style="width: 50%;">문의제목</th>
+	                        <th style="width: 20%;">문의일자</th>
+	                        <th style="width: 20%;">답변일자</th>
+	                        
+	                     </tr>
+	                  </thead>  <!-- #inquiryTheadArea end -->
+	                  <tbody id="inquiryTbodyArea">
+	                  <c:forEach begin="1" end="5" step="1">
+	                     <tr>
+	                        <td>84532</td>
+	                        <td>스낵 선호도 조사</td>
+	                        <td>2020.01.03</td>
+	                        <td>답변 대기</td>
+	                     </tr>
+	                  </c:forEach>
+	                     
+	                  </tbody>  <!-- #inquiryTbodyArea end -->
+	               </table>  <!-- #inquiryTableArea end -->
+	            </div>  <!-- .inquiryArea end -->
+	            <div class="inquiryBtnArea" align="right" style="margin-top: 15px;">
+	            	<button id="newInquiryBtn" onclick="location.href='myNewInquiry.panel'">1:1 문의하기</button>
+	            </div>  <!-- inquiryBtnArea end -->
+				<div id="pagingArea" align="center" style="margin-top: 30px;">
 			        <span>[처음]</span>
 			        <span>[이전]</span>
 			        <c:forEach var="i" begin="1" end="5">
@@ -161,6 +160,18 @@
 		</section>  <!-- container end -->
 		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
 	</div>  <!-- wrap end -->
+	<script>
+		$("#inquiryTableArea>#inquiryTbodyArea>tr").hover(function(){
+			var tr = $(this);
+			var td = $(this).children();
+			$(td).css({"cursor":"pointer"});
+		}).click(function(){
+			var tr = $(this);
+			var td = tr.children().eq(0).text();
+			
+			console.log(td);
+		});
+	</script>
 </body>
 </html>
 
