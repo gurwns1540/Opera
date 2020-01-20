@@ -42,7 +42,7 @@
 		   		 서베이
 		   		 <div class="menu">
 			    	<a href="surveyList.panel" class="item">진행중인 설문조사</a>
-			    	<a href="mySurveyList.panel" class="item">참여한 설문조사</a>
+			    	<a href="mySurveyList_complete.panel" class="item">참여한 설문조사</a>
 			    	<a href="panelSurvey.panel" class="item">패널서베이</a>
 		    	</div>
 		  	</div>
