@@ -27,4 +27,10 @@ public class CorpForwardController {
 	public String forwardPreviousResearchMain() {
 		return "corpResearch/previousResearchMain";
 	}
+	
+	// 리서치 신청하기
+	@RequestMapping("requestResearch.corp")
+	public String forwardRequestResearch() {
+		return "corpResearch/requestResearch";
+	}
 }

@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
 <title>Insert title here</title>
 <style>
 	#mainArea {
@@ -48,7 +50,7 @@
 		margin: 0 auto;
 		text-align: left;
 		color: white;
-		font-size: 27px;
+		font-size: 22px;
 		margin-top: 150px;
 	}
 	.on {
@@ -57,8 +59,8 @@
 		border-bottom: 2px solid #C4C4C4 !important; 
 	}
 	#intro {
-		line-height: 65px;
-	}
+		line-height: 50px;
+	} 
 	#sampleBtn {
 		border: 1px solid white;
 		color: #EDEBEB;
@@ -68,6 +70,9 @@
 		float: right;
 		margin-top: 85px;
 		font-size: 20px;
+	}
+	#sampleBtn:hover {
+		cursor: pointer;
 	}
 </style>
 </head>
@@ -95,7 +100,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td><button id="sampleBtn">조사 신청하기</button></td>
+				<td><button id="sampleBtn" onclick="location.href='requestResearch.corp'">조사 신청하기</button></td>
 			</tr>
 		</table>
 	</div>
