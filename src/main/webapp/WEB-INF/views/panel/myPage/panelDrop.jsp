@@ -57,7 +57,7 @@
 						글을 남겨주시면 회원님의 의견을 소중히 경청하겠습니다.
 					</b>
 					
-					<textarea name="" id="" cols="133" rows="10" style="margin-top: 20px;"></textarea>
+					<textarea name="" id="" style="margin-top: 20px; width: 100%; height: 150px; resize: none;"></textarea>
 				</div>  <!-- panelDropReasonArea end -->
 				<br />
 				<hr />

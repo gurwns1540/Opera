@@ -11,7 +11,16 @@
 	border-top: 1px solid #3C3C3C;
 	border-collapse: collapse;
 }
-
+.newInquiryTableArea {
+	border-collapse: collapse;
+	border: 1px solid #b4b4b4;
+	margin-left: auto !important;
+}
+.newInquiryTableArea>tbody>tr>td {
+	border-top: 1px solid #b4b4b4;
+	border-bottom: 1px solid #b4b4b4;
+	text-align: center;
+}
 #inquiryTheadArea {
 	background-color: #DBDBDB;
 }
@@ -43,6 +52,8 @@
 	width: 65px;
 	height: 30px;
 	color: white;
+	border: none;
+    cursor: pointer;
 }
 #goQuestion{
 	  background-color: #00679A;
@@ -156,7 +167,7 @@
 				<!-- .inquiryArea end -->
 				<br>
 				<div align="right">
-					<button id="goQuestion" onclick="location.href='panelNewInquiry.panel'">1:1문의하기</button>
+					<button id="goQuestion">1:1문의하기</button>
 				</div>
 				<div id="pagingArea" align="center" style="margin-top: 50px;">
 					<span>[처음]</span> <span>[이전]</span>
@@ -175,8 +186,67 @@
 	</div>
 	<!-- wrap end -->
 	
+	<!-- modal Area -->
+	<div class="ui modal">
+		<i class="close icon"></i>
+		<div class="header">문의하기</div>
+		<div class="newInquiryArea" style="width: 90%; height: 510px;" align="center">
+			<table class="newInquiryTableArea" style="width: inherit; height: inherit;">
+				<tbody id="newInquiryTbodyArea">
+					<tr>
+						<td style="height: 50px;">구분</td>
+						<td>:</td>
+						<td>
+							<input type="radio" name="division" value="signup" checked="checked"/> 가입관련
+							<input type="radio" name="division" value="research" style="margin-left: 10%;"/> 조사관련
+							<input type="radio" name="division" value="point" style="margin-left: 10%;"/> 포인트관련
+							<input type="radio" name="division" value="etc" style="margin-left: 10%;"/> 기타
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center; height: 50px;">성명</td>
+						<td>:</td>
+						<td><input class="ui input" type="text" name="" style="width: 90%;"/></td>
+					</tr>
+					<tr>
+						<td style="text-align: center; height: 50px;">제목</td>
+						<td>:</td>
+						<td><input class="ui input" type="text" name="" style="width: 90%;"/></td>
+					</tr>
+					<tr>
+						<td style="height: 350px; vertical-align: top; padding-top: 20px;">내용</td>
+						<td style="vertical-align: top; padding-top: 20px;">:</td>
+						<td style="vertical-align: top; padding-top: 20px;"><textarea name="" id="" style="width: 90%; height: 90%; resize: none;"></textarea></td>
+					</tr>
+				</tbody>
+				<!-- newInquiryTbodyArea end -->
+			</table>
+			<!-- newInquiryTableArea end -->
+		</div>
+		<!-- newInquiryArea end -->
+		<div class="actions">
+			<div class="ui positive right button">문의하기</div>
+			<div class="ui black deny button">취소하기</div>
+		</div>
+	</div>
+	<!-- modal Area end -->
+
 	<script>
-		
+		$("#inquiryTableArea>#inquiryTbodyArea>tr").hover(function() {
+			var tr = $(this);
+			var td = $(this).children();
+			$(td).css({
+				"cursor" : "pointer"
+			});
+		}).click(function() {
+			var tr = $(this);
+			var td = tr.children().eq(0).text();
+
+			console.log(td);
+		});
+		$("#goQuestion").click(function() {
+			$(".ui.modal").modal("show");
+		});
 	</script>
 </body>
 </html>
