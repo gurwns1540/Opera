@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +12,7 @@
 	margin: 0 auto;
 	margin-top: 20px;
 }
+
 #menuTitle {
 	height: 30px;
 	width: 40%;
@@ -19,27 +22,106 @@
 	font-weight: bold;
 	color: #3D3D3D;
 }
+
 #pagePath {
 	width: 60%;
 	text-align: right;
 	vertical-align: bottom;
 	font-weight: bold;
 }
+
 #depth1, #depth2, #depth3 {
 	color: #494949;
 }
+
 #depth1:hover, #depth2:hover {
 	color: #008499;
 }
+
 .sectionLine {
-	padding-bottom:40px;
+	padding-bottom: 40px;
 }
 /* 여기까지 페이지제목 및 경로 영역 */
+.ui.segment {
+	border-radius: 0px;
+}
 
+.eachSurveyBox {
+	height: 210px;
+}
+.eachSurveyBox:hover {
+	cursor:pointer;
+}
 
+.ui.segment {
+	padding: 3px;
+}
 
+.icon {
+	hieght: 16px;
+	width: 16px;
+}
 
+.top-left {
+	width: 30px;
+}
 
+.top-right {
+	width: 70%;
+	text-align: right;
+	padding-top: 3px;
+}
+
+.middle {
+	height: 75px;
+	padding: 8px;
+	padding-top: 15px;
+}
+
+.bottom {
+	height: 100px;
+	width: 99%;
+	background-color: #EDEBEB;
+}
+
+.bottom-top {
+	height: 40%;
+}
+
+.bottom-middle {
+	height: 30%;
+	text-align: center;
+	padding-top: 5%;
+}
+
+.bottom-bottom {
+	height: 30%;
+	text-align: center;
+	padding-bottom: 5%;
+}
+#pagingArea {
+		margin-top: 40px;
+		
+		/* 드래그 방지용 소스*/
+		-ms-user-select: none; 
+		-moz-user-select: -moz-none; 
+		-webkit-user-select: none; 
+		-khtml-user-select: none; 
+		user-select:none;
+		/* 드래그 방지용 소스*/
+	}
+#pagingArea span {
+	margin-left: 5px;
+	margin-right: 5px;
+	font-size: 10pt;
+}
+
+#pagingArea span:hover {
+	margin-left: 5px;
+	margin-right: 5px;
+	font-size: 10pt;
+	cursor: pointer;
+}
 </style>
 <body>
 	<div class="wrap">
@@ -65,11 +147,64 @@
 			<div class="sectionLine">
 				<hr>
 			</div>
-			
-			
-			
-			
-			
+
+
+
+
+
+
+
+
+
+			<div class="ui five column grid" id="surveyListArea" style="width:95%; margin: 0 auto;">
+				<c:forEach begin="1" end="10" step="1">
+					<div class="column">
+						<div class="ui segment eachSurveyBox">
+							<div class="eachBox">
+								<div class="top">
+									<table>
+										<tr>
+											<td class="top-left"><span style="font-size:10pt;">[84782]</span></td>
+											<td class="top-right">
+												<img src="resources/images/pc.png" alt="" class="icon"/>
+												<img src="resources/images/mobile.png" alt="" class="icon"/>
+											</td>
+										</tr>
+										<tr>
+									</table>
+								</div>
+								<div class="middle">
+									<span style="font-size:13pt;">소비자 인식 조사 두줄되면 여기까지</span>
+								</div>
+								<div class="bottom">
+									<div class="bottom-top" style="text-align:center; padding-top:14px;">
+										<span style="font-weight:bold; font-size:13pt; color:#005E8C;">100~3000P</span>
+									</div>
+									<div class="bottom-middle">
+										<span style="font-size:12pt; margin-right:7px;">시작일 :</span>
+										<span style="font-size:12pt;">2020.01.01</span>
+									</div>
+									<div class="bottom-bottom">
+										<span style="font-size:12pt; margin-right:7px;">종료일 :</span>
+										<span style="font-size:12pt;">2020.01.20</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+
+			<div id="pagingArea" align="center">
+				<span>[처음]</span> <span>[이전]</span>
+				<c:forEach var="i" begin="1" end="10">
+					<span><c:out value="${ i }" /></span>
+				</c:forEach>
+				<span>[다음]</span> <span>[마지막]</span>
+			</div>
+
+
+
 			<br />
 		</section>
 		<!-- container end -->

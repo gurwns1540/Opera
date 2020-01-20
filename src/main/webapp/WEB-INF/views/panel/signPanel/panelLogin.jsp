@@ -10,7 +10,7 @@
 
 #titleTable {
 	margin: 0 auto;
-	margin-top: 120px;
+	margin-top: 80px;
 }
 #menuTitle {
 	height: 30px;
