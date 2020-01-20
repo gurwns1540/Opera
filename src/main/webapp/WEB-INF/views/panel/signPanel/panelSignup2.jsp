@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 
-<%@ include file="/WEB-INF/views/panel/common/head.jsp"%>
+<jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
 <style>
 #joinform {
 	margin-top: 50px;

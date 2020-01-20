@@ -36,8 +36,18 @@
 		width: 65px;
 		height: 30px;
 		color: white;
+		border: none;
+		cursor: pointer;
 	}
-	
+	#newInquiryBtn {
+		background-color: #00679A;
+		border-radius: 5px;
+		width: 120px;
+		height: 35px;
+		color: white;
+		border: none;
+		cursor: pointer;
+	}
 	/*페이징 css */
 	#pagingArea {
       margin-top: 40px;
@@ -147,6 +157,18 @@
 		</section>  <!-- container end -->
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
+	<script>
+		$("#inquiryTableArea>#inquiryTbodyArea>tr").hover(function(){
+			var tr = $(this);
+			var td = $(this).children();
+			$(td).css({"cursor":"pointer"});
+		}).click(function(){
+			var tr = $(this);
+			var td = tr.children().eq(0).text();
+			
+			console.log(td);
+		});
+	</script>
 </body>
 </html>
 

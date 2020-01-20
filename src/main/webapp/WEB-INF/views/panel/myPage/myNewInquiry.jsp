@@ -6,41 +6,15 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
-#titleTable {
-	margin: 0 auto;
-	margin-top: 20px;
-}
-#menuTitle {
-	height: 30px;
-	width: 40%;
-	font-size: 16pt;
-	text-align: left;
-	vertical-align: bottom;
-	font-weight: bold;
-	color: #3D3D3D;
-}
-#pagePath {
-	width: 60%;
-	text-align: right;
-	vertical-align: bottom;
-	font-weight: bold;
-}
-#depth1, #depth2, #depth3, #depth4 {
-	color: #494949;
-}
-#depth1:hover, #depth2:hover, #depth3:hover {
-	color: #008499;
-	cursor: pointer;
-}
-.sectionLine {
-	padding-bottom:40px;
-}
-/* 여기까지 페이지제목 및 경로 영역 */
-
-
-
-
-
+	.newInquiryTableArea {
+		border-top: 1px solid #B4B4B4;
+		border-bottom: 1px solid #B4B4B4;
+		border-right: 1px solid #B4B4B4;
+		border-left: 1px solid #B4B4B4;
+	}
+	newInquiryTbodyArea tr td:nth-child(n){
+		text-align: right;
+	}
 </style>
 <body>
 	<div class="wrap">
@@ -70,7 +44,40 @@
 				<hr>
 			</div>
 			
-			
+			<div class="newInquiryArea" style="width: 100%;">
+				<table class="newInquiryTableArea" style="width: inherit;" border="1">
+					<tbody id="newInquiryTbodyArea">
+						<tr>
+							<td>구분</td>
+							<td>:</td>
+							<td>
+								
+							</td>
+						</tr>
+						<tr>
+							<td>성명</td>
+							<td>:</td>
+							<td>
+							
+							</td>
+						</tr>
+						<tr>
+							<td>제목</td>
+							<td>:</td>
+							<td>
+							
+							</td>
+						</tr>
+						<tr>
+							<td>내용</td>
+							<td>:</td>
+							<td>
+								<textarea name="" id="" cols="30" rows="10"></textarea>
+							</td>
+						</tr>
+					</tbody>  <!-- newInquiryTbodyArea end -->
+				</table>  <!-- newInquiryTableArea end -->
+			</div>  <!-- newInquiryArea end -->
 			
 		<br />
 		</section>  <!-- container end -->
