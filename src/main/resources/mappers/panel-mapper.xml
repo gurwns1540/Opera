@@ -32,8 +32,13 @@
 		FROM MEMBER M
 		JOIN PANEL P ON (M.MNO = P.MNO)
 		WHERE USER_ID = #{userId}
-		AND USER_PWD = #{userPwd}
 		AND LEAVE_DATE IS NULL
+	</select>
+	
+	<select id="selectPwd" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT USER_PWD
+		FROM MEMBER
+		WHERE USER_ID = #{userId}
 	</select>
 	
 	<insert id="insertMemberTable" parameterType="PanelMember">

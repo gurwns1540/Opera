@@ -20,6 +20,11 @@ public class PanelDaoImpl implements PanelDao{
 		
 		return loginUser;
 	}
+	
+	@Override
+	public String selectEncPassword(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.selectOne("Panel.selectPwd", pm.getUserId());
+	}
 
 	@Override
 	public int insertMemberTable(SqlSessionTemplate sqlSession, PanelMember pm) {
