@@ -66,6 +66,11 @@ public class PanelForwardController {
 	public String showMyInfo() {
 		return "myPage/myInfo";
 	}
+	//1-1. 내 정보 상세보기
+	@GetMapping("myInfoDetail.panel")
+	public String showMyInfoDetail() {
+		return "myPage/myInfoDetail";
+	}
 	//2. 내 1:1 문의 목록
 	@GetMapping("myInquiryList.panel")
 	public String showMyInquiryList() {
