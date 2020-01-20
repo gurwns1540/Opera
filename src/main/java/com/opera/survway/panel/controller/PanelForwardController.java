@@ -154,10 +154,15 @@ public class PanelForwardController {
 	public String showMySurveyList_retry() {
 		return "survey/mySurveyList_retry";
 	}
-	//3. 패널서베이
-	@GetMapping("panelSurvey.panel")
-	public String showPanelSurvey() {
-		return "survey/panelSurvey";
+	//3. 패널서베이목록
+	@GetMapping("panelSurveyList.panel")
+	public String showPanelSurveyList() {
+		return "survey/panelSurveyList";
+	}
+	//4. 내 투표목록
+	@GetMapping("myPanelSurvey.panel")
+	public String showMyPanelSurvey() {
+		return "survey/myPanelSurvey";
 	}
 }
 

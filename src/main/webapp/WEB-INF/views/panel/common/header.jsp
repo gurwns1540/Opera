@@ -43,7 +43,7 @@
 		   		 <div class="menu">
 			    	<a href="surveyList.panel" class="item">진행중인 설문조사</a>
 			    	<a href="mySurveyList_complete.panel" class="item">참여한 설문조사</a>
-			    	<a href="panelSurvey.panel" class="item">패널서베이</a>
+			    	<a href="panelSurveyList.panel" class="item">패널서베이</a>
 		    	</div>
 		  	</div>
 			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px;">
@@ -51,7 +51,6 @@
 		    	<div class="menu">
 			    	<a href="myInfo.panel" class="item">내 정보 관리</a>
 			    	<a href="myRewardMain.panel" class="item">내 리워드 관리</a>
-			    	<a href="myInquiryList.panel" class="item">내 1:1 문의</a>
 			    	<a href="panelDrop.panel" class="item">패널 탈퇴</a>
 		    	</div>
 		  	</div>
@@ -60,7 +59,7 @@
 		    	<div class="menu">
 			    	<a href="notice.panel" class="item">공지사항</a>
 			    	<a href="faq.panel" class="item">자주묻는 질문</a>
-			    	<a href="panelInquiryList.panel" class="item">패널 1:1 문의</a>
+			    	<a href="panelInquiryList.panel" class="item">내 1:1 문의</a>
 		    	</div>
 		  	</div>
 		</div>
