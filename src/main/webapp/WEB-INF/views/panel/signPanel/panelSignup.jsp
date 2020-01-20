@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
+	<jsp:include page="/WEB-INF/views/panel/common/head.jsp" />
 </head>
 <style>
 
