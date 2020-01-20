@@ -6,8 +6,6 @@
 <head>
 <link rel="stylesheet" href="resources/css/footer.css" />
 
-<link rel="icon" href="resources/images/favicon.ico" type="image/x-icon" />
-<link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.3/dist/semantic.min.css">
