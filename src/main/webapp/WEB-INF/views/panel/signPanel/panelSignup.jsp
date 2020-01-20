@@ -52,7 +52,7 @@
 </style>
 <body>
 	<div class="wrap">
-		<jsp:include page="/WEB-INF/views/panel/common/header.jsp" >
+		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
 		<section class="container">
 		<br />
 		
@@ -94,7 +94,7 @@
 
 
 		</section>  <!-- container end -->
-		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp">
+		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
 </body>
 </html>
