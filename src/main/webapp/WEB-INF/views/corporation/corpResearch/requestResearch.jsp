@@ -49,9 +49,11 @@
 		font-size: 12px;
 		font-weight: normal;
 		border-bottom: 1px solid #C5C5C5;
+		height: 70px;
 	}
 	#requestTable td.link {
 		width: 15px !important;
+	
 	}
 	#requestTable th {
 		height: 70px;
@@ -132,6 +134,9 @@
     	padding-top: 0 !important;
     	padding-bottom: 0 !important;
     	height: 35px !important;
+	}
+	button:hover{
+		cursor: pointer;
 	}
 }
 </style>
@@ -269,8 +274,9 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
-					<button style="float:left;">목록</button><button style="float:right;">저장</button>
+				<td colspan="2" style="border-bottom: 0;">
+					<button onclick="location.href='previousResearchMain.corp'" style="float:left; width: 80px; height: 30px; background: #EFEFEF; color: #717171; border: 0;">목록</button>
+					<button onclick="location.href='writeQuestion.corp'" style="float:right; width: 80px; height: 30px; background: #00679A; color: white; border: 0;">저장</button>
 				</td>
 			</tr>
 		</table>
