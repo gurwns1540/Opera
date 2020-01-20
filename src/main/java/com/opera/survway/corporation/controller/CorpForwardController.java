@@ -22,7 +22,7 @@ public class CorpForwardController {
 		return "corpResearch/newResearchMain";
 	}
 	
-	// 샘플 리서치 메인
+	// 리서치 이력
 	@RequestMapping("previousResearchMain.corp")
 	public String forwardPreviousResearchMain() {
 		return "corpResearch/previousResearchMain";
@@ -32,5 +32,11 @@ public class CorpForwardController {
 	@RequestMapping("requestResearch.corp")
 	public String forwardRequestResearch() {
 		return "corpResearch/requestResearch";
+	}
+	
+	// 리서치 작성하기
+	@RequestMapping("writeQuestion.corp")
+	public String forwardWriteQuestion() {
+		return "corpResearch/writeQuestion";
 	}
 }
