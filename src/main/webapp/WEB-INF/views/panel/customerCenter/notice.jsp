@@ -1,82 +1,199 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
+<%@ include file="/WEB-INF/views/panel/common/head.jsp"%>
 </head>
 <style>
-#titleTable {
-	margin: 0 auto;
-	margin-top: 20px;
+#inquiryTableArea {
+	border-top: 1px solid #3C3C3C;
+	border-collapse: collapse;
 }
-#menuTitle {
+
+#inquiryTheadArea {
+	background-color: #DBDBDB;
+}
+
+#inquiryTheadArea>tr>th {
+	height: 25px;
+}
+
+#inquiryTbodyArea {
+	text-align: center;
+}
+
+#inquiryTbodyArea>tr {
+	border-top: 1px solid #C4C4C4;
+	border-bottom: 1px solid #C4C4C4;
+}
+
+#inquiryTbodyArea>tr>td {
+	height: 45px;
+}
+
+.ui.input {
 	height: 30px;
-	width: 40%;
-	font-size: 16pt;
-	text-align: left;
-	vertical-align: bottom;
-	font-weight: bold;
-	color: #3D3D3D;
 }
-#pagePath {
-	width: 60%;
-	text-align: right;
-	vertical-align: bottom;
-	font-weight: bold;
+
+#searchBtn {
+	background-color: #00679A;
+	border-radius: 5px;
+	width: 65px;
+	height: 30px;
+	color: white;
 }
-#depth1, #depth2, #depth3 {
-	color: #494949;
+
+/*페이징 css */
+#pagingArea {
+	margin-top: 40px;
+	/* 드래그 방지용 소스*/
+	-ms-user-select: none;
+	-moz-user-select: -moz-none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+	/* 드래그 방지용 소스*/
 }
-#depth1:hover, #depth2:hover {
-	color: #008499;
+
+#pagingArea span {
+	margin-left: 5px;
+	margin-right: 5px;
+	font-size: 10pt;
 }
-.sectionLine {
-	padding-bottom:40px;
+
+#pagingArea span:hover {
+	margin-left: 5px;
+	margin-right: 5px;
+	font-size: 10pt;
+	cursor: pointer;
 }
-/* 여기까지 페이지제목 및 경로 영역 */
-
-
-
-
-
+/* 페이징 css end */
 </style>
 <body>
 	<div class="wrap">
-		<%@ include file="/WEB-INF/views/panel/common/header.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/header.jsp" />
 		<section class="container">
-		<br />
-		
-		
+			<br />
 			<table id="titleTable" height="10px;" width="99%;">
 				<tr>
 					<td id="menuTitle">공지사항</td>
 					<td id="pagePath">
 						<div class="ui breadcrumb">
-							<a class="section" id="depth1" href="panelMain.panel">Home</a>
-							<i class="right angle icon divider"></i>
-							<a class="section" id="depth2" href="notice.panel">고객센터</a>
-							<i class="right angle icon divider"></i>
+							<a class="section" id="depth1" href="panelMain.panel">Home</a> <i
+								class="right angle icon divider"></i> <a class="section"
+								id="depth2" href="notice.panel">고객센터</a> <i
+								class="right angle icon divider"></i>
 							<div class="active section" id="depth3">공지사항</div>
 						</div>
 					</td>
 				</tr>
 			</table>
-			
+
 			<div class="sectionLine">
 				<hr>
 			</div>
-			
-			
-			
-			
-			
-		<br />
-		</section>  <!-- container end -->
-		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
-	</div>  <!-- wrap end -->
+
+			<div class="inquiryContentsArea" style="width: 100%;">
+				<div class="inquirySearchArea" align="right">
+					<table>
+						<tr>
+							<td>
+								<h4>검색어</h4>
+							</td>
+							<td></td>
+							<td></td>
+							<td>
+								<div class="ui input">
+									<input type="search" name="" />
+								</div>
+							</td>
+							<td>
+								<button id="searchBtn">검색</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<!-- inquirySearchArea end -->
+				<br />
+				<div class="inquiryArea" style="width: inherit;">
+					<table id="inquiryTableArea" align="center" style="width: inherit;">
+						<thead id="inquiryTheadArea">
+							<tr>
+								<th style="width: 10%;">번호</th>
+								<th style="width: 70%;">제목</th>
+								<th style="width: 20%;">작성일</th>
+
+							</tr>
+						</thead>
+						<!-- #inquiryTheadArea end -->
+						<tbody id="inquiryTbodyArea">
+							<c:forEach begin="1" end="5" step="1">
+								<tr>
+									<td>10</td>
+									<td>12월 추천 이벤트 당첨자 발표</td>
+									<td>2020.01.03</td>
+								</tr>
+							</c:forEach>
+
+						</tbody>
+						<!-- #inquiryTbodyArea end -->
+					</table>
+					<!-- #inquiryTableArea end -->
+				</div>
+				<!-- .inquiryArea end -->
+				<div id="pagingArea" align="center" style="margin-top: 50px;">
+					<span>[처음]</span> <span>[이전]</span>
+					<c:forEach var="i" begin="1" end="5">
+						<span><c:out value="${ i }" /></span>
+					</c:forEach>
+					<span>[다음]</span> <span>[마지막]</span>
+				</div>
+				<!-- #pagingArea end -->
+			</div>
+			<!-- .inquiryContentsArea end -->
+			<br />
+		</section>
+		<!-- container end -->
+		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp" />
+	</div>
+	<!-- wrap end -->
+	
+	<script>
+		
+	</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

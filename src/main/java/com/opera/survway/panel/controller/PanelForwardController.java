@@ -44,7 +44,7 @@ public class PanelForwardController {
 	public String showPanelInquiryDetail() {
 		return "customerCenter/panelInquiryDetail";
 	}
-	
+
 	
 	// 안내 메뉴 페이지들
 	//1. 혜택 안내
