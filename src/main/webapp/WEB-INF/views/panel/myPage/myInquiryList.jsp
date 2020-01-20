@@ -157,18 +157,7 @@
 		</section>  <!-- container end -->
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
-	<script>
-		$("#inquiryTableArea>#inquiryTbodyArea>tr").hover(function(){
-			var tr = $(this);
-			var td = $(this).children();
-			$(td).css({"cursor":"pointer"});
-		}).click(function(){
-			var tr = $(this);
-			var td = tr.children().eq(0).text();
-			
-			console.log(td);
-		});
-	</script>
+	
 </body>
 </html>
 
