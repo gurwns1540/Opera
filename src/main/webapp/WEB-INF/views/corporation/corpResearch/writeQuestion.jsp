@@ -89,29 +89,30 @@
   		line-height: 1.2em; 
   	}
   	.ui-sortable-placeholder {
-  		background: white !important;
+  		background: none !important;
   		border-color: white !important;
   	}
   	.choiceNameInput:focus {
   		border: 0 !important;
   	}
   	.plusBtn {
-  		margin: 0 5px 12px 5px;
+		margin: 0 0px 12px 0px;
   		text-align: center;
 	    font-size: 0.5em;
 	    border-radius: 7px;
 	    border: 1px solid #c5c5c5;
 	    line-height: 60px;
 	    background: #f6f6f6;
-		right: 0;
-		bottom: 23px; 
+		right: 5px;
+		bottom: 3px; 
 	    position: absolute;
 	    padding-left: 4px;
+	    cursor: pointer;
   	}
   	.plusMain {
   		z-index: 2;
   		position: absolute;
-  		margin: 0 5px 12px 5px;
+  		margin: 0 5px 12px 0px;
   		padding: 10px; 
   		font-size: 0.8em;
   		height: fit-content;
@@ -123,10 +124,34 @@
     	color: #454545;
   	}
   	.ui-state-default {
-  		min-height: 100px;
+  		min-height: 80px;
   		position: relative;
   		border: 0 !important;
     	background: none !important;
+  	}
+  	#quizHead {
+  		width: 100%;
+  		height: 70px;
+  		background: rgba(57, 42, 76, 0.54);
+  		text-align: left;
+  		padding-left: 40px; 
+  		padding-right: 20px;
+  		line-height: 67px;
+    	font-size: 14pt;
+    	color: #ECECEC;
+  	}
+  	#quizTable {
+  		width: 80%;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#quizTable th, #quizTable td {
+  		border: 1px solid #9A9A9A;
+  		height: 70px;
+  	}
+  	#mediaArea {
+  		text-align: center;
   	}
 }
 </style>
@@ -158,7 +183,7 @@
 								<div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div>
 								<div class="plusMain">
 									<div class="ui input" style="width: 85%;">
-										<input type="text" readonly class="choiceNameInput" style="background: none; border: 0;">
+										<input type="text" readonly class="choiceNameInput" style="background: none; border: 0;" value="1">
 									</div>
 									<div style="width: fit-content; float: right;" id="deleteQuiz">
 										<i class="large times icon"></i>
@@ -170,7 +195,28 @@
 				</td>
 				<td style="width: 60%">
 					<div id="editingMain">
-			
+						<table id="quizTable">
+							<tr>
+								<th id="quizHead">
+									<div>
+										Q<span id="quizNum">1</span>.
+										<div class="ui input" style="width: 85%;">
+											<input type="text" class="quizTitle" style="background: none; border: 0;" placeholder="질문 제목">
+										</div>
+										<span style="float: right; font-size: 20pt;">
+											<i class="times icon"></i>
+										</span>
+									</div>
+								</th>
+							</tr>
+							<tr>
+								<td>
+									<div id="mediaArea">
+										설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <a>여기를 클릭</a>해 주세요.
+									</div>
+								</td>
+							</tr>
+						</table>
 					</div>
 				</td>
 				<td style="width: 20%">
@@ -218,12 +264,30 @@
 		$("#researchMenu td div").eq(1).addClass("on");
 		$(".ui.dropdown").dropdown();
 		
+		var index = 2;
+		
 		$('#standard_calendar').calendar();
 		$('#standard_calendar2').calendar();
+		$(document).on("click", ".plusBtn", function(){
+			
+			var $quiz = $('<li class="ui-state-default"> <div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div> <div class="plusMain"> <div class="ui input" style="width: 85%;"> <input type="text" readonly class="choiceNameInput" style="background: none; border: 0;" value="' + index++ + '"> </div> <div style="width: fit-content; float: right;" id="deleteQuiz"> <i class="large times icon"></i> </div> </div> </li>');
+			$("#sortable").append($quiz);
+		});
 	</script>
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script>
+		$(function() {
+		 	$( "#sortable" ).sortable({
+		 		placeholder: "ui-state-highlight",
+		 		update: function( event, ui ) {
+		 			$(this).find(".choiceNameInput").each(function(index){
+		 				$(this).val(index + 1);
+		 			});
+		 		}
+		 	});
+		 	$( "#sortable" ).disableSelection();
+		 });
 		$( function() {
 	    	$( "#slider-range" ).slider({
 	      		range: true,
@@ -236,10 +300,6 @@
 	    	});
 	    	$( "#amount" ).text($( "#slider-range" ).slider( "values", 0 ) + "세 이상   " + $( "#slider-range" ).slider( "values", 1 ) + "세 이하");
 	  	});
-		$(document).on("click", "#plusBtn", function(){
-			var $quiz = $('<li class="ui-state-default"> <div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div> <div class="plusMain"> <div class="ui input" style="width: 85%;"> <input type="text" readonly class="choiceNameInput" style="background: none; border: 0;"> </div> <div style="width: fit-content; float: right;" id="deleteQuiz"> <i class="large times icon"></i> </div> </div> </li>');
-			$("#sortable").append($quiz);
-		});
   </script>
 </body>
 </html>
