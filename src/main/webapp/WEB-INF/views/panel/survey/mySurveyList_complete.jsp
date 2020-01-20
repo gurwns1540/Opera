@@ -176,10 +176,9 @@
 					<table id="tableArea" align="center" style="width: inherit;">
 						<thead id="tHeadArea">
 							<tr>
-								<th style="width: 10%;">문의번호</th>
-								<th style="width: 50%;">문의제목</th>
-								<th style="width: 20%;">문의일자</th>
-								<th style="width: 20%;">답변일자</th>
+								<th style="width: 20%;">조사번호</th>
+								<th style="width: 60%;">조사명</th>
+								<th style="width: 20%;">응답일자</th>
 								
 							</tr>
 						</thead>  <!-- #inquiryTheadArea end -->
@@ -188,8 +187,7 @@
 							<tr>
 								<td>84532</td>
 								<td>스낵 선호도 조사</td>
-								<td>2020.01.03</td>
-								<td>답변 대기</td>
+								<td>2020.01.11</td>
 							</tr>
 						</c:forEach>
 							

@@ -32,11 +32,41 @@
 	color: #008499;
 }
 .sectionLine {
-	padding-bottom:40px;
+	padding-bottom:5px;
 }
 /* 여기까지 페이지제목 및 경로 영역 */
 
+div.ui.right.attached.rail {
+	
+	width: 200px !important;
+	min-height:350px;
+}
 
+div.ui.segment {
+	position: relative;
+    background: #fff;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+    box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+    margin: 1rem 0;
+    padding: 1em 1em;
+    border-radius: .28571429rem;
+    border: 1px solid rgba(34,36,38,.15);
+	
+	height: inherit;
+}
+
+div.ui.segment.leftArea {
+	position: relative;
+    background: #fff;
+    -webkit-box-shadow: 0 0px 0px 0 rgba(34,36,38,.15);
+    box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+    margin: 1rem 0;
+    padding: 1em 1em;
+    border-radius: .28571429rem;
+    border: 1px solid rgba(34,36,38,.15);
+	
+	height: inherit;
+}
 
 
 
@@ -65,11 +95,17 @@
 			<div class="sectionLine">
 				<hr>
 			</div>
-			
-			
-			
-			
-			
+
+
+			<div class="ui segment leftArea" style="border:1px solid red;">
+				<div class="ui right attached rail">
+					<div class="ui segment">Right Rail Content</div>
+				</div>
+				<p></p>
+				<p></p>
+			</div>
+
+
 			<br />
 		</section>
 		<!-- container end -->

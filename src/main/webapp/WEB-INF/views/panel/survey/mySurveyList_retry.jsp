@@ -50,9 +50,11 @@
 	width: 20%;
 	padding-left: 5%;
 }
+
 .searchArea {
-	margin-top:50px;
+	margin-top: 50px;
 }
+
 #tableArea {
 	border-top: 1px solid #3C3C3C;
 	border-collapse: collapse;
@@ -89,6 +91,39 @@
 	width: 65px;
 	height: 30px;
 	color: white;
+}
+
+#retryBtn {
+	background-color: #00679A;
+	border-radius: 4px;
+	width: 100px;
+	height: 25px;
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-size:9pt;
+}
+
+#disableBtn {
+	background-color: #C1332A;
+	border-radius: 4px;
+	width: 100px;
+	height: 25px;
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-size:9pt;
+}
+
+#overBtn {
+	background-color: #494949;
+	border-radius: 4px;
+	width: 100px;
+	height: 25px;
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-size:9pt;
 }
 
 /*페이징 css */
@@ -176,22 +211,34 @@
 					<table id="tableArea" align="center" style="width: inherit;">
 						<thead id="tHeadArea">
 							<tr>
-								<th style="width: 10%;">문의번호</th>
+								<th style="width: 15%;">조사번호</th>
 								<th style="width: 50%;">문의제목</th>
-								<th style="width: 20%;">문의일자</th>
-								<th style="width: 20%;">답변일자</th>
+								<th style="width: 15%;">시도일자</th>
+								<th style="width: 20%;">상  태</th>
 								
 							</tr>
 						</thead>  <!-- #inquiryTheadArea end -->
 						<tbody id="tBodyArea">
-						<c:forEach begin="1" end="5" step="1">
+						<%-- <c:forEach begin="1" end="5" step="1"> --%>
 							<tr>
 								<td>84532</td>
 								<td>스낵 선호도 조사</td>
-								<td>2020.01.03</td>
-								<td>답변 대기</td>
+								<td>2020.01.05</td>
+								<td><button id="retryBtn">재참여하기</button></td>
 							</tr>
-						</c:forEach>
+							<tr>
+								<td>84524</td>
+								<td>소비자 인식 조사</td>
+								<td>2020.01.10</td>
+								<td><button id="disableBtn">재참여불가</button></td>
+							</tr>
+							<tr>
+								<td>84532</td>
+								<td>음료 선호도 조사</td>
+								<td>2020.01.15</td>
+								<td><button id="overBtn">기간만료</button></td>
+							</tr>
+						<%-- </c:forEach> --%>
 							
 						</tbody>  <!-- #inquiryTbodyArea end -->
 					</table>  <!-- #inquiryTableArea end -->

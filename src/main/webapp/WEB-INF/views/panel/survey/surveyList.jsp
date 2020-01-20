@@ -79,9 +79,10 @@
 }
 
 .bottom {
-	height: 100px;
+	height: 96px;
 	width: 99%;
 	background-color: #EDEBEB;
+	margin: 0 auto;
 }
 
 .bottom-top {
@@ -174,19 +175,19 @@
 									</table>
 								</div>
 								<div class="middle">
-									<span style="font-size:13pt;">소비자 인식 조사 두줄되면 여기까지</span>
+									<span style="font-size:11pt;">소비자 인식 조사 두줄되면 여기까지</span>
 								</div>
 								<div class="bottom">
 									<div class="bottom-top" style="text-align:center; padding-top:14px;">
-										<span style="font-weight:bold; font-size:13pt; color:#005E8C;">100~3000P</span>
+										<span style="font-weight:bold; font-size:12pt; color:#005E8C;">100~3000P</span>
 									</div>
 									<div class="bottom-middle">
-										<span style="font-size:12pt; margin-right:7px;">시작일 :</span>
-										<span style="font-size:12pt;">2020.01.01</span>
+										<span style="font-size:10pt; margin-right:7px;">시작일 :</span>
+										<span style="font-size:10pt;">2020.01.01</span>
 									</div>
 									<div class="bottom-bottom">
-										<span style="font-size:12pt; margin-right:7px;">종료일 :</span>
-										<span style="font-size:12pt;">2020.01.20</span>
+										<span style="font-size:10pt; margin-right:7px;">종료일 :</span>
+										<span style="font-size:10pt;">2020.01.20</span>
 									</div>
 								</div>
 							</div>

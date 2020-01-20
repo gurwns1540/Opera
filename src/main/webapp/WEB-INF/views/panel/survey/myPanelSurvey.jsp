@@ -51,16 +51,16 @@
 		
 			<table id="titleTable" height="10px;" width="99%;">
 				<tr>
-					<td id="menuTitle">상세보기</td>
+					<td id="menuTitle">내 서베이 목록</td>
 					<td id="pagePath">
 						<div class="ui breadcrumb">
 							<a class="section" id="depth1" href="panelMain.panel">Home</a>
 							<i class="right angle icon divider"></i>
-							<a class="section" id="depth2" href="myInfo.panel">마이페이지</a>
+							<a class="section" id="depth2" href="surveyList.panel">서베이</a>
 							<i class="right angle icon divider"></i>
-							<a class="section" id="depth3" href="myOneOnOneList.panel">내 1:1 문의</a>
+							<a class="section" id="depth3" href="panelSurveyList.panel">패널서베이</a>
 							<i class="right angle icon divider"></i>
-							<div class="active section" id="depth4">상세보기</div>
+							<div class="active section" id="depth4">내 서베이 목록</div>
 						</div>
 					</td>
 				</tr>
