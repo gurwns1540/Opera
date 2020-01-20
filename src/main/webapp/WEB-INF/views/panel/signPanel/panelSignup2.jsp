@@ -42,7 +42,7 @@ h4 {
 </head>
 <body>
 	<div class="wrap">
-		<%@ include file="/WEB-INF/views/panel/common/header.jsp"%>
+		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
 		<!-- <form action=""> -->
 		<form action="panelSignup.me" method="post">
 			<table align="center" id="joinform" >

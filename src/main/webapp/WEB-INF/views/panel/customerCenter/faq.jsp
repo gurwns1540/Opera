@@ -36,9 +36,37 @@
 }
 /* 여기까지 페이지제목 및 경로 영역 */
 
-
-
-
+#faqTitle {
+	background: #DBDBDB;
+	border-top: 1px solid #454545;
+}
+#faqlist{
+	width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	margin-top: 10px;
+	
+	/* 드래그 방지용 소스*/
+	-ms-user-select: none; 
+	-moz-user-select: -moz-none; 
+	-webkit-user-select: none; 
+	-khtml-user-select: none; 
+	user-select:none;
+	/* 드래그 방지용 소스*/
+}
+.tableContext {
+		border-top: 1px solid #AEAEAE;
+		border-bottom: 1px solid #AEAEAE;
+		text-align: center;
+}
+	#faqlist th {
+		font-size: 11pt;
+		height: 40px;
+	}
+	#faqlist td {
+		font-size: 11pt;
+		height: 50px;
+	}
 
 </style>
 <body>
@@ -67,8 +95,33 @@
 				<hr>
 			</div>
 			
+			<table id="faqlist" align="center">
+				<tr id="faqTitle">
+					<th style="width:10%;">글 번호</th>
+					<th style="width:60%;">제목</th>
+					<th style="width:10%;">조회수</th>
+					<th style="width:20%;">작성날짜</th>
+				</tr>
+				<tr class="tableContext">
+					<td>10</td>
+					<td>리워드 규정 안내</td>
+					<td>10</td>
+					<td>2020-01-20</td>
+				</tr>
+			</table>
 			
+			<c:forEach var="i" begin="0" end="8">
+				<tr class="tableContext">
+					<td>10</td>
+					<td>리워드 규정 안내</td>
+					<td>10</td>
+					<td>2020-01-20</td>
+				</tr>
+			</c:forEach>
 			
+			<div>
+			
+			</div>
 			
 			
 		<br />
