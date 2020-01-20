@@ -122,7 +122,8 @@
 						<thead id="inquiryTheadArea">
 							<tr>
 								<th style="width: 10%;">번호</th>
-								<th style="width: 70%;">제목</th>
+								<th style="width: 60%;">제목</th>
+								<th style="width: 10%;">조회수</th>
 								<th style="width: 20%;">작성일</th>
 
 							</tr>
@@ -133,6 +134,7 @@
 								<tr>
 									<td>10</td>
 									<td>12월 추천 이벤트 당첨자 발표</td>
+									<td>1</td>
 									<td>2020.01.03</td>
 								</tr>
 							</c:forEach>
