@@ -30,7 +30,7 @@ h4 {
 </head>
 <body>
 	<div class="wrap">
-		<%@ include file="/WEB-INF/views/panel/common/header.jsp"%>
+		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
 		<div id="complete">
 			<table id="completetable" align="center">
 				<tr>
