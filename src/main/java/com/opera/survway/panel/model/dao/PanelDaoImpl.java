@@ -41,7 +41,4 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.selectOne("Panel.selectMno", pm);
 	}
 
-	
-	
-	
 }

@@ -29,4 +29,17 @@
 	
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	
+	<!-- 파일 업로드르 하기 위한 설정(multipart) -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10000000"/>
+	</beans:bean>
+	
+	<beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView"/>
+	
+	<!-- view resolver 설정 ajax-->
+	<!-- jsonView라는 이름으로 들어오면 가상의 뷰라고 판단하여 ajax로 처리 -->
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<beans:property name="order" value="1"/>
+	</beans:bean>
+	
 </beans:beans>

@@ -22,7 +22,12 @@ public class PanelServiceImpl implements PanelService {
 	@Autowired
 	private DataSourceTransactionManager transactionmanager;
 	
-
+	/**
+	 * @Author      : Oh
+	 * @CreateDate  : 2020-01-19
+	 * @ModifyDate  : 2020-01-21
+	 * @Description : 로그인 기능
+	 */
 	@Override
 	public PanelMember loginMember(PanelMember pm) throws LoginException {
 		
@@ -33,27 +38,18 @@ public class PanelServiceImpl implements PanelService {
 		if(passwordEncoder.matches(pm.getUserPwd(), encPassword)) {
 			loginUser = pd.loginCheck(sqlSession, pm);
 		}else {
-			throw new LoginException("비밀번호 틀렸다");
+			throw new LoginException("로그인 실패");
 		}
 		
 		return loginUser;
-		
-//		
-//		String encPassword = md.selectEncPassword(sqlSession, m);
-//		
-//		if(passwordEncoder.matches(m.getUserPwd(), encPassword)) {
-//			loginUser = md.selectMember(sqlSession, m);
-//		}else {
-//			throw new LoginException("로그인 실패!");
-//		}
-//		
-//		return loginUser;
-		
-		
 	}
 
-
-
+	/**
+	 * @Author      : Oh
+	 * @CreateDate  : 2020-01-19
+	 * @ModifyDate  : 2020-01-21
+	 * @Description : 회원가입 기능
+	 */
 	@Override
 	public int insertMember(PanelMember pm) throws LoginException {
 		
@@ -61,7 +57,7 @@ public class PanelServiceImpl implements PanelService {
 		int resultPanelTable=0;
 		
 		resultMemberTable = pd.insertMemberTable(sqlSession, pm);
-		if(resultMemberTable>0) {
+		if(resultMemberTable > 0) {
 			int mno = pd.selectMno(sqlSession, pm);
 			pm.setMno(mno);
 			resultPanelTable = pd.insertPanelTable(sqlSession, pm);
@@ -73,8 +69,6 @@ public class PanelServiceImpl implements PanelService {
 			return 0;
 		}
 	}
-
-
 
 }
 
