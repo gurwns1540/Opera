@@ -68,6 +68,9 @@
 	border: none;
 	cursor: pointer;
 }
+.ui.selection.dropdown {
+	min-width: 80px;
+}
 /*페이징 css */
 #pagingArea {
 	margin-top: 40px;
@@ -190,11 +193,18 @@
 					<tr>
 						<td style="height: 50px;">구분</td>
 						<td>:</td>
-						<td>
-							<input type="radio" name="division" id="signupRadioBtn" value="signup" checked="checked"/> <label for="signupRadioBtn">가입관련</label>
-							<input type="radio" name="division" id="researchRadioBtn" value="research" style="margin-left: 10%;"/> <label for="researchRadioBtn">조사관련</label>
-							<input type="radio" name="division" id="pointRadioBtn" value="point" style="margin-left: 10%;"/> <label for="pointRadioBtn">포인트관련</label>
-							<input type="radio" name="division" id="etcRadioBtn" value="etc" style="margin-left: 10%;"/> <label for="etcRadioBtn">기타</label>
+						<td style="text-align: left;">
+							<div class="ui selection dropdown" style="margin-left: 31px;">
+								<input type="hidden" name="division">
+								<i class="dropdown icon"></i>
+								<div class="default text">선택</div>
+								<div class="menu">
+									<div class="item" data-value="가입">가입</div>
+									<div class="item" data-value="조사">조사</div>
+									<div class="item" data-value="리워드">리워드</div>
+									<div class="item" data-value="기타">기타</div>
+								</div>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -231,37 +241,45 @@
 					<tr>
 						<td style="height: 30px;">구분</td>
 						<td>:</td>
-						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트용입니다</p></td>
+						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트 구분입니다</p></td>
 					</tr>
 					<tr>
-						<td style="text-align: center; height: 30px;">문의번호</td>
+						<td style="text-align: center; height: 30px; width: 100px;">문의번호</td>
 						<td>:</td>
-						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트용입니다</p></td>
+						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트 문의번호입니다</p></td>
 					</tr>
 					<tr>
 						<td style="text-align: center; height: 30px;">성명</td>
 						<td>:</td>
-						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트용입니다</p></td>
+						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트 성명입니다</p></td>
 					</tr>
 					<tr>
 						<td style="text-align: center; height: 30px;">제목</td>
 						<td>:</td>
-						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트입니다</p></td>
+						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트 제목입니다</p></td>
+					</tr>
+					<tr>
+						<td style="text-align: center; height: 30px;">작성날짜</td>
+						<td>:</td>
+						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트 날짜입니다</p></td>
 					</tr>
 					<tr>
 						<td style="height: 175px; vertical-align: top; padding-top: 20px;">내용</td>
 						<td style="vertical-align: top; padding-top: 20px;">:</td>
 						<td style="vertical-align: top; padding-top: 20px;">
-							<div name="" id="" style="width: 90%; height: 80%; margin-left: 5%; border: 1px solid #b4b4b4;" >테스트용입니다</div>
-							<div align="right" style="width: 90%;">
-								<b style="color: gray;">작성일자</b><br />
-							</div>
+							<p name="" id="" style="width: 90%; height: 90%; border: 1px solid #b4b4b4; margin-left: 5%; text-align: left; overflow: auto;">
+								테스트 내용입니다.
+							</p>
 						</td>
 					</tr>
 					<tr>
 						<td style="height: 175px; vertical-align: top; padding-top: 20px;">답변</td>
 						<td style="vertical-align: top; padding-top: 20px;">:</td>
-						<td style="vertical-align: top; padding-top: 20px;"><div name="" id="" style="width: 90%; height: 80%; margin-left: 5%; border: 1px solid #b4b4b4;" >테스트용입니다</div></td>
+						<td style="vertical-align: top; padding-top: 20px;">
+							<p name="" id="" style="width: 90%; height: 90%; border: 1px solid #b4b4b4; margin-left: 5%; text-align: left; overflow: auto;">
+								테스트 답변입니다. 
+							</p>
+						</td>
 					</tr>
 				</tbody>  <!-- inquiryDetailTbodyArea end -->
 			</table>  <!-- inquiryDetailTableArea end -->
@@ -292,6 +310,8 @@
 		$("#newInquiryBtn").click(function() {
 			$("#newInquiryModal").modal("show");
 		});
+		$('.ui.dropdown')
+		  .dropdown();
 	</script>
 </body>
 </html>

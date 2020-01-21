@@ -6,37 +6,33 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
-#titleTable {
-	margin: 0 auto;
-	margin-top: 20px;
+.ui.button {
+	background: #00679A !important;
+	margin: 0;
 }
-#menuTitle {
-	height: 30px;
-	width: 40%;
-	font-size: 16pt;
-	text-align: left;
-	vertical-align: bottom;
-	font-weight: bold;
-	color: #3D3D3D;
+.point{
+	background-color: #00679A !important;
+	height: 150px;
+	width: 250px;
+	margin: 5px;
 }
-#pagePath {
-	width: 60%;
-	text-align: right;
-	vertical-align: bottom;
-	font-weight: bold;
+.pointArea {
+	height: 150px;
+	width: 65%;	
+	margin-bottom: 5%;
+	background-color: #00679A;
 }
-#depth1, #depth2, #depth3 {
-	color: #494949;
+.leftArea {
+	float: right;
+	margin-right: 5%;
 }
-#depth1:hover, #depth2:hover {
-	color: #008499;
+.rightArea {
+	float: left;
+	margin-left: 5%;
 }
-.sectionLine {
-	padding-bottom:40px;
+i{
+	font-size: 100px;
 }
-/* 여기까지 페이지제목 및 경로 영역 */
-
-
 
 
 
@@ -67,6 +63,46 @@
 				<hr>
 			</div>
 			
+			<div id="myRewardArea" style="width: 100%; height: 100%;">
+				<table align="center" style="width: inherit; height: 60%;">
+					<tr>
+						<td colspan="2"><b style="margin-left: 15%;">회원님의 현재 리워드 현황입니다.</b></td>
+					</tr>
+					<tr><td><br /></td></tr>
+					<tr>
+						<td>
+							<div class="pointArea leftArea">
+							
+							</div>  <!-- .pointArea end -->
+						</td>
+						<td>
+							<div class="pointArea rightArea">
+							
+							</div>  <!-- .pointArea end -->
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="pointArea leftArea">
+							
+							</div>  <!-- .pointArea end -->
+						</td>
+						<td>
+							<div class="pointArea rightArea">
+							
+							</div>  <!-- .pointArea end -->
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><hr></td>
+					</tr>
+				</table>
+				<br><br>
+			</div>
+			<div align="center">
+				<button class="ui blue button" onclick="location.href='myRewardDetail_saved.panel'">리워드 상세내역</button>
+				<button class="ui blue button" onclick="location.href='myRewardCashOut.panel'">리워드 신청하기</button>
+			</div>
 			
 			
 		<br />

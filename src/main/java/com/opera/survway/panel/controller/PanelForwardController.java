@@ -91,12 +91,17 @@ public class PanelForwardController {
 	public String showMyRewardMain() {
 		return "myPage/myRewardMain";
 	}
-	//3-1. 내 리워드 상세내역
-	@GetMapping("myRewardDetail.panel")
-	public String showMyRewardDetail() {
-		return "myPage/myRewardDetail";
+	//3-1. 내 리워드 적립내역
+	@GetMapping("myRewardDetail_saved.panel")
+	public String showMyRewardDetail_saved() {
+		return "myPage/myRewardDetail_saved";
 	}
-	//3-2. 리워드 캐시아웃
+	//3-2. 내 리워드 사용내역
+	@GetMapping("myRewardDetail_used.panel")
+	public String showMyRewardDetail_used() {
+		return "myPage/myRewardDetail_used";
+	}
+	//3-3. 리워드 캐시아웃
 	@GetMapping("myRewardCashOut.panel")
 	public String showMyRewardCashOut() {
 		return "myPage/myRewardCashOut";
