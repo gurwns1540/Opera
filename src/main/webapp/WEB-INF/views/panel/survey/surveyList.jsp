@@ -123,6 +123,9 @@
 	font-size: 10pt;
 	cursor: pointer;
 }
+.cards:hover {
+	transform:translateY(-3px);
+}
 </style>
 <body>
 	<div class="wrap">
@@ -160,7 +163,7 @@
 			<div class="ui five column grid" id="surveyListArea" style="width:95%; margin: 0 auto;">
 				<c:forEach begin="1" end="10" step="1">
 					<div class="column">
-						<div class="ui segment eachSurveyBox"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
+						<div class="ui segment cards eachSurveyBox"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
 							<div class="eachBox">
 								<div class="top">
 									<table>
