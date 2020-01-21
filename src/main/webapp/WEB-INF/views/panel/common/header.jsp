@@ -31,14 +31,14 @@
 <nav class="navArea">
 	<div class="navContainer">
 		<div class="ui four inverted item menu" id="nav">
-			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px; letter-spacing: 10px;">
+			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px; letter-spacing: 10px; font-size:0.8vw;">
 				안내
 				<div class="menu" style="letter-spacing: 0">
 					<a href="benefitInfo.panel" class="item">혜택 안내</a>
 			    	<a href="surveyGuide.panel" class="item">조사참여 가이드</a>
 				</div>
 			</div>
-			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px;">
+			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px; font-size:0.8vw;">
 		   		 서베이
 		   		 <div class="menu">
 			    	<a href="surveyList.panel" class="item">진행중인 설문조사</a>
@@ -46,7 +46,7 @@
 			    	<a href="panelSurveyList.panel" class="item">패널서베이</a>
 		    	</div>
 		  	</div>
-			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px;">
+			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px; font-size:0.8vw;">
 		   		 마이페이지
 		    	<div class="menu">
 			    	<a href="myInfo.panel" class="item">내 정보 관리</a>
@@ -54,7 +54,7 @@
 			    	<a href="panelDrop.panel" class="item">패널 탈퇴</a>
 		    	</div>
 		  	</div>
-			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; border-right: 1px solid #b4b4b4; height: 35px;">
+			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; border-right: 1px solid #b4b4b4; height: 35px; font-size:0.8vw;">
 		   		 고객센터
 		    	<div class="menu">
 			    	<a href="notice.panel" class="item">공지사항</a>
