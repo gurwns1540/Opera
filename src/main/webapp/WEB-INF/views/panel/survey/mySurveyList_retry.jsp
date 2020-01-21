@@ -42,13 +42,13 @@
 /* 여기까지 페이지제목 및 경로 영역 */
 .ui.tabular.menu .active.item {
 	width: 20%;
-	padding-left: 5%;
+	padding-left: 6%;
 	cursor: default;
 }
 
 .ui.tabular.menu .item {
 	width: 20%;
-	padding-left: 5%;
+	padding-left: 6%;
 }
 
 .searchArea {
@@ -124,6 +124,9 @@
 	border: none;
 	cursor: pointer;
 	font-size:9pt;
+}
+#disableBtn:hover,#overBtn:hover {
+	cursor:default;
 }
 
 /*페이징 css */
@@ -230,13 +233,13 @@
 								<td>84524</td>
 								<td>소비자 인식 조사</td>
 								<td>2020.01.10</td>
-								<td><button id="disableBtn">재참여불가</button></td>
+								<td><button id="disableBtn" disabled>재참여불가</button></td>
 							</tr>
 							<tr>
 								<td>84532</td>
 								<td>음료 선호도 조사</td>
 								<td>2020.01.15</td>
-								<td><button id="overBtn">기간만료</button></td>
+								<td><button id="overBtn" disabled>기간만료</button></td>
 							</tr>
 						<%-- </c:forEach> --%>
 							
