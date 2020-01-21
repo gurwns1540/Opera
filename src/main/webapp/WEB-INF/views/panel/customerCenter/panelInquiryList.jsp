@@ -144,9 +144,10 @@
                      <thead id="inquiryTheadArea">
                         <tr>
                            <th style="width: 10%;">문의번호</th>
-                           <th style="width: 50%;">문의제목</th>
+                           <th style="width: 20%;">카테고리</th>
+                           <th style="width: 40%;">문의제목</th>
                            <th style="width: 20%;">문의일자</th>
-                           <th style="width: 20%;">답변일자</th>
+                           <th style="width: 10%;">답변일자</th>
                            
                         </tr>
                      </thead>  <!-- #inquiryTheadArea end -->
@@ -154,7 +155,8 @@
                      <c:forEach begin="1" end="5" step="1">
                         <tr>
                            <td>84532</td>
-                           <td>스낵 선호도 조사</td>
+                           <td>리워드</td>
+                           <td>리워드 캐시아웃 관련 질문입니다. </td>
                            <td>2020.01.03</td>
                            <td>답변 대기</td>
                         </tr>
