@@ -246,7 +246,7 @@
 					<tr>
 						<td style="text-align: center; height: 30px;">제목</td>
 						<td>:</td>
-						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트용입니다</p></td>
+						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트입니다</p></td>
 					</tr>
 					<tr>
 						<td style="height: 175px; vertical-align: top; padding-top: 20px;">내용</td>
