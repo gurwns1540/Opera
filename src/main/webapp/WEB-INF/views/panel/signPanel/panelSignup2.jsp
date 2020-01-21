@@ -162,20 +162,20 @@ h4 {
 					<th colspan="2" align="center"><h4>주소</h4></th>
 					<td colspan="2">
 						<div class="ui input">
-							<input type="text" name="post" id="post" size="7px;">
+							<input type="text" name="post" id="post" size="7px;" readonly>
 						</div>
 						<div class="ui input">
-							<input type="text" name="address" id="address" size="22px;">
+							<input type="text" name="address" id="address" size="22px;" readonly>
 						</div>
-						<input type="hidden" name="userAddress" id="userAddress">
+						<input type="hidden" name="userAddress" id="userAddress" readonly>
 					</td>
-					<td><button class="ui blue button">찾기</button></td>
+					<td><input type="button" class="ui blue button" id="findAddress" value="찾기"></td>
 				</tr>
 				<tr>
 					<td colspan="2"></td>
 					<td colspan="2">
 						<div class="ui input">
-							<input type="text" name="detailAddress" id="detailAddress" size="35px;"> 
+							<input type="text" name="detailAddress" id="detailAddress" placeholder="상세주소를 입력해주세요." size="35px;"> 
 						</div>
 					</td>
 				</tr>
@@ -216,6 +216,19 @@ h4 {
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 	<script>
+	
+		$("#findAddress").on("click", function(){
+			daum.postcode.load(function(){
+		        new daum.Postcode({
+		            oncomplete: function(data) {
+		            	console.log(data.zonecode);
+		            	console.log(data);
+		               $("#post").val(data.zonecode);
+		               $("#address").val(data.address);
+		            }
+		        }).open();
+		    });
+		});
 		$('.ui.dropdown').dropdown();
 		var today = new Date();
 		var year = today.getFullYear();
