@@ -175,7 +175,7 @@ h4 {
 					<td colspan="2"></td>
 					<td colspan="2">
 						<div class="ui input">
-							<input type="text" name="detailAddress" id="detailAddress" size="35px;">
+							<input type="text" name="detailAddress" id="detailAddress" size="35px;"> 
 						</div>
 					</td>
 				</tr>
