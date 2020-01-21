@@ -42,13 +42,13 @@
 /* 여기까지 페이지제목 및 경로 영역 */
 .ui.tabular.menu .active.item {
 	width: 20%;
-	padding-left: 5%;
+	padding-left: 6%;
 	cursor: default;
 }
 
 .ui.tabular.menu .item {
 	width: 20%;
-	padding-left: 5%;
+	padding-left: 6%;
 }
 .searchArea {
 	margin-top:50px;
