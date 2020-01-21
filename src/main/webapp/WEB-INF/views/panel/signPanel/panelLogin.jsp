@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
+	<jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
 </head>
 <style>
 
@@ -85,11 +85,12 @@ td.leftTable.second {
 </style>
 <body>
 	<div class="wrap">
-		<%@ include file="/WEB-INF/views/panel/common/header.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
 		<section class="container">
 		<br />
 		
-		
+		<c:set var="massage" value="${ requestScope.msg }"/>
+		<h1>${ massage }</h1>
 			<table id="titleTable" height="10px;" width="99%;">
 				<tr>
 					<td id="menuTitle">로그인</td>
@@ -168,7 +169,7 @@ td.leftTable.second {
 			
 			<br />
 		</section>  <!-- container end -->
-		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
 </body>
 </html>

@@ -17,5 +17,4 @@ public interface PanelDao {
 
 	String selectEncPassword(SqlSessionTemplate sqlSession, PanelMember pm);
 
-
 }

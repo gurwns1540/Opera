@@ -11,6 +11,7 @@
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>
 		<mapper resource="mappers/corp-mapper.xml"/>
+		<mapper resource="mappers/member-mapper.xml"/>
 	</mappers>
 </configuration>
 

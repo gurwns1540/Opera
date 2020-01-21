@@ -47,7 +47,7 @@
 	</insert>
 	<insert id="insertPanelTable" parameterType="PanelMember">
 		INSERT INTO PANEL VALUES
-		(#{mno}, #{panelBirthday}, #{panelGender}, 'qw12', #{nominee}, '1', NULL, NULL)
+		(#{mno}, #{panelBirthday}, #{panelGender}, #{referPanelCode}, #{nominee}, 12, NULL, 1)
 	</insert>
 	
 	<select id="selectMno" parameterType="PanelMember" resultType="_int">

@@ -21,11 +21,8 @@ public class PanelMember {
 	private Date leaveDate;
 	private Date entDate;
 	private Date modifyDate;
-	private String year;
-	private String month;
-	private String day;
 	private String panelBirthday;
-	private char panelGender;
+	private String panelGender;
 	private String referPanelCode;
 	private String nominee;
 	private String panelLevel;
@@ -36,9 +33,9 @@ public class PanelMember {
 
 	public PanelMember(int mno, String userId, String userPwd, String userName, String post, String address,
 			String detailAddress, String userAddress, String phone1, String phone2, String phone3, String userPhone,
-			String userEmail, String userType, Date leaveDate, Date entDate, Date modifyDate, String year, String month,
-			String day, String panelBirthday, char panelGender, String referPanelCode, String nominee,
-			String panelLevel, String occupationNo, String withdrawAccount) {
+			String userEmail, String userType, Date leaveDate, Date entDate, Date modifyDate, String panelBirthday,
+			String panelGender, String referPanelCode, String nominee, String panelLevel, String occupationNo,
+			String withdrawAccount) {
 		super();
 		this.mno = mno;
 		this.userId = userId;
@@ -57,9 +54,6 @@ public class PanelMember {
 		this.leaveDate = leaveDate;
 		this.entDate = entDate;
 		this.modifyDate = modifyDate;
-		this.year = year;
-		this.month = month;
-		this.day = day;
 		this.panelBirthday = panelBirthday;
 		this.panelGender = panelGender;
 		this.referPanelCode = referPanelCode;
@@ -205,30 +199,6 @@ public class PanelMember {
 		this.modifyDate = modifyDate;
 	}
 
-	public String getYear() {
-		return year;
-	}
-
-	public void setYear(String year) {
-		this.year = year;
-	}
-
-	public String getMonth() {
-		return month;
-	}
-
-	public void setMonth(String month) {
-		this.month = month;
-	}
-
-	public String getDay() {
-		return day;
-	}
-
-	public void setDay(String day) {
-		this.day = day;
-	}
-
 	public String getPanelBirthday() {
 		return panelBirthday;
 	}
@@ -237,11 +207,11 @@ public class PanelMember {
 		this.panelBirthday = panelBirthday;
 	}
 
-	public char getPanelGender() {
+	public String getPanelGender() {
 		return panelGender;
 	}
 
-	public void setPanelGender(char panelGender) {
+	public void setPanelGender(String panelGender) {
 		this.panelGender = panelGender;
 	}
 
@@ -291,12 +261,11 @@ public class PanelMember {
 				+ ", post=" + post + ", address=" + address + ", detailAddress=" + detailAddress + ", userAddress="
 				+ userAddress + ", phone1=" + phone1 + ", phone2=" + phone2 + ", phone3=" + phone3 + ", userPhone="
 				+ userPhone + ", userEmail=" + userEmail + ", userType=" + userType + ", leaveDate=" + leaveDate
-				+ ", entDate=" + entDate + ", modifyDate=" + modifyDate + ", year=" + year + ", month=" + month
-				+ ", day=" + day + ", panelBirthday=" + panelBirthday + ", panelGender=" + panelGender
-				+ ", referPanelCode=" + referPanelCode + ", nominee=" + nominee + ", panelLevel=" + panelLevel
-				+ ", occupationNo=" + occupationNo + ", withdrawAccount=" + withdrawAccount + "]";
+				+ ", entDate=" + entDate + ", modifyDate=" + modifyDate + ", panelBirthday=" + panelBirthday
+				+ ", panelGender=" + panelGender + ", referPanelCode=" + referPanelCode + ", nominee=" + nominee
+				+ ", panelLevel=" + panelLevel + ", occupationNo=" + occupationNo + ", withdrawAccount="
+				+ withdrawAccount + "]";
 	}
-
 	
 }
 
