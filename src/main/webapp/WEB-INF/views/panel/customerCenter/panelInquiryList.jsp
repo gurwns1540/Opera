@@ -7,72 +7,92 @@
    <%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
-   #inquiryTableArea {
-      border-top: 1px solid #3C3C3C;
-      border-collapse: collapse;
-   }
-   #inquiryTheadArea {
-      background-color: #DBDBDB;      
-   }
-   #inquiryTheadArea>tr>th {
-      height: 25px;
-   }
-   #inquiryTbodyArea {
-      text-align: center;
-   }
-   #inquiryTbodyArea>tr {
-      border-top: 1px solid #C4C4C4;
-      border-bottom: 1px solid #C4C4C4;
-   }
-   #inquiryTbodyArea>tr>td {
-      height: 45px;
-   }
-   .ui.input {
-      height: 30px;
-   }
-   #searchBtn {
-      background-color: #00679A;
-      border-radius: 5px;
-      width: 65px;
-      height: 30px;
-      color: white;
-      border: none;
-      cursor: pointer;
-   }
-   #newInquiryBtn {
-      background-color: #00679A;
-      border-radius: 5px;
-      width: 120px;
-      height: 35px;
-      color: white;
-      border: none;
-      cursor: pointer;
-   }
-   /*페이징 css */
-   #pagingArea {
-      margin-top: 40px;
-      
-      /* 드래그 방지용 소스*/
-      -ms-user-select: none; 
-      -moz-user-select: -moz-none; 
-      -webkit-user-select: none; 
-      -khtml-user-select: none; 
-      user-select:none;
-      /* 드래그 방지용 소스*/
-   }
-   #pagingArea span {
-      margin-left: 5px;
-      margin-right: 5px;
-      font-size: 10pt;
-   }
+#inquiryTableArea {
+	border-top: 1px solid #3C3C3C;
+	border-collapse: collapse;
+}
 
-   #pagingArea span:hover {
-      margin-left: 5px;
-      margin-right: 5px;
-      font-size: 10pt;
-      cursor: pointer;
-   }
-   /* 페이징 css end */
+.newInquiryTableArea, .inquiryDetailTableArea {
+	border-collapse: collapse;
+	border: 1px solid #b4b4b4;
+	margin-left: auto !important;
+}
+
+.newInquiryTableArea>tbody>tr>td, .inquiryDetailTableArea>tbody>tr>td {
+	border-top: 1px solid #b4b4b4;
+	border-bottom: 1px solid #b4b4b4;
+	text-align: center;
+}
+
+#inquiryTheadArea {
+	background-color: #DBDBDB;
+}
+
+#inquiryTheadArea>tr>th {
+	height: 25px;
+}
+
+#inquiryTbodyArea {
+	text-align: center;
+}
+
+#inquiryTbodyArea>tr {
+	border-top: 1px solid #C4C4C4;
+	border-bottom: 1px solid #C4C4C4;
+}
+
+#inquiryTbodyArea>tr>td {
+	height: 45px;
+}
+
+.ui.input {
+	height: 30px;
+}
+
+#searchBtn {
+	background-color: #00679A;
+	border-radius: 5px;
+	width: 65px;
+	height: 30px;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+
+#newInquiryBtn {
+	background-color: #00679A;
+	border-radius: 5px;
+	width: 120px;
+	height: 35px;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+/*페이징 css */
+#pagingArea {
+	margin-top: 40px;
+	/* 드래그 방지용 소스*/
+	-ms-user-select: none;
+	-moz-user-select: -moz-none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+	/* 드래그 방지용 소스*/
+}
+
+#pagingArea span {
+	margin-left: 5px;
+	margin-right: 5px;
+	font-size: 10pt;
+}
+
+#pagingArea span:hover {
+	margin-left: 5px;
+	margin-right: 5px;
+	font-size: 10pt;
+	cursor: pointer;
+}
+/* 페이징 css end */
 </style>
 <body>
    <div class="wrap">
@@ -160,8 +180,8 @@
       </section>  <!-- container end -->
       <%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
    </div>  <!-- wrap end -->
-   <!-- modal Area -->
-	<div class="ui modal">
+
+	<div class="ui modal" id="newInquiryModal">
 		<i class="close icon"></i>
 		<div class="header">문의하기</div>
 		<div class="newInquiryArea" style="width: 90%; height: 510px;" align="center">
@@ -171,10 +191,10 @@
 						<td style="height: 50px;">구분</td>
 						<td>:</td>
 						<td>
-							<input type="radio" name="division" value="signup" checked="checked"/> 가입관련
-							<input type="radio" name="division" value="research" style="margin-left: 10%;"/> 조사관련
-							<input type="radio" name="division" value="point" style="margin-left: 10%;"/> 포인트관련
-							<input type="radio" name="division" value="etc" style="margin-left: 10%;"/> 기타
+							<input type="radio" name="division" id="signupRadioBtn" value="signup" checked="checked"/> <label for="signupRadioBtn">가입관련</label>
+							<input type="radio" name="division" id="researchRadioBtn" value="research" style="margin-left: 10%;"/> <label for="researchRadioBtn">조사관련</label>
+							<input type="radio" name="division" id="pointRadioBtn" value="point" style="margin-left: 10%;"/> <label for="pointRadioBtn">포인트관련</label>
+							<input type="radio" name="division" id="etcRadioBtn" value="etc" style="margin-left: 10%;"/> <label for="etcRadioBtn">기타</label>
 						</td>
 					</tr>
 					<tr>
@@ -192,18 +212,68 @@
 						<td style="vertical-align: top; padding-top: 20px;">:</td>
 						<td style="vertical-align: top; padding-top: 20px;"><textarea name="" id="" style="width: 90%; height: 90%; resize: none;"></textarea></td>
 					</tr>
-				</tbody>
-				<!-- newInquiryTbodyArea end -->
-			</table>
-			<!-- newInquiryTableArea end -->
-		</div>
-		<!-- newInquiryArea end -->
+				</tbody>  <!-- newInquiryTbodyArea end -->
+			</table>  <!-- newInquiryTableArea end -->
+		</div>  <!-- newInquiryArea end -->
 		<div class="actions">
 			<div class="ui positive right button">문의하기</div>
 			<div class="ui black deny button">취소하기</div>
-		</div>
-	</div>
-	<!-- modal Area end -->
+		</div>  <!-- #actions end -->
+	</div>  <!-- newInquiryModal end -->
+	
+	
+	<div class="ui modal" id="inquiryDetailModal">
+		<i class="close icon"></i>
+		<div class="header">문의내역</div>
+		<div class="inquiryDetailArea" style="width: 90%; height: 700px;" align="center">
+			<table class="inquiryDetailTableArea" style="width: inherit; height: inherit;">
+				<tbody id="inquiryDetailTbodyArea">
+					<tr>
+						<td style="height: 30px;">구분</td>
+						<td>:</td>
+						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트용입니다</p></td>
+					</tr>
+					<tr>
+						<td style="text-align: center; height: 30px;">문의번호</td>
+						<td>:</td>
+						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트용입니다</p></td>
+					</tr>
+					<tr>
+						<td style="text-align: center; height: 30px;">성명</td>
+						<td>:</td>
+						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트용입니다</p></td>
+					</tr>
+					<tr>
+						<td style="text-align: center; height: 30px;">제목</td>
+						<td>:</td>
+						<td><p id="detailDivision" style="text-align: left; margin-left: 5%;">테스트입니다</p></td>
+					</tr>
+					<tr>
+						<td style="height: 175px; vertical-align: top; padding-top: 20px;">내용</td>
+						<td style="vertical-align: top; padding-top: 20px;">:</td>
+						<td style="vertical-align: top; padding-top: 20px;">
+							<div name="" id="" style="width: 90%; height: 80%; margin-left: 5%; border: 1px solid #b4b4b4;" >테스트용입니다</div>
+							<div align="right" style="width: 90%;">
+								<b style="color: gray;">작성일자</b><br />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="height: 175px; vertical-align: top; padding-top: 20px;">답변</td>
+						<td style="vertical-align: top; padding-top: 20px;">:</td>
+						<td style="vertical-align: top; padding-top: 20px;"><div name="" id="" style="width: 90%; height: 80%; margin-left: 5%; border: 1px solid #b4b4b4;" >테스트용입니다</div></td>
+					</tr>
+				</tbody>  <!-- inquiryDetailTbodyArea end -->
+			</table>  <!-- inquiryDetailTableArea end -->
+		</div>  <!-- inquiryDetailArea end -->
+		<div class="actions">
+			<div class="ui positive right button">문의하기</div>
+			<div class="ui black deny button">취소하기</div>
+		</div>  <!-- #actions end -->
+	</div>  <!-- #inquiryDetailModal end -->
+
+
+
 
 	<script>
 		$("#inquiryTableArea>#inquiryTbodyArea>tr").hover(function() {
@@ -215,11 +285,12 @@
 		}).click(function() {
 			var tr = $(this);
 			var td = tr.children().eq(0).text();
-
+			
 			console.log(td);
+			$("#inquiryDetailModal").modal("show");
 		});
-		$("#goQuestion").click(function() {
-			$(".ui.modal").modal("show");
+		$("#newInquiryBtn").click(function() {
+			$("#newInquiryModal").modal("show");
 		});
 	</script>
 </body>
