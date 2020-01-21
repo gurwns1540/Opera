@@ -203,6 +203,9 @@
 			        <span>[다음]</span>
 			        <span>[마지막]</span>
 		     	</div>  <!-- #pagingArea end -->
+		     	<div class="btnArea" align="center">
+		     		<button>이전으로</button>
+		     	</div>  <!-- .btnArea end -->
 			</div>  <!-- .inquiryContentsArea end -->
 			
 			

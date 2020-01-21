@@ -6,41 +6,43 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
-#titleTable {
-	margin: 0 auto;
-	margin-top: 20px;
+.cashOutImgArea {
+	width: inherit;
+	height: 100px;
+	background-color: #98E5FD;
 }
-#menuTitle {
-	height: 30px;
-	width: 40%;
-	font-size: 16pt;
+.moneyResultArea {
+	width: inherit;
+	height: 50px;
+	background-color: #e5e5e5;
+	border-radius: 5px;
+}
+#resultTableArea {
+	width: 100%;
+	height: 100%;
+}
+.result {
+	font-size: 16px;
+}
+#resultName {
 	text-align: left;
-	vertical-align: bottom;
+	padding-left: 5%;
 	font-weight: bold;
-	color: #3D3D3D;
+	width: 40%;
 }
-#pagePath {
-	width: 60%;
+#resultMoney {
 	text-align: right;
-	vertical-align: bottom;
+	padding-right: 1%;
+	font-size: 20px;
+	color: orangered;
 	font-weight: bold;
+	width: 45%;
 }
-#depth1, #depth2, #depth3, #depth4 {
-	color: #494949;
+#resultMoneyKor {
+	text-align: left;
+	font-weight: bold;
+	width: 15%;
 }
-#depth1:hover, #depth2:hover, #depth3:hover {
-	color: #008499;
-	cursor: pointer;
-}
-.sectionLine {
-	padding-bottom:40px;
-}
-/* 여기까지 페이지제목 및 경로 영역 */
-
-
-
-
-
 </style>
 <body>
 	<div class="wrap">
@@ -70,8 +72,48 @@
 				<hr>
 			</div>
 			
-			
-			
+			<div class="contentsArea" style="width: 100%;">
+				<div><b>회원님의 리워드를 캐시아웃 신청하는 공간입니다.</b></div>
+				<br />
+				<div class="cashOutImgArea">
+				
+				</div>  <!-- .cashOutImgArea end -->
+				<br />
+				<hr />
+				<br />
+				<div class="cashOutArea">
+					<div><b>금액을 선택해주세요</b></div>
+					<br />
+					<div class="ui buttons moneyArea">
+						<button class="ui button active" value="10000">1만원</button>
+						<button class="ui button" value="20000">2만원</button>
+						<button class="ui button" value="30000">3만원</button>
+						<button class="ui button" value="40000">4만원</button>
+						<button class="ui button" value="50000">5만원</button>
+					</div>
+					<br /><br />
+					<div class="moneyResultArea">
+						<table id="resultTableArea">
+							<tr>
+								<td class="result" id="resultName">신청 금액</td>
+								<td class="result" id="resultMoney">10000</td>
+								<td class="result" id="resultMoneyKor">원</td>
+							</tr>
+						</table>
+					</div>  <!-- moneyResultArea end -->
+					<br /><br />
+					<div class="btnArea" align="center">
+						<button class="ui blue button">신청하기</button>
+					</div>
+				</div>  <!-- cashOutArea end -->
+			</div>  <!-- .contentsArea end -->
+			<script>
+				$(".moneyArea").children().click(function(){
+					$(".moneyArea").children().removeClass("active");
+					$(this).addClass("active");
+					$("#resultMoney").text($(this).val());
+				});
+			</script>
 		<br />
 		</section>  <!-- container end -->
 		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
