@@ -29,9 +29,6 @@ public class PanelController {
 		
 		pm.setReferPanelCode(referCode);
 		
-		pm.setUserPhone(pm.getPhone1() + "-" + pm.getPhone2() + "-" + pm.getPhone3());
-		pm.setUserAddress(pm.getPost() + "/" + pm.getAddress() + "/" + pm.getDetailAddress());
-		
 		String encPassword =passwordEncoder.encode(pm.getUserPwd());
 	    pm.setUserPwd(encPassword);
 		System.out.println(pm);

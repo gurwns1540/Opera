@@ -7,6 +7,9 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
 <script src="${ contextPath }/resources/js/rolldate.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> 
+
 <style>
 #joinform {
 	margin-top: 50px;
@@ -155,7 +158,18 @@ h4 {
 							<input type="text" name="phone3" id="tel3" style="width:80px;">
 						</div>
 						<input type="hidden" id="userPhone" name="userPhone">
-						<button class="ui blue button">인증하기</button>
+						<input type="button" class="ui blue button" id="phoneCertification" value="인증하기">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td colspan="3">
+						<div class="ui input">
+							<input type="hidden" name="phoneCode" id="phoneCode">
+						</div>
+						<input type="hidden" class="ui blue button" value="인증 확인" id="phoneCodeCertification">
+						<div style="font-size: 7pt; color: forestgreen; display: none; margin-left: 20px;" id="phoneOk">인증 완료</div>
+						<div style="font-size: 7pt; color: red; display: none; margin-left: 20px;" id="phoneNo">다시 입력해주세요</div>
 					</td>
 				</tr>
 				<tr>
@@ -246,7 +260,7 @@ h4 {
              	day : '일'
         	}
      	});
-		var inval_Arr = new Array(10).fill(false);
+		var inval_Arr = new Array(11).fill(false);
 		
 		
 		function duplicationIdCheck(){
@@ -351,6 +365,9 @@ h4 {
 		function validate() {
 			var msg = "입력한 정보들을 다시 한번 확인해주세요";
 			
+			if(inval_Arr[10] == false){
+				msg = "휴대폰 인증번호를 확인해 주세요!";
+			}
 			if(inval_Arr[9] == false){
 				msg = "이메일을 정확히 입력해주세요!";
 			}
@@ -447,6 +464,64 @@ h4 {
 			console.log(inval_Arr);
 			return false;
 		}
+	</script>
+	<script>
+		$("#phoneCertification").on("click", function(){
+			$("#phoneCode").prop("type", "text");
+			sendSms();
+		});
+		$("#phoneCodeCertification").on("click", function(){
+			$("#phoneCode").prop("type", "text");
+			phoneCheck();
+		});
+		
+		function sendSms() { 
+			var tel = $("#tel1").val() + $("#tel2").val() + $("#tel3").val();
+			$.ajax({ 
+				url: "sendSms.me", 
+				data: { receiver: tel }, 
+				type: "post", 
+				success: function(result) { 
+					if (result == "true") { 
+						Swal.fire(
+							'인증번호 전송 완료!',
+							'입력하신 번호로 인증번호를 전송하였습니다!',
+							'success'
+						) 
+						$("#phoneCodeCertification").prop("type", "button");
+					} else { 
+						Swal.fire(
+							'인증번호 전송 실패!',
+							'인증번호 전송을 실패하였습니다..',
+							'warning'
+						)  
+					} 
+				} 
+			}); 
+		} 
+		
+		function phoneCheck() { 
+			$.ajax({ 
+				url: "smsCheck.me", 
+				type: "post", 
+				data: { code: $("#phoneCode").val() }, 
+				success: function(result) { 
+					if (result == "ok") { 
+						$("#phoneCode").prop("disabled", true);
+						$("#phoneCodeCertification").prop("type", "hidden");
+						$("#phoneOk").css("display", "inline-block");
+						$("#phoneNo").css("display", "none");
+						inval_Arr[10] = true;
+					} else { 
+						$("#phoneCode").prop("disabled", false);
+						$("#phoneOk").css("display", "none");
+						$("#phoneNo").css("display", "inline-block");
+						inval_Arr[10] = false;
+					} 
+				} 
+			}); 
+		}
+		
 	</script>
 </body>
 </html>
