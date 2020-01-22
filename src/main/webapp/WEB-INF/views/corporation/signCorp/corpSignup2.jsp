@@ -18,7 +18,7 @@
 		border-right: 1.5px solid #B7B7B7;
 		width: 20%;
 		float: left;
-		height: 590px;
+		height: 950px;
 	}
 	#sidebarText {
 		width: fit-content;
@@ -48,16 +48,17 @@
 	}
 	#corpSignTable td {
 		font-size: 12px;
-		width: 70%;
+		width: 55%;
 		font-weight: normal;
-		border-bottom: 1px solid #C5C5C5;
+		border-bottom: 1px solid #F0F0F0;
 		height: 70px;
 	}
 	#corpSignTable th {
 		height: 70px;
-		width: 30%;
-		text-align: left;
-		border-bottom: 1px solid #C5C5C5;
+		width: 40%;
+    	text-align: left;
+    	border-bottom: 1px solid #F0F0F0;
+    	padding-left: 30px;
 	}
 	.ui.selection.dropdown {
 		min-width: 80px !important;
@@ -82,20 +83,6 @@
 				<div>회원 가입 완료</div>
 			</div>
 		</div>
-		<!-- 
-				private String userId;
-				private String userPwd;
-				private String userName;
-				private String userAddress;
-				private String userPhone;
-				private String userEmail;
-				private String userType;
-				private Date leaveDate;
-				private Date entDate;
-				private Date modifyDate;
-				private String companyName;
-				private String cRegistrationNumber;
-		 -->
 		<div id="mainBox">
 			<form action="corpSignup.me" method="post" onsubmit="return validate();">
 				<table id="corpSignTable">
@@ -145,34 +132,38 @@
 						</td>
 					</tr>
 					<tr>
-						<th>기업 명</th>
-						<td colspan="2">
+						<th style="border: 0">기업 명</th>
+						<td colspan="2" style="border: 0">
 							<div class="ui input">
-								<input type="text" name="companyName" id=companyName>
+								<input type="text" name="companyName" id=companyName style="width: 200px;"readonly>
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<th>사업자 등록 번호</th>
-						<td colspan="2">
+						<th style="border: 0;">사업자 등록 번호</th>
+						<td colspan="2" style="border: 0;">
 							<div class="ui input" style="width: 70px;margin-right: 10px;">
-								<input type="text" name="corpNum1" id="corpNum1">
+								<input type="text" name="corpNum1" id="corpNum1" readonly>
 							</div>
 							-
-							<div class="ui input" style="width: 30px; margin-left: 10px; margin-right: 10px;">
-								<input type="text" name="corpNum2" id="corpNum2">
+							<div class="ui input" style="width: 40px; margin-left: 10px; margin-right: 10px;">
+								<input type="text" name="corpNum2" id="corpNum2" readonly>
 							</div>
 							-
 							<div class="ui input" style=" margin-left: 10px; width: 150px;">
-								<input type="text" name="corpNum3" id="corpNum3">
+								<input type="text" name="corpNum3" id="corpNum3" readonly>
 							</div>
-							<button class="ui blue button" style="margin-left: 10px;"onclick="return duplicationIdCheck();">사진 업로드</button>
+							<input type="button" class="ui blue button" id="uploadCorpPicture" style="margin-left: 10px;" value="사진 업로드">
 							<input type="hidden" name="cRegistrationNumber" id="cRegistrationNumber">
 						</td>
 					</tr>
 					<tr>
-						<th colspan="1" ><h4>담당자 전화</h4></th>
-						<td colspan="2">
+						<th colspan="1" style="height: 10px;"></th>
+						<td colspan="2" style="height: 10px;"><span style="font-size: 7pt; color: gray;">*사진 업로드 버튼을 클릭하여 사업자 등록증을 등록해주세요</span></td>
+					</tr>
+					<tr>
+						<th colspan="1" style="border: 0;"><h4>담당자 전화</h4></th>
+						<td colspan="2" style="border: 0;">
 							<div class="ui selection dropdown" style="margin-right: 10px;">
 								<input type="hidden" name="phone1" id="tel1">
 								<i class="dropdown icon"></i>
@@ -198,18 +189,29 @@
 						</td>
 					</tr>
 					<tr>
-						<th><h4>소재지</h4></th>
-						<td>
+						<th colspan="1" style="height: 10px;"></th>
+						<td colspan="2" style="height: 10px;">
+							<div class="ui input">
+								<input type="hidden" name="phoneCode" id="phoneCode">
+							</div>
+							<input type="hidden" class="ui blue button" value="인증 확인" id="phoneCodeCertification">
+							<div style="font-size: 7pt; color: forestgreen; display: none; margin-left: 20px;" id="phoneOk">인증 완료</div>
+							<div style="font-size: 7pt; color: red; display: none; margin-left: 20px;" id="phoneNo">다시 입력해주세요</div>
+						</td>
+					</tr>
+					<tr>
+						<th style="border: 0;"><h4>소재지</h4></th>
+						<td style="border: 0;">
 							<div class="ui input">
 								<input type="text" name="post" id="post" size="7px;" readonly>
 							</div>
 							<div class="ui input">
-								<input type="text" name="address" id="address" size="22px;" style="margin-left: 10px;" readonly>
+								<input type="text" name="address" id="address" size="30px;" style="margin-left: 10px;" readonly>
 							</div>
 							<input type="hidden" name="userAddress" id="userAddress" style="margin-left: 15px;" readonly>
-							<input type="button" class="ui blue button" id="findAddress" style="margin-left: 15px;" value="찾기">
+							<input type="button" class="ui blue button" id="findAddress" style="margin-left: 5px;" value="찾기">
 						</td>
-						<td></td>
+						<td style="border: 0;"></td>
 					</tr>
 					<tr>
 						<th></th>
@@ -233,15 +235,54 @@
 						<td colspan="2" style="height: 10px;"><span id="emailCheckText" style="font-size: 7pt;"></span></td>
 					</tr>
 				</table>
+				<div style="width: fit-content; margin: 30px auto;">
+					<input type="submit" class="ui blue button" value="회원가입">
+				</div>
 			</form>
-			<div style="width: fit-content; margin: 30px auto;">
-				<input type="submit" class="ui blue button" value="회원가입">
-			</div>
+			<form id="fileUpload" method="post" enctype="multipart/form-data" action="">
+				<input type="file" id="corpPicture" style="display: none;">
+			</form>
 		</div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 		<script>
 			$('.ui.dropdown').dropdown();
+			$("#uploadCorpPicture").on("click", function(){
+				$("#corpPicture").click();
+			});
+			
+			$("#corpPicture").on("change", function(){
+			 	var formData = new FormData();
+	            formData.append('file',$("#corpPicture")[0].files[0]);
+		         
+               	$.ajax({
+					url: 'https://ocr.api.friday24.com/business-license',
+					enctype: 'multipart/form-data',
+					processData: false,
+					contentType: false,
+					data: formData,
+					type: 'post',
+					beforeSend : function(xhr){
+					    xhr.setRequestHeader("Authorization", "Bearer 7HztRogcOLqkHUYC3a5F");
+					  /*   xhr.setRequestHeader("Content-Type", "multipart/form-data"); */
+					},
+					success:function(data){
+						$("#companyName").val(data.license.corpName);
+						var bizNum = data.license.bizNum;
+						var corpNum1 = bizNum.substr(0, 3);
+						var corpNum2 = bizNum.substr(3, 2);
+						var corpNum3 = bizNum.substr(5, 5);
+						
+						$("#cRegistrationNumber").val(bizNum);
+						$("#corpNum1").val(corpNum1);
+						$("#corpNum2").val(corpNum2);
+						$("#corpNum3").val(corpNum3);
+					},
+					error:function(status){
+						//console.log(status); 
+					}
+				});
+			});
 			
 			$("#findAddress").on("click", function(){
 				daum.postcode.load(function(){
@@ -376,7 +417,7 @@
 					inval_Arr[7] = true;
 				}else {
 					inval_Arr[7] = false;
-					msg = "주소를 입력해주세요!";
+					msg = "소재지를 입력해주세요!";
 				}
 				
 				if(tel2J.test($("#tel2").val()) && tel3J.test($("#tel3").val())){
@@ -386,33 +427,27 @@
 					msg = "올바른 전화번호를 입력해주세요!";
 				}
 				
-				if($("#panelGender").val() != ""){
+				if($("#corpNum1").val() != "" && $("#corpNum2").val() != "" && $("#corpNum3").val() != ""){
 					inval_Arr[5] = true;
 				}else {
 					inval_Arr[5] = false;
-					msg = "성별을 선택해주세요!";
+					msg = "사업자 등록증 이미지를 등록해주세요!";
 				}
 				
-				
-				if($("#panelBirthday").val() != ""){
+				if($("#companyName").val() != ""){
 					inval_Arr[4] = true;
 				}else {
 					inval_Arr[4] = false;
-					msg = "생년월일을 입력해주세요!";
+					msg = "사업자 등록증 이미지를 등록해주세요!";
 				}
 				
 				if($("#userName").val() != ""){
 					inval_Arr[3] = true;
 				}else {
 					inval_Arr[3] = false;
-					msg = "이름을 입력해주세요!";
+					msg = "담당자 명을 입력해주세요!";
 				}
-				if($("#userName").val() != ""){
-					inval_Arr[3] = true;
-				}else {
-					inval_Arr[3] = false;
-					msg = "이름을 입력해주세요!";
-				}
+				
 				if(inval_Arr[2] == false){
 					msg = "비밀번호가 일치하지 않습니다!";
 				}
@@ -460,8 +495,66 @@
 			}
 		</script>
 	</div>
-	<div style="margin-top: 120px;">
+	<div style="margin-top: 185px;">
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
+	<script>
+		$("#phoneCertification").on("click", function(){
+			$("#phoneCode").prop("type", "text");
+			sendSms();
+		});
+		$("#phoneCodeCertification").on("click", function(){
+			$("#phoneCode").prop("type", "text");
+			phoneCheck();
+		});
+		
+		function sendSms() { 
+			var tel = $("#tel1").val() + $("#tel2").val() + $("#tel3").val();
+			$.ajax({ 
+				url: "sendSms.me", 
+				data: { receiver: tel }, 
+				type: "post", 
+				success: function(result) { 
+					if (result == "true") { 
+						Swal.fire(
+							'인증번호 전송 완료!',
+							'입력하신 번호로 인증번호를 전송하였습니다!',
+							'success'
+						) 
+						$("#phoneCodeCertification").prop("type", "button");
+					} else { 
+						Swal.fire(
+							'인증번호 전송 실패!',
+							'인증번호 전송을 실패하였습니다..',
+							'warning'
+						)  
+					} 
+				} 
+			}); 
+		} 
+		
+		function phoneCheck() { 
+			$.ajax({ 
+				url: "smsCheck.me", 
+				type: "post", 
+				data: { code: $("#phoneCode").val() }, 
+				success: function(result) { 
+					if (result == "ok") { 
+						$("#phoneCode").prop("disabled", true);
+						$("#phoneCodeCertification").prop("type", "hidden");
+						$("#phoneOk").css("display", "inline-block");
+						$("#phoneNo").css("display", "none");
+						inval_Arr[10] = true;
+					} else { 
+						$("#phoneCode").prop("disabled", false);
+						$("#phoneOk").css("display", "none");
+						$("#phoneNo").css("display", "inline-block");
+						inval_Arr[10] = false;
+					} 
+				} 
+			}); 
+		}
+		
+	</script>
 </body>
 </html>

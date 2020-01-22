@@ -179,7 +179,7 @@ h4 {
 							<input type="text" name="post" id="post" size="7px;" readonly>
 						</div>
 						<div class="ui input">
-							<input type="text" name="address" id="address" size="22px;" readonly>
+							<input type="text" name="address" id="address" size="30px;" readonly>
 						</div>
 						<input type="hidden" name="userAddress" id="userAddress" readonly>
 					</td>
@@ -413,12 +413,7 @@ h4 {
 				inval_Arr[3] = false;
 				msg = "이름을 입력해주세요!";
 			}
-			if($("#userName").val() != ""){
-				inval_Arr[3] = true;
-			}else {
-				inval_Arr[3] = false;
-				msg = "이름을 입력해주세요!";
-			}
+
 			if(inval_Arr[2] == false){
 				msg = "비밀번호가 일치하지 않습니다!";
 			}
