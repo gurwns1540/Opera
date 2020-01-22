@@ -1,5 +1,8 @@
 package com.opera.survway.panel.model.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.exception.LoginException;
@@ -13,5 +16,7 @@ public interface PanelService {
 	int insertMember(PanelMember pm) throws LoginException;
 
 	int insertInquiry(Inquiry i);
+
+	List<Object> selectAllMyInquiry(PanelMember pm);
 
 }

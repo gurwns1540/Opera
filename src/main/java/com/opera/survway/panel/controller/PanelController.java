@@ -1,5 +1,6 @@
 package com.opera.survway.panel.controller;
 
+import java.util.List;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -14,6 +15,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -107,6 +109,26 @@ public class PanelController {
 		int result = ps.insertInquiry(i);
 		
 		model.addAttribute("success",result);
+		
+		return "customerCenter/panelInquiryList";
+	}
+	
+	//1:1문의 리스트 보기
+	@GetMapping("panelInquiryList.panel")
+	public String showMyInquiryList(Model model, PanelMember pm) {
+		
+		//System.out.println("1");
+		List list = (List) ps.selectAllMyInquiry(pm);
+		
+		System.out.println("listSize"+list.size());
+		
+		for(int i=0; i<list.size(); i++) {
+			
+			System.out.println("controller"+list.get(i).toString());
+			
+		}
+		
+		model.addAttribute("list",list);
 		
 		return "customerCenter/panelInquiryList";
 	}
