@@ -90,7 +90,9 @@ h4{
 
 								</div>
 								<div class="content">
-									<p class="transition hidden">이용약관 설명서</p>
+									<p class="transition hidden">
+										<jsp:include page="/WEB-INF/views/panel/signPanel/provision.jsp"></jsp:include>
+									</p>
 								</div>
 
 							</div> <!-- accordion1 end -->
@@ -131,7 +133,9 @@ h4{
 
 									</div>
 									<div class="content">
-										<p class="transition hidden">이용약관 설명서</p>
+										<p class="transition hidden">
+											<jsp:include page="/WEB-INF/views/panel/signPanel/personalInfo1.jsp"></jsp:include>
+										</p>
 									</div>
 									<div class="title">
 										<label for="agree3" style="color: black"><input
@@ -140,7 +144,9 @@ h4{
 											<span class="contents3">내용보기<i class="angle down icon"></i></span>
 									</div>
 									<div class="content">
-										<p class="transition hidden">이용약관 설명서</p>
+										<p class="transition hidden">
+											<jsp:include page="/WEB-INF/views/panel/signPanel/personalInfo2.jsp"></jsp:include>
+										</p>
 									</div>
 
 									<div class="title">
@@ -151,7 +157,9 @@ h4{
 
 									</div>
 									<div class="content">
-										<p class="transition hidden">이용약관 설명서</p>
+										<p class="transition hidden">
+											<jsp:include page="/WEB-INF/views/panel/signPanel/personalInfo3.jsp"></jsp:include>
+										</p>
 									</div>
 
 								</div>
@@ -184,7 +192,9 @@ h4{
 
 								</div>
 								<div class="content">
-									<p class="transition hidden">이용약관 설명서</p>
+									<p class="transition hidden">
+										<jsp:include page="/WEB-INF/views/panel/signPanel/personalInfoPeriod.jsp"></jsp:include>
+									</p>
 								</div>
 
 							</div>
