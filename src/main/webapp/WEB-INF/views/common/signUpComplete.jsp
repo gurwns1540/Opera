@@ -56,8 +56,8 @@ h4 {
 					<td><br></td>
 				</tr>
 				<tr>
-					<td colspan="6" align="center"><h2>이메일을 발송하였습니다.<br></h2>
-													<h4 style="color: #4A4A4A;">이메일을 확인하여 정회원 인증을 해주시면 로그인이 가능합니다!</h4></td>
+					<td colspan="6" align="center"><h2>정회원 인증이 완료되었습니다.<br></h2>
+													<h4 style="color: #4A4A4A;">로그인을 하여 설문조사를 진행해주세요!</h4></td>
 				</tr>
 				<tr>
 					<td><br></td>
@@ -67,7 +67,8 @@ h4 {
 				</tr>
 				<tr>
 					<td colspan="6" align="center">
-						<button class="ui blue button" onclick="location.href='panelMain.panel'">메인으로</button>
+						<button class="ui blue button">로그인</button>
+						<button class="ui blue button">메인으로</button>
 					</td>
 				</tr>
 			</table> <!-- completetable end -->

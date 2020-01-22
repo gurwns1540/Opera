@@ -66,7 +66,7 @@ public class PanelController {
 			String setfrom = "yychani94@gmail.com";         
 		    String tomail  = pm.getUserEmail();     // 받는 사람 이메일
 		    String title   = "Survway 정회원 인증메일입니다.";      // 제목
-		    String content = "<p> 서브웨이 리서치에 가입해 주신 것을 진심으로 감사드립니다.<br> 아래의 버튼을 클릭하시면 정회원 인증이 되어 설문조사에 참여를 하실 수 있습니다. </p> <div onclick=\"location.href='localhost:8001/survway/panelSignup.panel'\" style=\"width: 370px; height: 70px; border: 0;  background: #00679A; color: white; font-size: 20pt; margin-top: 10px;\">정회원 인증하기</div>";    // 내용
+		    String content = "<form action='http://" + svrIp + ":8001/survway/signupCertification.me' method='post'> <p> 서브웨이 리서치에 가입해 주신 것을 진심으로 감사드립니다.<br> 아래의 버튼을 클릭하시면 정회원 인증이 되어 설문조사에 참여를 하실 수 있습니다. </p> <input type='hidden' name='userId' value='" + pm.getUserId() + "'><button type='submit' style='width: 370px; cursor: pointer; height: 70px; border: 0;  background: #00679A; color: white; font-size: 20pt; margin-top: 10px;'>정회원 인증하기</button> </form>";    // 내용
 		   
 		    System.out.println(content);
 		    try {
