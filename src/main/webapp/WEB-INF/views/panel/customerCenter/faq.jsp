@@ -7,29 +7,29 @@
 <%@ include file="/WEB-INF/views/panel/common/head.jsp"%>
 </head>
 <style>
-#inquiryTableArea {
+#faqTableArea {
 	border-top: 1px solid #3C3C3C;
 	border-collapse: collapse;
 }
 
-#inquiryTheadArea {
+#faqTheadArea {
 	background-color: #DBDBDB;
 }
 
-#inquiryTheadArea>tr>th {
+#faqTheadArea>tr>th {
 	height: 25px;
 }
 
-#inquiryTbodyArea {
+#faqTbodyArea {
 	text-align: center;
 }
 
-#inquiryTbodyArea>tr {
+#faqTbodyArea>tr {
 	border-top: 1px solid #C4C4C4;
 	border-bottom: 1px solid #C4C4C4;
 }
 
-#inquiryTbodyArea>tr>td {
+#faqTbodyArea>tr>td {
 	height: 45px;
 }
 
@@ -95,8 +95,8 @@
 				<hr>
 			</div>
 
-			<div class="inquiryContentsArea" style="width: 100%;">
-				<div class="inquirySearchArea" align="right">
+			<div class="faqContentsArea" style="width: 100%;">
+				<div class="faqSearchArea" align="right">
 					<table>
 						<tr>
 							<td>
@@ -115,11 +115,11 @@
 						</tr>
 					</table>
 				</div>
-				<!-- inquirySearchArea end -->
+				<!-- faqSearchArea end -->
 				<br />
-				<div class="inquiryArea" style="width: inherit;">
-					<table id="inquiryTableArea" align="center" style="width: inherit;">
-						<thead id="inquiryTheadArea">
+				<div class="faqArea ui styled fluid accordion" style="width: inherit;">
+					<table id="faqTableArea" align="center" style="width: inherit;">
+						<thead id="faqTheadArea">
 							<tr>
 								<th style="width: 10%;">글 번호</th>
 								<th style="width: 60%;">제목</th>
@@ -128,23 +128,43 @@
 
 							</tr>
 						</thead>
-						<!-- #inquiryTheadArea end -->
-						<tbody id="inquiryTbodyArea">
+						<!-- #faqTheadArea end -->
+						<tbody id="faqTbodyArea">
 							<c:forEach begin="1" end="5" step="1">
-								<tr>
+								<tr class="title"  style="color:black !important; font-weight:normal;">
 									<td>10</td>
 									<td>리워드 기준이 뭔가요?</td>
 									<td>1</td>									
 									<td>2020.01.03</td>
 								</tr>
+								<tr class="content">
+									<td colspan="4"><span style="text-align: center;">
+										얼마나 오아이스도 인간은 대고, 미묘한 뜨고, 설산에서 곳으로 사막이다. 않는 청춘의 안고, 그와 끓는 밥을
+										되려니와, 부패뿐이다. 것은 그들은 영원히 굳세게 영락과 속에서 때에, 황금시대다. 같이, 장식하는 밝은
+										거선의 부패뿐이다. 새가 인생의 대고, 인간에 인생을 아니더면, 따뜻한 힘있다. 위하여, 사람은 미묘한 품에
+										풍부하게 공자는 못하다 사막이다. 두기 쓸쓸한 물방아 때까지 가치를 것은 우리의 원대하고, 있는가? 이 온갖
+										피에 위하여 행복스럽고 뜨거운지라, 끓는 없으면, 보라. 천지는 노년에게서 인간의 소리다.이것은 쓸쓸한 피고,
+										발휘하기 오직 사막이다. 있음으로써 주며, 군영과 것은 같이, 가치를 할지니, 철환하였는가? 갑 같이 귀는
+										긴지라 심장의 인간은 피가 것은 쓸쓸하랴? 있는 타오르고 바이며, 사막이다. 내는 이 하였으며, 위하여 물방아
+										위하여 같이, 품었기 뿐이다. 그러므로 지혜는 고행을 길을 생생하며, 청춘의 가지에 크고 봄바람이다. 풍부하게
+										주며, 두손을 시들어 소담스러운 청춘에서만 내려온 피가 피어나기 칼이다. 트고, 아름답고 영락과 우리는
+										듣는다. 기관과 반짝이는 청춘을 노년에게서 대중을 청춘의 밥을 있다. 그러므로 피어나기 뜨거운지라, 바로 피가
+										것이다. 이 꽃이 기관과 사는가 노래하며 것이다. 만천하의 풍부하게 주며, 끝에 있으며, 바이며, 인류의
+										위하여서. 원질이 얼마나 스며들어 얼마나 그들은 수 쓸쓸하랴? 기쁘며, 풀이 그러므로 예수는 심장의 그러므로
+										할지니, 때문이다. 같은 별과 구하지 있음으로써 것이다. 공자는 튼튼하며, 그들은 청춘의 있는 곧 무엇을
+										평화스러운 있을 봄바람이다. 구하지 역사를 얼마나 남는 되려니와, 가장 것은 있으랴? 남는 뛰노는 천고에
+										때문이다. 되는 곳으로 아니더면, 피다. 보이는 타오르고 보이는 위하여 황금시대다. 길을 현저하게 이것은 이상
+										때문이다. 소금이라 우리 맺어, 것은 이것이다. </span>
+									</td>
+								</tr>
 							</c:forEach>
 
 						</tbody>
-						<!-- #inquiryTbodyArea end -->
+						<!-- #faqTbodyArea end -->
 					</table>
-					<!-- #inquiryTableArea end -->
+					<!-- #faqTableArea end -->
 				</div>
-				<!-- .inquiryArea end -->
+				<!-- .faqArea end -->
 				<div id="pagingArea" align="center" style="margin-top: 50px;">
 					<span>[처음]</span> <span>[이전]</span>
 					<c:forEach var="i" begin="1" end="5">
@@ -154,7 +174,7 @@
 				</div>
 				<!-- #pagingArea end -->
 			</div>
-			<!-- .inquiryContentsArea end -->
+			<!-- .faqContentsArea end -->
 			<br />
 		</section>
 		<!-- container end -->
@@ -163,7 +183,7 @@
 	<!-- wrap end -->
 	
 	<script>
-		
+		$('.ui.accordion').accordion();
 	</script>
 </body>
 </html>
