@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.GenerateCertPassword;
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.inquiry.model.service.InquiryService;
 import com.opera.survway.panel.model.service.PanelService;
 import com.opera.survway.panel.model.vo.PanelMember;
 
@@ -45,7 +46,6 @@ public class PanelController {
 	}
 	
 
-	
 	
 }
 
