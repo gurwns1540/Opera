@@ -189,8 +189,8 @@
 	<div class="ui modal" id="newInquiryModal">
 		<i class="close icon"></i>
 		<div class="header">문의하기</div>
+		<form action="inquirywrite.panel" method="post" id="inquery">
 		<div class="newInquiryArea" style="width: 90%; height: 510px;" align="center">
-		<form action="inquirywrite.inquiry" method="post">
 			<table class="newInquiryTableArea" style="width: inherit; height: inherit;">
 				<tbody id="newInquiryTbodyArea">
 					<tr>
@@ -230,10 +230,10 @@
 					</tr>
 				</tbody>  <!-- newInquiryTbodyArea end -->
 			</table>  <!-- newInquiryTableArea end -->
-			</form>	  <!-- form end -->
 		</div>  <!-- newInquiryArea end -->
+			</form>	  <!-- form end -->
 		<div class="actions">
-			<div class="ui positive right button">문의하기</div>
+			<div class="ui positive right button" id="question">문의하기</div>
 			<div class="ui black deny button">취소하기</div>
 		</div>  <!-- #actions end -->
 	</div>  <!-- newInquiryModal end -->
@@ -317,6 +317,10 @@
 		$("#newInquiryBtn").click(function() {
 			$("#newInquiryModal").modal("show");
 		});
+
+		 $("#question").click(function(){
+			$("#inquery").submit();
+		}); 
 		var isActivated = "false";
 		$('.ui.dropdown').mouseenter(function(){
 			if(isActivated == "false"){
@@ -324,8 +328,6 @@
 			}
 			isActivated = "true";
 		})
-		
-		
 	</script>
 </body>
 </html>

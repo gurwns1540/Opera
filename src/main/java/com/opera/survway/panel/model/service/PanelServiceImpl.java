@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.dao.PanelDao;
+import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.PanelMember;
 
 @Service
@@ -68,6 +69,23 @@ public class PanelServiceImpl implements PanelService {
 		}else {
 			return 0;
 		}
+	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 1. 22.
+	 * @ModifyDate	:2020. 1. 22.
+	 * @Description	: 1:1문의 등록
+	 */
+	@Override
+	public int insertInquiry(Inquiry i) {
+		int result =0;
+		
+		result=pd.insertInquiry(sqlSession, i);
+		
+		
+		
+		return result;
 	}
 
 }

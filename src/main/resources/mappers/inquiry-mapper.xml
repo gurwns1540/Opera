@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Inquiry">
+	
+	<resultMap type="com.opera.survway.panel.model.vo.Inquiry" id="InquiryResultSet">
+		<id property="inquiryNo" column="INQUIRY_NO "/>
+		<result property="inquiryTitle" column="INQUIRY_TITLE"/>
+		<result property="inquiryContext" column="INQUIRY_CONTEXT"/>
+		<result property="inquiryAnswer" column="INQUIRY_ANSWER"/>
+		<result property="mno" column="MNO"/>
+		<result property="inquiryCategoryNo" column="INQUIRYCATEGORY_NO"/>
+		<result property="inquiryDate" column="INQUIRY_DATE"/>
+		<result property="inquiryAnswerDate" column="INQUIRY_ANSWERDATE"/>
+	</resultMap>
+	
+	
+	<select id="loginCheck" resultMap="corpMemberResultSet" parameterType="Inquiry">
+		SELECT *
+		FROM MEMBER M
+		JOIN CORP C ON (M.MNO = C.MNO)
+		WHERE USER_ID = #{userId}
+		AND USER_PWD = #{userPwd}
+		AND LEAVE_DATE IS NULL
+	</select>
+	
+	
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
