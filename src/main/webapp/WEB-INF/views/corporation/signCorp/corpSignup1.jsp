@@ -102,7 +102,7 @@
 					</div>
 				</div>
 				<div class="panel">
-					<div class="heading">05. 개인정보를 파기 또는 분리 저장 및 관리 기간 약관</div>
+					<div class="heading">05. 개인정보 파기 또는 분리저장 및 관리기간 약관</div>
 					<div class="content">
 						<div class="innerContent">
 							<jsp:include page="/WEB-INF/views/panel/signPanel/personalInfoPeriod.jsp"></jsp:include>

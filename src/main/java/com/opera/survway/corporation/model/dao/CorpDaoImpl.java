@@ -21,4 +21,24 @@ public class CorpDaoImpl implements CorpDao {
 		return loginUser;
 	}
 
+	@Override
+	public int insertMemberTable(SqlSessionTemplate sqlSession, CorpMember cm) {
+		return sqlSession.insert("Corp.insertMember", cm);
+	}
+
+	@Override
+	public int insertCorpTable(SqlSessionTemplate sqlSession, CorpMember cm) {
+		return sqlSession.insert("Corp.insertCorp", cm);
+	}
+
+	@Override
+	public String selectEncPassword(SqlSessionTemplate sqlSession, CorpMember cm) {
+		return sqlSession.selectOne("Corp.selectPwd", cm.getUserId());
+	}
+
+	@Override
+	public int insertTermsCorp(SqlSessionTemplate sqlSession, CorpMember cm) {
+		return sqlSession.insert("Corp.insertTermsCorp", cm);
+	}
+
 }

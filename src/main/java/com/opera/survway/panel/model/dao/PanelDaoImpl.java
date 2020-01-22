@@ -49,4 +49,9 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.insert("Inquiry.insert", i);
 	}
 
+	@Override
+	public int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.insert("Panel.insertTermsPanel", pm);
+	}
+
 }

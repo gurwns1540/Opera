@@ -20,4 +20,6 @@ public interface PanelDao {
 
 	int insertInquiry(SqlSessionTemplate sqlSession, Inquiry i);
 
+	int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm);
+
 }

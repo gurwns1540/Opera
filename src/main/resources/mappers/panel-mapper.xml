@@ -30,7 +30,7 @@
 	<select id="loginCheck" resultMap="panelMemberResultSet" parameterType="PanelMember">
 		SELECT *
 		FROM MEMBER M
-		JOIN PANEL P ON (M.MNO = P.MNO)
+		LEFT JOIN PANEL P ON (M.MNO = P.MNO)
 		WHERE USER_ID = #{userId}
 		AND LEAVE_DATE IS NULL
 		AND CERTIFICATION = 'Y'
@@ -54,6 +54,16 @@
 	<select id="selectMno" parameterType="PanelMember" resultType="_int">
 		SELECT MNO FROM MEMBER WHERE USER_ID = #{userId}
 	</select>
+	
+	<insert id="insertTermsPanel" parameterType="PanelMember">
+		INSERT ALL
+			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 1, 'Y')
+			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 2, 'Y')
+			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 3, 'Y')
+			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 4, 'Y')
+			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 5, 'Y')
+		SELECT * FROM DUAL
+	</insert>
 	
 </mapper>
 

@@ -125,16 +125,16 @@
 	}
 	#AdminArea {
 		width: 250px;
-		height: 90px;
-		background: #00344F;
-		padding-top: 15px;
+	    height: 80px;
+	    background: #00344F;
+	    padding-top: 7px;
 	}
 	
 	#AdminImg {
-		width: 63px;
-		height: 63px;
+		width: 60px;
+		height: 60px;
 		border-radius: 50px;
-		background: white;
+		background: none;
 		margin-right: 15px;
 	}
 	
@@ -247,8 +247,8 @@
 		<div id="AdminArea">
 			<table align="center">
 				<tr>
-					<td><div id="AdminImg"></div></td>
-					<td><div id="AdminInfo">오수민<button id="logoutBtn" onclick="location.href='logout.me'">로그아웃</button>
+					<td><div id="AdminImg"><img src="${ contextPath }/resources/images/administrator.png" style="width: 60px;"></div></td>
+					<td><div id="AdminInfo">${ sessionScope.loginUser.userName }<button id="logoutBtn" onclick="location.href='logout.me'">로그아웃</button>
 						<br>as Administrator</div></td>
 				</tr>
 			</table>
@@ -293,7 +293,10 @@
 			</li>
 		</ul>
 	</div>
-	
+	<c:if test="${ empty sessionScope.loginUser or sessionScope.loginUser.userType ne '관리자' }">
+		<c:set var="msg" value="관리자만 접근 가능합니다." scope="request"/>
+		<jsp:forward page="/WEB-INF/views/common/errorPage.jsp"/>
+	</c:if>
 	<script>
 		$(function(){
 			$("#accordian h3").click(function(){

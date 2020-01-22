@@ -203,11 +203,20 @@
 					</td>
 				</tr>
 			</table>
-			
+			<c:if test="${ !empty param.message }">
+				<script>
+					Swal.fire(
+					      '로그아웃',
+					      '${ param.message }',
+					      'success'
+					);
+				</script>
+			</c:if>
 			
 		</section>  <!-- container end -->
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
+	
 </body>
 </html>
 
