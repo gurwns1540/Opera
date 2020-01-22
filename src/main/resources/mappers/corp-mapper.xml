@@ -27,14 +27,39 @@
 		FROM MEMBER M
 		JOIN CORP C ON (M.MNO = C.MNO)
 		WHERE USER_ID = #{userId}
-		AND USER_PWD = #{userPwd}
 		AND LEAVE_DATE IS NULL
+		AND CERTIFICATION = 'Y'
 	</select>
 	
+	<insert id="insertMember" parameterType="CorpMember">
+		INSERT INTO MEMBER VALUES
+		(SEQ_MNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{userAddress}, #{userPhone}, #{userEmail}, '기업', NULL, SYSDATE, SYSDATE, 'N')
+		
+		<selectKey keyProperty="mno" resultType="_int" order="AFTER">
+			SELECT SEQ_MNO.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
 	
+	<insert id="insertCorp" parameterType="CorpMember">
+		INSERT INTO CORP VALUES
+		(#{mno}, #{companyName}, #{cRegistrationNumber})
+	</insert>
 	
+	<select id="selectPwd" parameterType="string" resultType="string">
+		SELECT USER_PWD
+		FROM MEMBER
+		WHERE USER_ID = #{userId}
+	</select>
 	
-	
+	<insert id="insertTermsCorp" parameterType="CorpMember">
+		INSERT ALL
+			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 1, 'Y')
+			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 2, 'Y')
+			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 3, 'Y')
+			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 4, 'Y')
+			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 5, 'Y')
+		SELECT * FROM DUAL
+	</insert>
 </mapper>
 
 

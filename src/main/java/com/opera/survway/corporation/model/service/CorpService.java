@@ -10,4 +10,6 @@ public interface CorpService {
 
 	CorpMember loginMember(CorpMember cm) throws LoginException;
 
+	int insertCorp(CorpMember cm) throws LoginException;
+
 }

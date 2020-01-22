@@ -1,4 +1,6 @@
-package com.opera.survway.panel.controller;
+package com.opera.survway.common.controller;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,7 +37,6 @@ public class LoginMemberController {
 	 */
 	@PostMapping("login.me")
 	public String loginCheck(PanelMember pm, CorpMember cm, @RequestParam("loginMemberType") String loginMemberType, Model model) {
-		
 		// 라디오 버튼 패널 회원 체크 시
 		if(loginMemberType.equals("panelMember")) {
 			try {
@@ -63,7 +64,7 @@ public class LoginMemberController {
 				return "redirect:corpMain.corp";
 			} catch (LoginException e) {
 				model.addAttribute("msg", e.getMessage());
-				return "redirect:panelMain.panel";
+				return "redirect:panelLogin.panel";
 			}
 			
 			//여기는 스트링리턴값 디폴트로 넣어주기위해서 그냥 만든거임
@@ -80,8 +81,10 @@ public class LoginMemberController {
 	 * @Description : 로그인 기능
 	 */
 	@RequestMapping("logout.me")
-	public String logout(SessionStatus status) {
+	public String logout(SessionStatus status, Model model) {
 		status.setComplete();
+		
+		model.addAttribute("message", "로그아웃 되셨습니다.");
 		return "redirect:panelMain.panel";
 	}
 }

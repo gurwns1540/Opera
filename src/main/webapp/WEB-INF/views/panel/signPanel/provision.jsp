@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<hr />
+<hr style="border: 0.5px solid lightgray;" />
 <h3>제1장 총 칙</h3>
 <dl style="text-align: left;">
 	<dt><br />제1조 목 적</dt>

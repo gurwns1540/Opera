@@ -40,7 +40,6 @@ public class PanelServiceImpl implements PanelService {
 		PanelMember loginUser = null;
 		
 		String encPassword = pd.selectEncPassword(sqlSession, pm);
-		
 		if(passwordEncoder.matches(pm.getUserPwd(), encPassword)) {
 			loginUser = pd.loginCheck(sqlSession, pm);
 		}else {
@@ -67,6 +66,7 @@ public class PanelServiceImpl implements PanelService {
 			int mno = pd.selectMno(sqlSession, pm);
 			pm.setMno(mno);
 			resultPanelTable = pd.insertPanelTable(sqlSession, pm);
+			pd.insertTermsPanel(sqlSession, pm);
 		}
 		
 		if(!(resultMemberTable>0 && resultPanelTable>0)) {

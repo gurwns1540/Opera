@@ -10,6 +10,25 @@ public class CorpForwardController {
 		return "main/corpMain";
 	}
 	
+	// 기업 회원가입1
+	@RequestMapping("corpSignup1.corp")
+	public String forwardCorpSignup1() {
+		return "signCorp/corpSignup1";
+	}
+	
+	// 기업 회원가입2
+	@RequestMapping("corpSignup2.corp")
+	public String forwardCorpSignup2() {
+		return "signCorp/corpSignup2";
+	}
+	
+	// 기업 회원가입3
+	@RequestMapping("corpSignup3.corp")
+	public String forwardCorpSignup3() {
+		return "signCorp/corpSignup3";
+	}
+
+	
 	// 샘플 리서치 메인
 	@RequestMapping("sampleResearchMain.corp")
 	public String forwardSampleResearchMain() {

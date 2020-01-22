@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <header class="headerArea">
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 
@@ -65,3 +66,7 @@
 		</div>
 	</div>  <!-- navContainer end -->
 </nav>  <!-- navArea end -->
+<c:if test="${ sessionScope.loginUser.userType eq '기업' }">
+	<c:set var="msg" value="기업회원은 접근 불가한 페이지 입니다." scope="request"/>
+	<jsp:forward page="/WEB-INF/views/common/errorPage.jsp"/>
+</c:if>

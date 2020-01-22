@@ -25,7 +25,7 @@ public class ServerTime extends TextWebSocketHandler{
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		sessionList.add(session);
-		logger.info("{} 세션 연결", session.getId());
+		//logger.info("{} 세션 연결", session.getId());
 		if(runCheck == false) {
 			TimerTask task = new TimerTask() {
 
@@ -107,12 +107,12 @@ public class ServerTime extends TextWebSocketHandler{
 	}
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload());
+		//logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload());
 		
 	}
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		sessionList.remove(session);
-		logger.info("{} 연결 끊김", session.getId());
+		//logger.info("{} 연결 끊김", session.getId());
 	}
 }

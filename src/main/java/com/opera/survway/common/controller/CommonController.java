@@ -147,6 +147,12 @@ public class CommonController {
 		} 
 	}
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 23.
+	 * @ModifyDate  : 2020. 1. 23.
+	 * @Description :  정회원 인증(이메일 버튼 경로)
+	 */
 	@PostMapping("signupCertification.me")
 	public String SignupComplete(String userId) {
 		

@@ -88,9 +88,6 @@ td.leftTable.second {
 		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
 		<section class="container">
 		<br />
-		
-		<c:set var="massage" value="${ requestScope.msg }"/>
-		<h1>${ massage }</h1>
 			<table id="titleTable" height="10px;" width="99%;">
 				<tr>
 					<td id="menuTitle">로그인</td>
@@ -169,6 +166,15 @@ td.leftTable.second {
 			
 			<br />
 		</section>  <!-- container end -->
+		<c:if test="${ !empty param.msg }">
+			<script>
+				Swal.fire(
+				      '실패',
+				      '${ param.msg }',
+				      'warning'
+				);
+			</script>
+		</c:if>
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
 </body>
