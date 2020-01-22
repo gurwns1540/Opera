@@ -3,6 +3,7 @@ package com.opera.survway.panel.model.dao;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.PanelMember;
 
 public interface PanelDao {
@@ -16,5 +17,7 @@ public interface PanelDao {
 	int selectMno(SqlSessionTemplate sqlSession, PanelMember pm);
 
 	String selectEncPassword(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int insertInquiry(SqlSessionTemplate sqlSession, Inquiry i);
 
 }

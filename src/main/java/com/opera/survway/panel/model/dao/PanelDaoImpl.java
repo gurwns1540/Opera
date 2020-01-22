@@ -4,7 +4,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.PanelMember;
+
 
 @Repository
 public class PanelDaoImpl implements PanelDao{
@@ -39,6 +41,12 @@ public class PanelDaoImpl implements PanelDao{
 	@Override
 	public int selectMno(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.selectOne("Panel.selectMno", pm);
+	}
+
+	@Override
+	public int insertInquiry(SqlSessionTemplate sqlSession, Inquiry i) {
+		
+		return sqlSession.insert("Inquiry.insert", i);
 	}
 
 }

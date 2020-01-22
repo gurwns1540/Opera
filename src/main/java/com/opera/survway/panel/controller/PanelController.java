@@ -6,12 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.GenerateCertPassword;
 import com.opera.survway.exception.LoginException;
-import com.opera.survway.inquiry.model.service.InquiryService;
 import com.opera.survway.panel.model.service.PanelService;
+import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.PanelMember;
 
 @SessionAttributes("loginUser")
@@ -45,7 +44,18 @@ public class PanelController {
 		}
 	}
 	
-
+	//1:1문의 등록
+	@PostMapping("inquirywrite.panel")
+	public String insertPanelInquiry(Model model,Inquiry i) {
+		
+		System.out.println(i.toString());
+		
+		int result = ps.insertInquiry(i);
+		
+		model.addAttribute("success",result);
+		
+		return "customerCenter/panelInquiryList";
+	}
 	
 }
 
