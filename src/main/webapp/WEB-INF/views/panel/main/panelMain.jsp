@@ -108,10 +108,10 @@
 			<!-- </div> -->
 			
 			
-			<table style="width:100%; margin-top:30px; background-color:#E2F4F7; padding:10px;">
+			<table style="width:100%; margin-top:30px; background-color:#E2F4F7; padding:10px; height:100px;">
 				<tr>
 					<td style="width:16%; padding-left:15px;">
-						<a href="surveyList.panel"><img src="resources/images/panelMainSurvey.gif" style="height:100%;"></a>
+						<a href="surveyList.panel"><img src="resources/images/panelMainSurvey.gif" style="height:inherit;"></a>
 					</td>
 					<td style="width:84%;">
 						<a href="surveyList.panel" class="ui pink right ribbon label"><span style="font-size:0.7vw;">more</span></a>

@@ -169,7 +169,7 @@
                   </table>  <!-- #inquiryTableArea end -->
                </div>  <!-- .inquiryArea end -->
                <div class="inquiryBtnArea" align="right" style="margin-top: 15px;">
-                  <button id="newInquiryBtn" onclick="location.href='#'">1:1 문의하기</button>
+                  <button id="newInquiryBtn">1:1 문의하기</button>
                </div>  <!-- inquiryBtnArea end -->
             <div id="pagingArea" align="center" style="margin-top: 30px;">
                  <span>[처음]</span>
@@ -317,13 +317,17 @@
 		$("#newInquiryBtn").click(function() {
 			$("#newInquiryModal").modal("show");
 		});
-		
+
 		 $("#question").click(function(){
 			$("#inquery").submit();
 		}); 
-		$('.ui.dropdown')
-		  .dropdown();
-		
+		var isActivated = "false";
+		$('.ui.dropdown').mouseenter(function(){
+			if(isActivated == "false"){
+				$(this).dropdown();
+			}
+			isActivated = "true";
+		})
 	</script>
 </body>
 </html>
