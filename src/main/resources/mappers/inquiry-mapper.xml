@@ -17,7 +17,7 @@
 	</resultMap>
 	
 	
-	<select id="loginCheck" resultMap="corpMemberResultSet" parameterType="Inquiry">
+	<select id="loginCheck" resultMap="InquiryResultSet" parameterType="Inquiry">
 		SELECT *
 		FROM MEMBER M
 		JOIN CORP C ON (M.MNO = C.MNO)
