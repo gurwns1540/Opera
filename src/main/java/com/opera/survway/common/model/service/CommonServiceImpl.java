@@ -28,11 +28,22 @@ public class CommonServiceImpl implements CommonService{
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 1. 21.
 	 * @ModifyDate  : 2020. 1. 21.
-	 * @Description : 
+	 * @Description : 이메일 중복확인 기능
 	 */
 	@Override
 	public boolean duplicationEmailCheck(String userEmail) {
 		return cd.duplicationEmailCheck(sqlSession, userEmail);
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 22.
+	 * @ModifyDate  : 2020. 1. 22.
+	 * @Description : 정회원 인증 기능
+	 */
+	@Override
+	public int certificationMember(String userId) {
+		return cd.certificationMember(sqlSession, userId);
 	}
 
 }

@@ -84,7 +84,7 @@ h4{
 
 								<div class="title">
 									<label for="agree1" style="color: black"><input
-										type="checkbox" id="agree1" name="agree1">이용약관 동의</label>
+										type="checkbox" id="agree1" name="agree1" class="agreement">이용약관 동의</label>
 										<span class="contents1">내용보기</span>
 									<i class="angle down icon"></i>
 
@@ -126,7 +126,7 @@ h4{
 
 									<div class="title">
 										<label for="agree2" style="color: black"><input
-											type="checkbox" id="agree2" name="agreep">수집하는 개인정보
+											type="checkbox" id="agree2" name="agreep" class="agreement">수집하는 개인정보
 											항목 동의</label>
 
 										<span class="contents2">내용보기<i class="angle down icon"></i></span> 
@@ -139,7 +139,7 @@ h4{
 									</div>
 									<div class="title">
 										<label for="agree3" style="color: black"><input
-											type="checkbox" id="agree3" name="agreep">개인정보 수집목적
+											type="checkbox" id="agree3" name="agreep" class="agreement">개인정보 수집목적
 											동의</label>
 											<span class="contents3">내용보기<i class="angle down icon"></i></span>
 									</div>
@@ -150,7 +150,7 @@ h4{
 									</div>
 
 									<div class="title">
-										<label for="agree4" style="color: black"><input type="checkbox" id="agree4" name="agreep">개인정보 보유 및 이용기간 동의</label>
+										<label for="agree4" style="color: black"><input type="checkbox" id="agree4" name="agreep" class="agreement">개인정보 보유 및 이용기간 동의</label>
 
 									    <span class="contents4">내용보기<i class="angle down icon"></i></span>
 										
@@ -184,7 +184,7 @@ h4{
 							<div class="ui styled accordion" id="aco3">
 								<div class="title">
 									<label for="agree5" style="color: black"><input
-										type="checkbox" id="agree5" name="agree5">개인정보를 파기 또는
+										type="checkbox" id="agree5" name="agree5" class="agreement">개인정보를 파기 또는
 										분리 저장 및 관리 기간 동의</label>
 
 									<span class="contents5">내용보기</span> <i
@@ -203,23 +203,13 @@ h4{
 					<tr>
 						<td><br></td>
 					<tr>
-						<td colspan="6" align="center"><button class="ui teal button" onclick="location.href='panelSignup2.panel'">다음</button></td>
+						<td colspan="6" align="center"><input type="button" id="signupBtn" class="ui teal button" value="다음">
+						<input type="hidden" id="signupBtn2" class="ui teal button" value="다음" onclick="location.href='panelSignup2.panel'"></td>
 					</tr>
 				</table>
 			</div>
 
 		<br><br>
-
-
-
-
-
-
-
-		
-
-
-
 		
 	</div>
 	<!-- wrap end -->
@@ -236,6 +226,20 @@ h4{
 			}
 
 		})
+		checked = $(".agreement:checked").length;
+		$(".agreement").change(function() {
+			checked = $(".agreement:checked").length;
+			if (checked == 5) {
+				$("#signupBtn2").prop("type", "submit");
+				$("#signupBtn").prop("type", "hidden");
+			}
+		});
+
+		$("#signupBtn").click(function() {
+			if (checked != 5) {
+				alert("약관에 모두 동의해주세요.");
+			}
+		});
 	</script>
 </body>
 </html>

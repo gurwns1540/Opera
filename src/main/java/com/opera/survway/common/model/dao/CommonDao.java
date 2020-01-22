@@ -8,4 +8,6 @@ public interface CommonDao {
 
 	boolean duplicationEmailCheck(SqlSessionTemplate sqlSession, String userEmail);
 
+	int certificationMember(SqlSessionTemplate sqlSession, String userId);
+
 }

@@ -146,6 +146,14 @@ public class CommonController {
 			return "no"; 
 		} 
 	}
+	
+	@PostMapping("signupCertification.me")
+	public String SignupComplete(String userId) {
+		
+		cs.certificationMember(userId);
+		
+		return "common/signUpComplete";
+	}
 
 }
 

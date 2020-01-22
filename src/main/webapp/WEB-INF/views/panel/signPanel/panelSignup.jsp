@@ -55,8 +55,6 @@
 		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
 		<section class="container">
 		<br />
-		
-		
 			<table id="titleTable" height="10px;" width="99%;">
 				<tr>
 					<td id="menuTitle">회원가입</td>

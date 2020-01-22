@@ -6,4 +6,6 @@ public interface CommonService {
 
 	boolean duplicationEmailCheck(String userEmail);
 
+	int certificationMember(String userId);
+
 }

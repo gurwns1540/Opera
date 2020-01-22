@@ -27,4 +27,9 @@ public class CommonDaoImpl implements CommonDao{
 			return false;
 		}
 	}
+
+	@Override
+	public int certificationMember(SqlSessionTemplate sqlSession, String userId) {
+		return sqlSession.update("Member.certification", userId);
+	}
 }

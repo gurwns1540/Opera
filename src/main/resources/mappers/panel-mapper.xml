@@ -33,6 +33,7 @@
 		JOIN PANEL P ON (M.MNO = P.MNO)
 		WHERE USER_ID = #{userId}
 		AND LEAVE_DATE IS NULL
+		AND CERTIFICATION = 'Y'
 	</select>
 	
 	<select id="selectPwd" resultType="java.lang.String" parameterType="java.lang.String">
@@ -43,7 +44,7 @@
 	
 	<insert id="insertMemberTable" parameterType="PanelMember">
 		INSERT INTO MEMBER VALUES
-		(SEQ_MNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{userAddress}, #{userPhone}, #{userEmail}, '패널', NULL, SYSDATE, SYSDATE)
+		(SEQ_MNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{userAddress}, #{userPhone}, #{userEmail}, '패널', NULL, SYSDATE, SYSDATE, 'N')
 	</insert>
 	<insert id="insertPanelTable" parameterType="PanelMember">
 		INSERT INTO PANEL VALUES

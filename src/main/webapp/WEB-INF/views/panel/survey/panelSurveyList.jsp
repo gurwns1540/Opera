@@ -87,8 +87,8 @@ div.ui.segment.leftArea {
 	box-shadow: 0 1px 2px 0 white;
 	border: 1px solid white;
 	padding: 0px;
-	position:fixed;
-	top:204px;
+	/*position:fixed;*/
+	/* top:204px; */
 }
 
 #secondWing {
@@ -97,21 +97,21 @@ div.ui.segment.leftArea {
 	box-shadow: 0 1px 2px 0 white;
 	border: 1px solid white;
 	padding: 0px;
-	position:fixed;
-	top:250px;
+	/* position:fixed;
+	top:250px; */
 }
 #thirdWing {
 	height: 75px;
 	width:inherit;
-	position:fixed;
-	top:298px;
+	/* position:fixed;
+	top:298px; */
 }
 #fourthWing {
 	height: 235px;
 	width: inherit;
 	padding: 13px;
-	position:fixed;
-	top:384px;
+	/* position:fixed;
+	top:384px; */
 	background-color:white;
 }
 #fifthWing {
@@ -120,8 +120,8 @@ div.ui.segment.leftArea {
 	box-shadow: 0 1px 2px 0 white;
 	border: 1px solid white;
 	padding: 0px;
-	position:fixed;
-	top:627px;
+	/* position:fixed;
+	top:627px; */
 }
 #uploadBtn {
 	background-color: #00679A;
@@ -374,7 +374,7 @@ div.ui.segment.eachSurveyBox {
 				
 				
 				
-				
+			<div id="scroll" style="position:absolute;right:0;top:0;">
 				<div class="ui right attached rail">
 					<div class="ui segment" id="firstWing">
 						<button id="uploadBtn">내 투표 올리기</button>
@@ -449,6 +449,13 @@ div.ui.segment.eachSurveyBox {
 						<button id="mySurveyBtn">내 패널서베이 보러가기</button>
 					</div>
 				</div>
+			</div>
+			<script>
+				$(window).scroll(function( ){  //스크롤이 움직일때마다 이벤트 발생 
+					var position = $(window).scrollTop(); // 현재 스크롤바의 위치값을 반환합니다.
+				    $("#scroll").stop().animate({top:position+"px"}, 700); //해당 오브젝트 위치값 재설정
+				});
+			</script>
 				<p></p>
 				<p></p>
 			</div>
