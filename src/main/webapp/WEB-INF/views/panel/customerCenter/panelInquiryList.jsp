@@ -190,6 +190,7 @@
 		<i class="close icon"></i>
 		<div class="header">문의하기</div>
 		<div class="newInquiryArea" style="width: 90%; height: 510px;" align="center">
+		<form action="inquirywrite.inquiry" method="post">
 			<table class="newInquiryTableArea" style="width: inherit; height: inherit;">
 				<tbody id="newInquiryTbodyArea">
 					<tr>
@@ -212,20 +213,24 @@
 					<tr>
 						<td style="text-align: center; height: 50px;">성명</td>
 						<td>:</td>
-						<td><input class="ui input" type="text" name="" style="width: 90%;"/></td>
+						<td style="text-align:left; padding-left: 25px;">
+							${loginUser.userName }
+							<input type="hidden" name="mno" value="${loginUser.mno}">
+						</td>
 					</tr>
 					<tr>
 						<td style="text-align: center; height: 50px;">제목</td>
 						<td>:</td>
-						<td><input class="ui input" type="text" name="" style="width: 90%;"/></td>
+						<td><input class="ui input" type="text" name="inquiryTitle" style="width: 90%;"/></td>
 					</tr>
 					<tr>
 						<td style="height: 350px; vertical-align: top; padding-top: 20px;">내용</td>
 						<td style="vertical-align: top; padding-top: 20px;">:</td>
-						<td style="vertical-align: top; padding-top: 20px;"><textarea name="" id="" style="width: 90%; height: 90%; resize: none;"></textarea></td>
+						<td style="vertical-align: top; padding-top: 20px;"><textarea name="inquiryContext" id="" style="width: 90%; height: 90%; resize: none;"></textarea></td>
 					</tr>
 				</tbody>  <!-- newInquiryTbodyArea end -->
 			</table>  <!-- newInquiryTableArea end -->
+			</form>	  <!-- form end -->
 		</div>  <!-- newInquiryArea end -->
 		<div class="actions">
 			<div class="ui positive right button">문의하기</div>
