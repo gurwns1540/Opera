@@ -5,6 +5,7 @@
 <html>
 <head>
    <%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>
 <style>
 #inquiryTableArea {
@@ -218,14 +219,14 @@
 						<td>:</td>
 						<td style="text-align: left;">
 							<div class="ui selection dropdown" style="margin-left: 31px;">
-								<input type="hidden" name="division">
+								<input type="hidden" name="inquiryCategoryNo">
 								<i class="dropdown icon"></i>
-								<div class="default text">선택</div>
+								<div class="default text" data-value="0">선택</div>
 								<div class="menu">
-									<div class="item" data-value="가입">가입</div>
-									<div class="item" data-value="조사">조사</div>
-									<div class="item" data-value="리워드">리워드</div>
-									<div class="item" data-value="기타">기타</div>
+									<div class="item" data-value="1">가입</div>
+									<div class="item" data-value="2">조사</div>
+									<div class="item" data-value="3">리워드</div>
+									<div class="item" data-value="4">기타</div>
 								</div>
 							</div>
 						</td>
@@ -261,8 +262,6 @@
 	
 
 
-
-
 	<script>
 		$('.ui.accordion').accordion();
 		$("#newInquiryBtn").click(function() {
@@ -270,7 +269,8 @@
 		});
 
 		 $("#question").click(function(){
-			$("#inquery").submit();
+			 $("#inquery").submit();
+			
 		}); 
 		var isActivated = "false";
 		$('.ui.dropdown').mouseenter(function(){
@@ -279,6 +279,13 @@
 			}
 			isActivated = "true";
 		})
+		<c:if test="${success > 0}">
+		Swal.fire(
+               '완료!',
+               '1:1 문의 등록이 완료 되었습니다',
+               'success'
+             )
+        </c:if>
 	</script>
 </body>
 </html>
