@@ -17,16 +17,15 @@
 	</resultMap>
 	
 	
-	<select id="loginCheck" resultMap="InquiryResultSet" parameterType="Inquiry">
-		SELECT *
-		FROM MEMBER M
-		JOIN CORP C ON (M.MNO = C.MNO)
-		WHERE USER_ID = #{userId}
-		AND USER_PWD = #{userPwd}
-		AND LEAVE_DATE IS NULL
+	<insert id="insertInquiry" parameterType="Inquiry">
+		INSERT INTO INQUIRYHISTORY VALUES(SEQ_INQUIRY.NEXTVAL, #{inquiryTitle}, #{inquiryContext}, NULL, #{mno},1,SYSDATE,NULL)
+	</insert>
+	
+	<select id="selectAllMyInquiry" resultType="java.util.List" parameterType="PanelMember">
+		SELECT * 
+		FROM INQUIRYHISTORY 
+		WHERE MNO = #{mno}
 	</select>
-	
-	
 	
 	
 	

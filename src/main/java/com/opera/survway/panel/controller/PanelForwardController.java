@@ -34,11 +34,13 @@ public class PanelForwardController {
 	public String showNotice() {
 		return "customerCenter/notice";
 	}
-	//5. 패널 1:1문의 목록
-	@GetMapping("panelInquiryList.panel")
-	public String showPanelInquiryList() {
-		return "customerCenter/panelInquiryList";
-	}
+
+	/*
+	 * //5. 패널 1:1문의 목록
+	 * 
+	 * @GetMapping("panelInquiryList.panel") public String showPanelInquiryList() {
+	 * return "customerCenter/panelInquiryList"; }
+	 */
 	//5-1. 패널 1:1문의 상세보기
 	@GetMapping("panelInquiryDetail.panel")
 	public String showPanelInquiryDetail() {
@@ -72,10 +74,10 @@ public class PanelForwardController {
 		return "myPage/myInfoDetail";
 	}
 	//2. 내 1:1 문의 목록
-	@GetMapping("myInquiryList.panel")
-	public String showMyInquiryList() {
-		return "myPage/myInquiryList";
-	}
+	/*
+	 * @GetMapping("myInquiryList.panel") public String showMyInquiryList() { return
+	 * "myPage/myInquiryList"; }
+	 */
 	//2-1. 내 1:1문의 상세보기
 	@GetMapping("myInquiryDetail.panel")
 	public String showMyInquiryDetail() {

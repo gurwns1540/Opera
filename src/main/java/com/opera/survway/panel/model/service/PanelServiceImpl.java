@@ -1,5 +1,9 @@
 package com.opera.survway.panel.model.service;
 
+
+
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -10,6 +14,7 @@ import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.dao.PanelDao;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.PanelMember;
+
 
 @Service
 public class PanelServiceImpl implements PanelService {
@@ -83,9 +88,28 @@ public class PanelServiceImpl implements PanelService {
 		
 		result=pd.insertInquiry(sqlSession, i);
 		
-		
-		
 		return result;
+	}
+
+	
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 1. 22.
+	 * @ModifyDate	:2020. 1. 22.
+	 * @Description	: 1:1문의 리스트 보기
+	 */
+	@Override
+	public List<Object> selectAllMyInquiry(PanelMember pm) {
+		
+		List<Object> list = pd.selectAllMyInquiry(sqlSession, pm);
+		
+		for(int i=0; i<list.size(); i++) {
+			
+			System.out.println("Service"+list.get(i).toString());
+			
+		}
+		
+		return list;
 	}
 
 }
