@@ -1,4 +1,4 @@
-package com.opera.survway.inquiry.model.vo;
+package com.opera.survway.panel.model.vo;
 
 import java.sql.Date;
 
