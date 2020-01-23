@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<hr />
 <dl style="text-align: left;">
 	<dt>
 		가입일로부터 서비스를 제공하는 기간에 한하여 이용자의 개인정보를 보유 및 이용합니다.

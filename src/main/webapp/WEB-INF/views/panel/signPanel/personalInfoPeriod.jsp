@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<hr />
 <dl style="text-align: left;">
 	<dt><b>정보통신망 이용촉진 및 정보보호 등에 관한 법률 제29조 및 동법 시행령 제16조에 따라 1년 동안 조사 활동을 하지 않거나 로그인 하지 않은 경우 개인정보를 파기하거나 분리하도록 되어 있습니다.</b></dt>
 	<dt>
