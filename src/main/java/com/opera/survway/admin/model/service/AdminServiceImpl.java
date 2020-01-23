@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.dao.AdminDao;
+import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
@@ -34,7 +35,7 @@ public class AdminServiceImpl implements AdminService{
 		int listCount = ad.getListCountPanel(sqlSession);
 		
 		if(listCount <= 0) {
-			throw new SelectException("패널 수 조회 실패!!");
+			throw new SelectException("회원 수 조회 실패!!");
 		}
 		return listCount;
 	}
@@ -44,17 +45,34 @@ public class AdminServiceImpl implements AdminService{
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 1. 23.
 	 * @ModifyDate  : 2020. 1. 23.
-	 * @Description : 패널 전체 조회
+	 * @Description : 회원 전체 조회
 	 */
 	@Override
-	public List<PanelMember> memberInfoManagement(PageInfo pi) throws SelectException {
+	public List<AllMember> memberInfoManagement(PageInfo pi) throws SelectException {
 		
-		List<PanelMember> memberList = ad.memberInfoManagement(sqlSession, pi);
+		List<AllMember> memberList = ad.memberInfoManagement(sqlSession, pi);
 		
 		if(memberList == null) {
-			throw new SelectException("패널 조회 실패!!");
+			throw new SelectException("회원 조회 실패!!");
 		}
 		return memberList;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 23.
+	 * @ModifyDate  : 2020. 1. 23.
+	 * @Description : 회
+	 */
+	@Override
+	public AllMember selectMember(int mno) throws SelectException {
+		AllMember member = ad.selectMember(sqlSession, mno);
+		
+		if(member == null) {
+			throw new SelectException("회원 상세 조회 실패!!");
+		}
+		return member;
 	}
 
 

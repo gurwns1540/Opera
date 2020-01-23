@@ -21,12 +21,12 @@
 	}
 	#searchInput {
 		margin-top: 10px;
+		margin-left: 10px;
 	}
 	#searchInput, .ui.action.input {
-		width: 200px;
+		width: 240px;
 		height: 37px;
 		font-size: 11pt;
-		position: relative;
 		right: 10px;
 		float: right;
 	}
@@ -166,6 +166,15 @@
   		width: 40%;
   		border-bottom: 1px solid #C5C5C5;
   	}
+  	#userType, #panelLevel, .ui.dropdown {
+  		float: right !important;
+  		margin-right: 15px;
+  		margin-top: 10px;
+  		width: 100px;
+  		min-width: 100px !important;
+  		padding-right: 10px !important;
+  		
+  	}
 </style>
 </head>
 <body>
@@ -188,15 +197,33 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
-					<div id="searchInput">
-						<div class="ui action input">
-			  				<input type="text" placeholder="Search...">
-							<button class="ui icon button">
-								<i class="search icon"></i>
-							</button>
+				<td style="height: fit-content;">
+					<form action="memberInfoManagement.memberManagement" method="get">
+						<div id="searchInput">
+							<div class="ui action input">
+				  				<input type="text" name="searchInput" placeholder="패널/기업 명을 입력하세요">
+								<button class="ui icon button">
+									<i class="search icon"></i>
+								</button>
+							</div>
 						</div>
-					</div>
+						
+						<select class="ui dropdown" name="panellevel" id="panelLevel">
+							<option value="all">패널 등급</option>
+							<option value="1">신규</option>
+							<option value="2">비활성</option>
+							<option value="3">준활성</option>
+							<option value="4">활성</option>
+							<option value="5">휴면</option>
+							<option value="6">블랙</option>
+						</select>
+						
+						<select class="ui dropdown" name="userType" id="userType">
+							<option value="all">회원 분류</option>
+							<option value="panel">패널</option>
+							<option value="corp">기업</option>
+						</select>
+					</form>
 				</td>
 			</tr>
 		</table>
@@ -235,6 +262,11 @@
 			</c:forEach>
 		</table>
 		<div id="pagingArea" align="center">
+			<c:url var="blistFirst" value="memberInfoManagement.memberManagement">
+				<c:param name="currentPage" value="${1}"/>
+			</c:url>
+			<a href="${blistFirst}"><span>[처음]</span></a>&nbsp;
+			
 			<c:if test="${pi.currentPage <= 1}">
 				<span>[이전]</span> &nbsp;
 			</c:if>
@@ -259,14 +291,19 @@
 			</c:forEach>
 			
 			<c:if test="${pi.currentPage < pi.maxPage}">
-				<c:url var="blistEnd" value="memberInfoManagement.memberManagement">
+				<c:url var="blistNext" value="memberInfoManagement.memberManagement">
 					<c:param name="currentPage" value="${pi.currentPage + 1}"/>
 				</c:url>
-				&nbsp;<a href="${blistEnd}"><span>[다음]</span></a>
+				&nbsp;<a href="${blistNext}"><span>[다음]</span></a>
 			</c:if>
 			<c:if test="${pi.currentPage >= pi.maxPage}">
 				&nbsp; <span>[다음]</span>
 			</c:if>
+			
+			<c:url var="blistEnd" value="memberInfoManagement.memberManagement">
+				<c:param name="currentPage" value="${pi.maxPage}"/>
+			</c:url>
+			<a href="${blistEnd}"><span>[마지막]</span></a>&nbsp;
 		</div>
 	</div>
 	
@@ -399,7 +436,8 @@
 		    <div class="ui cancel button" id="companyPictureClose">Cancel</div>
   		</div>
 	</div>
-	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 	<script>
 		$("#companyPictureBtn").on("click", function(){
 			$("#companyPicture").modal("show");
@@ -411,15 +449,58 @@
 			$('#research').modal('show');
 		});
 		$(".detail").on("click", function(){
-			var num = $(this).parent().siblings().eq(0).text();
+			var mno = $(this).parent().siblings().eq(0).text();
 			var type = $(this).parent().siblings().eq(1).text();
-			if(type == '기업'){
-				$('#corp').modal('show');
-			}else{
-				$('#panel').modal('show');
-			}
-			
-			//console.log(num);
+			console.log(mno);
+			$.ajax({
+				url:"selectMember.memberManagement",
+				type:"post",
+				data:{mno:mno},
+				success:function(data){
+					console.log(data);
+					var address = data.member.userAddress;
+					var passphrase = "1234";
+			        var decrypted1 = CryptoJS.AES.decrypt(address, passphrase);
+			        var address1 = decrypted1.toString(CryptoJS.enc.Utf8);
+			        
+			        var phone = data.member.userPhone;
+					var passphrase = "1234";
+			        var decrypted1 = CryptoJS.AES.decrypt(phone, passphrase);
+			        var phone1 = decrypted1.toString(CryptoJS.enc.Utf8);
+			        $("#address").text(address1);
+					if(type == '기업'){
+						$("#corp td").eq(0).text(data.member.mno);
+						$("#corp td").eq(1).text(data.member.companyName);
+						$("#corp td").eq(2).text(data.member.userId);
+						$("#corp td").eq(3).text(data.member.cRegistrationNumber);
+						$("#corp td").eq(5).text(address1);
+						$("#corp td").eq(6).text(data.member.userName);
+						$("#corp td").eq(7).text(phone1);
+						$("#corp td").eq(8).text(data.member.userEmail);
+						$('#corp').modal('show');
+					}else{
+						$("#panel td").eq(0).text(data.member.mno);
+						$("#panel td").eq(1).text(data.member.userName);
+						$("#panel td").eq(2).text(data.member.userId);
+						$("#panel td").eq(3).text(data.member.panelLevel);
+						$("#panel td").eq(4).text(data.member.panelBirthday);
+						$("#panel td").eq(5).text((data.member.panelGender == 'M')? "남성" : "여성");
+						$("#panel td").eq(6).text(phone1);
+						$("#panel td").eq(7).text(data.member.userEmail);
+						$("#panel td").eq(8).html(address1.split("/")[0] + "   " + address1.split("/")[1] + "<br><br>" + address1.split("/")[2]);
+						$("#panel td").eq(9).text(data.member.researchResponseDate);
+						$("#panel td").eq(10).text(data.member.modifyDate);
+						$("#panel td").eq(11).text(data.member.panelRewordPoint + " p");
+						$("#panel td").eq(12).text(data.member.cashoutAmount + "원");
+						$("#panel td").eq(13).text(data.member.ternaryCount + "회");
+						$("#panel td").eq(14).text(data.member.withdrawAccount);
+						$('#panel').modal('show');
+					}
+				},
+				error:function(status){
+					console.log(status);
+				}
+			});
 		});
 		$("#approvalBtn").on("click", function(){
 			Swal.fire({
@@ -482,7 +563,7 @@
 			}
 			start();
 		});
-		
+		$(".ui.dropdown").dropdown();
 		$(".topMenu:nth-child(1)").addClass("active");
 		$(".topMenu:nth-child(1)").find(".innerMenu:nth-child(1)").addClass("on");
 	</script>
