@@ -57,21 +57,6 @@ h4 {
 		<form action="panelSignup.me" method="post" onsubmit="return validate();">
 			<table align="center" id="joinform" >
 				<tr>
-					<td><h1>회원가입</h1></td>
-					<td style="width: 100px;"></td>
-					<td style="width: 200px;"></td>
-					<td id="stitle" style="width: 100px;"><h4>이용약관</h4></td>
-					<td id="title"><h4 style="width: 100px;">정보입력</h4></td>
-					<td id="stitle"><h4 style="width: 100px;">가입완료</h4></td>
-				</tr>
-				<tr>
-					<td colspan="6"><hr></td>
-				</tr>
-				<tr>
-					<td><br>
-					<br></td>
-				</tr>
-				<tr>
 					<th colspan="2" align="center"><h4>아이디</h4></th>
 					<td><div class="ui input">
 							<input type="text" name="userId" id="userId">
