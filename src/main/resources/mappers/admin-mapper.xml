@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Admin">
+
+	<resultMap type="AllMember" id="panelMemberResultSet">
+		<id property="mno" column="MNO"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="userPwd" column="USER_PWD"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userAddress" column="USER_ADDRESS"/>
+		<result property="userPhone" column="USER_PHONE"/>
+		<result property="userEmail" column="USER_EMAIL"/>
+		<result property="userType" column="USER_TYPE"/>
+		<result property="leaveDate" column="LEAVE_DATE"/>
+		<result property="entDate" column="ENT_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<result property="panelBirthday" column="PANEL_BIRTHDAY"/>
+		<result property="panelGender" column="PANEL_GENDER"/>
+		<result property="referPanelCode" column="REFER_PANELCODE"/>
+		<result property="nominee" column="NOMINEE"/>
+		<result property="panelLevel" column="PANELLEVEL_NAME"/>
+		<result property="occupationNo" column="OCCUPATION_NO"/>
+		<result property="withdrawAccount" column="WITHDRAW_ACCOUNT"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="cRegistrationNumber" column="C_REGISTRATION_NUMBER"/>
+	</resultMap>
+	
+	<select id="memberInfoManagement" resultMap="panelMemberResultSet">
+		SELECT /*+ INDEX_ASC(M IDX_PANEL_ENTDATE)  */
+        * FROM MEMBER M
+        LEFT JOIN PANEL P ON (P.MNO = M.MNO)
+        LEFT JOIN PANELLEVEL L ON (P.PANELLEVEL_NO = L.PANELLEVEL_NO)
+        LEFT JOIN CORP C ON (C.MNO = M.MNO)
+		WHERE CERTIFICATION = 'Y'
+		ORDER BY ENT_DATE DESC
+	</select>
+	
+	<select id="getListCountPanel" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER M
+        JOIN PANEL P ON (P.MNO = M.MNO)
+		WHERE USER_TYPE = '패널'
+		AND CERTIFICATION = 'Y'
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

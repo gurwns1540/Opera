@@ -78,12 +78,14 @@
 	#pagingArea span {
 		margin-left: 5px;
 		margin-right: 5px;
+		color: black;
 		font-size: 10pt;
 	}
 	#pagingArea span:hover {
 		margin-left: 5px;
 		margin-right: 5px;
 		font-size: 10pt;
+		color: dodgerblue;
 		cursor: pointer;
 	}
 	.detail {
@@ -207,33 +209,64 @@
 				<th style="width: 10%;">가입일</th>
 				<th style="width: 10%;">상세보기</th>
 			</tr>
-			<tr class="tableContext">
-				<td>3723</td>
-				<td>기업</td>
-				<td>(주) 오렌지레드 컴퍼니</td>
-				<td>기업 회원</td>
-				<td>2019-06-22</td>
-				<td><button class="detail">상세 보기</button></td>
-			</tr>
-			<c:forEach var="i" begin="0" end="8">
+			<c:forEach var="m" items="${memberList}">
 				<tr class="tableContext">
-					<td>회원 번호</td>
-					<td>회원 분류</td>
-					<td>패널명 / 기업명</td>
-					<td>패널 등급</td>
-					<td>가입일</td>
+					<td>${ m.mno }</td>
+					<td>${ m.userType }</td>
+					<td>
+						<c:if test="${ m.userType eq '기업' }">
+							${ m.companyName }
+						</c:if>
+						<c:if test="${ m.userType ne '기업' }">
+							${ m.userName }
+						</c:if>
+					</td>
+					<td>
+						<c:if test="${ m.userType eq '기업' }">
+							기업 회원
+						</c:if>
+						<c:if test="${ m.userType ne '기업' }">
+							${ m.panelLevel }
+						</c:if>
+					</td>
+					<td>${ m.entDate }</td>
 					<td><button class="detail">상세 보기</button></td>
 				</tr>
 			</c:forEach>
 		</table>
 		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
+			<c:if test="${pi.currentPage <= 1}">
+				<span>[이전]</span> &nbsp;
+			</c:if>
+			<c:if test="${pi.currentPage > 1}">
+				<c:url var="blistBack" value="memberInfoManagement.memberManagement">
+					<c:param name="currentPage" value="${pi.currentPage - 1}"/>
+				</c:url>
+				<a href="${blistBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+			
+			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+				<c:if test="${p eq pi.currentPage }">
+					<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+				</c:if>
+				<c:if test="${p ne pi.currentPage }">
+					<c:url var="blistCheck" value="memberInfoManagement.memberManagement">
+						<c:param name="currentPage" value="${ p }"/>
+					</c:url>
+					<a href="${ blistCheck }"><span>${ p }</span></a>
+				</c:if>
+				
 			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
+			
+			<c:if test="${pi.currentPage < pi.maxPage}">
+				<c:url var="blistEnd" value="memberInfoManagement.memberManagement">
+					<c:param name="currentPage" value="${pi.currentPage + 1}"/>
+				</c:url>
+				&nbsp;<a href="${blistEnd}"><span>[다음]</span></a>
+			</c:if>
+			<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+			</c:if>
 		</div>
 	</div>
 	
