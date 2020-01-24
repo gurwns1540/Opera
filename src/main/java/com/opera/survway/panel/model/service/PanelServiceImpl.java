@@ -66,7 +66,11 @@ public class PanelServiceImpl implements PanelService {
 			int mno = pd.selectMno(sqlSession, pm);
 			pm.setMno(mno);
 			resultPanelTable = pd.insertPanelTable(sqlSession, pm);
-			pd.insertTermsPanel(sqlSession, pm);
+			if(resultPanelTable > 0) {
+				pd.insertTermsPanel(sqlSession, pm);
+				pd.insertRewordPanel(sqlSession, pm);
+				pd.insertTernaryPanel(sqlSession, pm);
+			}
 		}
 		
 		if(!(resultMemberTable>0 && resultPanelTable>0)) {

@@ -22,10 +22,12 @@ public interface PanelDao {
 	String selectEncPassword(SqlSessionTemplate sqlSession, PanelMember pm);
 
 	int insertInquiry(SqlSessionTemplate sqlSession, Inquiry i);
-
- 
   
 	int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int insertRewordPanel(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int insertTernaryPanel(SqlSessionTemplate sqlSession, PanelMember pm);
 
 	List selectAllMyInquiry(SqlSessionTemplate sqlSession, Inquiry i);
 

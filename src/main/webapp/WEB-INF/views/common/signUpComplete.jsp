@@ -21,32 +21,75 @@ h4 {
 #completetable{
 	margin-top: 50px;
 	margin-bottom: 50px;
+	width: 100%;
 }
 .ui.button {
 	background: #00679A !important;
 	margin: 0;
 }
+#titleTable {
+	margin: 0 auto;
+	margin-top: 20px;
+}
+
+#menuTitle {
+	height: 30px;
+	width: 40%;
+	font-size: 16pt;
+	text-align: left;
+	vertical-align: bottom;
+	font-weight: bold;
+	color: #3D3D3D;
+}
+
+#pagePath {
+	width: 60%;
+	text-align: right;
+	vertical-align: bottom;
+	font-weight: bold;
+}
+
+#depth3 {
+	color: #008499;
+}
+
+#depth1, #depth2 {
+	color: #494949;
+}
+#depth1:hover,  #depth2:hover, #depth3:hover {
+	cursor: default;
+}
+#depth1:hover, #depth2:hover {
+	color: #494949;
+}
+
 </style>
 </head>
 <body>
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
-		<div id="complete">
+		<section class="container">
+		<br />
+			<table id="titleTable" height="10px;" width="99%;">
+				<tr>
+					<td id="menuTitle">회원가입</td>
+					<td id="pagePath">
+						<div class="ui breadcrumb">
+							<a class="active section" id="depth1">이용약관</a>
+							<i class="right angle icon divider"></i>
+							<a class="active section" id="depth2">정보입력</a>
+							<i class="right angle icon divider"></i>
+							<div class="active section" id="depth3">가입완료</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+			
+			<div class="sectionLine">
+				<hr>
+			</div>
+			<div id="complete">
 			<table id="completetable" align="center">
-				<tr>
-					<td><h1>회원가입</h1></td>
-					<td style="width: 100px;"></td>
-					<td style="width: 200px;"></td>
-					<td id="stitle" style="width: 100px;"><h4>이용약관</h4></td>
-					<td id="stitle"><h4 style="width: 100px;">정보입력</h4></td>
-					<td id="title"><h4 style="width: 100px;">가입완료</h4></td>
-				</tr>
-				<tr>
-					<td colspan="6"><hr></td>
-				</tr>
-				<tr>
-					<td><br><br></td>
-				</tr>
 				<tr>
 					<td colspan="6" align="center">
 						<img src="resources/images/footerLogo.png" width="500px" >
@@ -73,6 +116,8 @@ h4 {
 				</tr>
 			</table> <!-- completetable end -->
 		</div> <!-- complete end -->
+		<br />
+		</section>  <!-- container end -->
 	</div><!-- wrap end -->
 </body>
 </html>

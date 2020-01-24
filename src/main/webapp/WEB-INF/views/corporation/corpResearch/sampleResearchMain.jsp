@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,6 +79,10 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/corporation/common/corpMenuBar.jsp"/>
+	<c:if test="${ empty sessionScope.loginUser or sessionScope.loginUser.userType ne '기업' }">
+		<c:set var="msg" value="기업회원만 접근 가능합니다." scope="request"/>
+		<jsp:forward page="/WEB-INF/views/common/errorPage.jsp"/>
+	</c:if>
 	<div id="mainArea">
 		<div id="researchMenuArea">
 			<table id="researchMenu">

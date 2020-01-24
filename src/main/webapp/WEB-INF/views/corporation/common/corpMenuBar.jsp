@@ -55,33 +55,25 @@
 </head>
 <body>
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
-	<c:if test="${ !empty sessionScope.loginUser }">
-		<c:if test="${ sessionScope.loginUser.userType eq '기업' }">
-			<table id="corpHead">
-				<tr>
-					<td>
-						<div class="menu" onclick="#">회사 및 사업 소개</div>
-					</td>
-					<td>
-						<div class="menu" onclick="#">신뢰성 확보 방법</div>
-					</td>
-					<td class="logo">
-						<div onclick="location.href='corpMain.corp'"><img alt="corpLogo.png" src="${ contextPath }/resources/images/corpLogo.png"></div>
-					</td>
-					<td>
-						<div class="menu" onclick="#">리서치 관련 안내</div>
-					</td>
-					<td>
-						<div class="menu" onclick="#">Survway 빅데이터</div>
-						<button id="logout" onclick="location.href='logout.me'">로그아웃</button>
-					</td>
-				</tr>
-			</table>
-		</c:if>
-	</c:if>
-	<c:if test="${ empty sessionScope.loginUser or sessionScope.loginUser.userType ne '기업' }">
-		<c:set var="msg" value="기업회원만 접근 가능합니다." scope="request"/>
-		<jsp:forward page="/WEB-INF/views/common/errorPage.jsp"/>
-	</c:if>
+	<table id="corpHead">
+		<tr>
+			<td>
+				<div class="menu" onclick="#">회사 및 사업 소개</div>
+			</td>
+			<td>
+				<div class="menu" onclick="#">신뢰성 확보 방법</div>
+			</td>
+			<td class="logo">
+				<div onclick="location.href='corpMain.corp'"><img alt="corpLogo.png" src="${ contextPath }/resources/images/corpLogo.png"></div>
+			</td>
+			<td>
+				<div class="menu" onclick="#">리서치 관련 안내</div>
+			</td>
+			<td>
+				<div class="menu" onclick="#">Survway 빅데이터</div>
+				<button id="logout" onclick="location.href='logout.me'">로그아웃</button>
+			</td>
+		</tr>
+	</table>
 </body>
 </html>
