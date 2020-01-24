@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -17,5 +18,9 @@ public interface AdminDao {
 	int getListCountPanel(SqlSessionTemplate sqlSession, SearchMember searchMember);
 
 	AllMember selectMember(SqlSessionTemplate sqlSession, int mno);
+
+	int getListCountPanelCashoutApplicant(SqlSessionTemplate sqlSession);
+
+	List<PanelRewardHistory> panelCashoutApplication(SqlSessionTemplate sqlSession, PageInfo pi);
 
 }

@@ -32,7 +32,8 @@
 		<result property="ternaryCount" column="TERNARY_COUNT"/>
 	</resultMap>
 	
-	
+	<!-- <resultMap type="AllMember" id="">
+	</resultMap> -->
 	<sql id="searchUserType">
 		<if test="userType != null">
 			AND USER_TYPE = #{userType}
@@ -99,6 +100,16 @@
         LEFT JOIN PANELTERNARY PT ON(PT.MNO = M.MNO)
 		WHERE CERTIFICATION = 'Y'
 		AND M.MNO = #{mno}
+	</select>
+	
+	<select id="getListCountPanelCashoutApplicant" resultType="_int">
+		SELECT COUNT(*)
+		FROM CASHOUTHISTORY
+		WHERE CASHOUT_CONFIRM_DATE IS NULL;
+	</select>
+	
+	<select id="panelCashoutApplication" resultMap="PanelRewardHistoryResultMap">
+		
 	</select>
 </mapper>
 

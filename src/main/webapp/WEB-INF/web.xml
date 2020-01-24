@@ -94,7 +94,7 @@
 		<url-pattern>*.me</url-pattern>
 	</servlet-mapping>
 	
-	<!-- Member 서블릿 연결 -->
+	<!-- MemberMangement 서블릿 연결 -->
 	<servlet>
 		<servlet-name>memberManagementServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -107,6 +107,21 @@
 	<servlet-mapping>
 		<servlet-name>memberManagementServlet</servlet-name>
 		<url-pattern>*.memberManagement</url-pattern>
+	</servlet-mapping>
+	
+	<!-- MemberMangement 서블릿 연결 -->
+	<servlet>
+		<servlet-name>rewardManagementServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/rewardManagement-servlet.xml</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>rewardManagementServlet</servlet-name>
+		<url-pattern>*.reward</url-pattern>
 	</servlet-mapping>
 	
 	<!-- 인코딩 필터 -->

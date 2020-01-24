@@ -24,6 +24,9 @@
 			<td class="headerLoginArea">
 				<c:choose>
 					<c:when test="${ not empty sessionScope.loginUser }">
+						<c:if test="${ sessionScope.loginUser.userType == '관리자' }">
+							<a href="adminMain.admin" style="margin-right: 5%; font-size:0.8vw;">관리자 메인</a>
+						</c:if>
 						<a href="logout.me" style="margin-right: 5%; font-size:0.8vw;">로그아웃</a>
 						<a href="#" style="font-size:0.8vw;">내 정보 관리</a>
 					</c:when>

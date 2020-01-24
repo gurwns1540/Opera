@@ -239,6 +239,7 @@
 		<div id="logoArea" onclick="location.href='adminMain.admin'">
 			<img alt="logo.png" src="${ contextPath }/resources/images/AdminLogo.png" width="100px">
 		</div>
+		<a href="panelMain.panel" style="font-size:0.8vw; display: table-cell; line-height: 50px; color: white; padding-left: 20px;">패널 메인</a>
 		<div id="dayTime">
 			<table>
 				<tr>
@@ -289,7 +290,7 @@
 				<h3><span class="icon-calendar"></span>패널 리워드 관리</h3>
 				<ul>
 					<li class="innerMenu"><a href="#" style="border-top: 0;">월별 패널 리워드 사용 추이</a></li>
-					<li class="innerMenu"><a href="manageCashoutApplication.admin" style="border-bottom: 0;">리워드 캐시아웃 관리</a></li>
+					<li class="innerMenu"><a href="manageCashoutApplication.reward" style="border-bottom: 0;">리워드 캐시아웃 관리</a></li>
 				</ul>
 			</li>
 			<li class="topMenu">
