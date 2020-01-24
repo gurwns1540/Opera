@@ -6,6 +6,7 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
+
 .ui.button {
 	background: #00679A !important;
 	margin: 0;
@@ -63,8 +64,12 @@ i{
 				<hr>
 			</div>
 			
+			
+			
+			
+			
 			<div id="myRewardArea" style="width: 100%; height: 100%;">
-				<table align="center" style="width: inherit; height: 60%;">
+				<table align="center" style="width: 100%; height: 60%;">
 					<tr>
 						<td colspan="2"><b style="margin-left: 15%;">회원님의 현재 리워드 현황입니다.</b></td>
 					</tr>
@@ -72,12 +77,21 @@ i{
 					<tr>
 						<td>
 							<div class="pointArea leftArea">
-							
+								<!-- <table style="width:inherit; height:inherit;">
+									<tr>
+										<td style="background:yellow;">
+											
+										</td>
+										<td>
+											
+										</td>
+									</tr>
+								</table> -->
 							</div>  <!-- .pointArea end -->
 						</td>
 						<td>
 							<div class="pointArea rightArea">
-							
+								
 							</div>  <!-- .pointArea end -->
 						</td>
 					</tr>

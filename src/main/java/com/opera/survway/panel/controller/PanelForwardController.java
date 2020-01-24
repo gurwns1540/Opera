@@ -149,7 +149,7 @@ public class PanelForwardController {
 	}
 	@GetMapping("panelSignup3_old.panel")
 	public String showPanelSignup3_old() {
-		return "signPanel/panelSignu3_old";
+		return "signPanel/panelSignup3_old";
 	}
 	
 	// 서베이 메뉴 페이지들

@@ -47,17 +47,18 @@
 	}
 	
 	.sectionLine {
-		padding-bottom: 40px;
+		padding-bottom: 0px;
 	}
 	/* 여기까지 페이지제목 및 경로 영역 */
 	
 	#mainBox {
 		height: 500px;
 		float: left;
+		margin:0px;
 	}
 	#joinform {
 		width: 75%;
-		margin: 50px auto;
+		margin: 20px auto;
 		border-spacing: 0;
 		border-collapse: collapse;
 	}
@@ -81,6 +82,12 @@
 	    min-height: 32.28px;
 	    line-height: 7px;
 	}
+	.ui.blue.button {
+	background-color:#00679A;
+}
+.ui.blue.button:hover {
+	background-color: #217BA7;
+}
 </style>
 <body>
 	<div class="wrap">
@@ -259,10 +266,11 @@
 								<span style="color: #B9B9B9; font-size: 5pt; margin-left: 20px;">*(올바른 추천인코드를 입력하면 소정의 리워드가 지급됩니다.)</span>
 							</td>
 						</tr>
-						<tr>
-							<td colspan="6" align="center" style="border: 0;"><input type="submit" class="ui blue button" value="회원가입"></td>
-						</tr>
 					</table>
+					<hr style="margin-top:40px;">
+					<div style="text-align:center; margin-top:20px; margin-bottom:100px;">
+						<input type="submit" class="ui blue button" value="회원가입">
+					</div>
 				</form>
 			</div>
 		<br />

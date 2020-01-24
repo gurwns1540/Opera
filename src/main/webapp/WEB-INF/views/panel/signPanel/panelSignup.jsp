@@ -8,33 +8,6 @@
 </head>
 <style>
 
-#titleTable {
-	margin: 0 auto;
-	margin-top: 20px;
-}
-#menuTitle {
-	height: 30px;
-	width: 40%;
-	font-size: 17pt;
-	text-align: left;
-	vertical-align: bottom;
-	font-weight: bold;
-	color: #3D3D3D;
-}
-#pagePath {
-	width: 60%;
-	text-align: right;
-	vertical-align: bottom;
-	font-weight: bold;
-}
-.hr {
-	padding-bottom:10px;
-}
-.bottomHr {
-	padding-top:10px;
-}
-/* 여기까지 페이지제목 및 경로 영역 */
-
 #contentDiv {
 	height:350px;
 }
