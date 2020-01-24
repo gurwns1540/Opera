@@ -14,7 +14,11 @@ public interface PanelService {
 
 	int insertInquiry(Inquiry i);
 
-	List<Object> selectAllMyInquiry(PanelMember pm);
+	List selectAllMyInquiry(Inquiry i);
+
+	List searchInquiryList(String search, int category);
+
+	
 
 	int updateMemberInfo(PanelMember pm);
 

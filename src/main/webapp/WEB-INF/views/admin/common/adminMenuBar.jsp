@@ -173,7 +173,7 @@
 		position: relative;
 		width: 80%;
 		top: 110px;
-    	left: 320px;
+    	right: -315px;
 		margin: 30px auto;
 		font-size: 1.2vw;
 	}
@@ -220,8 +220,16 @@
   		color: white;
   	}
   	#accordian ul ul li a {
-    padding-left: 40px !important;
-    text-align: left !important;
+    	padding-left: 40px !important;
+    	text-align: left !important;
+    }
+    
+    @media screen and (max-width: 1000px) { 
+		#adminBox {
+    		width: 60%;
+		}
+	}
+    
 </style>
 </head>
 <body>
@@ -231,6 +239,7 @@
 		<div id="logoArea" onclick="location.href='adminMain.admin'">
 			<img alt="logo.png" src="${ contextPath }/resources/images/AdminLogo.png" width="100px">
 		</div>
+		<a href="panelMain.panel" style="font-size:0.8vw; display: table-cell; line-height: 50px; color: white; padding-left: 20px;">패널 메인</a>
 		<div id="dayTime">
 			<table>
 				<tr>
@@ -258,7 +267,7 @@
 			<li class="topMenu">
 				<h3><span class="icon-dashboard"></span>회원관리</h3>
 				<ul>
-					<li class="innerMenu"><a href="memberInfoManagement.admin" style="border-top: 0;">회원정보 관리</a></li>
+					<li class="innerMenu"><a href="memberInfoManagement.memberManagement" style="border-top: 0;">회원정보 관리</a></li>
 					<li class="innerMenu"><a href="newPanelManagement.admin" style="border-bottom: 0;">신규 패널 관리</a></li>
 				</ul>
 			</li>
@@ -281,7 +290,7 @@
 				<h3><span class="icon-calendar"></span>패널 리워드 관리</h3>
 				<ul>
 					<li class="innerMenu"><a href="#" style="border-top: 0;">월별 패널 리워드 사용 추이</a></li>
-					<li class="innerMenu"><a href="manageCashoutApplication.admin" style="border-bottom: 0;">리워드 캐시아웃 관리</a></li>
+					<li class="innerMenu"><a href="manageCashoutApplication.reward" style="border-bottom: 0;">리워드 캐시아웃 관리</a></li>
 				</ul>
 			</li>
 			<li class="topMenu">

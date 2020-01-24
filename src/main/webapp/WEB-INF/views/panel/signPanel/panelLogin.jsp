@@ -10,7 +10,7 @@
 
 #titleTable {
 	margin: 0 auto;
-	margin-top: 80px;
+	margin-top: 20px;
 }
 #menuTitle {
 	height: 30px;
@@ -22,7 +22,7 @@
 	color: #3D3D3D;
 }
 #pagePath {
-	width: 60%;
+	width: 60%; 
 	text-align: right;
 	vertical-align: bottom;
 	font-weight: bold;
@@ -82,6 +82,14 @@ td.leftTable.second {
 .rightTable {
 	padding-left:50px;
 }
+	@media screen and (max-width: 1000px) { 
+		.second {
+		    width: 45%;
+		}
+		#login {
+			width: 50px !inmportant;
+		}
+	}
 </style>
 <body>
 	<div class="wrap">
@@ -117,19 +125,19 @@ td.leftTable.second {
 									<tr class="leftTable inputs">
 										<td class="leftTable first">아이디</td>
 										<td class="leftTable second">
-											<div class="ui input" style="display: block; width:fit-content;">
-												<input type="text" name="userId" placeholder="아이디" style="width:240px;">
+											<div class="ui input" style="display: block; width:80%;">
+												<input type="text" name="userId" placeholder="아이디">
 											</div>
 										</td>
 										<td class="leftTable third" rowspan="2" style="width:fit-content;" >
-											<button type="submit" class="ui button" style="padding:0px; float: left; width:80px; height:80px; border-radius:2px;">로그인</button>
+											<button type="submit" class="ui button" style="padding:0px; float: left; width:80px; height:80px; border-radius:2px;" id="login">로그인</button>
 										</td>
 									</tr>
 									<tr class="leftTable inputs">
 										<td class="leftTable first">비밀번호</td>
 										<td class="leftTable second">
-											<div class="ui input" style="display: block; width:fit-content;">
-												<input type="password" name="userPwd" placeholder="비밀번호" style="width:240px;">
+											<div class="ui input" style="display: block; width:80%;">
+												<input type="password" name="userPwd" placeholder="비밀번호">
 											</div>
 										</td>
 									</tr>

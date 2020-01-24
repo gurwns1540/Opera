@@ -1,278 +1,221 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
-</head>
 <meta charset="UTF-8">
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
 <script src="${ contextPath }/resources/js/rolldate.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> 
+
 <style>
-	#titleTable {
-		margin: 0 auto;
-		margin-top: 20px;
-	}
-	
-	#menuTitle {
-		height: 30px;
-		width: 40%;
-		font-size: 16pt;
-		text-align: left;
-		vertical-align: bottom;
-		font-weight: bold;
-		color: #3D3D3D;
-	}
-	
-	#pagePath {
-		width: 60%;
-		text-align: right;
-		vertical-align: bottom;
-		font-weight: bold;
-	}
-	
-	#depth2 {
-		color: #008499;
-	}
-	
-	#depth1, #depth3 {
-		color: #494949;
-	}
-	#depth1:hover,  #depth2:hover, #depth3:hover {
-		cursor: default;
-	}
-	#depth1:hover, #depth3:hover {
-		color: #494949;
-	}
-	
-	.sectionLine {
-		padding-bottom: 40px;
-	}
-	/* 여기까지 페이지제목 및 경로 영역 */
-	
-	#mainBox {
-		height: 500px;
-		float: left;
-	}
-	#joinform {
-		width: 75%;
-		margin: 50px auto;
-		border-spacing: 0;
-		border-collapse: collapse;
-	}
-	#joinform td {
-		font-size: 12px;
-		width: 45%;
-		font-weight: normal;
-		border-bottom: 1px solid #F0F0F0;
-		height: 70px;
-	}
-	#joinform th {
-		height: 70px;
-		width: 30%;
-    	text-align: left;
-    	border-bottom: 1px solid #F0F0F0;
-    	padding-left: 30px;
-	}
-	.ui.selection.dropdown {
-		min-width: 6em;	
-		height: 32.28px;
-	    min-height: 32.28px;
-	    line-height: 7px;
-	}
+#joinform {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+#title {
+	font-weight: bold;
+}
+
+#stitle {
+	color: lightgray;
+}
+
+h4 {
+	font-weight: bold;
+}
+
+.ui.button {
+	background: #00679A !important;
+	margin: 0;
+}
+/* td{
+	border:1px solid red;
+} */
+#joinform td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.ui.selection.dropdown {
+	min-width: 80px;
+}
+#joinform th {
+	text-align: left;
+}
+#joinform h4 {
+	float: right;
+	width: 110px;
+}
 </style>
+</head>
 <body>
 	<div class="wrap">
-		<%@ include file="/WEB-INF/views/panel/common/header.jsp" %>
-		<section class="container">
-		<br />
-		
-		
-			<table id="titleTable" height="10px;" width="99%;">
+		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
+		<form action="panelSignup.me" method="post" onsubmit="return validate();">
+			<table align="center" id="joinform" >
 				<tr>
-					<td id="menuTitle">회원가입</td>
-					<td id="pagePath">
-						<div class="ui breadcrumb">
-							<a class="active section" id="depth1">이용약관</a>
-							<i class="right angle icon divider"></i>
-							<a class="active section" id="depth2">정보입력</a>
-							<i class="right angle icon divider"></i>
-							<div class="active section" id="depth3">가입완료</div>
+					<th colspan="2" align="center"><h4>아이디</h4></th>
+					<td><div class="ui input">
+							<input type="text" name="userId" id="userId">
+						</div></td>
+					<td colspan="3"><button class="ui blue button" onclick="return duplicationIdCheck();">중복확인</button></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td colspan="3"><span id="idCheckText" style="font-size: 7pt;"></span></td>
+				</tr>
+				<tr>
+					<th colspan="2" align="center"><h4>비밀번호</h4></th>
+					<td>
+						<div class="ui input">
+							<input type="password" name="userPwd" id="password">
 						</div>
 					</td>
 				</tr>
+				<tr>
+					<th colspan="2"></th>
+					<td colspan="3" align="left" style="font-size: 7pt;"><span id="pass1Check"></span></td>
+				</tr>
+				<tr>
+					<th colspan="2" align="center"><h4>비밀번호 확인</h4></th>
+					<td>
+						<div class="ui input">
+							<input type="password" name="userPwdCheck" id="passCheck">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2"></th>
+					<td colspan="3" align="left" style="font-size: 7pt;"><span id="pass2Check"></span></td>
+				</tr>
+				<tr>
+					<th colspan="2" align="center"><h4>이름</h4></th>
+					<td>
+						<div class="ui input">
+							<input type="text" name="userName" id="userName">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2" align="center"><h4>생년월일</h4></th>
+					<td colspan="2">
+						<div class="ui input">
+							<input type="text" name="panelBirthday" id="panelBirthday">
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2" align="center"><h4>성별</h4></th>
+					<td>
+						<div class="ui selection dropdown">
+							<input type="hidden" name="panelGender" id="panelGender">
+							<i class="dropdown icon"></i>
+							<div class="default text">성별</div>
+							<div class="menu">
+								<div class="item" data-value="M">남</div>
+								<div class="item" data-value="F">여</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2" align="center"><h4>휴대전화</h4></th>
+					<td colspan="3">
+						<div class="ui selection dropdown">
+							<input type="hidden" name="phone1" id="tel1">
+							<i class="dropdown icon"></i>
+							<div class="default text">선택</div>
+							<div class="menu">
+								<div class="item" data-value="010">010</div>
+								<div class="item" data-value="011">011</div>
+								<div class="item" data-value="016">016</div>
+								<div class="item" data-value="017">017</div>
+								<div class="item" data-value="019">019</div>
+							</div>
+						</div>
+						<div class="ui input">
+							<input type="text" name="phone2" id="tel2" style="width:80px;">
+						</div>
+						<div class="ui input">
+							<input type="text" name="phone3" id="tel3" style="width:80px;">
+						</div>
+						<input type="hidden" id="userPhone" name="userPhone">
+						<input type="button" class="ui blue button" id="phoneCertification" value="인증하기">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td colspan="3">
+						<div class="ui input">
+							<input type="hidden" name="phoneCode" id="phoneCode">
+						</div>
+						<input type="hidden" class="ui blue button" value="인증 확인" id="phoneCodeCertification">
+						<div style="font-size: 7pt; color: forestgreen; display: none; margin-left: 20px;" id="phoneOk">인증 완료</div>
+						<div style="font-size: 7pt; color: red; display: none; margin-left: 20px;" id="phoneNo">다시 입력해주세요</div>
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2" align="center"><h4>주소</h4></th>
+					<td colspan="2">
+						<div class="ui input">
+							<input type="text" name="post" id="post" size="7px;" readonly>
+						</div>
+						<div class="ui input">
+							<input type="text" name="address" id="address" size="30px;" readonly>
+						</div>
+						<input type="hidden" name="userAddress" id="userAddress" readonly>
+					</td>
+					<td><input type="button" class="ui blue button" id="findAddress" value="찾기"></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td colspan="2">
+						<div class="ui input">
+							<input type="text" name="detailAddress" id="detailAddress" placeholder="상세주소를 입력해주세요." size="35px;"> 
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2" align="center"><h4>이메일</h4></th>
+					<td>
+						<div class="ui input">
+							<input type="email" name="userEmail" id="userEmail">
+						</div>
+					</td>
+					<td colspan="3"><button class="ui blue button" onclick="return duplicationEmailCheck();">중복확인</button></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td colspan="3"><span id="emailCheckText" style="font-size: 7pt;"></span></td>
+				</tr>
+				<tr>
+					<th colspan="2" align="center"><h4>추천인</h4></th>
+					<td><div class="ui input">
+							<input type="text" name="nominee">
+						</div>
+					</td>
+					<td colspan="2" style="width: 300px;"><span style="color: #B9B9B9; font-size: 5pt;">*(올바른 추천인코드를 입력하면 소정의 리워드가 지급됩니다.)</span></td>
+				</tr>
+				<tr>
+					<td><br>
+					<br></td>
+				</tr>
+				<tr>
+					<td colspan="6"><hr></td>
+				</tr>
+				<tr>
+					<td colspan="6" align="center"><input type="submit" class="ui blue button" value="회원가입"></td>
+				</tr>
 			</table>
-			
-			<div class="sectionLine">
-				<hr>
-			</div>
-			
-			
-			<div id="mainbox">
-				<form action="panelSignup.me" method="post" onsubmit="return validate();">
-					<table align="center" id="joinform" >
-						<tr>
-							<th colspan="2" align="center" style="border: 0;"><h4>아이디</h4></th>
-							<td colspan="4" style="border: 0;">
-								<div class="ui input" style="margin-right: 15px;">
-									<input type="text" name="userId" id="userId">
-								</div>
-								<button class="ui blue button" onclick="return duplicationIdCheck();">중복확인</button>
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2" style="height: 10px;"></th>
-							<td colspan="3" style="height: 10px;"><span id="idCheckText" style="font-size: 7pt;"></span></td>
-						</tr>
-						<tr>
-							<th colspan="2" align="center" style="border: 0;"><h4>비밀번호</h4></th>
-							<td style="border: 0;">
-								<div class="ui input">
-									<input type="password" name="userPwd" id="password">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2" style="height: 10px;"></th>
-							<td colspan="3" align="left"  style="height: 10px; font-size: 7pt;"><span id="pass1Check"></span></td>
-						</tr>
-						<tr>
-							<th colspan="2" align="center" style="border: 0;"><h4>비밀번호 확인</h4></th>
-							<td style="border: 0;">
-								<div class="ui input">
-									<input type="password" name="userPwdCheck" id="passCheck">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2" style="height: 10px;"></th>
-							<td colspan="3" align="left"  style="height: 10px; font-size: 7pt;"><span id="pass2Check"></span></td>
-						</tr>
-						<tr>
-							<th colspan="2" align="center"><h4>이름</h4></th>
-							<td>
-								<div class="ui input">
-									<input type="text" name="userName" id="userName">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2" align="center"><h4>생년월일</h4></th>
-							<td colspan="2">
-								<div class="ui input">
-									<input type="text" name="panelBirthday" id="panelBirthday">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2" align="center"><h4>성별</h4></th>
-							<td>
-								<div class="ui selection dropdown">
-									<input type="hidden" name="panelGender" id="panelGender">
-									<i class="dropdown icon"></i>
-									<div class="default text">성별</div>
-									<div class="menu">
-										<div class="item" data-value="M">남</div>
-										<div class="item" data-value="F">여</div>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2" align="center" style="border: 0;"><h4>휴대전화</h4></th>
-							<td colspan="3" style="border: 0;">
-								<div class="ui selection dropdown" style="margin-right: 10px;">
-									<input type="hidden" name="phone1" id="tel1">
-									<i class="dropdown icon"></i>
-									<div class="default text">선택</div>
-									<div class="menu">
-										<div class="item" data-value="010">010</div>
-										<div class="item" data-value="011">011</div>
-										<div class="item" data-value="016">016</div>
-										<div class="item" data-value="017">017</div>
-										<div class="item" data-value="019">019</div>
-									</div>
-								</div>
-								 - 
-								<div class="ui input" style="margin-right: 10px; margin-left: 10px;">
-									<input type="text" name="phone2" id="tel2" style="width:80px;">
-								</div>
-								 - 
-								<div class="ui input"style="margin-right: 10px; margin-left: 10px;">
-									<input type="text" name="phone3" id="tel3" style="width:80px;">
-								</div>
-								<input type="hidden" id="userPhone" name="userPhone">
-								<input type="button" class="ui blue button" id="phoneCertification" value="인증하기">
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2"  style="height: 10px;"></th>
-							<td colspan="3"  style="height: 10px; padding-bottom: 10px;">
-								<div class="ui input">
-									<input type="hidden" name="phoneCode" id="phoneCode">
-								</div>
-								<input type="hidden" class="ui blue button" value="인증 확인" id="phoneCodeCertification">
-								<div style="font-size: 7pt; color: forestgreen; display: none; margin-left: 20px;" id="phoneOk">인증 완료</div>
-								<div style="font-size: 7pt; color: red; display: none; margin-left: 20px;" id="phoneNo">다시 입력해주세요</div>
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2" align="center" style="border: 0;"><h4>주소</h4></th>
-							<td colspan="2" style="border: 0;">
-								<div class="ui input" style="margin-right: 20px;">
-									<input type="text" name="post" id="post" size="7px;" readonly>
-								</div>
-								<div class="ui input">
-									<input type="text" name="address" id="address" size="30px;" readonly>
-								</div>
-								<input type="hidden" name="userAddress" id="userAddress" readonly>
-							</td>
-							<td style="border: 0;"><input type="button" class="ui blue button" id="findAddress" value="찾기"></td>
-						</tr>
-						<tr>
-							<th colspan="2" style="height: 10px;"></th>
-							<td colspan="3" style="height: 10px; padding-bottom: 10px;">
-								<div class="ui input">
-									<input type="text" name="detailAddress" id="detailAddress" placeholder="상세주소를 입력해주세요." size="35px;"> 
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2" align="center" style="border: 0;"><h4>이메일</h4></th>
-							<td colspan="3" style="border: 0;">
-								<div class="ui input">
-									<input type="email" name="userEmail" id="userEmail">
-								</div>
-								<button class="ui blue button" style="margin-left: 20px;" onclick="return duplicationEmailCheck();">중복확인</button>
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2" style="height: 10px;"></th>
-							<td colspan="3" style="height: 10px;"><span id="emailCheckText" style="font-size: 7pt;"></span></td>
-						</tr>
-						<tr>
-							<th colspan="2" align="center"><h4>추천인</h4></th>
-							<td colspan="3"><div class="ui input">
-									<input type="text" name="nominee">
-								</div>
-								<span style="color: #B9B9B9; font-size: 5pt; margin-left: 20px;">*(올바른 추천인코드를 입력하면 소정의 리워드가 지급됩니다.)</span>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="6" align="center" style="border: 0;"><input type="submit" class="ui blue button" value="회원가입"></td>
-						</tr>
-					</table>
-				</form>
-			</div>
-		<br />
-		</section>  <!-- container end -->
-		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
-	</div>  <!-- wrap end -->
-	
+		</form>
+	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 	<script>
+	
 		$("#findAddress").on("click", function(){
 			daum.postcode.load(function(){
 		        new daum.Postcode({
@@ -562,11 +505,6 @@
 	</script>
 </body>
 </html>
-
-
-
-
-
 
 
 

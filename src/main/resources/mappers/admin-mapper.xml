@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Admin">
+
+	<resultMap type="AllMember" id="panelMemberResultSet">
+		<id property="mno" column="MNO"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="userPwd" column="USER_PWD"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userAddress" column="USER_ADDRESS"/>
+		<result property="userPhone" column="USER_PHONE"/>
+		<result property="userEmail" column="USER_EMAIL"/>
+		<result property="userType" column="USER_TYPE"/>
+		<result property="leaveDate" column="LEAVE_DATE"/>
+		<result property="entDate" column="ENT_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<result property="panelBirthday" column="PANEL_BIRTHDAY"/>
+		<result property="panelGender" column="PANEL_GENDER"/>
+		<result property="referPanelCode" column="REFER_PANELCODE"/>
+		<result property="nominee" column="NOMINEE"/>
+		<result property="panelLevel" column="PANELLEVEL_NAME"/>
+		<result property="occupationNo" column="OCCUPATION_NAME"/>
+		<result property="withdrawAccount" column="WITHDRAW_ACCOUNT"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="cRegistrationNumber" column="C_REGISTRATION_NUMBER"/>
+		<result property="panelRewordPoint" column="REWORD_POINT"/>
+		<result property="researchResponseDate" column="RESEARCH_RESPONSE_DATE"/>
+		<result property="cashoutAmount" column="CASHOUT_AMOUNT"/>
+		<result property="ternaryCount" column="TERNARY_COUNT"/>
+	</resultMap>
+	
+	<resultMap type="PanelRewardHistory" id="PanelRewardHistoryResultMap">
+		<id property="cashoutHistoryNo" column="CASHOUTHISTORY_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="cashoutAmount" column="CASHOUT_AMOUNT"/>
+		<result property="account" column="WITHDRAW_ACCOUNT"/>
+		<result property="applicantDate" column="CASHOUT_APPLICANT_DATE"/>
+		<result property="confrimDate" column="CASHOUT_CONFIRM_DATE"/>
+	</resultMap>
+	<sql id="searchUserType">
+		<if test="userType != null">
+			AND USER_TYPE = #{userType}
+		</if>
+	</sql>
+	
+	<sql id="searchPanelLevel">
+		<if test="panelLevel != null">
+			<if test="userType == '패널'">
+				AND PANELLEVEL_NAME = #{panelLevel}
+			</if>
+		</if>
+	</sql>
+	
+	<sql id="searchInputName">
+		<if test="searchInput != null">
+			<if test="userType == '패널'">
+				AND USER_NAME LIKE '%' || #{searchInput} || '%'
+			</if>
+			<if test="userType == '기업'">
+				AND COMPANY_NAME LIKE '%' || #{searchInput} || '%'
+			</if>
+		</if>
+	</sql>
+	
+	<select id="memberInfoManagement" resultMap="panelMemberResultSet">
+		SELECT /*+ INDEX_ASC(M IDX_PANEL_ENTDATE)  */
+        M.MNO, M.USER_ID, M.USER_PWD, M.USER_NAME, M.USER_ADDRESS, M.USER_PHONE, M.USER_EMAIL, M.USER_TYPE, TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD') AS LEAVE_DATE, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE, TO_CHAR(M.MODIFY_DATE, 'YYYY-MM-DD') AS MODIFY_DATE, P.PANEL_BIRTHDAY, P.PANEL_GENDER, P.REFER_PANELCODE, P.NOMINEE, O.OCCUPATION_NAME, P.WITHDRAW_ACCOUNT, L.PANELLEVEL_NAME, C.COMPANY_NAME, C.C_REGISTRATION_NUMBER FROM MEMBER M
+        LEFT JOIN PANEL P ON (P.MNO = M.MNO)
+        LEFT JOIN PANELLEVEL L ON (P.PANELLEVEL_NO = L.PANELLEVEL_NO)
+        LEFT JOIN CORP C ON (C.MNO = M.MNO)
+        LEFT JOIN OCCUPATION O ON (P.OCCUPATION_NO = O.OCCUPATION_NO)
+		WHERE CERTIFICATION = 'Y'
+		AND USER_TYPE != '관리자'
+		<include refid="searchUserType"/>
+		<include refid="searchPanelLevel"/>
+		<include refid="searchInputName"/>
+		ORDER BY ENT_DATE DESC
+	</select>
+	
+	<select id="getListCountPanel" resultType="_int">
+		SELECT COUNT(*) FROM MEMBER M
+		LEFT JOIN PANEL P ON (P.MNO = M.MNO)
+        LEFT JOIN PANELLEVEL L ON (P.PANELLEVEL_NO = L.PANELLEVEL_NO)
+        LEFT JOIN CORP C ON (C.MNO = M.MNO)
+		WHERE CERTIFICATION = 'Y'
+		AND USER_TYPE != '관리자'
+		<include refid="searchUserType"/>
+		<include refid="searchPanelLevel"/>
+		<include refid="searchInputName"/>
+	</select>
+	
+	<select id="selectMember" parameterType="_int" resultMap="panelMemberResultSet">
+		SELECT NVL2((SELECT MAX(RESEARCH_RESPONSE_DATE) FROM RESEARCHHISTORY WHERE MNO = #{mno}), TO_CHAR((SELECT MAX(RESEARCH_RESPONSE_DATE) FROM RESEARCHHISTORY WHERE MNO = #{mno}), 'YYYY-MM-DD'), '참여 기록 없음') AS RESEARCH_RESPONSE_DATE, 
+        NVL2((SELECT SUM(CO.CASHOUT_AMOUNT) FROM CASHOUTHISTORY CH LEFT JOIN CASHOUT CO ON(CH.CASHOUT_NO = CO.CASHOUT_NO) WHERE MNO = #{mno}), (SELECT SUM(CO.CASHOUT_AMOUNT) FROM CASHOUTHISTORY CH LEFT JOIN CASHOUT CO ON(CH.CASHOUT_NO = CO.CASHOUT_NO) WHERE MNO = #{mno}), 0) AS CASHOUT_AMOUNT, 
+        PT.TERNARY_COUNT,
+        M.MNO, M.USER_ID, M.USER_PWD, M.USER_NAME, M.USER_ADDRESS, M.USER_PHONE, M.USER_EMAIL, M.USER_TYPE, TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD') AS LEAVE_DATE, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE, TO_CHAR(M.MODIFY_DATE, 'YYYY-MM-DD') AS MODIFY_DATE, P.PANEL_BIRTHDAY, P.PANEL_GENDER, P.REFER_PANELCODE, P.NOMINEE, O.OCCUPATION_NAME, P.WITHDRAW_ACCOUNT, L.PANELLEVEL_NAME, C.COMPANY_NAME, C.C_REGISTRATION_NUMBER, PR.REWORD_POINT FROM MEMBER M
+        LEFT JOIN PANEL P ON (P.MNO = M.MNO)
+        LEFT JOIN PANELLEVEL L ON (P.PANELLEVEL_NO = L.PANELLEVEL_NO)
+        LEFT JOIN OCCUPATION O ON (P.OCCUPATION_NO = O.OCCUPATION_NO)
+        LEFT JOIN CORP C ON (C.MNO = M.MNO)
+        LEFT JOIN PANELREWORD PR ON (PR.MNO = M.MNO)
+        LEFT JOIN RESEARCHHISTORY RH ON (RH.MNO = M.MNO)
+        LEFT JOIN PANELTERNARY PT ON(PT.MNO = M.MNO)
+		WHERE CERTIFICATION = 'Y'
+		AND M.MNO = #{mno}
+	</select>
+	
+	<select id="getListCountPanelCashoutApplicant" resultType="_int">
+		SELECT COUNT(*)
+		FROM CASHOUTHISTORY
+		WHERE CASHOUT_CONFIRM_DATE IS NULL
+	</select>
+	
+	<select id="panelCashoutApplication" resultMap="PanelRewardHistoryResultMap">
+		SELECT CH.CASHOUTHISTORY_NO, CH.MNO, C.CASHOUT_AMOUNT, P.WITHDRAW_ACCOUNT, TO_CHAR(CH.CASHOUT_APPLICANT_DATE, 'YYYY-MM-DD') AS CASHOUT_APPLICANT_DATE, CH.CASHOUT_CONFIRM_DATE
+		FROM CASHOUTHISTORY CH
+		JOIN PANEL P ON (P.MNO = CH.MNO)
+		JOIN CASHOUT C ON (C.CASHOUT_NO = CH.CASHOUT_NO)
+		WHERE CH.CASHOUT_CONFIRM_DATE IS NULL
+		ORDER BY CASHOUT_APPLICANT_DATE ASC
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

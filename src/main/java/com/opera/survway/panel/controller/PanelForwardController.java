@@ -147,7 +147,14 @@ public class PanelForwardController {
 		return "signPanel/panelSignup3";
 	}
 	
-	
+	@GetMapping("panelSignup2_old.panel")
+	public String showPanelSignup2_old() {
+		return "signPanel/panelSignup2_old";
+	}
+	@GetMapping("panelSignup3_old.panel")
+	public String showPanelSignup3_old() {
+		return "signPanel/panelSignu3_old";
+	}
 	
 	// 서베이 메뉴 페이지들
 	//1. 진행중인 설문조사 전체 목록

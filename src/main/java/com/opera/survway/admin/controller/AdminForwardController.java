@@ -12,12 +12,6 @@ public class AdminForwardController {
 		return "common/adminMain";
 	}
 	
-	// 회원 정보 관리
-	@RequestMapping("memberInfoManagement.admin")
-	public String forwardPanelInfoManagement() {
-		return "memberManagement/memberInfoManagement";
-	}
-	
 	// 신규 패널 관리
 	@RequestMapping("newPanelManagement.admin")
 	public String forwardNewPanelManagement() {
@@ -111,11 +105,6 @@ public class AdminForwardController {
 		return "adminResearch/tsQaManagement";
 	}
 	
-	// 패널 리워드 신청 목록
-	@RequestMapping("manageCashoutApplication.admin")
-	public String forwardManageCashoutApplication() {
-		return "panelReward/manageCashoutApplications";
-	}
 	// 패널 리워드 완료 목록
 	@RequestMapping("manageCashoutComplete.admin")
 	public String forwardManageCashoutComplete() {

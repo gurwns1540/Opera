@@ -19,7 +19,7 @@
 }
 .eachSurveyBox:hover {
 	cursor:pointer;
-}
+} 
 
 .ui.segment {
 	padding: 3px;

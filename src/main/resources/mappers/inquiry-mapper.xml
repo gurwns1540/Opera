@@ -18,13 +18,14 @@
 	
 	
 	<insert id="insertInquiry" parameterType="Inquiry">
-		INSERT INTO INQUIRYHISTORY VALUES(SEQ_INQUIRY.NEXTVAL, #{inquiryTitle}, #{inquiryContext}, NULL, #{mno},1,SYSDATE,NULL)
+		INSERT INTO INQUIRYHISTORY VALUES(SEQ_INQUIRY.NEXTVAL, #{inquiryTitle}, #{inquiryContext}, NULL, #{mno},#{inquiryCategoryNo},SYSDATE,NULL)
 	</insert>
 	
-	<select id="selectAllMyInquiry" resultType="java.util.List" parameterType="PanelMember">
+	<select id="selectAllMyInquiry" resultMap="InquiryResultSet" parameterType="Inquiry">
 		SELECT * 
 		FROM INQUIRYHISTORY 
 		WHERE MNO = #{mno}
+		ORDER BY INQUIRY_DATE DESC
 	</select>
 	
 	

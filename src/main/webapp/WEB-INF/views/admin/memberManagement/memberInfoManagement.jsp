@@ -21,12 +21,12 @@
 	}
 	#searchInput {
 		margin-top: 10px;
+		margin-left: 10px;
 	}
 	#searchInput, .ui.action.input {
-		width: 200px;
+		width: 240px;
 		height: 37px;
 		font-size: 11pt;
-		position: relative;
 		right: 10px;
 		float: right;
 	}
@@ -78,12 +78,14 @@
 	#pagingArea span {
 		margin-left: 5px;
 		margin-right: 5px;
+		color: black;
 		font-size: 10pt;
 	}
 	#pagingArea span:hover {
 		margin-left: 5px;
 		margin-right: 5px;
 		font-size: 10pt;
+		color: dodgerblue;
 		cursor: pointer;
 	}
 	.detail {
@@ -164,6 +166,14 @@
   		width: 40%;
   		border-bottom: 1px solid #C5C5C5;
   	}
+  	#userType, #panelLevel, .ui.dropdown {
+  		float: right !important;
+  		margin-right: 15px;
+  		margin-top: 10px;
+  		width: 100px;
+  		min-width: 100px !important;
+  		padding-right: 10px !important;
+  	}
 </style>
 </head>
 <body>
@@ -186,15 +196,33 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
-					<div id="searchInput">
-						<div class="ui action input">
-			  				<input type="text" placeholder="Search...">
-							<button class="ui icon button">
-								<i class="search icon"></i>
-							</button>
+				<td style="height: fit-content;">
+					<form action="memberInfoManagement.memberManagement" method="get">
+						<div id="searchInput">
+							<div class="ui action input">
+				  				<input type="text" name="searchInput" placeholder="패널/기업 명을 입력하세요">
+								<button class="ui icon button">
+									<i class="search icon"></i>
+								</button>
+							</div>
 						</div>
-					</div>
+						
+						<select class="ui dropdown" name="panelLevel" id="panelLevel">
+							<option value="">패널 등급</option>
+							<option value="신규">신규</option>
+							<option value="비활성">비활성</option>
+							<option value="준활성">준활성</option>
+							<option value="활성">활성</option>
+							<option value="휴면">휴면</option>
+							<option value="블랙">블랙</option>
+						</select>
+						
+						<select class="ui dropdown" name="userType" id="userType">
+							<option value="">회원 분류</option>
+							<option value="패널">패널</option>
+							<option value="기업">기업</option>
+						</select>
+					</form>
 				</td>
 			</tr>
 		</table>
@@ -207,33 +235,119 @@
 				<th style="width: 10%;">가입일</th>
 				<th style="width: 10%;">상세보기</th>
 			</tr>
-			<tr class="tableContext">
-				<td>3723</td>
-				<td>기업</td>
-				<td>(주) 오렌지레드 컴퍼니</td>
-				<td>기업 회원</td>
-				<td>2019-06-22</td>
-				<td><button class="detail">상세 보기</button></td>
-			</tr>
-			<c:forEach var="i" begin="0" end="8">
+			<c:forEach var="m" items="${memberList}">
 				<tr class="tableContext">
-					<td>회원 번호</td>
-					<td>회원 분류</td>
-					<td>패널명 / 기업명</td>
-					<td>패널 등급</td>
-					<td>가입일</td>
+					<td>${ m.mno }</td>
+					<td>${ m.userType }</td>
+					<td>
+						<c:if test="${ m.userType eq '기업' }">
+							${ m.companyName }
+						</c:if>
+						<c:if test="${ m.userType ne '기업' }">
+							${ m.userName }
+						</c:if>
+					</td>
+					<td>
+						<c:if test="${ m.userType eq '기업' }">
+							기업 회원
+						</c:if>
+						<c:if test="${ m.userType ne '기업' }">
+							${ m.panelLevel }
+						</c:if>
+					</td>
+					<td>${ m.entDate }</td>
 					<td><button class="detail">상세 보기</button></td>
 				</tr>
 			</c:forEach>
 		</table>
 		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
+			<c:url var="blistFirst" value="memberInfoManagement.memberManagement">
+				<c:param name="currentPage" value="${1}"/>
+				<c:if test="${ !empty param.searchInput }">
+					<c:param name="searchInput" value="${param.searchInput}"/>
+				</c:if>
+				<c:if test="${ !empty param.panelLevel }">
+					<c:param name="panelLevel" value="${param.panelLevel}"/>
+				</c:if>
+				<c:if test="${ !empty param.userType }">
+					<c:param name="userType" value="${param.userType}"/>
+				</c:if>
+			</c:url>
+			<a href="${blistFirst}"><span>[처음]</span></a>&nbsp;
+			
+			<c:if test="${pi.currentPage <= 1}">
+				<span>[이전]</span> &nbsp;
+			</c:if>
+			<c:if test="${pi.currentPage > 1}">
+				<c:url var="blistBack" value="memberInfoManagement.memberManagement">
+					<c:param name="currentPage" value="${pi.currentPage - 1}"/>
+					<c:if test="${ !empty param.searchInput }">
+						<c:param name="searchInput" value="${param.searchInput}"/>
+					</c:if>
+					<c:if test="${ !empty param.panelLevel }">
+						<c:param name="panelLevel" value="${param.panelLevel}"/>
+					</c:if>
+					<c:if test="${ !empty param.userType }">
+						<c:param name="userType" value="${param.userType}"/>
+					</c:if>
+					</c:url>
+				<a href="${blistBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+			
+			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+				<c:if test="${p eq pi.currentPage }">
+					<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+				</c:if>
+				<c:if test="${p ne pi.currentPage }">
+					<c:url var="blistCheck" value="memberInfoManagement.memberManagement">
+						<c:param name="currentPage" value="${ p }"/>
+						<c:if test="${ !empty param.searchInput }">
+							<c:param name="searchInput" value="${param.searchInput}"/>
+						</c:if>
+						<c:if test="${ !empty param.panelLevel }">
+							<c:param name="panelLevel" value="${param.panelLevel}"/>
+						</c:if>
+						<c:if test="${ !empty param.userType }">
+							<c:param name="userType" value="${param.userType}"/>
+						</c:if>
+					</c:url>
+					<a href="${ blistCheck }"><span>${ p }</span></a>
+				</c:if>
+				
 			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
+			
+			<c:if test="${pi.currentPage < pi.maxPage}">
+				<c:url var="blistNext" value="memberInfoManagement.memberManagement">
+					<c:param name="currentPage" value="${pi.currentPage + 1}"/>
+					<c:if test="${ !empty param.searchInput }">
+						<c:param name="searchInput" value="${param.searchInput}"/>
+					</c:if>
+					<c:if test="${ !empty param.panelLevel }">
+						<c:param name="panelLevel" value="${param.panelLevel}"/>
+					</c:if>
+					<c:if test="${ !empty param.userType }">
+						<c:param name="userType" value="${param.userType}"/>
+					</c:if>
+				</c:url>
+				&nbsp;<a href="${blistNext}"><span>[다음]</span></a>
+			</c:if>
+			<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+			</c:if>
+			
+			<c:url var="blistEnd" value="memberInfoManagement.memberManagement">
+				<c:param name="currentPage" value="${pi.maxPage}"/>
+				<c:if test="${ !empty param.searchInput }">
+					<c:param name="searchInput" value="${param.searchInput}"/>
+				</c:if>
+				<c:if test="${ !empty param.panelLevel }">
+					<c:param name="panelLevel" value="${param.panelLevel}"/>
+				</c:if>
+				<c:if test="${ !empty param.userType }">
+					<c:param name="userType" value="${param.userType}"/>
+				</c:if>
+			</c:url>
+			<a href="${blistEnd}"><span>[마지막]</span></a>&nbsp;
 		</div>
 	</div>
 	
@@ -366,7 +480,8 @@
 		    <div class="ui cancel button" id="companyPictureClose">Cancel</div>
   		</div>
 	</div>
-	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 	<script>
 		$("#companyPictureBtn").on("click", function(){
 			$("#companyPicture").modal("show");
@@ -378,15 +493,57 @@
 			$('#research').modal('show');
 		});
 		$(".detail").on("click", function(){
-			var num = $(this).parent().siblings().eq(0).text();
+			var mno = $(this).parent().siblings().eq(0).text();
 			var type = $(this).parent().siblings().eq(1).text();
-			if(type == '기업'){
-				$('#corp').modal('show');
-			}else{
-				$('#panel').modal('show');
-			}
 			
-			//console.log(num);
+			$.ajax({
+				url:"selectMember.memberManagement",
+				type:"post",
+				data:{mno:mno},
+				success:function(data){
+					var address = data.member.userAddress;
+					var passphrase = "1234";
+			        var decrypted1 = CryptoJS.AES.decrypt(address, passphrase);
+			        var address1 = decrypted1.toString(CryptoJS.enc.Utf8);
+			        
+			        var phone = data.member.userPhone;
+					var passphrase = "1234";
+			        var decrypted1 = CryptoJS.AES.decrypt(phone, passphrase);
+			        var phone1 = decrypted1.toString(CryptoJS.enc.Utf8);
+			        $("#address").text(address1);
+					if(type == '기업'){
+						$("#corp td").eq(0).text(data.member.mno);
+						$("#corp td").eq(1).text(data.member.companyName);
+						$("#corp td").eq(2).text(data.member.userId);
+						$("#corp td").eq(3).text(data.member.cRegistrationNumber);
+						$("#corp td").eq(5).text(address1);
+						$("#corp td").eq(6).text(data.member.userName);
+						$("#corp td").eq(7).text(phone1);
+						$("#corp td").eq(8).text(data.member.userEmail);
+						$('#corp').modal('show');
+					}else{
+						$("#panel td").eq(0).text(data.member.mno);
+						$("#panel td").eq(1).text(data.member.userName);
+						$("#panel td").eq(2).text(data.member.userId);
+						$("#panel td").eq(3).text(data.member.panelLevel);
+						$("#panel td").eq(4).text(data.member.panelBirthday);
+						$("#panel td").eq(5).text((data.member.panelGender == 'M')? "남성" : "여성");
+						$("#panel td").eq(6).text(phone1);
+						$("#panel td").eq(7).text(data.member.userEmail);
+						$("#panel td").eq(8).html(address1.split("/")[0] + "   " + address1.split("/")[1] + "<br><br>" + address1.split("/")[2]);
+						$("#panel td").eq(9).text(data.member.researchResponseDate);
+						$("#panel td").eq(10).text(data.member.modifyDate);
+						$("#panel td").eq(11).text(data.member.panelRewordPoint + " p");
+						$("#panel td").eq(12).text(data.member.cashoutAmount + "원");
+						$("#panel td").eq(13).text(data.member.ternaryCount + "회");
+						$("#panel td").eq(14).text(data.member.withdrawAccount);
+						$('#panel').modal('show');
+					}
+				},
+				error:function(status){
+					console.log(status);
+				}
+			});
 		});
 		$("#approvalBtn").on("click", function(){
 			Swal.fire({
@@ -449,7 +606,7 @@
 			}
 			start();
 		});
-		
+		$(".ui.dropdown").dropdown();
 		$(".topMenu:nth-child(1)").addClass("active");
 		$(".topMenu:nth-child(1)").find(".innerMenu:nth-child(1)").addClass("on");
 	</script>

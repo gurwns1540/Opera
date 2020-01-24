@@ -144,6 +144,10 @@
 <body>
 	<jsp:include page="/WEB-INF/views/corporation/common/corpMenuBar.jsp"/>
 	<jsp:include page="/WEB-INF/views/corporation/common/corpMenuBar2.jsp"/>
+	<c:if test="${ empty sessionScope.loginUser or sessionScope.loginUser.userType ne '기업' }">
+		<c:set var="msg" value="기업회원만 접근 가능합니다." scope="request"/>
+		<jsp:forward page="/WEB-INF/views/common/errorPage.jsp"/>
+	</c:if>
 	<div id="requestMainArea">
 		<div id="requestHeader">
 			<table id="requestHeaderTable">

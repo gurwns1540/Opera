@@ -58,22 +58,38 @@ public class PanelDaoImpl implements PanelDao{
 	}
 
 	@Override
-	public List<Object> selectAllMyInquiry(SqlSessionTemplate sqlSession, PanelMember pm) {
+	public List selectAllMyInquiry(SqlSessionTemplate sqlSession, Inquiry i) {
 		
-		List<Object> list =  sqlSession.selectList("Inquiry.selectAllMyInquiry", pm);
+		return sqlSession.selectList("Inquiry.selectAllMyInquiry", i);
+	}
+
+	@Override
+	public List searchInquiryList(SqlSessionTemplate sqlSession, String search, int category) {
 		
-		for(int i=0; i<list.size(); i++) {
-			
-			System.out.println("Dao"+list.get(i).toString());
-			
+		List list = null;
+		
+		if(category == 0 ) {
+			list = sqlSession.selectList("Inquiry.selectAllSearchInquiryList",search);
+		}else if(category == 1) {
+			list = sqlSession.selectList("Inquiry.selectJoinSearchInquiryList",search);
+		}else if(category ==2) {
+			list = sqlSession.selectList("Inquiry.selectResearchSearchInquiryList",search);
+		}else if(category ==3) {
+			list = sqlSession.selectList("Inquiry.selectRewardSearchInquiryList",search);
+		}else if(category ==4) {
+			list = sqlSession.selectList("Inquiry.selectOtherSearchInquiryList",search);
 		}
 		
 		return list;
-		//return sqlSession.selectList("Inquiry.selectAllMyInquiry", pm);
 	}
 
 	@Override
 	public int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
+		ArrayList<Integer> indexArr = new ArrayList<Integer>();
+		for(int i = 1; i <= 5; i++) {
+			indexArr.add(i);
+		}
+		pm.setIndexArr(indexArr);
 		return sqlSession.insert("Panel.insertTermsPanel", pm);
 	}
 	
@@ -99,5 +115,14 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.update("Panel.updatePassword", pm);
 	}
 
+  @Override
+	public int insertRewordPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.insert("Panel.insertRewordPanel", pm);
+	}
+
+	@Override
+	public int insertTernaryPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.insert("Panel.insertTernaryPanel", pm);
+	}
 
 }

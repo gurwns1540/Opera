@@ -163,6 +163,11 @@ public class CommonController {
 		
 		return "common/signUpComplete";
 	}
+	
+	@RequestMapping("errorPage.me")
+	public String forwardErrorPage() {
+		return "common/errorPage";
+	}
 
 	/**
 	 * @Author      : yhj
