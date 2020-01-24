@@ -50,12 +50,12 @@ public class rewardManagementController {
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			
 			
-			List<PanelRewardHistory> PanelRewardHistoryList = as.panelCashoutApplication(pi); 
-			
-			model.addAttribute("PanelRewardHistoryList", PanelRewardHistoryList);
+			List<PanelRewardHistory> panelRewardHistoryList = as.panelCashoutApplication(pi); 
+			System.out.println(panelRewardHistoryList);
+			model.addAttribute("panelRewardHistoryList", panelRewardHistoryList);
 			model.addAttribute("pi", pi);
 			
-			return "memberInfoManagement";
+			return "manageCashoutApplications";
 			
 		} catch (SelectException e) {
 			model.addAttribute("msg", e.getMessage());

@@ -193,13 +193,13 @@
 				<th style="width: 15%;">신청일</th>
 				<th style="width: 20%;">개별 캐시아웃</th>
 			</tr>
-			<c:forEach var="i" begin="0" end="9">
+			<c:forEach var="pr" items="${panelRewardHistoryList}">
 				<tr class="tableContext">
 					<td><input type="checkbox" class="checkPoorMailing"></td>
-					<td>패널번호</td>
-					<td>캐시아웃 신청 금액</td>
-					<td>신청 계좌</td>
-					<td>신청일</td>
+					<td>${ pr.mno }</td>
+					<td>${ pr.cashoutAmount }<i class="won sign icon"></i></td>
+					<td>${ pr.account }</td>
+					<td>${ pr.applicantDate }</td>
 					<td><button class="detail">캐시아웃</button></td>
 				</tr>
 			</c:forEach>
