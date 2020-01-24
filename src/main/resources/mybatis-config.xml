@@ -8,12 +8,15 @@
 		<typeAlias type="com.opera.survway.panel.model.vo.PanelMember" alias="PanelMember"/>
 		<typeAlias type="com.opera.survway.corporation.model.vo.CorpMember" alias="CorpMember"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.Inquiry" alias="Inquiry"/>
+		<typeAlias type="com.opera.survway.common.model.vo.AllMember" alias="AllMember"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.SearchMember" alias="SearchMember"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>
 		<mapper resource="mappers/corp-mapper.xml"/>
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/inquiry-mapper.xml"/>
+		<mapper resource="mappers/admin-mapper.xml"/>
 		
 	</mappers>
 </configuration>

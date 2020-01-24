@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<hr />
 <dl style="text-align: left;">
 	<dt>회사는 회원가입, 상담, 서비스 신청 등을 위해 아래와 같은 개인정보를 수집하고 있으며, 이용자는 개인정보의 수집을 거부할 수 있습니다. 회사는 이용자가 회사의 개인정보처리방침 또는 이용약관의 내용에 대해 ‘동의함’ 또는 ‘동의 안함’을 선택할 수 있는 절차를 마련하여, ‘동의함’을 선택하면 개인정보 수집에 대해 동의한 것으로 봅니다.</dt>
 	<dt><br /><b>ο 수집항목</b></dt>

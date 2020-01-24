@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<hr />
 <dl style="text-align: left;">
 	<dt><b>회사는 수집한 개인정보를 다음의 목적으로만 이용하며, 이용 목적이 변경될 시에는 사전 동의를 구할 것입니다.</b></dt>
 	<dd>

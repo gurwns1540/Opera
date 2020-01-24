@@ -4,6 +4,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <!DOCTYPE html>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<style>
+	 @media screen and (max-width: 1000px) { 
+		.container {
+			width: 95%;
+		}
+	}
+</style>
 <header class="headerArea">
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 

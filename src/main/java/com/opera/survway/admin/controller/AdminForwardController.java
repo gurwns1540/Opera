@@ -12,12 +12,6 @@ public class AdminForwardController {
 		return "common/adminMain";
 	}
 	
-	// 회원 정보 관리
-	@RequestMapping("memberInfoManagement.admin")
-	public String forwardPanelInfoManagement() {
-		return "memberManagement/memberInfoManagement";
-	}
-	
 	// 신규 패널 관리
 	@RequestMapping("newPanelManagement.admin")
 	public String forwardNewPanelManagement() {
