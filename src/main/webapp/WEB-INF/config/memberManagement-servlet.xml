@@ -21,18 +21,14 @@
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/panel/" /> 
+		<beans:property name="prefix" value="/WEB-INF/views/admin/memberManagement/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.opera.survway" />
+	<context:component-scan base-package="com.opera.survway" /> 
 	
+	<!-- 프록시 설정 -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
-	
-	<!-- 파일 업로드르 하기 위한 설정(multipart) -->
-	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="10000000"/>
-	</beans:bean>
 	
 	<beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView"/>
 	

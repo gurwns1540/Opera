@@ -1,8 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <!DOCTYPE html>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<style>
+	 @media screen and (max-width: 1000px) { 
+		.container {
+			width: 95%;
+		}
+	}
+</style>
 <header class="headerArea">
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 
@@ -60,7 +68,7 @@
 		    	<div class="menu">
 			    	<a href="notice.panel" class="item">공지사항</a>
 			    	<a href="faq.panel" class="item">자주묻는 질문</a>
-			    	<a href="panelInquiryList.panel" class="item">내 1:1 문의</a>
+			    	<a href="panelInquiryList.customerCenter"class="item">내 1:1 문의</a>
 		    	</div>
 		  	</div>
 		</div>
