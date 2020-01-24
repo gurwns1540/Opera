@@ -30,6 +30,11 @@ public class PanelDaoImpl implements PanelDao{
 	public String selectEncPassword(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.selectOne("Panel.selectPwd", pm.getUserId());
 	}
+	
+	@Override
+	public String selectEncPassword(SqlSessionTemplate sqlSession, String userId) {
+		return sqlSession.selectOne("Panel.selectPwd", userId);
+	}
 
 	@Override
 	public int insertMemberTable(SqlSessionTemplate sqlSession, PanelMember pm) {
@@ -76,10 +81,23 @@ public class PanelDaoImpl implements PanelDao{
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 1. 22.
 	 * @ModifyDate  : 2020. 1. 22.
-	 * @Description : 회원정보 수정
+	 * @Description : 회원정보수정(비밀번호X)
 	 */
 	@Override
 	public int updateMemberInfo(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.update("Panel.updateMemberInfo", pm);
 	}
+
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 24.
+	 * @ModifyDate  : 2020. 1. 24.
+	 * @Description : 회원비밀번호수정
+	 */
+	@Override
+	public int updatePassword(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.update("Panel.updatePassword", pm);
+	}
+
+
 }

@@ -184,7 +184,9 @@
 					</script>
 				</c:if>
 				<c:if test="${ param.message eq 'fail' }">
+					<script>
 						Swal.fire('수정완료', '개인정보 수정을 실패했습니다.', 'warning');
+					</script>
 				</c:if>
 			</c:if>
 		</section>  <!-- container end -->
@@ -206,6 +208,7 @@
 						</td>
 						<td style="width: 68%;"align="center">
 							<div class="ui input">
+								<input type="hidden" name="mno" value="${ loginUser.mno }" />
 								<input type="password" name="userPwd" id="userPwd"/>
 							</div>
 						</td>
@@ -351,29 +354,45 @@
 // 		모달창 오픈
 		$("#changePwdBtn").click(function() {
 			$("#changePwdModal").modal("show");
+			$("#userPwd").val("");
+			$("#changePwd").val("");
+			$("#changePwd2").val("");
+			$("#pass1Check").text("");
+			$("#pass2Check").text("");
+			
 		});
 		
 // 		모달확인버튼
 		$("#okModalBtn").click(function(){
 			var ajaxPwd = $("#userPwd").val();
-			$.ajax({
-				url: "checkPassword.me?screen=modal",
-				type: "post",
-				data : {userPwd:ajaxPwd},
-				success: function(data) {
-					console.log(data.isEqual);
-// 					if(data.result == "true") {
-// 						Swal.fire('성공', 'ajax 테스트 성공', 'success');
-// 					} else if(data.result == "false") {
-// 						Swal.fire('실패', '비밀번호가 다릅니다.', 'warning');
-// 					} else {
-// 						Swal.fire('에러', '다시 시도해주세요', 'error');
-// 					}
-				},
-				error: function(data) {
-					Swal.fire('경고', 'ajax 테스트 실패', 'warning');
+			if(ajaxPwd == "" || $("#changePwd").val() == "" || $("#changePwd2").val() == "") {
+				Swal.fire('경고', '올바르게 입력 후 다시 시도해주세요', 'warning');
+			} else {
+				if(inval_Arr[0] == false || inval_Arr[1] == false) {
+					Swal.fire('경고', '올바르게 입력 후 다시 시도해주세요', 'warning');
+				} else {
+					$.ajax({
+						url: "checkPasswordAjax.me",
+						type: "post",
+						data : {
+							userId: "${ loginUser.userId }",
+							userPwd: ajaxPwd
+						},
+						success: function(data) {
+							if(data.isEqual == true) {
+								console.log(data.isEqual);
+								$("#changePwdModalForm").submit();
+							} else {
+								Swal.fire('경고', '현재 비밀번호가 일치하지 않습니다', 'warning');
+								return false;
+							}
+						},
+						error: function(data) {
+							console.log("실패");
+						}
+					});
 				}
-			});
+			}
 		});
 	</script>
 </body>

@@ -32,7 +32,7 @@
 			<hr>
 		</div>  <!-- .sectionLine end -->
 		
-		<form action="checkPassword.me?screen=page" method="post">
+		<form action="checkPassword.me" method="post">
 			<div id="passwordconfirm" style="width: 100%;">
 				<table align="center" style="width: inherit;">
 					<tr align="center">

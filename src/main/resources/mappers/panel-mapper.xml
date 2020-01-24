@@ -66,7 +66,11 @@
 	</insert>
 	
 	<update id="updateMemberInfo" parameterType="PanelMember">
-		UPDATE MEMBER SET USER_ADDRESS = #{userAddress}
+		UPDATE MEMBER SET USER_ADDRESS = #{userAddress}, MODIFY_DATE = SYSDATE
+		WHERE MNO = #{mno}
+	</update>
+	<update id="updatePassword" parameterType="PanelMember">
+		UPDATE MEMBER SET USER_PWD = #{userPwd}, MODIFY_DATE = SYSDATE
 		WHERE MNO = #{mno}
 	</update>
 </mapper>

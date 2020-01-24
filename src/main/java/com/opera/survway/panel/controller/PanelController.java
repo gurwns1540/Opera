@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.opera.survway.common.controller.LoginMemberController;
 import com.opera.survway.common.model.vo.GenerateCertPassword;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.service.PanelService;
@@ -145,44 +147,19 @@ public class PanelController {
 	 * @ModifyDate  : 2020. 1. 23.
 	 * @Description : 패스워드 체크
 	 */
-	@ResponseBody
 	@PostMapping("checkPassword.me")
-	public ModelAndView checkPassword(HttpSession session, ModelAndView mv, HttpServletRequest request, String userPwd) {
-		String param = request.getParameter("screen");
-		System.out.println(mv);
+	public String checkPassword(String userPwd, HttpSession session, Model model) {
 		PanelMember pm = (PanelMember) session.getAttribute("loginUser");
-		log.info(param);
-		switch(param) {
-			case "page" : {
-				System.out.println(pm);
-				if(passwordEncoder.matches(userPwd, pm.getUserPwd())) {
-					mv.setViewName("redirect:myInfoDetail.panel");
-				} else {
-					mv.setViewName("redirect:myInfoDetail.panel");
-					mv.addObject("message", "비밀번호가 다릅니다.");
-				}
-				return mv;
-			}
-			case "modal" : {
-				mv.clear();
-				String ajaxPwd = request.getParameter("userPwd");
-				if(passwordEncoder.matches(ajaxPwd, pm.getUserPwd())) {
-					System.out.println("일치");
-					mv.addObject("isEqual", true);
-					mv.setViewName("jsonView");
-				} else {
-					System.out.println("불일치");
-					mv.addObject("isEqual", false);
-					mv.setViewName("jsonView");
-				}
-				return mv;
-			}
-			default : {
-				mv.setViewName("redirect:index.jsp");
-				return mv;
-			}
+		System.out.println(pm);
+		if(passwordEncoder.matches(userPwd, pm.getUserPwd())) {
+			return "redirect:myInfoDetail.panel";
+		} else {
+			model.addAttribute("message", "비밀번호가 다릅니다.");
+			return "redirect:myInfo.panel";
 		}
 	}
+	
+
 	
 	/**
 	 * @Author      : yhj
@@ -211,7 +188,35 @@ public class PanelController {
 		}
 	}
 	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 24.
+	 * @ModifyDate  : 2020. 1. 24.
+	 * @Description : 회원정보수정(비밀번호)
+	 */
+	@PostMapping("updatePassword.me")
+	public String updatePassword(Model model, int mno, String changePwd, SessionStatus status) {
+		log.info(mno + "");
+		log.info(changePwd);
+		String encryptPwd = passwordEncoder.encode(changePwd);
+		log.info(encryptPwd);
+		PanelMember pm = new PanelMember();
+		pm.setMno(mno);
+		pm.setUserPwd(encryptPwd);
+		
+		int result = ps.updatePassword(pm);
+		
+		if(result > 0) {
+//			비밀번호 변경 시 로그아웃 처리
+			status.setComplete();
+			return "redirect:panelResult.panel?message=pwdSuccess";
+		} else {
+			return "redirect:myInfoDetail.panel";
+		}
+	}
 	
+//	@PostMapping("dropPanel.me")
+//	public String dropPanel(Model model)
 }
 
 

@@ -10,4 +10,6 @@ public interface CommonDao {
 
 	int certificationMember(SqlSessionTemplate sqlSession, String userId);
 
+	String selectEncPassword(SqlSessionTemplate sqlSession, String userId);
+
 }

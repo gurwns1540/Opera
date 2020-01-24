@@ -8,4 +8,6 @@ public interface CommonService {
 
 	int certificationMember(String userId);
 
+	boolean checkPasswordModal(String userId, String ajaxPwd);
+
 }

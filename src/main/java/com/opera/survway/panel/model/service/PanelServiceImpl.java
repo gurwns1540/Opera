@@ -116,7 +116,7 @@ public class PanelServiceImpl implements PanelService {
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 1. 22.
 	 * @ModifyDate  : 2020. 1. 22.
-	 * @Description : 회원정보수정
+	 * @Description : 회원정보수정(비밀번호X)
 	 */
 	@Override
 	public int updateMemberInfo(PanelMember pm) {
@@ -124,6 +124,18 @@ public class PanelServiceImpl implements PanelService {
 		return pd.updateMemberInfo(sqlSession, pm);
 	}
 
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 24.
+	 * @ModifyDate  : 2020. 1. 24.
+	 * @Description : 회원정보수정(비밀번호)
+	 */
+	@Override
+	public int updatePassword(PanelMember pm) {
+		return pd.updatePassword(sqlSession, pm);
+	}
+
+	
 }
 
 

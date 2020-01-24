@@ -20,6 +20,7 @@ public interface PanelDao {
 	int selectMno(SqlSessionTemplate sqlSession, PanelMember pm);
 
 	String selectEncPassword(SqlSessionTemplate sqlSession, PanelMember pm);
+	String selectEncPassword(SqlSessionTemplate sqlSession, String userId);
 
 	int insertInquiry(SqlSessionTemplate sqlSession, Inquiry i);
 
@@ -28,5 +29,8 @@ public interface PanelDao {
 	int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm);
 
 	int updateMemberInfo(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int updatePassword(SqlSessionTemplate sqlSession, PanelMember pm);
+
 
 }
