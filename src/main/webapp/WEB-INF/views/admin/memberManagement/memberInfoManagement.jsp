@@ -173,7 +173,6 @@
   		width: 100px;
   		min-width: 100px !important;
   		padding-right: 10px !important;
-  		
   	}
 </style>
 </head>
@@ -496,13 +495,12 @@
 		$(".detail").on("click", function(){
 			var mno = $(this).parent().siblings().eq(0).text();
 			var type = $(this).parent().siblings().eq(1).text();
-			console.log(mno);
+			
 			$.ajax({
 				url:"selectMember.memberManagement",
 				type:"post",
 				data:{mno:mno},
 				success:function(data){
-					console.log(data);
 					var address = data.member.userAddress;
 					var passphrase = "1234";
 			        var decrypted1 = CryptoJS.AES.decrypt(address, passphrase);

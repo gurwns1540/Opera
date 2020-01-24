@@ -27,4 +27,8 @@ public interface PanelDao {
   
 	int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm);
 
+	int insertRewordPanel(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int insertTernaryPanel(SqlSessionTemplate sqlSession, PanelMember pm);
+
 }

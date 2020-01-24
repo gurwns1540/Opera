@@ -69,7 +69,22 @@ public class PanelDaoImpl implements PanelDao{
 
 	@Override
 	public int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
+		ArrayList<Integer> indexArr = new ArrayList<Integer>();
+		for(int i = 1; i <= 5; i++) {
+			indexArr.add(i);
+		}
+		pm.setIndexArr(indexArr);
 		return sqlSession.insert("Panel.insertTermsPanel", pm);
+	}
+
+	@Override
+	public int insertRewordPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.insert("Panel.insertRewordPanel", pm);
+	}
+
+	@Override
+	public int insertTernaryPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.insert("Panel.insertTernaryPanel", pm);
 	}
 
 }
