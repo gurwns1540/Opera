@@ -9,6 +9,8 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,9 +19,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.opera.survway.common.controller.LoginMemberController;
 import com.opera.survway.common.model.vo.GenerateCertPassword;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.service.PanelService;
@@ -36,6 +42,9 @@ public class PanelController {
 	private BCryptPasswordEncoder passwordEncoder;
 	@Autowired
 	private JavaMailSender mailSender; // Mail Sender
+	
+//	로그
+	private Logger log = LoggerFactory.getLogger(PanelController.class);
 	
 	/**
 	 * @Author      : Ungken
@@ -153,6 +162,82 @@ public class PanelController {
 		return "panelInquiryList";
 	}
 	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 22.
+	 * @ModifyDate  : 2020. 1. 23.
+	 * @Description : 패스워드 체크
+	 */
+	@PostMapping("checkPassword.me")
+	public String checkPassword(String userPwd, HttpSession session, Model model) {
+		PanelMember pm = (PanelMember) session.getAttribute("loginUser");
+		System.out.println(pm);
+		if(passwordEncoder.matches(userPwd, pm.getUserPwd())) {
+			return "redirect:myInfoDetail.panel";
+		} else {
+			model.addAttribute("message", "비밀번호가 다릅니다.");
+			return "redirect:myInfo.panel";
+		}
+	}
+	
+
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 23.
+	 * @ModifyDate  : 2020. 1. 23.
+	 * @Description : 개인정보수정(비밀번호변경X)
+	 */
+	@PostMapping("updateMemberInfo.me")
+	public String updateMemberInfo(HttpSession session, Model model, PanelMember pm) {
+		PanelMember loginUser = (PanelMember) session.getAttribute("loginUser");
+		int mno = loginUser.getMno();
+		pm.setMno(mno);
+		
+		int result = ps.updateMemberInfo(pm);
+		if(result > 0) {
+			loginUser.setPost(pm.getPost());
+			loginUser.setAddress(pm.getAddress());
+			loginUser.setDetailAddress(pm.getDetailAddress());
+			loginUser.setUserAddress(pm.getUserAddress());
+			
+			session.invalidate();
+			model.addAttribute("loginUser", loginUser);
+			return "redirect:myInfoDetail.panel?message=success";
+		} else {
+			return "redirect:myInfoDetail.panel?message=fail";
+		}
+	}
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 24.
+	 * @ModifyDate  : 2020. 1. 24.
+	 * @Description : 회원정보수정(비밀번호)
+	 */
+	@PostMapping("updatePassword.me")
+	public String updatePassword(Model model, int mno, String changePwd, SessionStatus status) {
+		log.info(mno + "");
+		log.info(changePwd);
+		String encryptPwd = passwordEncoder.encode(changePwd);
+		log.info(encryptPwd);
+		PanelMember pm = new PanelMember();
+		pm.setMno(mno);
+		pm.setUserPwd(encryptPwd);
+		
+		int result = ps.updatePassword(pm);
+		
+		if(result > 0) {
+//			비밀번호 변경 시 로그아웃 처리
+			status.setComplete();
+			return "redirect:panelResult.panel?message=pwdSuccess";
+		} else {
+			return "redirect:myInfoDetail.panel";
+		}
+	}
+	
+//	@PostMapping("dropPanel.me")
+//	public String dropPanel(Model model)
 }
 
 
