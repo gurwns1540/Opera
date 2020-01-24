@@ -264,6 +264,15 @@
 		<div id="pagingArea" align="center">
 			<c:url var="blistFirst" value="memberInfoManagement.memberManagement">
 				<c:param name="currentPage" value="${1}"/>
+				<c:if test="${ !empty param.searchInput }">
+					<c:param name="searchInput" value="${param.searchInput}"/>
+				</c:if>
+				<c:if test="${ !empty param.panelLevel }">
+					<c:param name="panelLevel" value="${param.panelLevel}"/>
+				</c:if>
+				<c:if test="${ !empty param.userType }">
+					<c:param name="userType" value="${param.userType}"/>
+				</c:if>
 			</c:url>
 			<a href="${blistFirst}"><span>[처음]</span></a>&nbsp;
 			
@@ -273,7 +282,16 @@
 			<c:if test="${pi.currentPage > 1}">
 				<c:url var="blistBack" value="memberInfoManagement.memberManagement">
 					<c:param name="currentPage" value="${pi.currentPage - 1}"/>
-				</c:url>
+					<c:if test="${ !empty param.searchInput }">
+						<c:param name="searchInput" value="${param.searchInput}"/>
+					</c:if>
+					<c:if test="${ !empty param.panelLevel }">
+						<c:param name="panelLevel" value="${param.panelLevel}"/>
+					</c:if>
+					<c:if test="${ !empty param.userType }">
+						<c:param name="userType" value="${param.userType}"/>
+					</c:if>
+					</c:url>
 				<a href="${blistBack}"><span>[이전]</span></a>&nbsp;
 			</c:if>
 			
@@ -284,6 +302,15 @@
 				<c:if test="${p ne pi.currentPage }">
 					<c:url var="blistCheck" value="memberInfoManagement.memberManagement">
 						<c:param name="currentPage" value="${ p }"/>
+						<c:if test="${ !empty param.searchInput }">
+							<c:param name="searchInput" value="${param.searchInput}"/>
+						</c:if>
+						<c:if test="${ !empty param.panelLevel }">
+							<c:param name="panelLevel" value="${param.panelLevel}"/>
+						</c:if>
+						<c:if test="${ !empty param.userType }">
+							<c:param name="userType" value="${param.userType}"/>
+						</c:if>
 					</c:url>
 					<a href="${ blistCheck }"><span>${ p }</span></a>
 				</c:if>
@@ -293,6 +320,15 @@
 			<c:if test="${pi.currentPage < pi.maxPage}">
 				<c:url var="blistNext" value="memberInfoManagement.memberManagement">
 					<c:param name="currentPage" value="${pi.currentPage + 1}"/>
+					<c:if test="${ !empty param.searchInput }">
+						<c:param name="searchInput" value="${param.searchInput}"/>
+					</c:if>
+					<c:if test="${ !empty param.panelLevel }">
+						<c:param name="panelLevel" value="${param.panelLevel}"/>
+					</c:if>
+					<c:if test="${ !empty param.userType }">
+						<c:param name="userType" value="${param.userType}"/>
+					</c:if>
 				</c:url>
 				&nbsp;<a href="${blistNext}"><span>[다음]</span></a>
 			</c:if>
@@ -302,6 +338,15 @@
 			
 			<c:url var="blistEnd" value="memberInfoManagement.memberManagement">
 				<c:param name="currentPage" value="${pi.maxPage}"/>
+				<c:if test="${ !empty param.searchInput }">
+					<c:param name="searchInput" value="${param.searchInput}"/>
+				</c:if>
+				<c:if test="${ !empty param.panelLevel }">
+					<c:param name="panelLevel" value="${param.panelLevel}"/>
+				</c:if>
+				<c:if test="${ !empty param.userType }">
+					<c:param name="userType" value="${param.userType}"/>
+				</c:if>
 			</c:url>
 			<a href="${blistEnd}"><span>[마지막]</span></a>&nbsp;
 		</div>
