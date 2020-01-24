@@ -32,6 +32,32 @@
 		<result property="ternaryCount" column="TERNARY_COUNT"/>
 	</resultMap>
 	
+	
+	<sql id="searchUserType">
+		<if test="userType != null">
+			AND USER_TYPE = #{userType}
+		</if>
+	</sql>
+	
+	<sql id="searchPanelLevel">
+		<if test="panelLevel != null">
+			<if test="userType == '패널'">
+				AND PANELLEVEL_NAME = #{panelLevel}
+			</if>
+		</if>
+	</sql>
+	
+	<sql id="searchInputName">
+		<if test="searchInput != null">
+			<if test="userType == '패널'">
+				AND USER_NAME LIKE '%' || #{searchInput} || '%'
+			</if>
+			<if test="userType == '기업'">
+				AND COMPANY_NAME LIKE '%' || #{searchInput} || '%'
+			</if>
+		</if>
+	</sql>
+	
 	<select id="memberInfoManagement" resultMap="panelMemberResultSet">
 		SELECT /*+ INDEX_ASC(M IDX_PANEL_ENTDATE)  */
         M.MNO, M.USER_ID, M.USER_PWD, M.USER_NAME, M.USER_ADDRESS, M.USER_PHONE, M.USER_EMAIL, M.USER_TYPE, TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD') AS LEAVE_DATE, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE, TO_CHAR(M.MODIFY_DATE, 'YYYY-MM-DD') AS MODIFY_DATE, P.PANEL_BIRTHDAY, P.PANEL_GENDER, P.REFER_PANELCODE, P.NOMINEE, O.OCCUPATION_NAME, P.WITHDRAW_ACCOUNT, L.PANELLEVEL_NAME, C.COMPANY_NAME, C.C_REGISTRATION_NUMBER FROM MEMBER M
@@ -41,13 +67,22 @@
         LEFT JOIN OCCUPATION O ON (P.OCCUPATION_NO = O.OCCUPATION_NO)
 		WHERE CERTIFICATION = 'Y'
 		AND USER_TYPE != '관리자'
+		<include refid="searchUserType"/>
+		<include refid="searchPanelLevel"/>
+		<include refid="searchInputName"/>
 		ORDER BY ENT_DATE DESC
 	</select>
 	
 	<select id="getListCountPanel" resultType="_int">
-		SELECT COUNT(*) FROM MEMBER 
+		SELECT COUNT(*) FROM MEMBER M
+		LEFT JOIN PANEL P ON (P.MNO = M.MNO)
+        LEFT JOIN PANELLEVEL L ON (P.PANELLEVEL_NO = L.PANELLEVEL_NO)
+        LEFT JOIN CORP C ON (C.MNO = M.MNO)
 		WHERE CERTIFICATION = 'Y'
 		AND USER_TYPE != '관리자'
+		<include refid="searchUserType"/>
+		<include refid="searchPanelLevel"/>
+		<include refid="searchInputName"/>
 	</select>
 	
 	<select id="selectMember" parameterType="_int" resultMap="panelMemberResultSet">

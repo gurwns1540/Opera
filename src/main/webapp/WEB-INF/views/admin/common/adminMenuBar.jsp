@@ -173,7 +173,7 @@
 		position: relative;
 		width: 80%;
 		top: 110px;
-    	left: 320px;
+    	right: -315px;
 		margin: 30px auto;
 		font-size: 1.2vw;
 	}
@@ -220,8 +220,16 @@
   		color: white;
   	}
   	#accordian ul ul li a {
-    padding-left: 40px !important;
-    text-align: left !important;
+    	padding-left: 40px !important;
+    	text-align: left !important;
+    }
+    
+    @media screen and (max-width: 1000px) { 
+		#adminBox {
+    		width: 60%;
+		}
+	}
+    
 </style>
 </head>
 <body>

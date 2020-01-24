@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.admin.model.service.AdminService;
+import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
@@ -29,36 +30,52 @@ public class memberManagementController {
 	/**
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 1. 23.
-	 * @ModifyDate  : 2020. 1. 23.
-	 * @Description : 패널 전체 조회
+	 * @ModifyDate  : 2020. 1. 24.
+	 * @Description : 패널 전체 조회 & 검색
 	 */
 	@RequestMapping("memberInfoManagement.memberManagement") 
 	public String forwardPanelInfoManagement(HttpServletRequest request, Model model) {
 		
 		String queryString = request.getQueryString();
 		
-//		System.out.println( Util.splitQuery(queryString) );
 		Map<String, List<String>> queryMap =  null;
 		
-		  int currentPage = 1; 
-		  
-		  if(queryString != null) { 
-			  queryMap = Util.splitQuery(queryString);
-//			  System.out.println(queryMap.get("currentPage").get(0));
-			  if(queryMap.containsKey("currentPage")) {
-				  currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
-			  }
-		  }
+		int currentPage = 1; 
+		String userType = "";
+		String panelLevel = "";
+		String searchInput = "";
+		
+		SearchMember searchMember = new SearchMember();
+		
+		if(queryString != null) { 
+			queryMap = Util.splitQuery(queryString);
+			if(queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+			if(queryMap.containsKey("userType")) {
+				userType = queryMap.get("userType").get(0);
+				searchMember.setUserType(userType);
+			}
+			if(queryMap.containsKey("panelLevel")) {
+				panelLevel = queryMap.get("panelLevel").get(0);
+				searchMember.setPanelLevel(panelLevel);
+			}
+			if(queryMap.containsKey("searchInput")) {
+				searchInput = queryMap.get("searchInput").get(0);
+				searchMember.setSearchInput(searchInput);
+			}
+			System.out.println(searchMember);
+		}
 	  
 		int listCount = 0;
 		try {
-			listCount = as.getListCountPanel();
-			//System.out.println(listCount);
-			
+			listCount = as.getListCountPanel(searchMember);
+			System.out.println(listCount);
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			
-			List<AllMember> memberList = as.memberInfoManagement(pi); 
-			//System.out.println(memberList);
+			searchMember.setPi(pi);
+			
+			List<AllMember> memberList = as.memberInfoManagement(searchMember); 
 			
 			model.addAttribute("memberList", memberList);
 			model.addAttribute("pi", pi);

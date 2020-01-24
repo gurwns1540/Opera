@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.dao.AdminDao;
+import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
@@ -30,9 +31,9 @@ public class AdminServiceImpl implements AdminService{
 	 * @Description : 패널 전체 조회시 패널 수
 	 */
 	@Override
-	public int getListCountPanel() throws SelectException {
+	public int getListCountPanel(SearchMember searchMember) throws SelectException {
 		
-		int listCount = ad.getListCountPanel(sqlSession);
+		int listCount = ad.getListCountPanel(sqlSession, searchMember);
 		
 		if(listCount <= 0) {
 			throw new SelectException("회원 수 조회 실패!!");
@@ -48,9 +49,9 @@ public class AdminServiceImpl implements AdminService{
 	 * @Description : 회원 전체 조회
 	 */
 	@Override
-	public List<AllMember> memberInfoManagement(PageInfo pi) throws SelectException {
+	public List<AllMember> memberInfoManagement(SearchMember searchMember) throws SelectException {
 		
-		List<AllMember> memberList = ad.memberInfoManagement(sqlSession, pi);
+		List<AllMember> memberList = ad.memberInfoManagement(sqlSession, searchMember);
 		
 		if(memberList == null) {
 			throw new SelectException("회원 조회 실패!!");

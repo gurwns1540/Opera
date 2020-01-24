@@ -208,20 +208,20 @@
 							</div>
 						</div>
 						
-						<select class="ui dropdown" name="panellevel" id="panelLevel">
-							<option value="all">패널 등급</option>
-							<option value="1">신규</option>
-							<option value="2">비활성</option>
-							<option value="3">준활성</option>
-							<option value="4">활성</option>
-							<option value="5">휴면</option>
-							<option value="6">블랙</option>
+						<select class="ui dropdown" name="panelLevel" id="panelLevel">
+							<option value="">패널 등급</option>
+							<option value="신규">신규</option>
+							<option value="비활성">비활성</option>
+							<option value="준활성">준활성</option>
+							<option value="활성">활성</option>
+							<option value="휴면">휴면</option>
+							<option value="블랙">블랙</option>
 						</select>
 						
 						<select class="ui dropdown" name="userType" id="userType">
-							<option value="all">회원 분류</option>
-							<option value="panel">패널</option>
-							<option value="corp">기업</option>
+							<option value="">회원 분류</option>
+							<option value="패널">패널</option>
+							<option value="기업">기업</option>
 						</select>
 					</form>
 				</td>
