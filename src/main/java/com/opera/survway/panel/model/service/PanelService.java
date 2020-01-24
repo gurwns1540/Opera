@@ -1,9 +1,6 @@
 package com.opera.survway.panel.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.stereotype.Service;
 
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.vo.Inquiry;
@@ -22,5 +19,9 @@ public interface PanelService {
 	List searchInquiryList(String search, int category);
 
 	
+
+	int updateMemberInfo(PanelMember pm);
+
+	int updatePassword(PanelMember pm);
 
 }

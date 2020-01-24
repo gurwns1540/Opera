@@ -5,13 +5,6 @@
 <head>
 	<jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
 </head>
-<style>
-
-
-
-
-
-</style>
 <body>
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
@@ -36,44 +29,44 @@
 			<hr>
 		</div>  <!-- .sectionLine end -->
 		
-		<div id="passwordconfirm" style="width: 100%;">
-			<table align="center" style="width: inherit;">
-				<tr align="center">
-					<td colspan="2"><b>회원님의 정보를 안전하게 보호하기 위해 비밀번호를 다시 한 번 확인 합니다.</b></td>
-				</tr>
-				<tr>
-					<td align="center" colspan="2"><b>항상 비밀번호는 타인에게 노출되지 않도록 주의해 주세요.</b></td>
-				</tr>
-				<tr>
-					<td><br></td>
-				</tr>
-				<tr>
-					<td align="center">
-						비밀번호 : 
-						<div class="ui input" >
-							<input type="password" name="userPwd" style="margin-left: 10px;">
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td><br><br></td>
-				</tr>
-				<tr>
-					<td colspan="2"><hr></td>
-				</tr>
-				<tr>
-					<td><br></td>
-				</tr>
-				<tr>
-					<td colspan="2" align="center">
-						<button class="ui blue button" onclick="location.href='myInfoDetail.panel'">다음단계</button>
-						<button class="ui blue button" onclick="location.href='panelMain.panel'">메인으로</button>
-					</td>
-				</tr>
-			</table>
-		</div>  <!-- #passwordconfirm end -->
-		
-		
+		<form action="checkPassword.me" method="post">
+			<div id="passwordconfirm" style="width: 100%;">
+				<table align="center" style="width: inherit;">
+					<tr align="center">
+						<td colspan="2"><b>회원님의 정보를 안전하게 보호하기 위해 비밀번호를 다시 한 번 확인 합니다.</b></td>
+					</tr>
+					<tr>
+						<td align="center" colspan="2"><b>항상 비밀번호는 타인에게 노출되지 않도록 주의해 주세요.</b></td>
+					</tr>
+					<tr>
+						<td><br></td>
+					</tr>
+					<tr>
+						<td align="center">
+							비밀번호 : 
+							<div class="ui input" >
+								<input type="password" name="userPwd" style="margin-left: 10px;">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td><br><br></td>
+					</tr>
+					<tr>
+						<td colspan="2"><hr></td>
+					</tr>
+					<tr>
+						<td><br></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center">
+							<button class="ui blue button" type="submit">다음단계</button>
+							<button class="ui blue button" type="button" onclick="location.href='panelMain.panel'">메인으로</button>
+						</td>
+					</tr>
+				</table>
+			</div>  <!-- #passwordconfirm end -->
+		</form>
 		<br />
 		</section>  <!-- container end -->
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>

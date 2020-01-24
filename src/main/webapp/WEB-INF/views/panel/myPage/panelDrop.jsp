@@ -15,9 +15,6 @@
 	background-color: #98E5FD;
 }
 
-
-
-
 </style>
 <body>
 	<div class="wrap">
@@ -47,60 +44,84 @@
 			<div class="panelDropArea">
 				<div class="panelDropImgArea">
 					<!-- 이미지 영역입니다. -->
-				</div>  <!-- panelDropImgArea end -->
+				</div>  <!-- .panelDropImgArea end -->
 				<br />
 				<hr />
 				<br />
-				<div class="panelDropReasonArea" align="center">
-					<b>
-						회원님께서 탈퇴하시는 사유 또는 저희 사이트에 건의하고 싶은 점 있으신가요?<br />
-						글을 남겨주시면 회원님의 의견을 소중히 경청하겠습니다.
-					</b>
+				<form action="dropPanel.me" method="post">
+					<div class="panelDropReasonArea" align="center">
+						<b>
+							회원님께서 탈퇴하시는 사유 또는 저희 사이트에 건의하고 싶은 점 있으신가요?<br />
+							글을 남겨주시면 회원님의 의견을 소중히 경청하겠습니다.
+						</b>
+						
+						<textarea name="" id="" style="margin-top: 20px; width: 100%; height: 150px; resize: none;"></textarea>
+					</div>  <!-- panelDropReasonArea end -->
+					<br />
+					<hr />
+					<br />
+					<div class="panelDropPasswordArea" style="width: 100%;">
+						<table align="center" style="width: inherit;">
+							<tr align="center">
+								<td colspan="2"><b>개인정보보호를 위해 탈퇴를 원하시면 비밀번호를 한번 더 입력 후 [탈퇴하기]를 선택해 주시기 바랍니다.</b></td>
+							</tr>
+							<tr>
+								<td><br></td>
+							</tr>
+							<tr>
+								<td align="center">
+									비밀번호 :   
+									<div class="ui input" >
+										<input type="password" name="userPwd" id="userPwd" style="margin-left: 10px;">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td><br><br></td>
+							</tr>
+							<tr>
+								<td colspan="2"><hr></td>
+							</tr>
+							<tr>
+								<td><br></td>
+							</tr>
+							<tr>
+								<td colspan="2" align="center">
+									<button class="ui blue button" id="dropPanelBtn" type="button">탈퇴하기</button>
+									<button class="ui blue button" type="button" onclick="location.href='panelMain.panel'">메인으로</button>
+								</td>
+							</tr>
+						</table>
 					
-					<textarea name="" id="" style="margin-top: 20px; width: 100%; height: 150px; resize: none;"></textarea>
-				</div>  <!-- panelDropReasonArea end -->
-				<br />
-				<hr />
-				<br />
-				<div class="panelDropPasswordArea" style="width: 100%;">
-					<table align="center" style="width: inherit;">
-						<tr align="center">
-							<td colspan="2"><b>개인정보보호를 위해 탈퇴를 원하시면 비밀번호를 한번 더 입력 후 [탈퇴하기]를 선택해 주시기 바랍니다.</b></td>
-						</tr>
-						<tr>
-							<td><br></td>
-						</tr>
-						<tr>
-							<td align="center">
-								비밀번호 :   
-								<div class="ui input" >
-									<input type="password" name="userPwd" style="margin-left: 10px;">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td><br><br></td>
-						</tr>
-						<tr>
-							<td colspan="2"><hr></td>
-						</tr>
-						<tr>
-							<td><br></td>
-						</tr>
-						<tr>
-							<td colspan="2" align="center">
-								<button class="ui blue button" onclick="location.href='#'">탈퇴하기</button>
-								<button class="ui blue button" onclick="location.href='#'">메인으로</button>
-							</td>
-						</tr>
-					</table>
-				
-				</div>  <!-- panelDropPasswordArea end -->
+					</div>  <!-- panelDropPasswordArea end -->
+				</form>
 			</div>  <!-- panelDropArea end -->
 		<br />
 		</section>  <!-- container end -->
 		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
 	</div>  <!-- wrap end -->
+	<script>
+		
+		$("#dropPanelBtn").click(function() {
+			var ajaxPwd = $("#userPwd").val();
+			console.log("${ loginUser.userId }");
+			console.log(ajaxPwd);
+// 			$.ajax({
+// 				url: "checkPasswordAjax.me",
+// 				type: "post",
+// 				data : {
+// 					userId: "${ loginUser.userId }",
+// 					userPwd: ajaxPwd
+// 				},
+// 				success: function(data) {
+// 					console.log(data.isEqual);
+// 				},
+// 				error: function(data) {
+					
+// 				}
+// 			});
+		});
+	</script>
 </body>
 </html>
 
