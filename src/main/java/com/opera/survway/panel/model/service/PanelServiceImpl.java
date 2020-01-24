@@ -95,26 +95,36 @@ public class PanelServiceImpl implements PanelService {
 		return result;
 	}
 
-	
 	/**
 	 * @Author	:hansol
-	 * @CreateDate	:2020. 1. 22.
-	 * @ModifyDate	:2020. 1. 22.
-	 * @Description	: 1:1문의 리스트 보기
+	 * @CreateDate	:2020. 1. 23.
+	 * @ModifyDate	:2020. 1. 23.
+	 * @Description	:1:1문의 전체 조회
 	 */
 	@Override
-	public List<Object> selectAllMyInquiry(PanelMember pm) {
+	public List selectAllMyInquiry(Inquiry i) {
 		
-		List<Object> list = pd.selectAllMyInquiry(sqlSession, pm);
-		
-		for(int i=0; i<list.size(); i++) {
-			
-			System.out.println("Service"+list.get(i).toString());
-			
-		}
+		List list = pd.selectAllMyInquiry(sqlSession, i); 
 		
 		return list;
 	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 1. 24.
+	 * @ModifyDate	:2020. 1. 24.
+	 * @Description	:1:1문의 검색기능
+	 */
+	@Override
+	public List searchInquiryList(String search, int category) {
+		
+		List list = pd.searchInquiryList(sqlSession, search, category);
+		
+		return list;
+	}
+
+	
+	
 
 }
 
