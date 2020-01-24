@@ -78,12 +78,11 @@ public class LoginMemberController {
 	 * @Author      : Oh
 	 * @CreateDate  : 2020-01-19
 	 * @ModifyDate  : 2020-01-21
-	 * @Description : 로그인 기능
+	 * @Description : 로그아웃 기능
 	 */
 	@RequestMapping("logout.me")
 	public String logout(SessionStatus status, Model model) {
 		status.setComplete();
-		
 		model.addAttribute("message", "로그아웃 되셨습니다.");
 		return "redirect:panelMain.panel";
 	}

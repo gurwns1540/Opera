@@ -112,6 +112,18 @@ public class PanelServiceImpl implements PanelService {
 		return list;
 	}
 
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 22.
+	 * @ModifyDate  : 2020. 1. 22.
+	 * @Description : 회원정보수정
+	 */
+	@Override
+	public int updateMemberInfo(PanelMember pm) {
+		
+		return pd.updateMemberInfo(sqlSession, pm);
+	}
+
 }
 
 

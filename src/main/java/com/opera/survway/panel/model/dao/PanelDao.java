@@ -27,4 +27,6 @@ public interface PanelDao {
   
 	int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm);
 
+	int updateMemberInfo(SqlSessionTemplate sqlSession, PanelMember pm);
+
 }

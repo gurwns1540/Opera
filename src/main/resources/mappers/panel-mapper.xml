@@ -65,6 +65,10 @@
 		SELECT * FROM DUAL
 	</insert>
 	
+	<update id="updateMemberInfo" parameterType="PanelMember">
+		UPDATE MEMBER SET USER_ADDRESS = #{userAddress}
+		WHERE MNO = #{mno}
+	</update>
 </mapper>
 
 

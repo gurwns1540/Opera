@@ -71,5 +71,15 @@ public class PanelDaoImpl implements PanelDao{
 	public int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.insert("Panel.insertTermsPanel", pm);
 	}
-
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 22.
+	 * @ModifyDate  : 2020. 1. 22.
+	 * @Description : 회원정보 수정
+	 */
+	@Override
+	public int updateMemberInfo(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.update("Panel.updateMemberInfo", pm);
+	}
 }

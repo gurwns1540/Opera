@@ -19,4 +19,6 @@ public interface PanelService {
 
 	List<Object> selectAllMyInquiry(PanelMember pm);
 
+	int updateMemberInfo(PanelMember pm);
+
 }
