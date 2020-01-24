@@ -1,12 +1,13 @@
 package com.opera.survway.panel.controller;
 
-import java.util.List;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -15,8 +16,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.opera.survway.common.model.vo.GenerateCertPassword;
@@ -99,36 +100,57 @@ public class PanelController {
 	}
 	
 	//1:1문의 등록
-	@PostMapping("inquirywrite.panel")
-	public String insertPanelInquiry(Model model,Inquiry i) {
+	@PostMapping("inquirywrite.customerCenter")
+	public String insertPanelInquiry(Model model,Inquiry i, HttpServletRequest request) {
 		
-		System.out.println(i.toString());
+		int category=Integer.parseInt(request.getParameter("inquiryCategoryNo"));
+		
+		i.setInquiryCategoryNo(category);
 		
 		int result = ps.insertInquiry(i);
 		
 		model.addAttribute("success",result);
 		
-		return "customerCenter/panelInquiryList";
+		return "redirect:panelInquiryList.customerCenter";
 	}
 	
 	//1:1문의 리스트 보기
-	@GetMapping("panelInquiryList.panel")
-	public String showMyInquiryList(Model model, PanelMember pm) {
+	@RequestMapping("panelInquiryList.customerCenter")
+	public String showMyInquiryList(HttpSession session, Model model,HttpServletRequest request, Inquiry iq) {
+		PanelMember loginUser = (PanelMember) session.getAttribute("loginUser");
+		int mno = loginUser.getMno();
+
+		iq.setMno(mno);
 		
-		//System.out.println("1");
-		List list = (List) ps.selectAllMyInquiry(pm);
-		
-		System.out.println("listSize"+list.size());
-		
-		for(int i=0; i<list.size(); i++) {
-			
-			System.out.println("controller"+list.get(i).toString());
-			
-		}
+		List list = (List) ps.selectAllMyInquiry(iq);
 		
 		model.addAttribute("list",list);
 		
-		return "customerCenter/panelInquiryList";
+		
+		return "panelInquiryList";
+	}
+	
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 1. 24.
+	 * @ModifyDate	:2020. 1. 24.
+	 * @Description	:1:1문의 검색기능
+	 */
+	@PostMapping("searchInquiry.customerCenter")
+	public String searchInquiryList(HttpServletRequest request, Model model) {
+		
+		String search = request.getParameter("searchInquiry");
+		
+		int category = Integer.parseInt(request.getParameter("category"));
+		
+		System.out.println("searchInquiry"+search);
+		System.out.println("category"+category);
+		
+		List list = (List) ps.searchInquiryList(search, category);
+		
+		model.addAttribute("list", list);
+		
+		return "panelInquiryList";
 	}
 	
 }

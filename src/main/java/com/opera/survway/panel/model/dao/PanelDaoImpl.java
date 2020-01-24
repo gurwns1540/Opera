@@ -52,24 +52,37 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.insert("Inquiry.insertInquiry", i);
 	}
 
-	@Override
-	public List<Object> selectAllMyInquiry(SqlSessionTemplate sqlSession, PanelMember pm) {
-		
-		List<Object> list =  sqlSession.selectList("Inquiry.selectAllMyInquiry", pm);
-		
-		for(int i=0; i<list.size(); i++) {
-			
-			System.out.println("Dao"+list.get(i).toString());
-			
-		}
-		
-		return list;
-		//return sqlSession.selectList("Inquiry.selectAllMyInquiry", pm);
-	}
+	
 
 	@Override
 	public int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.insert("Panel.insertTermsPanel", pm);
+	}
+
+	@Override
+	public List selectAllMyInquiry(SqlSessionTemplate sqlSession, Inquiry i) {
+		
+		return sqlSession.selectList("Inquiry.selectAllMyInquiry", i);
+	}
+
+	@Override
+	public List searchInquiryList(SqlSessionTemplate sqlSession, String search, int category) {
+		
+		List list = null;
+		
+		if(category == 0 ) {
+			list = sqlSession.selectList("Inquiry.selectAllSearchInquiryList",search);
+		}else if(category == 1) {
+			list = sqlSession.selectList("Inquiry.selectJoinSearchInquiryList",search);
+		}else if(category ==2) {
+			list = sqlSession.selectList("Inquiry.selectResearchSearchInquiryList",search);
+		}else if(category ==3) {
+			list = sqlSession.selectList("Inquiry.selectRewardSearchInquiryList",search);
+		}else if(category ==4) {
+			list = sqlSession.selectList("Inquiry.selectOtherSearchInquiryList",search);
+		}
+		
+		return list;
 	}
 
 }
