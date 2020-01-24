@@ -22,7 +22,7 @@
 	color: #3D3D3D;
 }
 #pagePath {
-	width: 60%;
+	width: 60%; 
 	text-align: right;
 	vertical-align: bottom;
 	font-weight: bold;
