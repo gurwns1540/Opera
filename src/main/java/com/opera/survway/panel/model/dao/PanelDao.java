@@ -23,8 +23,12 @@ public interface PanelDao {
 
 	int insertInquiry(SqlSessionTemplate sqlSession, Inquiry i);
 
-  List<Object> selectAllMyInquiry(SqlSessionTemplate sqlSession, PanelMember pm);
+ 
   
 	int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	List selectAllMyInquiry(SqlSessionTemplate sqlSession, Inquiry i);
+
+	List searchInquiryList(SqlSessionTemplate sqlSession, String search, int category);
 
 }
