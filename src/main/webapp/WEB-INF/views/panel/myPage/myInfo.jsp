@@ -5,9 +5,6 @@
 <head>
 	<jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
 </head>
-<style>
-
-</style>
 <body>
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
@@ -70,8 +67,6 @@
 				</table>
 			</div>  <!-- #passwordconfirm end -->
 		</form>
-		
-		
 		<br />
 		</section>  <!-- container end -->
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>

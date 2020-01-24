@@ -6,14 +6,14 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
-	.panelDropArea {
-		width: 100%;
-	}
-	.panelDropImgArea {
-		width: inherit;
-		height: 100px;
-		background-color: #98E5FD;
-	}
+.panelDropArea {
+	width: 100%;
+}
+.panelDropImgArea {
+	width: inherit;
+	height: 100px;
+	background-color: #98E5FD;
+}
 
 </style>
 <body>

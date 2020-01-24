@@ -7,72 +7,72 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
-	#inquiryTableArea {
-		border-top: 1px solid #3C3C3C;
-		border-collapse: collapse;
-	}
-	#inquiryTheadArea {
-		background-color: #DBDBDB;		
-	}
-	#inquiryTheadArea>tr>th {
-		height: 25px;
-	}
-	#inquiryTbodyArea {
-		text-align: center;
-	}
-	#inquiryTbodyArea>tr {
-		border-top: 1px solid #C4C4C4;
-		border-bottom: 1px solid #C4C4C4;
-	}
-	#inquiryTbodyArea>tr>td {
-		height: 45px;
-	}
-	.ui.input {
-		height: 30px;
-	}
-	#searchBtn {
-		background-color: #00679A;
-		border-radius: 5px;
-		width: 65px;
-		height: 30px;
-		color: white;
-		border: none;
-		cursor: pointer;
-	}
-	#newInquiryBtn {
-		background-color: #00679A;
-		border-radius: 5px;
-		width: 120px;
-		height: 35px;
-		color: white;
-		border: none;
-		cursor: pointer;
-	}
-	/*페이징 css */
-	#pagingArea {
-      margin-top: 40px;
-      
-      /* 드래그 방지용 소스*/
-      -ms-user-select: none; 
-      -moz-user-select: -moz-none; 
-      -webkit-user-select: none; 
-      -khtml-user-select: none; 
-      user-select:none;
-      /* 드래그 방지용 소스*/
-   }
-	#pagingArea span {
-	   margin-left: 5px;
-	   margin-right: 5px;
-	   font-size: 10pt;
-	}
+#inquiryTableArea {
+	border-top: 1px solid #3C3C3C;
+	border-collapse: collapse;
+}
+#inquiryTheadArea {
+	background-color: #DBDBDB;		
+}
+#inquiryTheadArea>tr>th {
+	height: 25px;
+}
+#inquiryTbodyArea {
+	text-align: center;
+}
+#inquiryTbodyArea>tr {
+	border-top: 1px solid #C4C4C4;
+	border-bottom: 1px solid #C4C4C4;
+}
+#inquiryTbodyArea>tr>td {
+	height: 45px;
+}
+.ui.input {
+	height: 30px;
+}
+#searchBtn {
+	background-color: #00679A;
+	border-radius: 5px;
+	width: 65px;
+	height: 30px;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+#newInquiryBtn {
+	background-color: #00679A;
+	border-radius: 5px;
+	width: 120px;
+	height: 35px;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+/*페이징 css */
+#pagingArea {
+     margin-top: 40px;
+     
+     /* 드래그 방지용 소스*/
+     -ms-user-select: none; 
+     -moz-user-select: -moz-none; 
+     -webkit-user-select: none; 
+     -khtml-user-select: none; 
+     user-select:none;
+     /* 드래그 방지용 소스*/
+  }
+#pagingArea span {
+   margin-left: 5px;
+   margin-right: 5px;
+   font-size: 10pt;
+}
 
-	#pagingArea span:hover {
-	   margin-left: 5px;
-	   margin-right: 5px;
-	   font-size: 10pt;
-	   cursor: pointer;
-	}
-	/* 페이징 css end */
+#pagingArea span:hover {
+   margin-left: 5px;
+   margin-right: 5px;
+   font-size: 10pt;
+   cursor: pointer;
+}
+/* 페이징 css end */
 </style>
 <body>
 	<div class="wrap">
