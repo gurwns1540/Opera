@@ -37,7 +37,7 @@ public class CorpServiceImpl implements CorpService {
 		if(passwordEncoder.matches(cm.getUserPwd(), encPassword)) {
 			loginUser = cd.loginCheck(sqlSession, cm);
 		}else {
-			throw new LoginException("로그인 실패");
+			throw new LoginException("기업 로그인 실패");
 		}
 		
 		return loginUser;

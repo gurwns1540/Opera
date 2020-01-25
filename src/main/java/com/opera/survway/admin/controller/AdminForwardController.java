@@ -105,10 +105,4 @@ public class AdminForwardController {
 		return "adminResearch/tsQaManagement";
 	}
 	
-	// 패널 리워드 완료 목록
-	@RequestMapping("manageCashoutComplete.admin")
-	public String forwardManageCashoutComplete() {
-		return "panelReward/manageCashoutComplete";
-	}
-	
 }

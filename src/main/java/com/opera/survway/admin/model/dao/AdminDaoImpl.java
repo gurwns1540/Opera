@@ -61,5 +61,28 @@ public class AdminDaoImpl implements AdminDao{
 		return panelRewardHistoryList;
 	}
 
+	@Override
+	public int cashoutPeople(SqlSessionTemplate sqlSession, List<String> list) {
+		return sqlSession.update("Admin.cashoutPerson", list);
+	}
+
+	@Override
+	public int getListCountManageCashoutComplete(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListCountManageCashoutComplete");
+	}
+
+	@Override
+	public List<PanelRewardHistory> manageCashoutComplete(SqlSessionTemplate sqlSession, PageInfo pi) {
+		List<PanelRewardHistory> rewardCompleteHistoryList = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		rewardCompleteHistoryList = sqlSession.selectList("Admin.rewardCompleteHistoryList", null, rowBounds);
+		
+		return rewardCompleteHistoryList;
+	}
+
 
 }

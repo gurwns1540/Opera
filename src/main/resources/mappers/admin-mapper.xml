@@ -122,6 +122,30 @@
 		WHERE CH.CASHOUT_CONFIRM_DATE IS NULL
 		ORDER BY CASHOUT_APPLICANT_DATE ASC
 	</select>
+	
+	<update id="cashoutPerson" parameterType="java.util.List">
+		UPDATE CASHOUTHISTORY 
+		SET CASHOUT_CONFIRM_DATE = SYSDATE
+		WHERE CASHOUTHISTORY_NO IN 
+		<foreach collection="list" item="item" open="(" close=")" separator=", " index="index">
+			#{item}
+		</foreach>
+	</update>
+	
+	<select id="getListCountManageCashoutComplete" resultType="_int">
+		SELECT COUNT(*)
+		FROM CASHOUTHISTORY
+		WHERE CASHOUT_CONFIRM_DATE IS NOT NULL
+	</select>
+	
+	<select id="rewardCompleteHistoryList" resultMap="PanelRewardHistoryResultMap">
+		SELECT CH.CASHOUTHISTORY_NO, CH.MNO, C.CASHOUT_AMOUNT, P.WITHDRAW_ACCOUNT, TO_CHAR(CH.CASHOUT_APPLICANT_DATE, 'YYYY-MM-DD') AS CASHOUT_APPLICANT_DATE, CH.CASHOUT_CONFIRM_DATE
+		FROM CASHOUTHISTORY CH
+		JOIN PANEL P ON (P.MNO = CH.MNO)
+		JOIN CASHOUT C ON (C.CASHOUT_NO = CH.CASHOUT_NO)
+		WHERE CH.CASHOUT_CONFIRM_DATE IS NOT NULL
+		ORDER BY CASHOUT_APPLICANT_DATE ASC
+	</select>
 </mapper>
 
 

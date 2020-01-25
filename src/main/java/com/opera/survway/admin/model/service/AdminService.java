@@ -23,4 +23,10 @@ public interface AdminService {
 	int getListCountPanelCashoutApplicant() throws SelectException;
 
 	List<PanelRewardHistory> panelCashoutApplication(PageInfo pi) throws SelectException;
+
+	boolean cashoutPeople(List<String> cnoArr);
+
+	int getListCountManageCashoutComplete() throws SelectException;
+
+	List<PanelRewardHistory> manageCashoutComplete(PageInfo pi) throws SelectException;
 }

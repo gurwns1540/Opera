@@ -23,4 +23,10 @@ public interface AdminDao {
 
 	List<PanelRewardHistory> panelCashoutApplication(SqlSessionTemplate sqlSession, PageInfo pi);
 
+	int cashoutPeople(SqlSessionTemplate sqlSession, List<String> cnoArr);
+
+	int getListCountManageCashoutComplete(SqlSessionTemplate sqlSession);
+
+	List<PanelRewardHistory> manageCashoutComplete(SqlSessionTemplate sqlSession, PageInfo pi);
+
 }

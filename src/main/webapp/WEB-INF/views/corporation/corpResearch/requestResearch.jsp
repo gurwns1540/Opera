@@ -166,15 +166,15 @@
 				<th>프로젝트 제목</th>
 				<td>
 					<div class="ui input">
-						<input type="text" placeholder="프로젝트 제목을 입력해주세요">
+						<input type="text" placeholder="프로젝트 제목을 입력해주세요" name="researchName">
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<th>목표 인원</th>
 				<td>
-					<select class="ui dropdown">
-						<option value="">Number of people</option>
+					<select class="ui dropdown" name="researchEngagementGoals">
+						<option value="">목표 인원 수</option>
 						<option value="100">100명</option>
 						<option value="200">200명</option>
 						<option value="200">300명</option>
@@ -192,15 +192,15 @@
 					<div class="row">
 						<ul>
 							<li>
-								<input type="radio" id="all" name="gender" checked>
+								<input type="radio" id="all" name="targetGender" checked>
 								<label for="all">설정 안함</label>
 							</li>
 							<li>
-								<input type="radio" id="female" name="gender">
+								<input type="radio" id="female" name="targetGender">
 								<label for="female">여성</label>
 							</li>
 							<li>
-								<input type="radio" id="male" name="gender">
+								<input type="radio" id="male" name="targetGender">
 								<label for="male">남성</label>
 							</li>
 						</ul>
@@ -213,11 +213,11 @@
 					<div class="row">
 						<ul>
 							<li>
-								<input type="radio" id="all" name="age" checked>
+								<input type="radio" id="all" name="targetAgeRange" checked>
 								<label for="all">설정 안함</label>
 							</li>
 							<li>
-								<input type="radio" id="config" name="age">
+								<input type="radio" id="config" name="targetAgeRange">
 								<label for="config">연령 설정</label>
 							</li>
 						</ul>
@@ -225,7 +225,7 @@
 					<div id="rangeAge" style="display: none;">
 						<div style="display: inline-block; float: right; padding-top: 10px; margin-left: 68px;">
 							<p>
-							  <span id="amount" style="border:0; color:#00679A; font-weight:bold;"></span>
+							  <span id="amount" style="border:0; color:#00679A; font-weight:bold;" name="targetAgeRangeAmount"></span>
 							</p>
 						</div>
 						<div style="display: inline-block; float: right; padding-top: 10px; margin-left: 40px;">
@@ -240,15 +240,15 @@
 					<div class="row">
 						<ul>
 							<li>
-								<input type="radio" id="all" name="age" checked>
+								<input type="radio" id="all" name="targetLocation" checked>
 								<label for="all">설정 안함</label>
 							</li>
 							<li style="width: 150px;">
-								<input type="radio" id="metropolitan" name="age">
+								<input type="radio" id="metropolitan" name="targetLocation">
 								<label for="metropolitan">서울 및 수도권</label>
 							</li>
 							<li style="width: 200px;">
-								<input type="radio" id="city" name="age">
+								<input type="radio" id="city" name="targetLocation">
 								<label for="city">서울, 경기 및 9대 광역시</label>
 							</li>
 						</ul>
