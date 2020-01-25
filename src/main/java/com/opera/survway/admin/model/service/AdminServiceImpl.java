@@ -111,4 +111,49 @@ public class AdminServiceImpl implements AdminService{
 		return panelRewardHistoryList;
 	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 25.
+	 * @ModifyDate  : 2020. 1. 25.
+	 * @Description : 회원 1인, 다수 캐시아웃 확인완료 ajax
+	 */
+	@Override
+	public boolean cashoutPeople(List<String> cnoArr) {
+		System.out.println(cnoArr);
+		int result = ad.cashoutPeople(sqlSession, cnoArr);
+		
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 25.
+	 * @ModifyDate  : 2020. 1. 25.
+	 * @Description : 패널 캐시아웃 완료 이력 수
+	 */
+	@Override
+	public int getListCountManageCashoutComplete() throws SelectException {
+		int listCount = ad.getListCountManageCashoutComplete(sqlSession);
+		
+		if(listCount <= 0) {
+			throw new SelectException("캐시아웃 완료 이력 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	@Override
+	public List<PanelRewardHistory> manageCashoutComplete(PageInfo pi) throws SelectException {
+		List<PanelRewardHistory> rewardCompleteHistoryList = ad.manageCashoutComplete(sqlSession, pi);
+		
+		if(rewardCompleteHistoryList == null) {
+			throw new SelectException("캐시아웃 완료 이력 조회 실패");
+		}
+		return rewardCompleteHistoryList;
+	}
+
 }

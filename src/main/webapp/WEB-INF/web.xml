@@ -109,7 +109,7 @@
 		<url-pattern>*.memberManagement</url-pattern>
 	</servlet-mapping>
 	
-	<!-- MemberMangement 서블릿 연결 -->
+	<!-- rewardManagement 서블릿 연결 -->
 	<servlet>
 		<servlet-name>rewardManagementServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

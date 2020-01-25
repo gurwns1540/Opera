@@ -43,7 +43,7 @@ public class PanelServiceImpl implements PanelService {
 		if(passwordEncoder.matches(pm.getUserPwd(), encPassword)) {
 			loginUser = pd.loginCheck(sqlSession, pm);
 		}else {
-			throw new LoginException("로그인 실패");
+			throw new LoginException("패널 로그인 실패");
 		}
 		
 		return loginUser;
