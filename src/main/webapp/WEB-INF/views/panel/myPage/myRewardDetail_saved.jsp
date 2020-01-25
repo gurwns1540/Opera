@@ -6,6 +6,15 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
+#depth1, #depth2, #depth3, #depth4 {
+	color: #494949;
+}
+#depth1:hover, #depth2:hover, #depth3:hover {
+	color: #008499;
+	cursor: pointer;
+}
+/* 여기까지 페이지제목 및 경로 영역 */
+
 .ui.tabular.menu .active.item {
 	width: 20%;
 	padding-left: 6%;
@@ -70,7 +79,7 @@
 		<section class="container">
 		<br />
 		
-		
+			
 			<table id="titleTable" height="10px;" width="99%;">
 				<tr>
 					<td id="menuTitle">상세내역</td>
@@ -80,7 +89,7 @@
 							<i class="right angle icon divider"></i>
 							<a class="section" id="depth2" href="myInfo.panel">마이페이지</a>
 							<i class="right angle icon divider"></i>
-							<a class="section" id="depth3" href="myRewardMain.panel">내 리워드</a>
+							<a class="section" id="depth3" href="myRewardMain.panel">내 리워드 관리</a>
 							<i class="right angle icon divider"></i>
 							<div class="active section" id="depth4">상세내역</div>
 						</div>

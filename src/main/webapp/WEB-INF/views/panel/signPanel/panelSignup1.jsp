@@ -80,7 +80,7 @@ div.wrap {
 	cursor:pointer;
 }
 .ui.blue.button {
-	background-color:#00679A;S
+	background-color:#00679A;
 }
 .ui.blue.button:hover {
 	background-color: #217BA7;
@@ -111,8 +111,8 @@ div.wrap {
 			<div class="sectionLine">
 				<hr>
 			</div>
-			
-			
+
+
 			<div id="mainBox">
 			<div class="accordion-container">
 				<div class="panel">

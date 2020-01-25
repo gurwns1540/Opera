@@ -65,46 +65,21 @@
 			 </foreach>) A
 	</insert>
 	
-	<insert id="insertRewordPanel" parameterType="PanelMember">
+	<update id="updateMemberInfo" parameterType="PanelMember">
+		UPDATE MEMBER SET USER_ADDRESS = #{userAddress}, MODIFY_DATE = SYSDATE
+		WHERE MNO = #{mno}
+	</update>
+	<update id="updatePassword" parameterType="PanelMember">
+		UPDATE MEMBER SET USER_PWD = #{userPwd}, MODIFY_DATE = SYSDATE
+		WHERE MNO = #{mno}
+	</update>
+
+  <insert id="insertRewordPanel" parameterType="PanelMember">
 		INSERT INTO PANELREWORD VALUES(0, #{mno})
 	</insert>
 	
 	<insert id="insertTernaryPanel" parameterType="PanelMember">
 		INSERT INTO PANELTERNARY VALUES(#{mno}, 0)
 	</insert>
+  
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

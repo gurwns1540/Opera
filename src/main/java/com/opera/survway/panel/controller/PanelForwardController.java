@@ -114,6 +114,10 @@ public class PanelForwardController {
 		return "myPage/panelDrop";
 	}
 	
+	@RequestMapping("panelResult.panel")
+	public String showPanelResult() {
+		return "myPage/panelResult";
+	}
 	
 	
 	// 로그인, 회원가입 페이지들
@@ -149,7 +153,7 @@ public class PanelForwardController {
 	}
 	@GetMapping("panelSignup3_old.panel")
 	public String showPanelSignup3_old() {
-		return "signPanel/panelSignu3_old";
+		return "signPanel/panelSignup3_old";
 	}
 	
 	// 서베이 메뉴 페이지들
@@ -178,6 +182,8 @@ public class PanelForwardController {
 	public String showMyPanelSurvey() {
 		return "survey/myPanelSurvey";
 	}
+	
+	
 }
 
 

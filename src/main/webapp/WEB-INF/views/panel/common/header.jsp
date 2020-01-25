@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <!DOCTYPE html>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <style>
@@ -28,7 +29,7 @@
 							<a href="adminMain.admin" style="margin-right: 5%; font-size:0.8vw;">관리자 메인</a>
 						</c:if>
 						<a href="logout.me" style="margin-right: 5%; font-size:0.8vw;">로그아웃</a>
-						<a href="#" style="font-size:0.8vw;">내 정보 관리</a>
+						<a href="myInfo.panel" style="font-size:0.8vw;">내 정보 관리</a>
 					</c:when>
 					<c:otherwise>
 						<a href="panelLogin.panel" style="margin-right: 5%; font-size:0.8vw;">로그인</a>
@@ -70,7 +71,7 @@
 		    	<div class="menu">
 			    	<a href="notice.panel" class="item">공지사항</a>
 			    	<a href="faq.panel" class="item">자주묻는 질문</a>
-			    	<a href="panelInquiryList.panel" class="item">내 1:1 문의</a>
+			    	<a href="panelInquiryList.customerCenter"class="item">내 1:1 문의</a>
 		    	</div>
 		  	</div>
 		</div>

@@ -30,6 +30,11 @@ public class PanelDaoImpl implements PanelDao{
 	public String selectEncPassword(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.selectOne("Panel.selectPwd", pm.getUserId());
 	}
+	
+	@Override
+	public String selectEncPassword(SqlSessionTemplate sqlSession, String userId) {
+		return sqlSession.selectOne("Panel.selectPwd", userId);
+	}
 
 	@Override
 	public int insertMemberTable(SqlSessionTemplate sqlSession, PanelMember pm) {
@@ -53,18 +58,29 @@ public class PanelDaoImpl implements PanelDao{
 	}
 
 	@Override
-	public List<Object> selectAllMyInquiry(SqlSessionTemplate sqlSession, PanelMember pm) {
+	public List selectAllMyInquiry(SqlSessionTemplate sqlSession, Inquiry i) {
 		
-		List<Object> list =  sqlSession.selectList("Inquiry.selectAllMyInquiry", pm);
+		return sqlSession.selectList("Inquiry.selectAllMyInquiry", i);
+	}
+
+	@Override
+	public List searchInquiryList(SqlSessionTemplate sqlSession, String search, int category) {
 		
-		for(int i=0; i<list.size(); i++) {
-			
-			System.out.println("Dao"+list.get(i).toString());
-			
+		List list = null;
+		
+		if(category == 0 ) {
+			list = sqlSession.selectList("Inquiry.selectAllSearchInquiryList",search);
+		}else if(category == 1) {
+			list = sqlSession.selectList("Inquiry.selectJoinSearchInquiryList",search);
+		}else if(category ==2) {
+			list = sqlSession.selectList("Inquiry.selectResearchSearchInquiryList",search);
+		}else if(category ==3) {
+			list = sqlSession.selectList("Inquiry.selectRewardSearchInquiryList",search);
+		}else if(category ==4) {
+			list = sqlSession.selectList("Inquiry.selectOtherSearchInquiryList",search);
 		}
 		
 		return list;
-		//return sqlSession.selectList("Inquiry.selectAllMyInquiry", pm);
 	}
 
 	@Override
@@ -76,8 +92,30 @@ public class PanelDaoImpl implements PanelDao{
 		pm.setIndexArr(indexArr);
 		return sqlSession.insert("Panel.insertTermsPanel", pm);
 	}
-
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 22.
+	 * @ModifyDate  : 2020. 1. 22.
+	 * @Description : 회원정보수정(비밀번호X)
+	 */
 	@Override
+	public int updateMemberInfo(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.update("Panel.updateMemberInfo", pm);
+	}
+
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 24.
+	 * @ModifyDate  : 2020. 1. 24.
+	 * @Description : 회원비밀번호수정
+	 */
+	@Override
+	public int updatePassword(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.update("Panel.updatePassword", pm);
+	}
+
+  @Override
 	public int insertRewordPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.insert("Panel.insertRewordPanel", pm);
 	}

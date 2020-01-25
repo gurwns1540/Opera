@@ -32,4 +32,9 @@ public class CommonDaoImpl implements CommonDao{
 	public int certificationMember(SqlSessionTemplate sqlSession, String userId) {
 		return sqlSession.update("Member.certification", userId);
 	}
+	
+	@Override
+	public String selectEncPassword(SqlSessionTemplate sqlSession, String userId) {
+		return sqlSession.selectOne("Panel.selectPwd", userId);
+	}
 }
