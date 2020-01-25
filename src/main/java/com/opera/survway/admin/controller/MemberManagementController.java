@@ -22,7 +22,7 @@ import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.PanelMember;
 
 @Controller
-public class memberManagementController {
+public class MemberManagementController {
 	
 	@Autowired
 	private AdminService as;

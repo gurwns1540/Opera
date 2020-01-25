@@ -22,12 +22,12 @@
 		
 	}
 	#requestHeaderTable {
-	 width: fit-content;
-	 text-align: center;
-	 margin: 0 auto;
-	 line-height: 42px;
-	 margin-top: 15px;
-	}
+		 width: fit-content;
+		 text-align: center;
+		 margin: 0 auto;
+		 line-height: 42px;
+		 margin-top: 15px;
+		}
 	#requestHeaderTable td {
 		padding-left: 60px;
 		padding-right: 60px;
@@ -52,7 +52,8 @@
 		height: 70px;
 	}
 	#requestTable td.link {
-		width: 15px !important;
+		width: 30px !important;
+		height: 20px !important;
 	
 	}
 	#requestTable th {
@@ -138,9 +139,19 @@
 	button:hover{
 		cursor: pointer;
 	}
+	@media screen and (max-width: 1530px){
+		#requestTable {
+			width: 70%;
+		}
+	}
+	@media screen and (max-width: 1100px){
+		#requestTable {
+			width: 90%;
+		}
+	}
 }
 </style>
-</head>
+</head> 
 <body>
 	<jsp:include page="/WEB-INF/views/corporation/common/corpMenuBar.jsp"/>
 	<jsp:include page="/WEB-INF/views/corporation/common/corpMenuBar2.jsp"/>
@@ -161,131 +172,179 @@
 				</tr>
 			</table>
 		</div>
-		<table id="requestTable">
-			<tr>
-				<th>프로젝트 제목</th>
-				<td>
-					<div class="ui input">
-						<input type="text" placeholder="프로젝트 제목을 입력해주세요" name="researchName">
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>목표 인원</th>
-				<td>
-					<select class="ui dropdown" name="researchEngagementGoals">
-						<option value="">목표 인원 수</option>
-						<option value="100">100명</option>
-						<option value="200">200명</option>
-						<option value="200">300명</option>
-						<option value="200">400명</option>
-						<option value="200">500명</option>
-					</select>
-					
-					<span style="font-size: 10px; margin-left: 20px; color: #646464;">(*예상완료시간이 지나도 목표인원이 채워져야 투표가 종료됩니다.)</span>
-					<button id="expectCost" style="background: #00679A; color: white; border: 0; width: 70px; height: 25px; margin-left: 20px;">예상 비용</button>
-				</td>
-			</tr>
-			<tr>
-				<th rowspan="2">기본 설정</th>
-				<td style="padding-bottom: 10px; padding-top: 10px; border-bottom: 0;">
-					<div class="row">
-						<ul>
-							<li>
-								<input type="radio" id="all" name="targetGender" checked>
-								<label for="all">설정 안함</label>
-							</li>
-							<li>
-								<input type="radio" id="female" name="targetGender">
-								<label for="female">여성</label>
-							</li>
-							<li>
-								<input type="radio" id="male" name="targetGender">
-								<label for="male">남성</label>
-							</li>
-						</ul>
-					</div>
-					<div id="genderText" style="float: right; line-height: 40px; margin-right: 30px; color: #425DA1; font-size: 13px; font-weight: bold;"></div> 
-				</td>
-			</tr>
-			<tr>
-				<td style="padding-top: 10px; padding-bottom: 10px;">
-					<div class="row">
-						<ul>
-							<li>
-								<input type="radio" id="all" name="targetAgeRange" checked>
-								<label for="all">설정 안함</label>
-							</li>
-							<li>
-								<input type="radio" id="config" name="targetAgeRange">
-								<label for="config">연령 설정</label>
-							</li>
-						</ul>
-					</div>
-					<div id="rangeAge" style="display: none;">
-						<div style="display: inline-block; float: right; padding-top: 10px; margin-left: 68px;">
-							<p>
-							  <span id="amount" style="border:0; color:#00679A; font-weight:bold;" name="targetAgeRangeAmount"></span>
-							</p>
+		<form action="requestResearch.corpResearch" method="post" id="requestResearchForm" onsubmit="return validate();">
+			<table id="requestTable">
+				<tr>
+					<th>프로젝트 제목</th>
+					<td>
+						<div class="ui input">
+							<input type="text" placeholder="프로젝트 제목을 입력해주세요" id="researchName" name="researchName">
+							<input type="hidden" value="${ sessionScope.loginUser.mno }" name="companyNo">
 						</div>
-						<div style="display: inline-block; float: right; padding-top: 10px; margin-left: 40px;">
-							<div id="slider-range" style="display: inline-block; width: 150px;"></div>
+					</td>
+				</tr>
+				<tr>
+					<th>조사 목적</th>
+					<td style="height: 200px;">
+						<div class="ui corner labeled input" style="height: 160px;">
+					        <div class="ui corner label">
+					            <i class="asterisk icon"></i>
+					        </div>
+					        <textarea id="researchPerpose" name="researchPerpose" style="margin-top: 0px; margin-bottom: 0px; height: 163px; width: 100%; resize: none;"></textarea>
+					    </div>
+					</td>
+				</tr>
+				<tr>
+					<th>목표 인원</th>
+					<td>
+						<select class="ui dropdown" id="researchEngagementGoals" name="researchEngagementGoals">
+							<option value="">목표 인원 수</option>
+							<option value="100">100명</option>
+							<option value="200">200명</option>
+							<option value="300">300명</option>
+							<option value="400">400명</option>
+							<option value="500">500명</option>
+						</select>
+						
+						<span style="font-size: 10px; margin-left: 20px; color: #646464;">(*예상완료시간이 지나도 목표인원이 채워져야 투표가 종료됩니다.)</span>
+						<button id="expectCost" onclick="return false;" style="background: #00679A; color: white; border: 0; width: 70px; height: 25px; margin-left: 20px;">예상 비용</button>
+					</td>
+				</tr>
+				<tr>
+					<th rowspan="2">기본 설정</th>
+					<td style="padding-bottom: 10px; padding-top: 10px; border-bottom: 0;">
+						<div class="row">
+							<ul>
+								<li>
+									<input type="radio" id="all" value="all" name="targetGender" checked>
+									<label for="all">설정 안함</label>
+								</li>
+								<li>
+									<input type="radio" id="female" value="female" name="targetGender">
+									<label for="female">여성</label>
+								</li>
+								<li>
+									<input type="radio" id="male" value="male" name="targetGender">
+									<label for="male">남성</label>
+								</li>
+							</ul>
 						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>지역</th>
-				<td>
-					<div class="row">
-						<ul>
-							<li>
-								<input type="radio" id="all" name="targetLocation" checked>
-								<label for="all">설정 안함</label>
-							</li>
-							<li style="width: 150px;">
-								<input type="radio" id="metropolitan" name="targetLocation">
-								<label for="metropolitan">서울 및 수도권</label>
-							</li>
-							<li style="width: 200px;">
-								<input type="radio" id="city" name="targetLocation">
-								<label for="city">서울, 경기 및 9대 광역시</label>
-							</li>
-						</ul>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>조사 시작 기간</th>
-				<td>
-					<div class="ui calendar" id="standard_calendar">
-						<div class="ui input left icon">
-							<i class="calendar icon"></i>
-							<input type="text" name="startDate" placeholder="Date/Time">
+						<div id="genderText" style="float: right; line-height: 40px; margin-right: 30px; color: #425DA1; font-size: 13px; font-weight: bold;"></div> 
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-top: 10px; padding-bottom: 10px;">
+						<div class="row">
+							<ul>
+								<li>
+									<input type="radio" id="all2" value="all" name="targetAgeRange" checked>
+									<label for="all2">설정 안함</label>
+								</li>
+								<li>
+									<input type="radio" id="config" value="config" name="targetAgeRange">
+									<label for="config">연령 설정</label>
+								</li>
+							</ul>
 						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>예상 완료 시간</th>
-				<td>
-					<div class="ui calendar" id="standard_calendar2">
-						<div class="ui input left icon">
-							<i class="calendar icon"></i>
-							<input type="text" name="endDate" placeholder="Date/Time">
+						<div id="rangeAge" style="display: none;">
+							<div style="display: inline-block; float: right; padding-top: 10px; margin-left: 68px;">
+								<p>
+								  <span id="amount" style="border:0; color:#00679A; font-weight:bold;"></span>
+								  <input type="hidden" name="targetAgeRangeAmount" id="targetAgeRangeAmount">
+								</p>
+							</div>
+							<div style="display: inline-block; float: right; padding-top: 10px; margin-left: 40px;">
+								<div id="slider-range" style="display: inline-block; width: 150px;"></div>
+							</div>
 						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" style="border-bottom: 0;">
-					<button onclick="location.href='previousResearchMain.corp'" style="float:left; width: 80px; height: 30px; background: #EFEFEF; color: #717171; border: 0;">목록</button>
-					<button onclick="location.href='writeQuestion.corp'" style="float:right; width: 80px; height: 30px; background: #00679A; color: white; border: 0;">저장</button>
-				</td>
-			</tr>
-		</table>
+					</td>
+				</tr>
+				<tr>
+					<th>조사 지역</th>
+					<td>
+						<div class="row">
+							<ul>
+								<li>
+									<input type="radio" id="all3" value="all" name="targetLocation" checked>
+									<label for="all">설정 안함</label>
+								</li>
+								<li style="width: 150px;">
+									<input type="radio" id="metropolitan" value="metropolitan" name="targetLocation">
+									<label for="metropolitan">서울 및 수도권</label>
+								</li>
+								<li style="width: 200px;">
+									<input type="radio" id="city" value="city" name="targetLocation">
+									<label for="city">서울, 경기 및 9대 광역시</label>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>조사 직업군</th>
+					<td>
+						<select class="ui dropdown" id="occupationNo" name="occupationNo">
+							<option value="">조사 직업 대상</option>
+							<option value="all">전체</option>
+							<option value="1">자영업</option>
+							<option value="2">판매/영업 서비스직</option>
+							<option value="3">기능/직업직</option>
+							<option value="4">사무/기술직</option>
+							<option value="5">경영/관리직</option>
+							<option value="6">자유/전문직</option>
+							<option value="7">농업/임업/어업/축산업</option>
+							<option value="8">전업주부</option>
+							<option value="9">중/고등학생</option>
+							<option value="10">대학(원)생</option>
+							<option value="11">무직</option>
+							<option value="12">기타</option>
+						</select>
+						
+						<span style="font-size: 10px; margin-left: 20px; color: #646464;">(*원하는 조사 직업에 대해 추가 가격이 상이할 수 있습니다.)</span>
+					</td>
+				</tr>
+				<tr>
+					<th>조사 시작 기간</th>
+					<td>
+						<div class="ui calendar" id="standard_calendar">
+							<div class="ui input left icon">
+								<i class="calendar icon"></i>
+								<input type="text" name="startDate" id="startDate" placeholder="Date/Time" class="visible">
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>예상 완료 시간</th>
+					<td>
+						<div class="ui calendar" id="standard_calendar2">
+							<div class="ui input left icon">
+								<i class="calendar icon"></i>
+								<input type="text" name="endDate" id="endDate" placeholder="Date/Time">
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>추가 요구사항</th>
+					<td style="height: 200px;">
+						<div class="ui corner labeled input" style="height: 160px;">
+					        <textarea id="additionaltEtc" name="additionaltEtc" style="margin-top: 0px; margin-bottom: 0px; height: 163px; width: 100%; resize: none;"></textarea>
+					    </div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="border-bottom: 0;">
+						<input type="button" onclick="location.href='previousResearchMain.corp'" style="float:left; width: 80px; height: 30px; background: #EFEFEF; color: #717171; border: 0;" value="목록">
+						<input type="submit" style="float:right; width: 80px; height: 30px; background: #00679A; color: white; border: 0;" value="저장" >
+					</td>
+				</tr>
+			</table>
+		</form>
 	</div>
-	<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
+	<div style="margin-top: 290px;">
+		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
+	</div>
 	<script>
 		$(".row li").on("click", function(){
 			$(this).children("input[type=radio]").prop("checked", true);
@@ -308,7 +367,6 @@
 						$("#genderText").text("여성");
 					}
 					if($("#config").prop("checked")){
-						console.log("gkgk");
 						$("#rangeAge").css("display", "inline-block");
 					}else {
 						$("#rangeAge").css("display", "none");
@@ -336,10 +394,26 @@
 	      		values: [ 20, 30 ],
 	      		slide: function( event, ui ) {
 	        		$( "#amount" ).text(ui.values[ 0 ] + "세 이상 " + ui.values[ 1 ] + "세 이하" );
+	        		$("#targetAgeRangeAmount").val(ui.values[ 0 ] + "-" + ui.values[ 1 ]);
 	      		}
 	    	});
+	    	$("#targetAgeRangeAmount").val($( "#slider-range" ).slider( "values", 0 ) + "-" + $( "#slider-range" ).slider( "values", 1 ));
 	    	$( "#amount" ).text($( "#slider-range" ).slider( "values", 0 ) + "세 이상   " + $( "#slider-range" ).slider( "values", 1 ) + "세 이하");
 	  	});
+		
+		function validate() {
+			if($("#researchName").val() == "" || $("#researchPerpose").val() == "" || $("#researchEngagementGoals").val() == "" || $("#startDate").val() == "" || $("#endDate").val() == ""){
+				Swal.fire(
+				      '오류',
+				      '모든 내용을 작성해주세요',
+				      'warning'
+				);
+				return false;
+			}else {
+				return true;
+			}
+			return false;
+		}
   </script>
 </body>
 </html>

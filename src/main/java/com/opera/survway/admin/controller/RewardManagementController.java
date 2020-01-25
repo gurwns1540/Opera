@@ -21,7 +21,7 @@ import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.exception.SelectException;
 
 @Controller
-public class rewardManagementController {
+public class RewardManagementController {
 	
 	@Autowired
 	private AdminService as;

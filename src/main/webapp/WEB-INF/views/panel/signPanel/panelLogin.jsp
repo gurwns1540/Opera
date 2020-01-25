@@ -55,6 +55,26 @@ td.leftTable.second {
 .rightTable {
 	padding-left:50px;
 }
+.ui.buttons .or:before {
+    position: absolute;
+    text-align: center;
+    border-radius: 500rem;
+    content: 'or';
+    top: 55%;
+    left: 50%;
+    background-color: #fff;
+    text-shadow: none;
+    margin-top: -.89285714em;
+    margin-left: -.89285714em;
+    width: 20px;
+    height: 20px;
+    line-height: 17px;
+    color: rgba(0,0,0,.4);
+    font-style: normal;
+    font-weight: 700;
+    -webkit-box-shadow: 0 0 0 1px transparent inset;
+    box-shadow: 0 0 0 1px transparent inset;
+}
 @media screen and (max-width: 1000px) { 
 	.second {
 	    width: 45%;
@@ -89,17 +109,20 @@ td.leftTable.second {
 								<table style="width:95%; height:90px;">
 									<tr>
 										<td colspan="3" class="leftTable" style="text-align:left; padding-bottom:30px;">
-											<input type="radio" id="panelCheck" name="loginMemberType" value="panelMember" checked="checked" />
-											<label for="panelCheck"><span style="font-size:13pt;">패널 회원</span></label>
-											<input type="radio" id="corpCheck" name="loginMemberType" value="corpMember" style="margin-left: 10%;" />
-											<label for="corpCheck"><span style="font-size:13pt;">기업 회원</span></label>
+											<div class="ui large buttons">
+												<input type="button" class="ui button" id="panelCheckBtn" value="패널 회원" style="font-size: 10pt; width: 100px; height:30px;">
+												<div class="or" style="font-size: 8pt;"></div>
+												<input type="button" class="ui button" id="corpCheckBtn" value="기업 회원" style="font-size: 10pt; width: 100px; height:30px;">
+											</div>
+											<input type="radio" id="panelCheck" name="loginMemberType" value="panelMember" style="display: none;" checked="checked"/>
+											<input type="radio" id="corpCheck" name="loginMemberType" value="corpMember" style="display: none; margin-left: 10%;" />
 										</td>
 									</tr>
 									<tr class="leftTable inputs">
 										<td class="leftTable first">아이디</td>
 										<td class="leftTable second">
 											<div class="ui input" style="display: block; width:80%;">
-												<input type="text" name="userId" placeholder="아이디">
+												<input type="text" name="userId" placeholder="아이디" autofocus>
 											</div>
 										</td>
 										<td class="leftTable third" rowspan="2" style="width:fit-content;" >
@@ -158,6 +181,31 @@ td.leftTable.second {
 		</c:if>
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
+	
+	<script>
+		$("#panelCheckBtn").on("click", function(){
+			$("#panelCheck").prop("checked", true);
+			isChecked();
+		});
+		$("#corpCheckBtn").on("click", function(){
+			$("#corpCheck").prop("checked", true);
+			isChecked();
+		});
+		$(function(){
+			isChecked();
+		});
+		function isChecked(){
+			$("input[type=radio]").each(function(){
+				if($("#panelCheck").prop("checked")){
+					$("#panelCheckBtn").css({"background":"#00679A", "color":"white"});
+					$("#corpCheckBtn").css({"background":"#E7E7E7", "color":"#aaa"});
+				}else if($("#corpCheck").prop("checked")) {
+					$("#panelCheckBtn").css({"background":"#E7E7E7", "color":"#aaa"});
+					$("#corpCheckBtn").css({"background":"#00679A", "color":"white"});
+				}
+			});
+		}
+	</script>
 </body>
 </html>
 

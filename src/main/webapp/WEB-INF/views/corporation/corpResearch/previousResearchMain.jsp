@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
-<title>Insert title here</title>
 <style>
 	#listArea {
 		width: 90%;

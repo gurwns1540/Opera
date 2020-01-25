@@ -200,96 +200,99 @@
 				</tr>
 			</table>
 		</div>
-		<table class="editTable">
-			<tr>
-				<td style="width: 20%">
-					<div id="editingTools">
-						<div style="font-size: 20px; font-weight: bold;">문항 편집 도구</div>
-						<div style="margin-top: 10px; border-bottom: 1px solid #9C9C9C; padding-bottom: 5px;">전체 <span id="quizAmount"></span>문항</div>
-						<div style="color: #666666; font-size: 11px; text-align: left; margin: 10px auto; width: fit-content;">
-							※ 각 문항 사이 [+]버튼을 통해 문항 추가가 가능합니다.<br>
-							※ 아래 문항을 Drag & Drop하여 문항 순서를 <br>
-							  이동할 수 있습니다.
-						</div>
-						<div style="width: 100%; overflow: auto; height: 500px;">
-							<ul id="sortable">
-								<li class="ui-state-default">
-									<div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div>
-									<div class="plusMain">
-										<div class="ui input" style="width: 85%;">
-											<input type="text" readonly class="choiceNameInput" style="background: none; border: 0;" value="1">
+		<form action="" method="post">
+			<table class="editTable">
+				<tr>
+					<td style="width: 20%">
+						<input type="hidden" value="${ research }" name="research" id="research">
+						<div id="editingTools">
+							<div style="font-size: 20px; font-weight: bold;">문항 편집 도구</div>
+							<div style="margin-top: 10px; border-bottom: 1px solid #9C9C9C; padding-bottom: 5px;">전체 <span id="quizAmount"></span>문항</div>
+							<div style="color: #666666; font-size: 11px; text-align: left; margin: 10px auto; width: fit-content;">
+								※ 각 문항 사이 [+]버튼을 통해 문항 추가가 가능합니다.<br>
+								※ 아래 문항을 Drag & Drop하여 문항 순서를 <br>
+								  이동할 수 있습니다.
+							</div>
+							<div style="width: 100%; overflow: auto; height: 500px;">
+								<ul id="sortable">
+									<li class="ui-state-default">
+										<div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div>
+										<div class="plusMain">
+											<div class="ui input" style="width: 85%;">
+												<input type="text" readonly class="choiceNameInput" style="background: none; border: 0;" value="1">
+											</div>
+											<div style="width: fit-content; float: right;" class="deleteQuiz">
+												<i class="large times icon"></i>
+											</div>
 										</div>
-										<div style="width: fit-content; float: right;" class="deleteQuiz">
-											<i class="large times icon"></i>
+									</li>
+								</ul>
+							</div>
+							<div style="width: 100%; background: #DEDEDE; border-top: 1px solid #9C9C9C; height: 53px; padding: 15px 10px;">
+							</div>
+						</div>
+					</td>
+					<td style="width: 60%">
+						<div id="editingMain">
+							<table id="quizTable">
+								<tr>
+									<th id="quizHead" colspan="3">
+										<div>
+											Q<span id="quizNum">1</span>.
+											<div class="ui input" style="width: 85%;">
+												<input type="text" class="quizTitle" style="background: none; border: 0;" placeholder="질문 제목">
+											</div>
+											<span style="float: right; font-size: 20pt;">
+												<i class="times icon"></i>
+											</span>
 										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-						<div style="width: 100%; background: #DEDEDE; border-top: 1px solid #9C9C9C; height: 53px; padding: 15px 10px;">
-						</div>
-					</div>
-				</td>
-				<td style="width: 60%">
-					<div id="editingMain">
-						<table id="quizTable">
-							<tr>
-								<th id="quizHead" colspan="3">
-									<div>
-										Q<span id="quizNum">1</span>.
-										<div class="ui input" style="width: 85%;">
-											<input type="text" class="quizTitle" style="background: none; border: 0;" placeholder="질문 제목">
+									</th>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<div id="mediaArea">
+											설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <span id="mediaAdd">여기를 클릭</span>해 주세요.
+											
 										</div>
-										<span style="float: right; font-size: 20pt;">
-											<i class="times icon"></i>
-										</span>
-									</div>
-								</th>
-							</tr>
-							<tr>
-								<td colspan="3">
-									<div id="mediaArea">
-										설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <span id="mediaAdd">여기를 클릭</span>해 주세요.
-										
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="3">
-									<div id="chioceArea">
-										<div style="width: fit-content; margin: 0 auto;"><i class="plus icon" style="color: #BD45B1; margin-top: 150px;"></i>우측 옵션패널에서 문항형식을 선택해주세요.</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td style="border: 0; width: 40%"><hr></td>
-								<td style="border: 0; width: 20%"><div class="plusBtn2" style="margin: 0 auto; cursor:pointer; width: fit-content; font-size: 16pt;"><span style="color: #BD45B1"><i class="plus circle icon"></i></span>문항 추가</div></td>
-								<td style="border: 0; width: 40%"><hr></td>
-							</tr>
-							<tr>
-								<td colspan="3" style="border: 0;">
-									<div style="float: right; width: 90px; height:40px; cursor: pointer; background: #600050; color: white; text-align: center; line-height: 37px;">완 료</div>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</td>
-				<td style="width: 20%">
-					<div id="editingOption">
-						<div style="font-size: 20px; font-weight: bold;">문항 옵션 선택</div>
-						<div style="margin-top: 10px; border-bottom: 1px solid #9C9C9C; padding-bottom: 5px;">문항 형식</div>
-						
-						<div class="ui vertical buttons">
-							<button class="ui button">객관식</button>
-							<button class="ui button">주관식</button>
-							<button class="ui button">객관식 & 이미지</button>
-							<button class="ui button">리커트 척도</button>
-							<button class="ui button">숫자 합계형</button>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<div id="chioceArea">
+											<div style="width: fit-content; margin: 0 auto;"><i class="plus icon" style="color: #BD45B1; margin-top: 150px;"></i>우측 옵션패널에서 문항형식을 선택해주세요.</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td style="border: 0; width: 40%"><hr></td>
+									<td style="border: 0; width: 20%"><div class="plusBtn2" style="margin: 0 auto; cursor:pointer; width: fit-content; font-size: 16pt;"><span style="color: #BD45B1"><i class="plus circle icon"></i></span>문항 추가</div></td>
+									<td style="border: 0; width: 40%"><hr></td>
+								</tr>
+								<tr>
+									<td colspan="3" style="border: 0;">
+										<div style="float: right; width: 90px; height:40px; cursor: pointer; background: #600050; color: white; text-align: center; line-height: 37px;">완 료</div>
+									</td>
+								</tr>
+							</table>
 						</div>
-					</div>
-				</td>
-			</tr>
-		</table>
+					</td>
+					<td style="width: 20%">
+						<div id="editingOption">
+							<div style="font-size: 20px; font-weight: bold;">문항 옵션 선택</div>
+							<div style="margin-top: 10px; border-bottom: 1px solid #9C9C9C; padding-bottom: 5px;">문항 형식</div>
+							
+							<div class="ui vertical buttons">
+								<button class="ui button">객관식</button>
+								<button class="ui button">주관식</button>
+								<button class="ui button">객관식 & 이미지</button>
+								<button class="ui button">리커트 척도</button>
+								<button class="ui button">숫자 합계형</button>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</form>
 	</div>
 	<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	<script>
@@ -422,6 +425,7 @@
   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script>
 		$(function() {
+			console.log($("#research").val());
 		 	$( "#sortable" ).sortable({
 		 		placeholder: "ui-state-highlight",
 		 		update: function( event, ui ) {
