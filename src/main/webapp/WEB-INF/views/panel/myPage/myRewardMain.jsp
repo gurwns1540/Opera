@@ -72,24 +72,24 @@ i{
 					<tr>
 						<td>
 							<div class="pointArea leftArea">
-							
+								모으신 총 포인트
 							</div>  <!-- .pointArea end -->
 						</td>
 						<td>
 							<div class="pointArea rightArea">
-							
+								사용하신 포인트
 							</div>  <!-- .pointArea end -->
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<div class="pointArea leftArea">
-							
+								신청중인 기프티콘
 							</div>  <!-- .pointArea end -->
 						</td>
 						<td>
 							<div class="pointArea rightArea">
-							
+								잔액포인트
 							</div>  <!-- .pointArea end -->
 						</td>
 					</tr>
