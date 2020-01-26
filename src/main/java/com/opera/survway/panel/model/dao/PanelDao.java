@@ -38,4 +38,6 @@ public interface PanelDao {
 
 	List searchInquiryList(SqlSessionTemplate sqlSession, String search, int category);
 
+	int updateLeaveMember(SqlSessionTemplate sqlSession, PanelMember pm);
+
 }

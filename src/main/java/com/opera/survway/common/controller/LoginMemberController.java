@@ -26,8 +26,7 @@ public class LoginMemberController {
 	private PanelService ps;
 	@Autowired
 	private CorpService cs;
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	
 	
 	/**
 	 * @Author      : Oh
@@ -51,8 +50,8 @@ public class LoginMemberController {
 				
 				
 			} catch (LoginException e) {
-				model.addAttribute("msg", e.getMessage());
-				return "redirect:panelLogin.panel";
+				model.addAttribute("message", e.getMessage());
+				return "redirect:panelResult.panel";
 			}
 			
 		// 라디오 버튼 기업 회원 체크 시
@@ -83,8 +82,8 @@ public class LoginMemberController {
 	@RequestMapping("logout.me")
 	public String logout(SessionStatus status, Model model) {
 		status.setComplete();
-		model.addAttribute("message", "로그아웃 되셨습니다.");
-		return "redirect:panelMain.panel";
+		model.addAttribute("message", "logoutSuccess");
+		return "redirect:panelResult.panel";
 	}
 }
 

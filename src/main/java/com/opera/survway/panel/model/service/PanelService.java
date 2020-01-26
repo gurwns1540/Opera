@@ -24,4 +24,6 @@ public interface PanelService {
 
 	int updatePassword(PanelMember pm);
 
+	int updateLeaveMember(PanelMember pm);
+
 }

@@ -14,6 +14,27 @@
 				});
 			</script>
 		</c:if>
+		<c:if test="${ param.message eq 'dropSuccess' }">
+			<script>
+				Swal.fire('탈퇴완료', '정상적으로 탈퇴 완료 되었습니다<br>이용해 주셔서 감사합니다', 'success').then(function(){
+					location.href="panelMain.panel";
+				});
+			</script>
+		</c:if>
+		<c:if test="${ param.message eq 'loginFail' }">
+			<script>
+				Swal.fire('로그인 실패', '로그인 정보가 일치하지 않습니다', 'warning').then(function(){
+					location.href="panelLogin.panel";
+				});
+			</script>
+		</c:if>
+		<c:if test="${ param.message eq 'logoutSuccess' }">
+			<script>
+				Swal.fire('로그아웃성공', '정상적으로 로그아웃 되었습니다.', 'success').then(function(){
+					location.href="panelMain.panel";
+				});
+			</script>
+		</c:if>
 	</c:if>
 	<c:if test="${ empty param.message }">
 		<script>

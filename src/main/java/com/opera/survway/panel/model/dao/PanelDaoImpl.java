@@ -20,7 +20,7 @@ public class PanelDaoImpl implements PanelDao{
 		PanelMember loginUser = sqlSession.selectOne("Panel.loginCheck", pm);
 		
 		if(loginUser==null) {
-			throw new LoginException("로그인 정보가 존재하지 않습니다.");
+			throw new LoginException("loginFail");
 		}
 		
 		return loginUser;
@@ -123,6 +123,17 @@ public class PanelDaoImpl implements PanelDao{
 	@Override
 	public int insertTernaryPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.insert("Panel.insertTernaryPanel", pm);
+	}
+
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 26.
+	 * @ModifyDate  : 2020. 1. 26.
+	 * @Description : 회원탈퇴
+	 */
+	@Override
+	public int updateLeaveMember(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.update("Panel.updateLeaveMember", pm);
 	}
 
 }

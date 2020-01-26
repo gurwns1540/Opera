@@ -236,8 +236,21 @@ public class PanelController {
 		}
 	}
 	
-//	@PostMapping("dropPanel.me")
-//	public String dropPanel(Model model)
+	@PostMapping("dropPanel.me")
+	public String dropPanel(Model model, PanelMember pm, SessionStatus status) {
+		String encryptPwd = passwordEncoder.encode(pm.getUserPwd());
+		pm.setUserPwd(encryptPwd);
+		log.info(pm.toString());
+		
+		int result = ps.updateLeaveMember(pm);
+		if(result > 0) {
+//			탈퇴 성공 시 로그아웃 처리
+			status.setComplete();
+			return "redirect:panelResult.panel?message=dropSuccess";
+		} else {
+			return "redirect:myInfoDetail.panel";
+		}
+	}
 }
 
 

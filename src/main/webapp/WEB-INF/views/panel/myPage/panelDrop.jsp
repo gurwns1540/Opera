@@ -48,14 +48,14 @@
 				<br />
 				<hr />
 				<br />
-				<form action="dropPanel.me" method="post">
+				<form id="dropForm" action="dropPanel.me" method="post">
 					<div class="panelDropReasonArea" align="center">
 						<b>
 							회원님께서 탈퇴하시는 사유 또는 저희 사이트에 건의하고 싶은 점 있으신가요?<br />
 							글을 남겨주시면 회원님의 의견을 소중히 경청하겠습니다.
 						</b>
 						
-						<textarea name="" id="" style="margin-top: 20px; width: 100%; height: 150px; resize: none;"></textarea>
+						<textarea name="leaveReason" id="" style="margin-top: 20px; width: 100%; height: 150px; resize: none;"></textarea>
 					</div>  <!-- panelDropReasonArea end -->
 					<br />
 					<hr />
@@ -72,6 +72,7 @@
 								<td align="center">
 									비밀번호 :   
 									<div class="ui input" >
+										<input type="hidden" name="mno" value="${ loginUser.mno }"/>
 										<input type="password" name="userPwd" id="userPwd" style="margin-left: 10px;">
 									</div>
 								</td>
@@ -106,20 +107,25 @@
 			var ajaxPwd = $("#userPwd").val();
 			console.log("${ loginUser.userId }");
 			console.log(ajaxPwd);
-// 			$.ajax({
-// 				url: "checkPasswordAjax.me",
-// 				type: "post",
-// 				data : {
-// 					userId: "${ loginUser.userId }",
-// 					userPwd: ajaxPwd
-// 				},
-// 				success: function(data) {
-// 					console.log(data.isEqual);
-// 				},
-// 				error: function(data) {
-					
-// 				}
-// 			});
+			$.ajax({
+				url: "checkPasswordAjax.me",
+				type: "post",
+				data : {
+					userId: "${ loginUser.userId }",
+					ajaxPwd: ajaxPwd
+				},
+				success: function(data) {
+					if(data.isEqual == true) {
+						$("#dropForm").submit();
+					} else {
+						Swal.fire('실패', '비밀번호가 일치하지 않습니다', 'warning');
+						return false;
+					}
+				},
+				error: function(data) {
+					Swal.fire('에러', '다시 시도해주세요', 'error');
+				}
+			});
 		});
 	</script>
 </body>

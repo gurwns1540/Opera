@@ -3,6 +3,7 @@ package com.opera.survway.common.model.service;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.common.model.dao.CommonDao;
@@ -16,6 +17,8 @@ public class CommonServiceImpl implements CommonService{
 	private CommonDao cd;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	
 	/**
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 1. 21.
@@ -59,7 +62,10 @@ public class CommonServiceImpl implements CommonService{
 	public boolean checkPasswordModal(String userId, String ajaxPwd) {
 //		PanelMember pm = new PanelMember();
 //		pm.setUserId(userId);
+		System.out.println("userId : " + userId);
+		System.out.println("ajaxPwd : " + ajaxPwd);
 		String userPwd = cd.selectEncPassword(sqlSession, userId);
+		System.out.println("userPwd : " + userPwd);
 		if(passwordEncoder.matches(ajaxPwd, userPwd)) {
 			System.out.println("service단 : 일치");
 			return true;
