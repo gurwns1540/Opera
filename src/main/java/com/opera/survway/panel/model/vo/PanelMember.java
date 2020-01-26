@@ -29,13 +29,14 @@ public class PanelMember {
 	private String panelLevel;
 	private String occupationNo;
 	private String withdrawAccount;
+	private String leaveReason;
 	private ArrayList<Integer> indexArr;
 	public PanelMember() {}
 	public PanelMember(int mno, String userId, String userPwd, String userName, String post, String address,
 			String detailAddress, String userAddress, String phone1, String phone2, String phone3, String userPhone,
 			String userEmail, String userType, Date leaveDate, Date entDate, Date modifyDate, String panelBirthday,
 			String panelGender, String referPanelCode, String nominee, String panelLevel, String occupationNo,
-			String withdrawAccount, ArrayList<Integer> indexArr) {
+			String withdrawAccount, String leaveReason, ArrayList<Integer> indexArr) {
 		super();
 		this.mno = mno;
 		this.userId = userId;
@@ -61,6 +62,7 @@ public class PanelMember {
 		this.panelLevel = panelLevel;
 		this.occupationNo = occupationNo;
 		this.withdrawAccount = withdrawAccount;
+		this.leaveReason = leaveReason;
 		this.indexArr = indexArr;
 	}
 	public int getMno() {
@@ -213,6 +215,13 @@ public class PanelMember {
 	public void setIndexArr(ArrayList<Integer> indexArr) {
 		this.indexArr = indexArr;
 	}
+	
+	public String getLeaveReason() {
+		return leaveReason;
+	}
+	public void setLeaveReason(String leaveReason) {
+		this.leaveReason = leaveReason;
+	}
 	@Override
 	public String toString() {
 		return "PanelMember [mno=" + mno + ", userId=" + userId + ", userPwd=" + userPwd + ", userName=" + userName
@@ -222,7 +231,7 @@ public class PanelMember {
 				+ ", entDate=" + entDate + ", modifyDate=" + modifyDate + ", panelBirthday=" + panelBirthday
 				+ ", panelGender=" + panelGender + ", referPanelCode=" + referPanelCode + ", nominee=" + nominee
 				+ ", panelLevel=" + panelLevel + ", occupationNo=" + occupationNo + ", withdrawAccount="
-				+ withdrawAccount + ", indexArr=" + indexArr + "]";
+				+ withdrawAccount + ", leaveReason" + leaveReason + ", indexArr=" + indexArr + "]";
 	}
 
 }

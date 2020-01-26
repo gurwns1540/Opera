@@ -44,7 +44,7 @@ public class PanelServiceImpl implements PanelService {
 		if(passwordEncoder.matches(pm.getUserPwd(), encPassword)) {
 			loginUser = pd.loginCheck(sqlSession, pm);
 		}else {
-			throw new LoginException("로그인 실패");
+			throw new LoginException("loginFail");
 		}
 		
 		return loginUser;
@@ -158,5 +158,16 @@ public class PanelServiceImpl implements PanelService {
 	@Override
 	public int updatePassword(PanelMember pm) {
 		return pd.updatePassword(sqlSession, pm);
+	}
+
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 26.
+	 * @ModifyDate  : 2020. 1. 26.
+	 * @Description : 회원탈퇴
+	 */
+	@Override
+	public int updateLeaveMember(PanelMember pm) {
+		return pd.updateLeaveMember(sqlSession, pm);
 	}
 }

@@ -81,5 +81,9 @@
 	<insert id="insertTernaryPanel" parameterType="PanelMember">
 		INSERT INTO PANELTERNARY VALUES(#{mno}, 0)
 	</insert>
-  
+  	
+  	<update id="updateLeaveMember" parameterType="PanelMember">
+  		UPDATE MEMBER SET LEAVE_DATE = SYSDATE, MODIFY_DATE = SYSDATE, CERTIFICATION = 'N', LEAVE_REASON = #{leaveReason}
+  		WHERE MNO = #{mno}
+  	</update>
 </mapper>

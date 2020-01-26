@@ -37,4 +37,6 @@ public interface PanelDao {
 
 	int getListCountInquiry(SqlSessionTemplate sqlSession, Inquiry iq);
 
+	int updateLeaveMember(SqlSessionTemplate sqlSession, PanelMember pm);
+
 }

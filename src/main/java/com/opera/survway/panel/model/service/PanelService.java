@@ -19,11 +19,11 @@ public interface PanelService {
 	List<Inquiry> selectAllMyInquiry(Inquiry i) throws InquiryException;
 
 	int getListCountInquiry(Inquiry iq) throws InquiryException;
-
-	
-
-	int updateMemberInfo(PanelMember pm);
+  
+  int updateMemberInfo(PanelMember pm);
 
 	int updatePassword(PanelMember pm);
+
+	int updateLeaveMember(PanelMember pm);
 
 }

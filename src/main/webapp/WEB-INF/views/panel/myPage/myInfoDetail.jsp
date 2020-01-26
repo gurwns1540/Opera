@@ -376,7 +376,7 @@
 						type: "post",
 						data : {
 							userId: "${ loginUser.userId }",
-							userPwd: ajaxPwd
+							ajaxPwd: ajaxPwd
 						},
 						success: function(data) {
 							if(data.isEqual == true) {
