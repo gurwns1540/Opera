@@ -6,47 +6,12 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
-#titleTable {
-	margin: 0 auto;
-	margin-top: 20px;
-}
-
-#menuTitle {
-	height: 30px;
-	width: 40%;
-	font-size: 16pt;
-	text-align: left;
-	vertical-align: bottom;
-	font-weight: bold;
-	color: #3D3D3D;
-}
-
-#pagePath {
-	width: 60%;
-	text-align: right;
-	vertical-align: bottom;
-	font-weight: bold;
-}
-
-#depth3 {
-	color: #008499;
-}
-
-#depth1, #depth2 {
-	color: #494949;
-}
-#depth1:hover,  #depth2:hover, #depth3:hover {
-	cursor: default;
-}
-#depth1:hover, #depth2:hover {
-	color: #494949;
-}
-
-.sectionLine {
-	padding-bottom: 40px;
-}
-/* 여기까지 페이지제목 및 경로 영역 */
-
+	.ui.blue.button {
+	background-color:#00679A;
+	}
+	.ui.blue.button:hover {
+		background-color: #217BA7;
+	}
 
 </style>
 <body>
@@ -76,9 +41,16 @@
 			</div>
 			
 			
-		
-			
-			
+		<div align="center" style=" margin-top:100px; margin-bottom:140px;">
+			<span style="font-size:1vw; font-weight:bold; line-height:150%;">
+				회원가입 인증 이메일을 발송하였습니다.<br>
+				이메일을 확인하여 정회원 인증하신 후에 로그인 하실 수 있습니다.
+			</span>
+		</div>
+		<hr>
+		<div style="text-align:center; margin-top:40px; margin-bottom:100px; text-align:right;">
+			<input type="button" class="ui blue button" value="메인으로" onclick="location.href='panelMain.panel'">
+		</div>
 			
 			
 		<br />

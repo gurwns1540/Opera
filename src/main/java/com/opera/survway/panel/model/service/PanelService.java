@@ -1,7 +1,6 @@
 package com.opera.survway.panel.model.service;
 
 import java.util.List;
-
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.vo.Inquiry;
@@ -22,5 +21,9 @@ public interface PanelService {
 	int getListCountInquiry(Inquiry iq) throws InquiryException;
 
 	
+
+	int updateMemberInfo(PanelMember pm);
+
+	int updatePassword(PanelMember pm);
 
 }

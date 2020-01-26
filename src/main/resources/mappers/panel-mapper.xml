@@ -32,6 +32,7 @@
 		FROM MEMBER M
 		LEFT JOIN PANEL P ON (M.MNO = P.MNO)
 		WHERE USER_ID = #{userId}
+		AND USER_TYPE != '기업'
 		AND LEAVE_DATE IS NULL
 		AND CERTIFICATION = 'Y'
 	</select>
@@ -56,48 +57,29 @@
 	</select>
 	
 	<insert id="insertTermsPanel" parameterType="PanelMember">
-		INSERT ALL
-			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 1, 'Y')
-			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 2, 'Y')
-			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 3, 'Y')
-			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 4, 'Y')
-			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 5, 'Y')
-		SELECT * FROM DUAL
+		INSERT INTO TERMSHISTORY(TERMSHISTORY_NO, MNO, TERMS_NO, TERMS_CONSENT)
+		SELECT SEQ_TERMSHISTORY.NEXTVAL, A.* FROM(
+			 <foreach item="item" index="index" collection="indexArr" separator="UNION ALL " >
+			   SELECT #{mno} AS MNO, #{item.value} AS TERMS_NO, 'Y' AS TERMS_CONSENT
+			   FROM DUAL
+			 </foreach>) A
 	</insert>
 	
+	<update id="updateMemberInfo" parameterType="PanelMember">
+		UPDATE MEMBER SET USER_ADDRESS = #{userAddress}, MODIFY_DATE = SYSDATE
+		WHERE MNO = #{mno}
+	</update>
+	<update id="updatePassword" parameterType="PanelMember">
+		UPDATE MEMBER SET USER_PWD = #{userPwd}, MODIFY_DATE = SYSDATE
+		WHERE MNO = #{mno}
+	</update>
+
+  <insert id="insertRewordPanel" parameterType="PanelMember">
+		INSERT INTO PANELREWORD VALUES(0, #{mno})
+	</insert>
+	
+	<insert id="insertTernaryPanel" parameterType="PanelMember">
+		INSERT INTO PANELTERNARY VALUES(#{mno}, 0)
+	</insert>
+  
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

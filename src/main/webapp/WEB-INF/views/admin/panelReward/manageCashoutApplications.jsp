@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,12 +79,14 @@
 	#pagingArea span {
 		margin-left: 5px;
 		margin-right: 5px;
+		color: black;
 		font-size: 10pt;
 	}
 	#pagingArea span:hover {
 		margin-left: 5px;
 		margin-right: 5px;
 		font-size: 10pt;
+		color: dodgerblue;
 		cursor: pointer;
 	}
 	.detail {
@@ -92,43 +95,6 @@
 		width: 80px;
 		height: 30px;
 	}
-  	#sortable { 
-  		list-style-type: none; 
-  		margin: 0; 
-  		padding: 0; 
-  		width: 60%;
-  		margin: 0 auto; 
-  		margin-bottom: 30px;
-  	}
-  	#sortable li { 
-  		margin: 0 5px 12px 5px;
-  		padding: 10px; 
-  		font-size: 1.2em; 
-  		height: fit-content;
-  		border-radius: 7px;
-  	}
- 	html>body #sortable li { 
-	  	height: fit-content;
-	  	line-height: 1.2em; 
-	}
-  	.ui-state-highlight { 
-  		height: 3.5em; 
-  		line-height: 1.2em; 
-  	}
-  	.ui-sortable-placeholder {
-  		background: white !important;
-  		border-color: white !important;
-  	}
-  	#outbreak {
-  		margin: 20px auto;
-  		width: 70%;
-  		height: 10%;
-  		border-radius: 7px;
-  		border: 1px solid #C5C5C5;
-  		background: #F6F6F6;
-  		padding: 15px;
-  		margin-top: 30px;
-  	}
   	#choice, .choice {
   		margin: 0 auto;
   		margin-top: 20px;
@@ -159,8 +125,8 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='manageCashoutApplication.admin'" id="clickBtn">신청 목록</button>
-						<button onclick="location.href='manageCashoutComplete.admin'">완료 목록</button>
+						<button onclick="location.href='manageCashoutApplication.reward'" id="clickBtn">신청 목록</button>
+						<button onclick="location.href='manageCashoutComplete.reward'">완료 목록</button>
 					</div>
 				</td>
 			</tr>
@@ -172,15 +138,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
-					<div id="searchInput">
-						<div class="ui action input">
-			  				<input type="text" placeholder="Search...">
-							<button class="ui icon button">
-								<i class="search icon"></i>
-							</button>
-						</div>
-					</div>
+				<td style="height: 49px;">
 				</td>
 			</tr>
 		</table>
@@ -193,13 +151,14 @@
 				<th style="width: 15%;">신청일</th>
 				<th style="width: 20%;">개별 캐시아웃</th>
 			</tr>
-			<c:forEach var="i" begin="0" end="9">
+			<c:forEach var="pr" items="${panelRewardHistoryList}">
 				<tr class="tableContext">
-					<td><input type="checkbox" class="checkPoorMailing"></td>
-					<td>패널번호</td>
-					<td>캐시아웃 신청 금액</td>
-					<td>신청 계좌</td>
-					<td>신청일</td>
+					<td><input type="checkbox" class="checkPoorMailing">
+						<input type="hidden" id="cashoutHistoryNo" value="${ pr.cashoutHistoryNo }"></td>
+					<td>${ pr.mno }</td>
+					<td><fmt:formatNumber value="${ pr.cashoutAmount }" type="number" /> <i class="won sign icon"></i></td>
+					<td>${ pr.account }</td>
+					<td>${ pr.applicantDate }</td>
 					<td><button class="detail">캐시아웃</button></td>
 				</tr>
 			</c:forEach>
@@ -208,19 +167,59 @@
 			</tr>
 		</table>
 		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
+			<c:url var="blistFirst" value="manageCashoutApplication.reward">
+				<c:param name="currentPage" value="${1}"/>
+			</c:url>
+			<a href="${blistFirst}"><span>[처음]</span></a>&nbsp;
+			
+			<c:if test="${pi.currentPage <= 1}">
+				<span>[이전]</span> &nbsp;
+			</c:if>
+			<c:if test="${pi.currentPage > 1}">
+				<c:url var="blistBack" value="manageCashoutApplication.reward">
+					<c:param name="currentPage" value="${pi.currentPage - 1}"/>
+				</c:url>
+				<a href="${blistBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+			
+			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+				<c:if test="${p eq pi.currentPage }">
+					<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+				</c:if>
+				<c:if test="${p ne pi.currentPage }">
+					<c:url var="blistCheck" value="manageCashoutApplication.reward">
+						<c:param name="currentPage" value="${ p }"/>
+					</c:url>
+					<a href="${ blistCheck }"><span>${ p }</span></a>
+				</c:if>
+				
 			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
+			
+			<c:if test="${pi.currentPage < pi.maxPage}">
+				<c:url var="blistNext" value="manageCashoutApplication.reward">
+					<c:param name="currentPage" value="${pi.currentPage + 1}"/>
+				</c:url>
+				&nbsp;<a href="${blistNext}"><span>[다음]</span></a>
+			</c:if>
+			<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+			</c:if>
+			
+			<c:url var="blistEnd" value="manageCashoutApplication.reward">
+				<c:param name="currentPage" value="${pi.maxPage}"/>
+			</c:url>
+			<a href="${blistEnd}"><span>[마지막]</span></a>&nbsp;
 		</div>
 	</div>
 		
 	
 	<script>
-		$("#cashOut").on("click", function(){
+		$(document).on("click", "#cashOut", function(){
+			var cnoArr = [];
+			$('.checkPoorMailing:checked').each(function(i){//체크된 리스트 저장
+				cnoArr.push($(this).parent().find("#cashoutHistoryNo").val());
+            });
+			
 			Swal.fire({
 			  	title: '캐시아웃 처리를 하시겠습니까?',
 			  	text: "이 결정은 되돌릴 수 없습니다!",
@@ -231,16 +230,38 @@
 			  	confirmButtonText: 'Yes'
 			}).then((result) => {
 			  	if (result.value) {
-			  		Swal.fire(
-						'캐시아웃 처리 완료!',
-						'해당 회원에 대한 캐시아웃처리를 하였습니다.',
-						'success'
-					)
-			  }
+			  		jQuery.ajaxSettings.traditional = true;
+
+			  		$.ajax({
+						url:"cashoutOnePeople.reward",
+						type:"post",
+						data:{cnoArr:cnoArr},
+						success:function(data){
+							Swal.fire({
+								position: 'center',
+								icon: 'success',
+								title: '해당 회원에 대한 캐시아웃처리를 하였습니다.',
+								width: 600,
+								showConfirmButton: false,
+								timer: 1500
+							})
+							setTimeout(function() {
+								location.replace("manageCashoutApplication.reward");
+							}, 1500);
+							
+						},
+						error:function(status){
+							console.log(status);
+						}
+					});
+			  	}
 			})
 		});
-		$(".detail").on("click", function(){
-			var num = $(this).parent().siblings().eq(0).text();
+		$(document).on("click", ".detail",  function(){
+			var cno = $(this).parent().parent().children().find("#cashoutHistoryNo").val();
+			var cnoArr = [];
+			cnoArr.push(cno);
+			
 			Swal.fire({
 			  	title: '캐시아웃 처리를 하시겠습니까?',
 			  	text: "이 결정은 되돌릴 수 없습니다!",
@@ -251,12 +272,31 @@
 			  	confirmButtonText: 'Yes'
 			}).then((result) => {
 			  	if (result.value) {
-			  		Swal.fire(
-						'캐시아웃 처리 완료!',
-						'해당 회원에 대한 캐시아웃처리를 하였습니다.',
-						'success'
-					)
-			  }
+			  		jQuery.ajaxSettings.traditional = true;
+
+			  		$.ajax({
+						url:"cashoutOnePeople.reward",
+						type:"post",
+						data:{cnoArr:cnoArr},
+						success:function(data){
+							Swal.fire({
+								position: 'center',
+								icon: 'success',
+								title: '해당 회원에 대한 캐시아웃처리를 하였습니다.',
+								width: 600,
+								showConfirmButton: false,
+								timer: 1500
+							})
+							setTimeout(function() {
+								location.replace("manageCashoutApplication.reward");
+							}, 1500);
+							
+						},
+						error:function(status){
+							console.log(status);
+						}
+					});
+			  	}
 			})
 		});
 		$(document).on("click", "#allCheck", function(){

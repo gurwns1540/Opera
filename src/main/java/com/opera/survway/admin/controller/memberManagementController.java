@@ -34,7 +34,7 @@ public class memberManagementController {
 	 * @Description : 패널 전체 조회 & 검색
 	 */
 	@RequestMapping("memberInfoManagement.memberManagement") 
-	public String forwardPanelInfoManagement(HttpServletRequest request, Model model) {
+	public String selectPanelInfoManagement(HttpServletRequest request, Model model) {
 		
 		String queryString = request.getQueryString();
 		

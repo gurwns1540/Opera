@@ -19,6 +19,8 @@ import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.service.CommonService;
+import com.opera.survway.panel.controller.PanelController;
 
 @Controller
 public class CommonController {
@@ -166,5 +169,22 @@ public class CommonController {
 		return "common/errorPage";
 	}
 
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 24.
+	 * @ModifyDate  : 2020. 1. 24.
+	 * @Description : ajax 비밀번호 체크
+	 */
+	@PostMapping("checkPasswordAjax.me")
+	public ModelAndView checkPasswordModal(String userId, String ajaxPwd, ModelAndView mv) {
+		
+		boolean isEqual = cs.checkPasswordModal(userId, ajaxPwd);
+		System.out.println(userId);
+		System.out.println(ajaxPwd);
+		mv.addObject("isEqual", isEqual);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
 }
 

@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -40,6 +41,47 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public AllMember selectMember(SqlSessionTemplate sqlSession, int mno) {
 		return sqlSession.selectOne("Admin.selectMember", mno);
+	}
+
+	@Override
+	public int getListCountPanelCashoutApplicant(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListCountPanelCashoutApplicant");
+	}
+
+	@Override
+	public List<PanelRewardHistory> panelCashoutApplication(SqlSessionTemplate sqlSession, PageInfo pi) {
+		List<PanelRewardHistory> panelRewardHistoryList = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		panelRewardHistoryList = sqlSession.selectList("Admin.panelCashoutApplication", null, rowBounds);
+		
+		return panelRewardHistoryList;
+	}
+
+	@Override
+	public int cashoutPeople(SqlSessionTemplate sqlSession, List<String> list) {
+		return sqlSession.update("Admin.cashoutPerson", list);
+	}
+
+	@Override
+	public int getListCountManageCashoutComplete(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListCountManageCashoutComplete");
+	}
+
+	@Override
+	public List<PanelRewardHistory> manageCashoutComplete(SqlSessionTemplate sqlSession, PageInfo pi) {
+		List<PanelRewardHistory> rewardCompleteHistoryList = null;
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		rewardCompleteHistoryList = sqlSession.selectList("Admin.rewardCompleteHistoryList", null, rowBounds);
+		
+		return rewardCompleteHistoryList;
 	}
 
 

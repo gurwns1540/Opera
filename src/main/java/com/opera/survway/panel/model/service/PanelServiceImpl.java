@@ -10,13 +10,10 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.dao.PanelDao;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.PanelMember;
-import com.opera.survway.panel.model.vo.SearchInquiry;
-
 
 
 @Service
@@ -69,7 +66,11 @@ public class PanelServiceImpl implements PanelService {
 			int mno = pd.selectMno(sqlSession, pm);
 			pm.setMno(mno);
 			resultPanelTable = pd.insertPanelTable(sqlSession, pm);
-			pd.insertTermsPanel(sqlSession, pm);
+			if(resultPanelTable > 0) {
+				pd.insertTermsPanel(sqlSession, pm);
+				pd.insertRewordPanel(sqlSession, pm);
+				pd.insertTernaryPanel(sqlSession, pm);
+			}
 		}
 		
 		if(!(resultMemberTable>0 && resultPanelTable>0)) {
@@ -135,48 +136,26 @@ public class PanelServiceImpl implements PanelService {
 		}
 		return listCount;
 	}
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 22.
+	 * @ModifyDate  : 2020. 1. 22.
+	 * @Description : 회원정보수정(비밀번호X)
+	 */
+	@Override
+	public int updateMemberInfo(PanelMember pm) {
+		
+		return pd.updateMemberInfo(sqlSession, pm);
+	}
 
-	
-	
-
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 24.
+	 * @ModifyDate  : 2020. 1. 24.
+	 * @Description : 회원정보수정(비밀번호)
+	 */
+	@Override
+	public int updatePassword(PanelMember pm) {
+		return pd.updatePassword(sqlSession, pm);
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

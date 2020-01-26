@@ -6,15 +6,26 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
-	.newInquiryTableArea {
-		border-top: 1px solid #B4B4B4;
-		border-bottom: 1px solid #B4B4B4;
-		border-right: 1px solid #B4B4B4;
-		border-left: 1px solid #B4B4B4;
-	}
-	newInquiryTbodyArea tr td:nth-child(n){
-		text-align: right;
-	}
+
+#depth1, #depth2, #depth3, #depth4 {
+	color: #494949;
+}
+#depth1:hover, #depth2:hover, #depth3:hover {
+	color: #008499;
+	cursor: pointer;
+}
+/* 여기까지 페이지제목 및 경로 영역 */
+
+.newInquiryTableArea {
+	border-top: 1px solid #B4B4B4;
+	border-bottom: 1px solid #B4B4B4;
+	border-right: 1px solid #B4B4B4;
+	border-left: 1px solid #B4B4B4;
+}
+newInquiryTbodyArea tr td:nth-child(n){
+	text-align: right;
+}
+
 </style>
 <body>
 	<div class="wrap">

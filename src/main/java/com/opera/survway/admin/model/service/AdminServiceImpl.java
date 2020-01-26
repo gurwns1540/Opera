@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.dao.AdminDao;
+import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -28,7 +29,7 @@ public class AdminServiceImpl implements AdminService{
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 1. 23.
 	 * @ModifyDate  : 2020. 1. 23.
-	 * @Description : 패널 전체 조회시 패널 수
+	 * @Description : 회원 조회시 회원 수
 	 */
 	@Override
 	public int getListCountPanel(SearchMember searchMember) throws SelectException {
@@ -36,7 +37,7 @@ public class AdminServiceImpl implements AdminService{
 		int listCount = ad.getListCountPanel(sqlSession, searchMember);
 		
 		if(listCount <= 0) {
-			throw new SelectException("회원 수 조회 실패!!");
+			throw new SelectException("회원 수 조회 실패");
 		}
 		return listCount;
 	}
@@ -54,7 +55,7 @@ public class AdminServiceImpl implements AdminService{
 		List<AllMember> memberList = ad.memberInfoManagement(sqlSession, searchMember);
 		
 		if(memberList == null) {
-			throw new SelectException("회원 조회 실패!!");
+			throw new SelectException("회원 조회 실패");
 		}
 		return memberList;
 	}
@@ -64,17 +65,95 @@ public class AdminServiceImpl implements AdminService{
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 1. 23.
 	 * @ModifyDate  : 2020. 1. 23.
-	 * @Description : 회
+	 * @Description : 회원 상세 조회
 	 */
 	@Override
 	public AllMember selectMember(int mno) throws SelectException {
 		AllMember member = ad.selectMember(sqlSession, mno);
 		
 		if(member == null) {
-			throw new SelectException("회원 상세 조회 실패!!");
+			throw new SelectException("회원 상세 조회 실패");
 		}
 		return member;
 	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 24.
+	 * @ModifyDate  : 2020. 1. 24.
+	 * @Description : 패널 캐시아웃 신청 이력 수
+	 */
+	@Override
+	public int getListCountPanelCashoutApplicant() throws SelectException {
+		
+		int listCount = ad.getListCountPanelCashoutApplicant(sqlSession);
+		
+		if(listCount <= 0) {
+			throw new SelectException("캐시아웃 신청 이력 수 조회 실패");
+		}
+		return listCount;
+	}
 
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 24.
+	 * @ModifyDate  : 2020. 1. 24.
+	 * @Description : 패널 캐시아웃 신청 이력
+	 */
+	@Override
+	public List<PanelRewardHistory> panelCashoutApplication(PageInfo pi) throws SelectException {
+		List<PanelRewardHistory> panelRewardHistoryList = ad.panelCashoutApplication(sqlSession, pi);
+		
+		if(panelRewardHistoryList == null) {
+			throw new SelectException("캐시아웃 신청 이력 조회 실패");
+		}
+		return panelRewardHistoryList;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 25.
+	 * @ModifyDate  : 2020. 1. 25.
+	 * @Description : 회원 1인, 다수 캐시아웃 확인완료 ajax
+	 */
+	@Override
+	public boolean cashoutPeople(List<String> cnoArr) {
+		System.out.println(cnoArr);
+		int result = ad.cashoutPeople(sqlSession, cnoArr);
+		
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 25.
+	 * @ModifyDate  : 2020. 1. 25.
+	 * @Description : 패널 캐시아웃 완료 이력 수
+	 */
+	@Override
+	public int getListCountManageCashoutComplete() throws SelectException {
+		int listCount = ad.getListCountManageCashoutComplete(sqlSession);
+		
+		if(listCount <= 0) {
+			throw new SelectException("캐시아웃 완료 이력 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	@Override
+	public List<PanelRewardHistory> manageCashoutComplete(PageInfo pi) throws SelectException {
+		List<PanelRewardHistory> rewardCompleteHistoryList = ad.manageCashoutComplete(sqlSession, pi);
+		
+		if(rewardCompleteHistoryList == null) {
+			throw new SelectException("캐시아웃 완료 이력 조회 실패");
+		}
+		return rewardCompleteHistoryList;
+	}
 
 }

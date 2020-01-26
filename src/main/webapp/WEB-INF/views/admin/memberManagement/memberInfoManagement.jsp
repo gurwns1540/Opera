@@ -94,43 +94,6 @@
 		width: 80px;
 		height: 30px;
 	}
-  	#sortable { 
-  		list-style-type: none; 
-  		margin: 0; 
-  		padding: 0; 
-  		width: 60%;
-  		margin: 0 auto; 
-  		margin-bottom: 30px;
-  	}
-  	#sortable li { 
-  		margin: 0 5px 12px 5px;
-  		padding: 10px; 
-  		font-size: 1.2em; 
-  		height: fit-content;
-  		border-radius: 7px;
-  	}
- 	html>body #sortable li { 
-	  	height: fit-content;
-	  	line-height: 1.2em; 
-	}
-  	.ui-state-highlight { 
-  		height: 3.5em; 
-  		line-height: 1.2em; 
-  	}
-  	.ui-sortable-placeholder {
-  		background: white !important;
-  		border-color: white !important;
-  	}
-  	#outbreak {
-  		margin: 20px auto;
-  		width: 70%;
-  		height: 10%;
-  		border-radius: 7px;
-  		border: 1px solid #C5C5C5;
-  		background: #F6F6F6;
-  		padding: 15px;
-  		margin-top: 30px;
-  	}
   	#choice, .choice {
   		margin: 0 auto;
   		margin-top: 20px;
@@ -173,7 +136,6 @@
   		width: 100px;
   		min-width: 100px !important;
   		padding-right: 10px !important;
-  		
   	}
 </style>
 </head>
@@ -291,7 +253,7 @@
 					<c:if test="${ !empty param.userType }">
 						<c:param name="userType" value="${param.userType}"/>
 					</c:if>
-					</c:url>
+				</c:url>
 				<a href="${blistBack}"><span>[이전]</span></a>&nbsp;
 			</c:if>
 			
@@ -496,13 +458,12 @@
 		$(".detail").on("click", function(){
 			var mno = $(this).parent().siblings().eq(0).text();
 			var type = $(this).parent().siblings().eq(1).text();
-			console.log(mno);
+			
 			$.ajax({
 				url:"selectMember.memberManagement",
 				type:"post",
 				data:{mno:mno},
 				success:function(data){
-					console.log(data);
 					var address = data.member.userAddress;
 					var passphrase = "1234";
 			        var decrypted1 = CryptoJS.AES.decrypt(address, passphrase);

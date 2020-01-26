@@ -80,7 +80,7 @@ div.wrap {
 	cursor:pointer;
 }
 .ui.blue.button {
-	background-color:#00679A;S
+	background-color:#00679A;
 }
 .ui.blue.button:hover {
 	background-color: #217BA7;
@@ -111,8 +111,8 @@ div.wrap {
 			<div class="sectionLine">
 				<hr>
 			</div>
-			
-			
+
+
 			<div id="mainBox">
 			<div class="accordion-container">
 				<div class="panel">
@@ -156,13 +156,14 @@ div.wrap {
 					</div>
 				</div>
 			</div>
-			<div style="margin: 0 auto; margin-top: 50px; width: 80%;">
+			<div style="margin: 0 auto; margin-top: 50px; margin-bottom: 40px; width: 80%;">
 				<div class="ui checkbox">
 					<input type="checkbox" class="agreement">
 					<label>위의 모든 약관에 동의합니다.</label>
 				</div>
 			</div>
-			<div style="width: fit-content; margin: 30px auto;">
+			<hr>
+			<div style="width: fit-content;margin: 30px auto; float:right;">
 				<input type="button" id="signupBtn" class="ui disabled button" value="다음">
 				<input type="hidden" id="signupBtn2" class="ui blue button" value="다음" onclick="location.href='panelSignup2.panel'">
 			</div>

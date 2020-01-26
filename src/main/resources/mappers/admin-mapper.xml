@@ -32,7 +32,14 @@
 		<result property="ternaryCount" column="TERNARY_COUNT"/>
 	</resultMap>
 	
-	
+	<resultMap type="PanelRewardHistory" id="PanelRewardHistoryResultMap">
+		<id property="cashoutHistoryNo" column="CASHOUTHISTORY_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="cashoutAmount" column="CASHOUT_AMOUNT"/>
+		<result property="account" column="WITHDRAW_ACCOUNT"/>
+		<result property="applicantDate" column="CASHOUT_APPLICANT_DATE"/>
+		<result property="confrimDate" column="CASHOUT_CONFIRM_DATE"/>
+	</resultMap>
 	<sql id="searchUserType">
 		<if test="userType != null">
 			AND USER_TYPE = #{userType}
@@ -99,6 +106,45 @@
         LEFT JOIN PANELTERNARY PT ON(PT.MNO = M.MNO)
 		WHERE CERTIFICATION = 'Y'
 		AND M.MNO = #{mno}
+	</select>
+	
+	<select id="getListCountPanelCashoutApplicant" resultType="_int">
+		SELECT COUNT(*)
+		FROM CASHOUTHISTORY
+		WHERE CASHOUT_CONFIRM_DATE IS NULL
+	</select>
+	
+	<select id="panelCashoutApplication" resultMap="PanelRewardHistoryResultMap">
+		SELECT CH.CASHOUTHISTORY_NO, CH.MNO, C.CASHOUT_AMOUNT, P.WITHDRAW_ACCOUNT, TO_CHAR(CH.CASHOUT_APPLICANT_DATE, 'YYYY-MM-DD') AS CASHOUT_APPLICANT_DATE, CH.CASHOUT_CONFIRM_DATE
+		FROM CASHOUTHISTORY CH
+		JOIN PANEL P ON (P.MNO = CH.MNO)
+		JOIN CASHOUT C ON (C.CASHOUT_NO = CH.CASHOUT_NO)
+		WHERE CH.CASHOUT_CONFIRM_DATE IS NULL
+		ORDER BY CASHOUT_APPLICANT_DATE ASC
+	</select>
+	
+	<update id="cashoutPerson" parameterType="java.util.List">
+		UPDATE CASHOUTHISTORY 
+		SET CASHOUT_CONFIRM_DATE = SYSDATE
+		WHERE CASHOUTHISTORY_NO IN 
+		<foreach collection="list" item="item" open="(" close=")" separator=", " index="index">
+			#{item}
+		</foreach>
+	</update>
+	
+	<select id="getListCountManageCashoutComplete" resultType="_int">
+		SELECT COUNT(*)
+		FROM CASHOUTHISTORY
+		WHERE CASHOUT_CONFIRM_DATE IS NOT NULL
+	</select>
+	
+	<select id="rewardCompleteHistoryList" resultMap="PanelRewardHistoryResultMap">
+		SELECT CH.CASHOUTHISTORY_NO, CH.MNO, C.CASHOUT_AMOUNT, P.WITHDRAW_ACCOUNT, TO_CHAR(CH.CASHOUT_APPLICANT_DATE, 'YYYY-MM-DD') AS CASHOUT_APPLICANT_DATE, CH.CASHOUT_CONFIRM_DATE
+		FROM CASHOUTHISTORY CH
+		JOIN PANEL P ON (P.MNO = CH.MNO)
+		JOIN CASHOUT C ON (C.CASHOUT_NO = CH.CASHOUT_NO)
+		WHERE CH.CASHOUT_CONFIRM_DATE IS NOT NULL
+		ORDER BY CASHOUT_APPLICANT_DATE ASC
 	</select>
 </mapper>
 

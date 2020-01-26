@@ -6,43 +6,6 @@
 <%@ include file="/WEB-INF/views/panel/common/head.jsp"%>
 </head>
 <style>
-hr {
-	border: solid 0.5px #D8D8D8;
-}
-#titleTable {
-	margin: 0 auto;
-	margin-top: 20px;
-}
-
-#menuTitle {
-	height: 30px;
-	width: 40%;
-	font-size: 16pt;
-	text-align: left;
-	vertical-align: bottom;
-	font-weight: bold;
-	color: #3D3D3D;
-}
-
-#pagePath {
-	width: 60%;
-	text-align: right;
-	vertical-align: bottom;
-	font-weight: bold;
-}
-
-#depth1, #depth2, #depth3 {
-	color: #494949;
-}
-
-#depth1:hover, #depth2:hover {
-	color: #008499;
-}
-
-.sectionLine {
-	padding-bottom: 10px;
-}
-/* 여기까지 페이지제목 및 경로 영역 */
 
 div.ui.right.attached.rail {
 	width: 200px !important;
@@ -318,7 +281,7 @@ div.ui.segment.eachSurveyBox {
 									</tr>
 									<tr>
 										<td style="text-align:right;">
-										<span style="font-size:0.75vw; font-weight:bold; color:#717171;">최소 1개에서 최대 10개 선택</span>
+										<span style="font-size:0.75vw; font-weight:bold; color:#717171;">최소 1개에서 최대 5개 선택</span>
 									</td>
 								</tr>
 							</table>
