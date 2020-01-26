@@ -81,46 +81,60 @@ public class PanelServiceImpl implements PanelService {
 	}
 
 	/**
+	 * @throws InquiryException 
 	 * @Author	:hansol
 	 * @CreateDate	:2020. 1. 22.
 	 * @ModifyDate	:2020. 1. 22.
 	 * @Description	: 1:1문의 등록
 	 */
 	@Override
-	public int insertInquiry(Inquiry i) {
+	public int insertInquiry(Inquiry i) throws InquiryException {
 		int result =0;
 		
 		result=pd.insertInquiry(sqlSession, i);
+		
+		if(!(result >0)) {
+			throw new InquiryException("1:1문의 등록 실패");
+		}
 		
 		return result;
 	}
 
 	/**
+	 * @throws InquiryException 
 	 * @Author	:hansol
 	 * @CreateDate	:2020. 1. 23.
 	 * @ModifyDate	:2020. 1. 23.
-	 * @Description	:1:1문의 전체 조회
+	 * @Description	:1:1문의  조회
 	 */
 	@Override
-	public List selectAllMyInquiry(Inquiry i) {
+	public List selectAllMyInquiry(Inquiry i) throws InquiryException {
 		
 		List list = pd.selectAllMyInquiry(sqlSession, i); 
+		
+		if(list == null) {
+			throw new InquiryException("1:1문의 목록 조회 실패");
+		}
 		
 		return list;
 	}
 
 	/**
+	 * @throws InquiryException 
 	 * @Author	:hansol
 	 * @CreateDate	:2020. 1. 24.
 	 * @ModifyDate	:2020. 1. 24.
-	 * @Description	:1:1문의 검색기능
+	 * @Description	:1:1문의 개수
 	 */
 	@Override
-	public List searchInquiryList(String search, int category) {
+	public int getListCountInquiry(Inquiry iq) throws InquiryException {
 		
-		List list = pd.searchInquiryList(sqlSession, search, category);
+		int listCount = pd.getListCountInquiry(sqlSession, iq);
 		
-		return list;
+		if(listCount <=0) {
+			throw new InquiryException("1:1문의수 조회 실패");
+		}
+		return listCount;
 	}
 	/**
 	 * @Author      : yhj
@@ -145,4 +159,3 @@ public class PanelServiceImpl implements PanelService {
 		return pd.updatePassword(sqlSession, pm);
 	}
 }
-

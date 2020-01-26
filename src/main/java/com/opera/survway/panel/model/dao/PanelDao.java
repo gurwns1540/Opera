@@ -1,6 +1,5 @@
 package com.opera.survway.panel.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.SearchInquiry;
+
 
 public interface PanelDao {
 
@@ -36,6 +37,6 @@ public interface PanelDao {
 
 	List selectAllMyInquiry(SqlSessionTemplate sqlSession, Inquiry i);
 
-	List searchInquiryList(SqlSessionTemplate sqlSession, String search, int category);
+	int getListCountInquiry(SqlSessionTemplate sqlSession, Inquiry iq);
 
 }

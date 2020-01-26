@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
+	<jsp:include page="/WEB-INF/views/panel/common/head.jsp" />
 </head>
 <style>
 	.ui.circular.segment {
@@ -42,10 +42,8 @@
 			<div class="sectionLine">
 				<hr>
 			</div>
-			
-			
 			<div style="margin-bottom:60px;">
-				<span style="font-size:1vw; padding-left:40px;"><b>회원님의 현재 리워드 현황입니다.</b></span>
+        <span style="font-size:1vw; padding-left:40px;"><b>회원님의 현재 리워드 현황입니다.</b></span>
 			</div>
 			
 			
@@ -71,7 +69,7 @@
 			
 		<br />
 		</section>  <!-- container end -->
-		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
 </body>
 </html>
