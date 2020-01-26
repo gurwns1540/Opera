@@ -309,7 +309,7 @@
 						<div class="ui calendar" id="standard_calendar">
 							<div class="ui input left icon">
 								<i class="calendar icon"></i>
-								<input type="text" name="startDate" id="startDate" placeholder="Date/Time" class="visible">
+								<input type="text" autocomplete="off" name="startDate" id="startDate" placeholder="Date" class="visible">
 							</div>
 						</div>
 					</td>
@@ -320,7 +320,7 @@
 						<div class="ui calendar" id="standard_calendar2">
 							<div class="ui input left icon">
 								<i class="calendar icon"></i>
-								<input type="text" name="endDate" id="endDate" placeholder="Date/Time">
+								<input type="text" autocomplete="off" name="endDate" id="endDate" placeholder="Date">
 							</div>
 						</div>
 					</td>
@@ -379,9 +379,45 @@
 		
 		$("#researchMenu td div").eq(1).addClass("on");
 		$(".ui.dropdown").dropdown();
-		
-		$('#standard_calendar').calendar();
-		$('#standard_calendar2').calendar();
+		var today = new Date();
+		$('#standard_calendar').calendar({
+			minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14),
+			type: 'date',
+			formatter: {
+				date: function (date, settings) {
+			        if (!date) return '';
+			        var day = date.getDate();
+			        if(day < 10){
+			        	day = '0' + day;
+			        }
+			        var month = date.getMonth();
+			        if(month < 10){
+			        	month = '0' + month;
+			        }
+			        var year = date.getFullYear();
+			        return year + '-' + month + '-' + day;
+				}
+	      	}
+		});
+		$('#standard_calendar2').calendar({
+			minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 19),
+			type: 'date',
+			formatter: {
+				date: function (date, settings) {
+			        if (!date) return '';
+			        var day = date.getDate();
+			        if(day < 10){
+			        	day = '0' + day;
+			        }
+			        var month = date.getMonth();
+			        if(month < 10){
+			        	month = '0' + month;
+			        }
+			        var year = date.getFullYear();
+			        return year + '-' + month + '-' + day;
+				}
+	      	}
+		});
 	</script>
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
