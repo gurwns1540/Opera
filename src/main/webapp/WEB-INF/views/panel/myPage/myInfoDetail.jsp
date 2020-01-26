@@ -166,7 +166,7 @@
 							<td colspan="6"><hr></td>
 						</tr>
 						<tr>
-							<td colspan="6" align="center">
+							<td colspan="6" align="right" style="height:100px;">
 								<button type="button" class="ui blue button" id="updateBtn">정보수정</button>
 								<button type="reset" class="ui blue button" onclick="location.href='panelMain.panel'">메인으로</button>
 							</td>

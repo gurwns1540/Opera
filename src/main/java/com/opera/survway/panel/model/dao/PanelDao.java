@@ -1,6 +1,5 @@
 package com.opera.survway.panel.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -34,9 +33,9 @@ public interface PanelDao {
 
 	int insertTernaryPanel(SqlSessionTemplate sqlSession, PanelMember pm);
 
-	List selectAllMyInquiry(SqlSessionTemplate sqlSession, Inquiry i);
+	List<Inquiry> selectAllMyInquiry(SqlSessionTemplate sqlSession, Inquiry i);
 
-	List searchInquiryList(SqlSessionTemplate sqlSession, String search, int category);
+	int getListCountInquiry(SqlSessionTemplate sqlSession, Inquiry iq);
 
 	int updateLeaveMember(SqlSessionTemplate sqlSession, PanelMember pm);
 

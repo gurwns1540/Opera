@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.controller.LoginMemberController;
 import com.opera.survway.common.model.vo.GenerateCertPassword;
+import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.Pagination;
+import com.opera.survway.common.model.vo.Util;
+import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.service.PanelService;
 import com.opera.survway.panel.model.vo.Inquiry;
@@ -108,57 +113,78 @@ public class PanelController {
 		}
 	}
 	
-	//1:1문의 등록
+	// 1:1문의 등록
 	@PostMapping("inquirywrite.customerCenter")
-	public String insertPanelInquiry(Model model,Inquiry i, HttpServletRequest request) {
-		
-		int category=Integer.parseInt(request.getParameter("inquiryCategoryNo"));
-		
+	public String insertPanelInquiry(Model model, Inquiry i, HttpServletRequest request) {
+
+		int category = Integer.parseInt(request.getParameter("inquiryCategoryNo"));
+
 		i.setInquiryCategoryNo(category);
-		
-		int result = ps.insertInquiry(i);
-		
-		model.addAttribute("success",result);
-		
+
+		int result;
+		try {
+			result = ps.insertInquiry(i);
+			model.addAttribute("success", result);
+		} catch (InquiryException e) {
+			request.setAttribute("msg", e.getMessage());
+		}
+
 		return "redirect:panelInquiryList.customerCenter";
 	}
-	
-	//1:1문의 리스트 보기
+
+	// 1:1문의 리스트 보기
 	@RequestMapping("panelInquiryList.customerCenter")
-	public String showMyInquiryList(HttpSession session, Model model,HttpServletRequest request, Inquiry iq) {
+	public String showMyInquiryList(HttpSession session, Model model, HttpServletRequest request, Inquiry iq) {
+		// Post로 보낸걸 queryString이라고 한다
+		String queryString = request.getQueryString();
+		// 그걸 쪼개기 작업하기
+		Map<String, List<String>> queryMap = null;
+
+		int currentPage = 1;
+		String inquiryTitle = "";
+		int inquiryCategoryNo = 0;
+
+		iq = new Inquiry();
+
+		if (queryString != null) {
+			queryMap = Util.splitQuery(queryString);
+			if (queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+			if (queryMap.containsKey("inquiryTitle")) {
+				inquiryTitle = queryMap.get("inquiryTitle").get(0);
+				iq.setInquiryTitle(inquiryTitle);
+			}
+			if (queryMap.containsKey("inquiryCategoryNo")) {
+				inquiryCategoryNo = Integer.parseInt(queryMap.get("inquiryCategoryNo").get(0));
+				iq.setInquiryCategoryNo(inquiryCategoryNo);
+			}
+			System.out.println(iq);
+		}
+
+		int listCount = 0;
+
 		PanelMember loginUser = (PanelMember) session.getAttribute("loginUser");
 		int mno = loginUser.getMno();
 
 		iq.setMno(mno);
+
 		
-		List list = (List) ps.selectAllMyInquiry(iq);
-		
-		model.addAttribute("list",list);
-		
-		
-		return "panelInquiryList";
-	}
-	
-	/**
-	 * @Author	:hansol
-	 * @CreateDate	:2020. 1. 24.
-	 * @ModifyDate	:2020. 1. 24.
-	 * @Description	:1:1문의 검색기능
-	 */
-	@PostMapping("searchInquiry.customerCenter")
-	public String searchInquiryList(HttpServletRequest request, Model model) {
-		
-		String search = request.getParameter("searchInquiry");
-		
-		int category = Integer.parseInt(request.getParameter("category"));
-		
-		System.out.println("searchInquiry"+search);
-		System.out.println("category"+category);
-		
-		List list = (List) ps.searchInquiryList(search, category);
-		
-		model.addAttribute("list", list);
-		
+		try {
+			listCount = ps.getListCountInquiry(iq);
+			System.out.println(listCount);
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			iq.setPi(pi);
+			
+			List<Inquiry> list = ps.selectAllMyInquiry(iq);
+			System.out.println("controllerList"+list);
+			model.addAttribute("list", list);
+			model.addAttribute("pi",pi);
+		} catch (InquiryException e) {
+			request.setAttribute("msg", e.getMessage());
+		}
+
 		return "panelInquiryList";
 	}
 	
@@ -252,47 +278,4 @@ public class PanelController {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
