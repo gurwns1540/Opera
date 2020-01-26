@@ -6,60 +6,30 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
-#titleTable {
-	margin: 0 auto;
-	margin-top: 20px;
-}
-#menuTitle {
-	height: 30px;
-	width: 40%;
-	font-size: 16pt;
-	text-align: left;
-	vertical-align: bottom;
-	font-weight: bold;
-	color: #3D3D3D;
-}
-#pagePath {
-	width: 60%;
-	text-align: right;
-	vertical-align: bottom;
-	font-weight: bold;
-}
-#depth1, #depth2, #depth3 {
-	color: #494949;
-}
-#depth1:hover, #depth2:hover {
-	color: #008499;
-}
-.sectionLine {
-	padding-bottom:40px;
-}
-/* 여기까지 페이지제목 및 경로 영역 */
-#title{
-	color:#00679A; !important;
-}
-#howto{
-	background-color: #2878A5 !important;
-	width:900px;
-	height: 350px;
-}
-.white{
-	color:white !important;
-}
-.ui.button {
-	background: #00679A !important;
-	margin: 0;
-}
-.yellow{
-	background-color: yellow;
-	width: 100px;
-	height:50px;
-	border-radius: 5%;
-}
-#co{
-	font-size: 100px !important;
-}
-
+	#title{
+		color:#00679A; !important;
+	}
+	#howto{
+		background-color: #2878A5 !important;
+		width:900px;
+		height: 350px;
+	}
+	.white{
+		color:white !important;
+	}
+	.ui.button {
+		background: #00679A !important;
+		margin: 0;
+	}
+	.yellow{
+		background-color: yellow;
+		width: 100px;
+		height:50px;
+		border-radius: 5%;
+	}
+	#co{
+		font-size: 100px !important;
+	}
 </style>
 <body>
 	<div class="wrap">

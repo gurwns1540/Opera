@@ -281,7 +281,7 @@ div.ui.segment.eachSurveyBox {
 									</tr>
 									<tr>
 										<td style="text-align:right;">
-										<span style="font-size:0.75vw; font-weight:bold; color:#717171;">최소 1개에서 최대 10개 선택</span>
+										<span style="font-size:0.75vw; font-weight:bold; color:#717171;">최소 1개에서 최대 5개 선택</span>
 									</td>
 								</tr>
 							</table>
