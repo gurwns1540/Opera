@@ -84,10 +84,10 @@
 	}
 	.ui.blue.button {
 	background-color:#00679A;
-}
-.ui.blue.button:hover {
-	background-color: #217BA7;
-}
+	}
+	.ui.blue.button:hover {
+		background-color: #217BA7;
+	}
 </style>
 <body>
 	<div class="wrap">
@@ -268,7 +268,7 @@
 						</tr>
 					</table>
 					<hr style="margin-top:40px;">
-					<div style="text-align:center; margin-top:20px; margin-bottom:100px;">
+					<div style="text-align:center; margin-top:40px; margin-bottom:100px; text-align:right;">
 						<input type="submit" class="ui blue button" value="회원가입">
 					</div>
 				</form>
