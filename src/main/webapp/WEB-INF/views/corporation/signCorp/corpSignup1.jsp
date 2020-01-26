@@ -10,15 +10,16 @@
 <style>
 	#corpMainArea {
 		width: 100%;
-		height:auto;
+		height:inherit;
 		min-height: 700px;
 		margin-top: 30px;
+		display:table;
 	}
 	#sidebar {
 		border-right: 1.5px solid #B7B7B7;
 		width: 20%;
 		float: left;
-		height: 770px;
+		height: inherit;
 	}
 	#sidebarText {
 		width: fit-content;
@@ -37,9 +38,10 @@
 	#mainBox {
 		width: 54%;
 		height: auto;
-		min-height:500px;
+		min-height:750px;
 		float:left;
 		margin-left: 50px;
+		display:table-row;
 	}
 	.heading:hover {
 		cursor:pointer;
@@ -165,7 +167,7 @@
 			});
 		</script>
 	</div>
-	<div style="margin-top: 120px;">
+	<div style="margin-top: 80px;">
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 </body>

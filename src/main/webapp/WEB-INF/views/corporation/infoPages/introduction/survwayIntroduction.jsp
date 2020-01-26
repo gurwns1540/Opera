@@ -10,15 +10,16 @@
 <style>
 	#corpMainArea {
 		width: 100%;
-		height:auto;
+		height:inherit;
 		min-height: 700px;
 		margin-top: 30px;
+		display:table;
 	}
 	#sidebar {
 		border-right: 1.5px solid #B7B7B7;
 		width: 20%;
 		float: left;
-		height: 770px;
+		height: inherit;
 	}
 	#sidebarText {
 		width: fit-content;
@@ -39,9 +40,10 @@
 	}
 	#mainBox {
 		width: 54%;
-		height: auto;
+		height:auto;
 		float:left;
 		margin-left: 50px;
+		display:table-row;
 	}
 	.heading:hover {
 		cursor:pointer;
@@ -66,6 +68,27 @@
 	.ui.blue.button:hover {
 		background-color: #217BA7 !important;
 	}
+	.section {
+		height: 30px;
+		width: 100%;
+		font-size: 16pt;
+		text-align: left;
+		vertical-align: bottom;
+		font-weight: bold;
+		color: #3D3D3D;
+		padding-top:7px;
+		margin-top:20px;
+	}
+	.sectionLine {
+		padding-bottom:40px;
+	}
+	th {
+		font-size:1vw;
+	}
+	.infoTd {
+		font-size:1vw;
+		padding-left:30px;
+	}
 </style>
 </head>
 <body>
@@ -78,9 +101,52 @@
 				<div class="off" onclick="location.href='survwayBusiness.corp'">SURVWAY 사업</div>
 			</div>
 		</div>
-		
+		<div id="mainBox">
+			<div class="section">
+				◈ SURVWAY 개요
+			</div>
+			<div class="sectionLine">
+				<hr>
+			</div>
+			<div style="width:68%; margin:0 auto;">
+				<img src="resources/images/companyPic.png" style="width:100%; margin-top:20px;">
+			</div>
+			<div style="margin-top:40px; margin-bottom:100px;">
+				<table style="margin:0 auto; line-height:250%;">
+					<tr>
+						<th>설 립</th>
+						<td class="infoTd">1998.10</td>
+					</tr>
+					<tr>
+						<th>대 표</th>
+						<td class="infoTd">오수민 (KH정보교육원 수료)</td>
+					</tr>
+					<tr>
+						<th>매 출</th>
+						<td class="infoTd">201억 (2019년)</td>
+					</tr>
+					<tr>
+						<th>직 원</th>
+						<td class="infoTd">123명 (2020년 1월 현재)</td>
+					</tr>
+					<tr>
+						<th>본 사</th>
+						<td class="infoTd">서울특별시 강남구 테헤란로 14길 6 남도빌딩 2층</td>
+					</tr>
+				</table>
+			</div>
+			<div class="section">
+				◈ SURVWAY 매출 및 프로젝트 수 추이
+			</div>
+			<div class="sectionLine">
+				<hr>
+			</div>
+			<div style="width:68%; margin:0 auto; margin-bottom:80px;">
+				<img src="resources/images/companySales.png" style="width:100%; margin-top:20px;">
+			</div>
+		</div>
 	</div>
-	<div style="margin-top: 120px;">
+	<div style="margin-top: 80px;">
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 </body>
