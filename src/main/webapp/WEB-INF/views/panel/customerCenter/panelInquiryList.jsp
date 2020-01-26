@@ -325,7 +325,7 @@
 								value="${param.inquiryCategoryNo}" />
 						</c:if>
 					</c:url>
-					<a href="${inquiryListtEnd}"><span>[마지막]</span></a>&nbsp;
+					<a href="${inquiryListEnd}"><span>[마지막]</span></a>&nbsp;
 				</div>
 				<!-- #pagingArea end -->
 			</div>
