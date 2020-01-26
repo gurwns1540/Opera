@@ -12,13 +12,13 @@
 	#corpMainArea {
 		width: 100%;
 		margin-top: 30px;
-		height: 790px;
+		height: 830px;
 	}
 	#sidebar {
 		border-right: 1.5px solid #B7B7B7;
 		width: 20%;
 		float: left;
-		height: 950px;
+		height: 960px;
 	}
 	#sidebarText {
 		width: fit-content;
@@ -36,7 +36,7 @@
 	}
 	#mainBox {
 		width: 54%;
-		height: 500px;
+		height: 530px;
 		float:left;
 		margin-left: 50px;
 	}
@@ -68,6 +68,12 @@
 	    font-size: 18px;
 	    height: fit-content !important;
 	    line-height: 40px;
+	}
+	.ui.blue.button {
+	background-color:#00679A !important;
+	}
+	.ui.blue.button:hover {
+		background-color: #217BA7 !important;
 	}
 </style>
 </head>

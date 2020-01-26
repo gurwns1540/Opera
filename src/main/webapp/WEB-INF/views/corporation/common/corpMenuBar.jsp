@@ -47,6 +47,10 @@
 		position: absolute;
 		right: 10px;
 		top: 10px;
+		background:none;
+		padding:3px;
+		padding-left:15px;
+		padding-right:15px;
 	}
 	.logo:hover {
 		cursor: pointer;
@@ -58,20 +62,25 @@
 	<table id="corpHead">
 		<tr>
 			<td>
-				<div class="menu" onclick="#">회사 및 사업 소개</div>
+				<div class="menu" onclick="location.href='survwayIntroduction.corp'">회사 및 사업 소개</div>
 			</td>
 			<td>
-				<div class="menu" onclick="#">신뢰성 확보 방법</div>
+				<div class="menu" onclick="location.href='panelManagementStrategy.corp'">신뢰성 확보 방법</div>
 			</td>
 			<td class="logo">
 				<div onclick="location.href='corpMain.corp'"><img alt="corpLogo.png" src="${ contextPath }/resources/images/corpLogo.png"></div>
 			</td>
 			<td>
-				<div class="menu" onclick="#">리서치 관련 안내</div>
+				<div class="menu" onclick="location.href='researchRequestProcess.corp'">리서치 관련 안내</div>
 			</td>
 			<td>
-				<div class="menu" onclick="#">Survway 빅데이터</div>
-				<button id="logout" onclick="location.href='logout.me'">로그아웃</button>
+				<div class="menu" onclick="location.href='panelBigData.corp'">Survway 빅데이터</div>
+				<c:if test="${ sessionScope.loginUser.userType eq '기업' }">
+					<button id="logout" onclick="location.href='logout.me'">로그아웃</button>
+				</c:if>
+				<c:if test="${ sessionScope.loginUser.userType ne '기업' }">
+					<button id="logout" onclick="location.href='panelMain.panel'">패널메인으로</button>
+				</c:if>
 			</td>
 		</tr>
 	</table>
