@@ -10,7 +10,6 @@
 		<typeAlias type="com.opera.survway.panel.model.vo.Inquiry" alias="Inquiry"/>
 		<typeAlias type="com.opera.survway.common.model.vo.AllMember" alias="AllMember"/>
 		<typeAlias type="com.opera.survway.admin.model.vo.SearchMember" alias="SearchMember"/>
-		<typeAlias type="com.opera.survway.panel.model.vo.SearchInquiry" alias="SearchInquiry"/>
 		<typeAlias type="com.opera.survway.admin.model.vo.PanelRewardHistory" alias="PanelRewardHistory"/>
 	</typeAliases>
 	<mappers>

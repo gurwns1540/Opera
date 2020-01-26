@@ -16,7 +16,7 @@ public interface PanelService {
 
 	int insertInquiry(Inquiry i) throws InquiryException;
 
-	List selectAllMyInquiry(Inquiry i) throws InquiryException;
+	List<Inquiry> selectAllMyInquiry(Inquiry i) throws InquiryException;
 
 	int getListCountInquiry(Inquiry iq) throws InquiryException;
 

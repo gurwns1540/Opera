@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.controller.LoginMemberController;
 import com.opera.survway.common.model.vo.GenerateCertPassword;
+import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.Pagination;
+import com.opera.survway.common.model.vo.Util;
+import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.service.PanelService;
 import com.opera.survway.panel.model.vo.Inquiry;
@@ -172,7 +177,8 @@ public class PanelController {
 			
 			iq.setPi(pi);
 			
-			List list = (List) ps.selectAllMyInquiry(iq);
+			List<Inquiry> list = ps.selectAllMyInquiry(iq);
+			System.out.println("controllerList"+list);
 			model.addAttribute("list", list);
 			model.addAttribute("pi",pi);
 		} catch (InquiryException e) {
