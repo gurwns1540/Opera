@@ -95,11 +95,11 @@
 					</tr>
 					<tr>
 						<td style="width:100%; padding-left:20px; padding-right:20px; padding-top:0px;" colspan="2">
-							<span style="font-size:1vw; line-height:150%;">
+							<span style="font-size:1vw; line-height:150%; color:#404040;"><b>
 								서로 다른 색을 가진 5명이 설립한 회사로서
 								<br>패널들에게 리서치를 진행하며 그에 따른 보상 리워드를 제공하고 리워드에 따른 보상을 얻을 수 있으며
 								<br>누구나 쉽게 참여할 수 있는 설문조사나 서베이를 통해 소소한 용돈벌이를 하실 수 있는 사이트입니다.
-							</span>
+							</b></span>
 						</td>
 					</tr>
 				</table>
@@ -108,9 +108,15 @@
 				<img src="resources/images/signupInfoPic.png" style="width:100%;">
 			</div>
 			<div style="background-color:#2878A5; height:auto; width:100%; text-align:center;">
-				<a href="panelSignup1.panel"><img src="resources/images/signupBtnPic.png" style="width:18%; margin:30px;"></a>
+				<a href="panelSignup1.panel"><img src="resources/images/signupBtnPic.png" style="width:20%; margin:30px;"></a>
 			</div>
-
+			
+			<div style="width:100%; margin-top:40px; margin-bottom:40px;">
+				<img src="resources/images/cashOutProcessPic.png" style="width:100%;">
+			</div>
+			<div style="width:100%; margin-bottom:100px;">
+				<img src="resources/images/recommendRewardPic.png" style="width:100%">
+			</div>
 
 
 			<br />

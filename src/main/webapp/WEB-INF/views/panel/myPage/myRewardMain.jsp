@@ -6,37 +6,16 @@
 	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
 </head>
 <style>
-
-.ui.button {
-	background: #00679A !important;
-	margin: 0;
-}
-.point{
-	background-color: #00679A !important;
-	height: 150px;
-	width: 250px;
-	margin: 5px;
-}
-.pointArea {
-	height: 150px;
-	width: 65%;	
-	margin-bottom: 5%;
-	background-color: #00679A;
-}
-.leftArea {
-	float: right;
-	margin-right: 5%;
-}
-.rightArea {
-	float: left;
-	margin-left: 5%;
-}
-i{
-	font-size: 100px;
-}
-
-
-
+	.ui.circular.segment {
+		width:230px;
+		height:230px;
+		display:inline-block;
+		margin:0;
+		margin-left:20px;
+		margin-right:20px;
+		padding-top:80px;
+		background-color:#F8F8F8;
+	}
 </style>
 <body>
 	<div class="wrap">
@@ -65,55 +44,26 @@ i{
 			</div>
 			
 			
-			
-			
-			
-			<div id="myRewardArea" style="width: 100%; height: 100%;">
-				<table align="center" style="width: 100%; height: 60%;">
-					<tr>
-						<td colspan="2"><b style="margin-left: 15%;">회원님의 현재 리워드 현황입니다.</b></td>
-					</tr>
-					<tr><td><br /></td></tr>
-					<tr>
-						<td>
-							<div class="pointArea leftArea">
-								<!-- <table style="width:inherit; height:inherit;">
-									<tr>
-										<td style="background:yellow;">
-											
-										</td>
-										<td>
-											
-										</td>
-									</tr>
-								</table> -->
-							</div>  <!-- .pointArea end -->
-						</td>
-						<td>
-							<div class="pointArea rightArea">
-								
-							</div>  <!-- .pointArea end -->
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="pointArea leftArea">
-							
-							</div>  <!-- .pointArea end -->
-						</td>
-						<td>
-							<div class="pointArea rightArea">
-							
-							</div>  <!-- .pointArea end -->
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2"><hr></td>
-					</tr>
-				</table>
-				<br><br>
+			<div style="margin-bottom:60px;">
+				<span style="font-size:1vw; padding-left:40px;"><b>회원님의 현재 리워드 현황입니다.</b></span>
 			</div>
-			<div align="center">
+			
+			
+			<div id="myRewardArea" style="width: 80%; height:auto; margin: 0 auto; text-align:center; margin-bottom:40px;">
+				<div class="ui circular segment">
+					<h3 class="ui header">
+						모으신 총 포인트는
+						<div class="sub header" style="">15,600 P</div>
+					</h3>
+				</div>
+				<div class="ui circular segment">
+				</div>
+				<div class="ui inverted circular segment" style="background-color:#0E597D;">
+				</div>
+			</div>
+			
+			
+			<div align="center" style="margin-top:80px;">
 				<button class="ui blue button" onclick="location.href='myRewardDetail_saved.panel'">리워드 상세내역</button>
 				<button class="ui blue button" onclick="location.href='myRewardCashOut.panel'">리워드 신청하기</button>
 			</div>
