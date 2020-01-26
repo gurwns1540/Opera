@@ -105,4 +105,10 @@ public class AdminForwardController {
 		return "adminResearch/tsQaManagement";
 	}
 	
+	
+	//패널 pc환경조사 질문관리
+	@RequestMapping("pcQaManagement.admin")
+	public String forwardpcQaManagement() {
+		return "adminResearch/pcQaManagement";
+	}
 }
