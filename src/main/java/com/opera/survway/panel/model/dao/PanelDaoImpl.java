@@ -112,8 +112,8 @@ public class PanelDaoImpl implements PanelDao{
 	}
 
   @Override
-	public int insertRewordPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
-		return sqlSession.insert("Panel.insertRewordPanel", pm);
+	public int insertRewardPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.insert("Panel.insertRewardPanel", pm);
 	}
 
 	@Override

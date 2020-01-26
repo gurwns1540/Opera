@@ -55,6 +55,12 @@
 	.logo:hover {
 		cursor: pointer;
 	}
+	button:focus {
+		outline: none;
+	}
+	button, input[type=button], input[type=submit] {
+		cursor: pointer; 
+	}
 </style>
 </head>
 <body>
