@@ -110,6 +110,5 @@ public class Inquiry {
 				+ inquiryCategoryNo + ", inquiryDate=" + inquiryDate + ", inquiryAnswerDate=" + inquiryAnswerDate
 				+ ", pi=" + pi + "]";
 	}
-	
-	
+
 }

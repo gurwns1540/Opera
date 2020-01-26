@@ -196,7 +196,7 @@
 							<c:forEach var="Inquiry" items="${list }">
 								<tr class="title"
 									style="color: black !important; font-weight: normal;">
-									<td>84532</td>
+									<td>${ Inquiry.inquiryNo }</td>
 									<td><c:if test="${Inquiry.inquiryCategoryNo == 1 }">
                            			가입
                            		</c:if> <c:if

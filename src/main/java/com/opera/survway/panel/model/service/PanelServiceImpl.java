@@ -10,6 +10,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.dao.PanelDao;
 import com.opera.survway.panel.model.vo.Inquiry;
@@ -108,9 +109,9 @@ public class PanelServiceImpl implements PanelService {
 	 * @Description	:1:1문의  조회
 	 */
 	@Override
-	public List selectAllMyInquiry(Inquiry i) throws InquiryException {
+	public List<Inquiry> selectAllMyInquiry(Inquiry i) throws InquiryException {
 		
-		List list = pd.selectAllMyInquiry(sqlSession, i); 
+		List<Inquiry> list = pd.selectAllMyInquiry(sqlSession, i); 
 		
 		if(list == null) {
 			throw new InquiryException("1:1문의 목록 조회 실패");

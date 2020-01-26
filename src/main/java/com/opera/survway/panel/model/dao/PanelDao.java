@@ -7,8 +7,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.PanelMember;
-import com.opera.survway.panel.model.vo.SearchInquiry;
-
 
 public interface PanelDao {
 
@@ -35,7 +33,7 @@ public interface PanelDao {
 
 	int insertTernaryPanel(SqlSessionTemplate sqlSession, PanelMember pm);
 
-	List selectAllMyInquiry(SqlSessionTemplate sqlSession, Inquiry i);
+	List<Inquiry> selectAllMyInquiry(SqlSessionTemplate sqlSession, Inquiry i);
 
 	int getListCountInquiry(SqlSessionTemplate sqlSession, Inquiry iq);
 

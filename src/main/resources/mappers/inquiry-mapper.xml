@@ -6,7 +6,7 @@
 <mapper namespace="Inquiry">
 	
 	<resultMap type="com.opera.survway.panel.model.vo.Inquiry" id="InquiryResultSet">
-		<id property="inquiryNo" column="INQUIRY_NO "/>
+		<id property="inquiryNo" column="INQUIRY_NO"/>
 		<result property="inquiryTitle" column="INQUIRY_TITLE"/>
 		<result property="inquiryContext" column="INQUIRY_CONTEXT"/>
 		<result property="inquiryAnswer" column="INQUIRY_ANSWER"/>
@@ -22,7 +22,7 @@
 	</insert>
 	
 	<select id="selectAllMyInquiry" resultMap="InquiryResultSet" parameterType="Inquiry">
-		SELECT * 
+		SELECT INQUIRY_NO, INQUIRY_TITLE, INQUIRY_CONTEXT, INQUIRY_ANSWER, MNO, INQUIRYCATEGORY_NO, INQUIRY_DATE, INQUIRY_ANSWERDATE 
 		FROM INQUIRYHISTORY 
 		WHERE MNO = #{mno}
 		<include refid="searchCategoryInquiry"/>
