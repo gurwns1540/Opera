@@ -30,7 +30,7 @@ public interface PanelDao {
 
 	int updatePassword(SqlSessionTemplate sqlSession, PanelMember pm);
 
-	int insertRewordPanel(SqlSessionTemplate sqlSession, PanelMember pm);
+	int insertRewardPanel(SqlSessionTemplate sqlSession, PanelMember pm);
 
 	int insertTernaryPanel(SqlSessionTemplate sqlSession, PanelMember pm);
 

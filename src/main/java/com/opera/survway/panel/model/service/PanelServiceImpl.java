@@ -68,7 +68,7 @@ public class PanelServiceImpl implements PanelService {
 			resultPanelTable = pd.insertPanelTable(sqlSession, pm);
 			if(resultPanelTable > 0) {
 				pd.insertTermsPanel(sqlSession, pm);
-				pd.insertRewordPanel(sqlSession, pm);
+				pd.insertRewardPanel(sqlSession, pm);
 				pd.insertTernaryPanel(sqlSession, pm);
 			}
 		}

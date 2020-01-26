@@ -74,8 +74,8 @@
 		WHERE MNO = #{mno}
 	</update>
 
-  <insert id="insertRewordPanel" parameterType="PanelMember">
-		INSERT INTO PANELREWORD VALUES(0, #{mno})
+  <insert id="insertRewardPanel" parameterType="PanelMember">
+		INSERT INTO PANELREWARD VALUES(0, #{mno})
 	</insert>
 	
 	<insert id="insertTernaryPanel" parameterType="PanelMember">
