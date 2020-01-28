@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.SearchNotice;
 
 public interface PanelDao {
 
@@ -41,6 +43,8 @@ public interface PanelDao {
 
 	int updateLeaveMember(SqlSessionTemplate sqlSession, PanelMember pm);
 
-	List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException;
+	int getNoticeListCount(SqlSessionTemplate sqlSession ,SearchNotice searchNotice);
+
+	List<Notice> selectNoticeList(SqlSessionTemplate sqlSession, SearchNotice searchNotice);
 
 }

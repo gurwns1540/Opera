@@ -10,6 +10,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
@@ -17,6 +18,7 @@ import com.opera.survway.panel.model.dao.PanelDao;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.SearchNotice;
 
 
 @Service
@@ -173,6 +175,35 @@ public class PanelServiceImpl implements PanelService {
 		return pd.updateLeaveMember(sqlSession, pm);
 	}
 
+	/**
+	 * @throws SelectException 
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 1. 27.
+	 * @ModifyDate  : 2020. 1. 27.
+	 * @Description : 공지사항 수 조회 
+	 */
+	@Override
+	public int getNoticeListCount(SearchNotice searchNotice) throws SelectException {
+		int listCount=0;
+		listCount = pd.getNoticeListCount(sqlSession,searchNotice);
+		
+		if(listCount<0) {
+			throw new SelectException("공지사항 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	@Override
+	public List<Notice> selectNoticeList(SearchNotice searchNotice) throws SelectException {
+		List<Notice> noticeList =null;
+		
+		noticeList = pd.selectNoticeList(sqlSession, searchNotice);
+		 
+		if(noticeList == null) {
+			throw new SelectException("공지사항 조회 실패");
+		}
+		return noticeList;
+  }
 	/**
 	 * @throws SelectException 
 	 * @Author      : yhj

@@ -87,12 +87,38 @@
 		INSERT INTO PANELTERNARY VALUES(#{mno}, 0)
 	</insert>
   	
-  	<update id="updateLeaveMember" parameterType="PanelMember">
-  		UPDATE MEMBER SET LEAVE_DATE = SYSDATE, MODIFY_DATE = SYSDATE, CERTIFICATION = 'N', LEAVE_REASON = #{leaveReason}
-  		WHERE MNO = #{mno}
-  	</update>
-  	<select id="selectMainNoticeList" resultMap="MainNoticeResultSet" parameterType="Notice">
-  		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE FROM NOTICE
-  		ORDER BY NOTICE_NO DESC
-  	</select>
+  <update id="updateLeaveMember" parameterType="PanelMember">
+    UPDATE MEMBER SET LEAVE_DATE = SYSDATE, MODIFY_DATE = SYSDATE, CERTIFICATION = 'N', LEAVE_REASON = #{leaveReason}
+    WHERE MNO = #{mno}
+  </update>
+
+  <select id="getNoticeListCount" resultType="_int">
+    SELECT COUNT(*) 
+    FROM NOTICE
+    WHERE NOTICE_STATUS='Y'
+    <include refid="searchNoticeValue"></include>
+  </select>
+  	
+  <resultMap type="Notice" id="noticeListResultMap">
+    <id property="noticeNo" column="NOTICE_NO"/>
+    <result property="noticeTitle" column="NOTICE_TITLE"/>
+    <result property="noticeContext" column="NOTICE_CONTEXT"/>
+    <result property="noticeDate" column="NOTICE_DATE"/>
+    <result property="noticeViewCount" column="NOTICE_VIEWCOUNT"/>
+    <result property="mno" column="MNO"/>
+    <result property="noticeStatus" column="NOTICE_STATUS"/>
+  </resultMap>
+  	
+  <sql id="searchNoticeValue">
+		<if test="searchValue != null">
+			AND NOTICE_TITLE LIKE '%'|| #{searchValue} ||'%'
+		</if>
+	</sql>
+  	
+  <select id="selectNoticeList" resultMap="noticeListResultMap">
+    SELECT *
+    FROM NOTICE
+    WHERE NOTICE_STATUS='Y'
+    <include refid="searchNoticeValue"></include>
+  </select>
 </mapper>

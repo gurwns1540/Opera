@@ -7,11 +7,13 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.SearchNotice;
 
 
 @Repository
@@ -134,7 +136,20 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.update("Panel.updateLeaveMember", pm);
 	}
 
-	/**
+	@Override
+	public int getNoticeListCount(SqlSessionTemplate sqlSession, SearchNotice searchNotice) {
+		return sqlSession.selectOne("Panel.getNoticeListCount",searchNotice);
+	}
+
+	@Override
+	public List<Notice> selectNoticeList(SqlSessionTemplate sqlSession, SearchNotice searchNotice) {
+		int offset = (searchNotice.getPi().getCurrentPage() -1)* searchNotice.getPi().getLimit();
+		RowBounds rowBounds = new RowBounds(offset,searchNotice.getPi().getLimit());
+    
+		return sqlSession.selectList("Panel.selectNoticeList", searchNotice, rowBounds);
+  }
+  
+  /**
 	 * @throws SelectException 
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 1. 28.
