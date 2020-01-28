@@ -49,6 +49,7 @@ public class MemberManagementController {
 		
 		if(queryString != null) { 
 			queryMap = Util.splitQuery(queryString);
+
 			if(queryMap.containsKey("currentPage")) {
 				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
 			}

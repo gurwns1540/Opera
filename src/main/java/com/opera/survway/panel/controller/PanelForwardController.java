@@ -24,16 +24,16 @@ public class PanelForwardController {
 		return "customerCenter/faq";
 	}
 	
-	//3. 1:1 문의하기
-	@GetMapping("panelNewInquiry.panel")
-	public String showPanelNewInquiry() {
-		return "customerCenter/panelNewInquiry";
-	}
-	//4. 공지사항
-	@GetMapping("notice.panel")
-	public String showNotice() {
-		return "customerCenter/notice";
-	}
+//	//3. 1:1 문의하기
+//	@GetMapping("panelNewInquiry.panel")
+//	public String showPanelNewInquiry() {
+//		return "customerCenter/panelNewInquiry";
+//	}
+//	//4. 공지사항
+//	@GetMapping("notice.panel")
+//	public String showNotice() {
+//		return "customerCenter/notice";
+//	}
 
 	/*
 	 * //5. 패널 1:1문의 목록
