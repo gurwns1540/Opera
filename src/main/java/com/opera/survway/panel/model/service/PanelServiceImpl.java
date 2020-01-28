@@ -18,6 +18,7 @@ import com.opera.survway.panel.model.dao.PanelDao;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.SearchNotice;
 
 
@@ -209,10 +210,22 @@ public class PanelServiceImpl implements PanelService {
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 1. 28.
 	 * @ModifyDate  : 2020. 1. 28.
-	 * @Description : 공지사항 select
+	 * @Description : 메인페이지에서 공지사항 조회
 	 */
 	@Override
 	public List<Notice> selectMainNoticeList() throws SelectException {
 		return pd.selectMainNoticeList(sqlSession);
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 메인페이지에서 리서치 조회
+	 */
+	@Override
+	public List<Research> selectMainResearchList() throws SelectException {
+		return pd.selectMainResearchList(sqlSession);
 	}
 }

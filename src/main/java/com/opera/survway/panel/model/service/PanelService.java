@@ -9,6 +9,7 @@ import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.SearchNotice;
 
 
@@ -36,5 +37,7 @@ public interface PanelService {
 	List<Notice> selectNoticeList(SearchNotice searchNotice) throws SelectException;
 
 	List<Notice> selectMainNoticeList() throws SelectException;
+
+	List<Research> selectMainResearchList() throws SelectException;
 
 }
