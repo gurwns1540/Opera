@@ -6,6 +6,7 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.opera.survway.panel.model.vo.PanelMember" alias="PanelMember"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.Notice" alias="Notice"/>
 		<typeAlias type="com.opera.survway.corporation.model.vo.CorpMember" alias="CorpMember"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.Inquiry" alias="Inquiry"/>
 		<typeAlias type="com.opera.survway.common.model.vo.AllMember" alias="AllMember"/>

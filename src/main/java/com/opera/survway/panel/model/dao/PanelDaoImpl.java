@@ -8,7 +8,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 
 
@@ -130,6 +132,24 @@ public class PanelDaoImpl implements PanelDao{
 	@Override
 	public int updateLeaveMember(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.update("Panel.updateLeaveMember", pm);
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 공지사항 select
+	 */
+	@Override
+	public List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException {
+		RowBounds rowBounds = new RowBounds(0, 5);
+		List<Notice> noticeList = sqlSession.selectList("Panel.selectMainNoticeList", null, rowBounds);
+		if(noticeList == null) {
+			sqlSession.close();
+			throw new SelectException("123");
+		}
+		return noticeList;
 	}
 
 }

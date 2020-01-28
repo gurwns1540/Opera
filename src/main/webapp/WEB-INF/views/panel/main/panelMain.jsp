@@ -176,14 +176,25 @@
 							<a href="notice.panel">공지사항</a>
 						</h4> -->
 						<div style="height:80%;">
-							<table style="width:100%; table-layout:fixed;">
-								<c:forEach begin="1" end="5" step="1">
+							<table id="mainNoticeListTable" style="width:100%; table-layout:fixed;">
+								<%-- <c:forEach begin="1" end="5" step="1">
 									<tr>
 										<td style="width:70%;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;border:2px solid #F0F0F0;">
 											<i class="bell icon" style="color:#008499;"></i><span style="font-size:0.8vw;">안녕하세요. 설문조사 리워드에 관한 새로운 방침에 대해 공지합니다.</span>
 										</td>
 										<td style="width:30%; text-align:right;">
 											<span style="font-size:0.8vw;">2020-01-22</span>
+										</td>
+									</tr>
+								</c:forEach> --%>
+								<c:forEach var="list" items="${ noticeList }" varStatus="status">
+									<tr>
+										<td style="width:70%;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;border:2px solid #F0F0F0;">
+											<input type="hidden" value="${ list.noticeNo }"/>
+											<i class="bell icon" style="color:#008499;"></i><span style="font-size:0.8vw;">${ list.noticeTitle }</span>
+										</td>
+										<td style="width:30%; text-align:right;">
+											<span style="font-size:0.8vw;">${ list.noticeDate }</span>
 										</td>
 									</tr>
 								</c:forEach>
@@ -216,7 +227,6 @@
 		</section>  <!-- container end -->
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
-	
 </body>
 </html>
 

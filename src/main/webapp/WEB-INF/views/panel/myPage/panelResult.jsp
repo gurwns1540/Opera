@@ -21,6 +21,13 @@
 				});
 			</script>
 		</c:if>
+		<c:if test="${ param.message eq 'dropFail' }">
+			<script>
+				Swal.fire('탈퇴실패', '탈퇴에 실패했습니다.<br>관리자에게 문의 바랍니다.', 'warning').then(function(){
+					location.href="panelDrop.panel";
+				});
+			</script>
+		</c:if>
 		<c:if test="${ param.message eq 'loginFail' }">
 			<script>
 				Swal.fire('로그인 실패', '로그인 정보가 일치하지 않습니다', 'warning').then(function(){
