@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;

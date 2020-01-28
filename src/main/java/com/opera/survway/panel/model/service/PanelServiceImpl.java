@@ -175,7 +175,6 @@ public class PanelServiceImpl implements PanelService {
 		return pd.updateLeaveMember(sqlSession, pm);
 	}
 
-
 	/**
 	 * @throws SelectException 
 	 * @Author      : hjheo
@@ -204,5 +203,16 @@ public class PanelServiceImpl implements PanelService {
 			throw new SelectException("공지사항 조회 실패");
 		}
 		return noticeList;
+  }
+	/**
+	 * @throws SelectException 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 공지사항 select
+	 */
+	@Override
+	public List<Notice> selectMainNoticeList() throws SelectException {
+		return pd.selectMainNoticeList(sqlSession);
 	}
 }

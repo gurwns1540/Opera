@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PanelForwardController {
 	
 	
-	//메인페이지
-	@GetMapping("panelMain.panel")
-	public String showPanelMain() {
-		return "main/panelMain";
-	}
+//	//메인페이지
+//	@GetMapping("panelMain.panel")
+//	public String showPanelMain() {
+//		return "main/panelMain";
+//	}
 	
 	
 	

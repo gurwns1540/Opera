@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
@@ -143,12 +144,27 @@ public class PanelDaoImpl implements PanelDao{
 	@Override
 	public List<Notice> selectNoticeList(SqlSessionTemplate sqlSession, SearchNotice searchNotice) {
 		int offset = (searchNotice.getPi().getCurrentPage() -1)* searchNotice.getPi().getLimit();
-		
 		RowBounds rowBounds = new RowBounds(offset,searchNotice.getPi().getLimit());
-		
-		
+    
 		return sqlSession.selectList("Panel.selectNoticeList", searchNotice, rowBounds);
-		
+  }
+  
+  /**
+	 * @throws SelectException 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 공지사항 select
+	 */
+	@Override
+	public List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException {
+		RowBounds rowBounds = new RowBounds(0, 5);
+		List<Notice> noticeList = sqlSession.selectList("Panel.selectMainNoticeList", null, rowBounds);
+		if(noticeList == null) {
+			sqlSession.close();
+			throw new SelectException("123");
+		}
+		return noticeList;
 	}
 
 }
