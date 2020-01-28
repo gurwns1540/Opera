@@ -35,4 +35,6 @@ public interface PanelService {
 
 	List<Notice> selectNoticeList(SearchNotice searchNotice) throws SelectException;
 
+	List<Notice> selectMainNoticeList() throws SelectException;
+
 }

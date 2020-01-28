@@ -162,7 +162,7 @@ public class PanelDaoImpl implements PanelDao{
 		List<Notice> noticeList = sqlSession.selectList("Panel.selectMainNoticeList", null, rowBounds);
 		if(noticeList == null) {
 			sqlSession.close();
-			throw new SelectException("123");
+			throw new SelectException("메인페이지 공지사항 불러오기 실패");
 		}
 		return noticeList;
 	}
