@@ -188,12 +188,14 @@
 			<tr>
 				<td>
 					<div id="searchInput">
-						<div class="ui action input">
-			  				<input type="text" placeholder="Search...">
-							<button class="ui icon button">
-								<i class="search icon"></i>
-							</button>
-						</div>
+						<form action="newPanelManagement.memberManagement" method="get">
+							<div class="ui action input">
+				  				<input type="text" name="searchInput" placeholder="패널명을 입력하세요">
+								<button class="ui icon button">
+									<i class="search icon"></i>
+								</button>
+							</div>
+						</form>
 					</div>
 				</td>
 			</tr>
@@ -205,23 +207,73 @@
 				<th style="width: 40%;">가입일</th>
 				<th style="width: 10%;">상세보기</th>
 			</tr>
-			<c:forEach var="i" begin="0" end="9">
+			<c:forEach var="m" items="${ newPanelList }">
 				<tr class="tableContext">
-					<td>회원 번호</td>
-					<td>패널명</td>
-					<td>가입일</td>
+					<td>${ m.mno }</td>
+					<td>${ m.userName }</td>
+					<td>${ m.entDate }</td>
 					<td><button class="detail">상세 보기</button></td>
 				</tr>
 			</c:forEach>
 		</table>
 		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
+			<c:url var="newPanelFirst" value="newPanelManagement.memberManagement">
+				<c:param name="currentPage" value="${ 1 }"/>
+				<c:if test="${ !empty param.searchInput }">
+					<c:param name="searchInput" value="${ param.searchInput }"/>
+				</c:if>
+			</c:url>
+			<a href="${ newPanelFirst }"><span>[처음]</span></a>&nbsp;
+			
+			<c:if test="${ pi.currentPage <= 1 }">
+				<span>[이전]</span> &nbsp;
+			</c:if>
+			<c:if test="${ pi.currentPage > 1 }">
+				<c:url var="newPanelBack" value="newPanelManagement.memberManagement">
+					<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
+					<c:if test="${ !empty param.searchInput }">
+						<c:param name="searchInput" value="${ param.searchInput }"/>
+					</c:if>
+				</c:url>
+				<a href="${ newPanelBack }"><span>[이전]</span></a>&nbsp;
+			</c:if>
+			
+			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+				<c:if test="${ p eq pi.currentPage }">
+					<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+				</c:if>
+				<c:if test="${p ne pi.currentPage }">
+					<c:url var="newPanelEachPage" value="newPanelManagement.memberManagement">
+						<c:param name="currentPage" value="${ p }"/>
+						<c:if test="${ !empty param.searchInput }">
+							<c:param name="searchInput" value="${ param.searchInput }"/>
+						</c:if>
+					</c:url>
+					<a href="${ newPanelEachPage }"><span>${ p }</span></a>
+				</c:if>
+			
 			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
+			
+			<c:if test="${ pi.currentPage < pi.maxPage }">
+				<c:url var="newPanelNext" value="newPanelManagement.memberManagement">
+					<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
+					<c:if test="${ !empty param.searchInput }">
+						<c:param name="searchInput" value="${ param.searchInput }"/>
+					</c:if>
+				</c:url>
+				&nbsp;<a href="${ newPanelNext }"><span>[다음]</span></a>
+			</c:if>
+			<c:if test="${ pi.currentPage >= pi.maxPage }">
+				&nbsp; <span>[다음]</span>
+			</c:if>
+			
+			<c:url var="newPanelEnd" value="newPanelManagement.memberManagement">
+				<c:param name="currentPage" value="${ pi.maxPage }"/>
+				<c:if test="${ !empty param.searchInput }">
+					<c:param name="searchInput" value="${ param.searchInput }"/>
+				</c:if>
+			</c:url>
+			<a href="${ newPanelEnd }"><span>[마지막]</span></a>&nbsp;
 		</div>
 	</div>
 	
@@ -231,7 +283,7 @@
 			<div>
 				<table id="panelTable">
 					<tr>
-						<th>패널 번호</th>
+						<th>회원번호</th>
 						<td colspan="3">77092</td>
 					</tr>
 					<tr>
@@ -262,6 +314,7 @@
 					</tr>
 				</table>
 			</div>
+			
 		</div>
 		<div class="actions">
 			<div class="ui approve button" id="nextBtn">Next</div>
@@ -300,15 +353,46 @@
 		    <div class="ui cancel button">Cancel</div>
   		</div>
 	</div>
-	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 	<script>
 		$("#nextBtn").on("click", function(){
 			$('#research').modal('show');
 		});
 		$(".detail").on("click", function(){
-			var num = $(this).parent().siblings().eq(0).text();
-			$('#panel').modal('show');
-			//console.log(num);
+			var mno = $(this).parent().siblings().eq(0).text();
+			
+			$.ajax({
+				url:"selectNewPanel.memberManagement",
+				type:"post",
+				data:{mno:mno},
+				success:function(data){
+					var encodedAddress = data.newPanel.userAddress;
+					var passphrase = "1234";
+			        var decrypted1 = CryptoJS.AES.decrypt(encodedAddress, passphrase);
+			        var decodedAddress = decrypted1.toString(CryptoJS.enc.Utf8);
+			        $("#address").text(decodedAddress);
+			        
+			        var encodedPhone = data.newPanel.userPhone;
+			        var decrypted1 = CryptoJS.AES.decrypt(encodedPhone, passphrase);
+			        var decodedPhone = decrypted1.toString(CryptoJS.enc.Utf8);
+			        
+			        $("#panel td").eq(0).text(data.newPanel.mno);
+					$("#panel td").eq(1).text(data.newPanel.userName);
+					$("#panel td").eq(2).text(data.newPanel.userId);
+					$("#panel td").eq(3).text(data.newPanel.panelBirthday);
+					$("#panel td").eq(4).text((data.newPanel.panelGender == 'M')? "남성" : "여성");
+					$("#panel td").eq(5).text(decodedPhone);
+					$("#panel td").eq(6).text(data.newPanel.userEmail);
+					$("#panel td").eq(7).html(decodedAddress.split("/")[0] + "   " + decodedAddress.split("/")[1] + "<br><br>" + decodedAddress.split("/")[2]);
+					$('#panel').modal('show');
+					
+				},
+				error:function(status){
+					console.log(status);
+				}
+			});
+			
 		});
 		$("#approvalBtn").on("click", function(){
 			Swal.fire({
