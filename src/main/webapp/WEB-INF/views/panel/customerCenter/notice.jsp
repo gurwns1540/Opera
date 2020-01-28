@@ -140,6 +140,7 @@
 						</thead>
 						<!-- #noticeTheadArea end -->
 							<tbody id="noticeTbodyArea">
+								
 								<c:forEach var="notice" items="${noticeList }">
 									<tr class="title" style="color:black !important; font-weight:normal;">
 										<td>${notice.noticeNo }</td>
@@ -154,7 +155,14 @@
 										</td>
 									</tr>
 								</c:forEach>
-								
+								<%-- <c:if test="${ not empty param.noticeNo }">
+									<script>
+										console.log(${ param.noticeNo })
+										var t1 = $("#noticeTbodyArea").children().children();
+										console.log(t1);
+										console.log($("t1:nth-child()"));
+									</script>
+								</c:if> --%>
 							</tbody>
 						<!-- #noticeTbodyArea end -->
 					</table>
@@ -239,7 +247,16 @@
 	
 	<script>
 		$('.ui.accordion').accordion();
-
+		
+// 		새로고침 시 쿼리스트링 제거
+		window.onkeydown = function() { 
+			var kcode = event.keyCode; 
+			if(kcode == 116) { 
+				history.replaceState({}, null, location.pathname); 
+			} 
+		}
+		
+		
 	</script>
 </body>
 </html>

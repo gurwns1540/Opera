@@ -13,6 +13,7 @@ import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.SearchNotice;
 
 
@@ -154,7 +155,7 @@ public class PanelDaoImpl implements PanelDao{
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 1. 28.
 	 * @ModifyDate  : 2020. 1. 28.
-	 * @Description : 공지사항 select
+	 * @Description : 메인페이지에서 공지사항 조회
 	 */
 	@Override
 	public List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException {
@@ -167,4 +168,22 @@ public class PanelDaoImpl implements PanelDao{
 		return noticeList;
 	}
 
-}
+	/**
+	 * @throws SelectException 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 메인페이지에서 리서치 조회
+	 */
+	@Override
+	public List<Research> selectMainResearchList(SqlSessionTemplate sqlSession) throws SelectException {
+		RowBounds rowBounds = new RowBounds(0, 4);
+		List<Research> researchList = sqlSession.selectList("Panel.selectMainResearchList", null, rowBounds);
+		if(researchList == null) {
+			sqlSession.close();
+			throw new SelectException("메인페이지에서 리서치 불러오기 실패");
+		}
+		return researchList;
+	}
+	
+	}

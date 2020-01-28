@@ -35,6 +35,7 @@ import com.opera.survway.panel.model.service.PanelService;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.Research;
 
 @SessionAttributes("loginUser")
 @Controller
@@ -56,15 +57,16 @@ public class PanelController {
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 1. 28.
 	 * @ModifyDate  : 2020. 1. 28.
-	 * @Description : 공지사항 select
+	 * @Description : 메인페이지 공지사항 select
 	 */
 	@RequestMapping("panelMain.panel")
 	public String showPanelMain(Model model) {
 		try {
 			List<Notice> noticeList = ps.selectMainNoticeList();
-			System.out.println(noticeList);
+			List<Research> researchList = ps.selectMainResearchList();
 			model.addAttribute("noticeList", noticeList);
-			System.out.println(model);
+			model.addAttribute("researchList", researchList);
+			System.out.println(researchList);
 		} catch (SelectException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

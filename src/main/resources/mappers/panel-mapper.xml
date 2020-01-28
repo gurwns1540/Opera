@@ -32,6 +32,14 @@
 		<result property="noticeDate" column="NOTICE_DATE"/>
 	</resultMap>
 	
+	<resultMap type="com.opera.survway.panel.model.vo.Research" id="MainResearchResultSet">
+		<id property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchReward" column="RESEARCH_REWARD"/>
+	</resultMap>
+	
 	<select id="loginCheck" resultMap="panelMemberResultSet" parameterType="PanelMember">
 		SELECT *
 		FROM MEMBER M
@@ -78,52 +86,58 @@
 		UPDATE MEMBER SET USER_PWD = #{userPwd}, MODIFY_DATE = SYSDATE
 		WHERE MNO = #{mno}
 	</update>
-
-  <insert id="insertRewardPanel" parameterType="PanelMember">
+	
+	 <insert id="insertRewardPanel" parameterType="PanelMember">
 		INSERT INTO PANELREWARD VALUES(0, #{mno})
 	</insert>
 	
 	<insert id="insertTernaryPanel" parameterType="PanelMember">
 		INSERT INTO PANELTERNARY VALUES(#{mno}, 0)
 	</insert>
-  	
-  <update id="updateLeaveMember" parameterType="PanelMember">
-    UPDATE MEMBER SET LEAVE_DATE = SYSDATE, MODIFY_DATE = SYSDATE, CERTIFICATION = 'N', LEAVE_REASON = #{leaveReason}
-    WHERE MNO = #{mno}
-  </update>
-
-  <select id="getNoticeListCount" resultType="_int">
-    SELECT COUNT(*) 
-    FROM NOTICE
-    WHERE NOTICE_STATUS='Y'
-    <include refid="searchNoticeValue"></include>
-  </select>
-  	
-  <resultMap type="Notice" id="noticeListResultMap">
-    <id property="noticeNo" column="NOTICE_NO"/>
-    <result property="noticeTitle" column="NOTICE_TITLE"/>
-    <result property="noticeContext" column="NOTICE_CONTEXT"/>
-    <result property="noticeDate" column="NOTICE_DATE"/>
-    <result property="noticeViewCount" column="NOTICE_VIEWCOUNT"/>
-    <result property="mno" column="MNO"/>
-    <result property="noticeStatus" column="NOTICE_STATUS"/>
-  </resultMap>
-  	
-  <sql id="searchNoticeValue">
+	 	
+	 <update id="updateLeaveMember" parameterType="PanelMember">
+	   UPDATE MEMBER SET LEAVE_DATE = SYSDATE, MODIFY_DATE = SYSDATE, CERTIFICATION = 'N', LEAVE_REASON = #{leaveReason}
+	   WHERE MNO = #{mno}
+	 </update>
+	
+	 <select id="getNoticeListCount" resultType="_int">
+	   SELECT COUNT(*) 
+	   FROM NOTICE
+	   WHERE NOTICE_STATUS='Y'
+	   <include refid="searchNoticeValue"></include>
+	 </select>
+	 	
+	 <resultMap type="Notice" id="noticeListResultMap">
+	   <id property="noticeNo" column="NOTICE_NO"/>
+	   <result property="noticeTitle" column="NOTICE_TITLE"/>
+	   <result property="noticeContext" column="NOTICE_CONTEXT"/>
+	   <result property="noticeDate" column="NOTICE_DATE"/>
+	   <result property="noticeViewCount" column="NOTICE_VIEWCOUNT"/>
+	   <result property="mno" column="MNO"/>
+	   <result property="noticeStatus" column="NOTICE_STATUS"/>
+	 </resultMap>
+	 	
+	 <sql id="searchNoticeValue">
 		<if test="searchValue != null">
 			AND NOTICE_TITLE LIKE '%'|| #{searchValue} ||'%'
 		</if>
 	</sql>
-  	
-  <select id="selectNoticeList" resultMap="noticeListResultMap">
-    SELECT *
-    FROM NOTICE
-    WHERE NOTICE_STATUS='Y'
-    <include refid="searchNoticeValue"></include>
-  </select>
-  
-  <select id="selectMainNoticeList" resultMap="MainNoticeResultSet" parameterType="Notice">
-  		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE FROM NOTICE
-  		ORDER BY NOTICE_NO DESC
+	 	
+	 <select id="selectNoticeList" resultMap="noticeListResultMap">
+	   SELECT *
+	   FROM NOTICE
+	   WHERE NOTICE_STATUS='Y'
+	   ORDER BY NOTICE_NO DESC
+	   <include refid="searchNoticeValue"></include>
+	 </select>
+	 
+	 <select id="selectMainNoticeList" resultMap="MainNoticeResultSet" parameterType="Notice">
+	 	SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE FROM NOTICE
+	 	ORDER BY NOTICE_NO DESC
+	 </select>
+  	<select id="selectMainResearchList" resultMap="MainResearchResultSet" parameterType="Research">
+  		SELECT RESEARCH_NO, RESEARCH_NAME, RESEARCH_PERIOD, RESEARCH_PERPOSE, RESEARCH_REWARD
+		FROM RESEARCH
+		ORDER BY RESEARCH_NO DESC
   	</select>
 </mapper>
