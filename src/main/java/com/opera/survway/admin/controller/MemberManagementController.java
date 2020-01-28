@@ -31,7 +31,7 @@ public class MemberManagementController {
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 1. 23.
 	 * @ModifyDate  : 2020. 1. 24.
-	 * @Description : 패널 전체 조회 & 검색
+	 * @Description : 회원 전체 조회 & 검색
 	 */
 	@RequestMapping("memberInfoManagement.memberManagement") 
 	public String selectPanelInfoManagement(HttpServletRequest request, Model model) {
@@ -93,7 +93,7 @@ public class MemberManagementController {
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 1. 23.
 	 * @ModifyDate  : 2020. 1. 23.
-	 * @Description : 패널 상세 조회 ajax
+	 * @Description : 회원 상세 조회 ajax
 	 */
 	@PostMapping("selectMember.memberManagement")
 	public ModelAndView selectMember(String mno, ModelAndView mv) {
