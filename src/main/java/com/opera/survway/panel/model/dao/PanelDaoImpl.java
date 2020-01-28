@@ -26,7 +26,7 @@ public class PanelDaoImpl implements PanelDao{
 		PanelMember loginUser = sqlSession.selectOne("Panel.loginCheck", pm);
 		
 		if(loginUser==null) {
-			throw new LoginException("loginFail");
+			throw new LoginException("로그인 정보가 일치하지 않습니다");
 		}
 		
 		return loginUser;
@@ -176,14 +176,27 @@ public class PanelDaoImpl implements PanelDao{
 	 * @Description : 메인페이지에서 리서치 조회
 	 */
 	@Override
-	public List<Research> selectMainResearchList(SqlSessionTemplate sqlSession) throws SelectException {
-		RowBounds rowBounds = new RowBounds(0, 4);
-		List<Research> researchList = sqlSession.selectList("Panel.selectMainResearchList", null, rowBounds);
+	public List<Research> selectMainResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser) throws SelectException {
+		List<Research> researchList = null;
+		System.out.println("dao 단 : " + loginUser);
+		if(loginUser == null || Integer.parseInt(loginUser.getPanelLevel()) != 1) {
+			RowBounds rowBounds = new RowBounds(0, 4);
+			researchList = sqlSession.selectList("Panel.selectMainResearchList", null, rowBounds);
+		} else {
+//			researchList = sqlSession.selectList("Panel.selectMainResearchList");
+			researchList = sqlSession.selectList("Panel.selectTSResearchList");
+		}
+		
 		if(researchList == null) {
 			sqlSession.close();
 			throw new SelectException("메인페이지에서 리서치 불러오기 실패");
 		}
 		return researchList;
 	}
-	
+
+	@Override
+	public int selectLevelCheck(SqlSessionTemplate sqlSession, int mno) {
+		return sqlSession.selectOne("Panel.selectLevelCheck", mno);
 	}
+	
+}

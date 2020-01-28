@@ -48,8 +48,10 @@ public class PanelServiceImpl implements PanelService {
 		String encPassword = pd.selectEncPassword(sqlSession, pm);
 		if(passwordEncoder.matches(pm.getUserPwd(), encPassword)) {
 			loginUser = pd.loginCheck(sqlSession, pm);
+			int loginUserPanelLevel = pd.selectLevelCheck(sqlSession, loginUser.getMno());
+			loginUser.setPanelLevel(String.valueOf(loginUserPanelLevel));
 		}else {
-			throw new LoginException("loginFail");
+			throw new LoginException("로그인 정보가 일치하지 않습니다");
 		}
 		
 		return loginUser;
@@ -225,7 +227,7 @@ public class PanelServiceImpl implements PanelService {
 	 * @Description : 메인페이지에서 리서치 조회
 	 */
 	@Override
-	public List<Research> selectMainResearchList() throws SelectException {
-		return pd.selectMainResearchList(sqlSession);
+	public List<Research> selectMainResearchList(PanelMember loginUser) throws SelectException {
+		return pd.selectMainResearchList(sqlSession, loginUser);
 	}
 }

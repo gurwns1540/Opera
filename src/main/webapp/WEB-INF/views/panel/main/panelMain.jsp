@@ -230,6 +230,15 @@
 			location.href="notice.customerCenter?noticeNo=" + $(this).children().eq(0).children().eq(0).val();
 		});
 	</script> -->
+	<script>
+//		새로고침 시 쿼리스트링 제거
+		window.onkeydown = function() { 
+			var kcode = event.keyCode; 
+			if(kcode == 116) { 
+				history.replaceState({}, null, location.pathname); 
+			} 
+		}
+	</script>
 </body>
 </html>
 

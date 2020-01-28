@@ -255,8 +255,6 @@
 				history.replaceState({}, null, location.pathname); 
 			} 
 		}
-		
-		
 	</script>
 </body>
 </html>
