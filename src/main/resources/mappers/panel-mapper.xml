@@ -121,4 +121,9 @@
     WHERE NOTICE_STATUS='Y'
     <include refid="searchNoticeValue"></include>
   </select>
+  
+  <select id="selectMainNoticeList" resultMap="MainNoticeResultSet" parameterType="Notice">
+  		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE FROM NOTICE
+  		ORDER BY NOTICE_NO DESC
+  	</select>
 </mapper>

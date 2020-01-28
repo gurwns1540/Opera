@@ -47,4 +47,6 @@ public interface PanelDao {
 
 	List<Notice> selectNoticeList(SqlSessionTemplate sqlSession, SearchNotice searchNotice);
 
+	List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException;
+
 }
