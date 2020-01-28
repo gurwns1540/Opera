@@ -5,7 +5,9 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 
 public interface PanelDao {
@@ -38,5 +40,7 @@ public interface PanelDao {
 	int getListCountInquiry(SqlSessionTemplate sqlSession, Inquiry iq);
 
 	int updateLeaveMember(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException;
 
 }

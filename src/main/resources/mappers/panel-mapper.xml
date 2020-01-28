@@ -26,6 +26,11 @@
 		<result property="withdrawAccount" column="WITHDRAW_ACCOUNT"/>
 	</resultMap>
 	
+	<resultMap type="com.opera.survway.panel.model.vo.Notice" id="MainNoticeResultSet">
+		<id property="noticeNo" column="NOTICE_NO"/>
+		<result property="noticeTitle" column="NOTICE_TITLE"/>
+		<result property="noticeDate" column="NOTICE_DATE"/>
+	</resultMap>
 	
 	<select id="loginCheck" resultMap="panelMemberResultSet" parameterType="PanelMember">
 		SELECT *
@@ -86,4 +91,8 @@
   		UPDATE MEMBER SET LEAVE_DATE = SYSDATE, MODIFY_DATE = SYSDATE, CERTIFICATION = 'N', LEAVE_REASON = #{leaveReason}
   		WHERE MNO = #{mno}
   	</update>
+  	<select id="selectMainNoticeList" resultMap="MainNoticeResultSet" parameterType="Notice">
+  		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE FROM NOTICE
+  		ORDER BY NOTICE_NO DESC
+  	</select>
 </mapper>

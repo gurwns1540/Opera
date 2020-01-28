@@ -49,7 +49,7 @@
          
          
          <div class="panelDropArea">
-            <form action="dropPanel.me" method="post">
+            <form id="dropForm" action="dropPanel.me" method="post">
                <div class="panelDropReasonArea" align="center">
                   <span style="font-size:1vw; font-weight:bold; line-height:150%; margin-bottom:40px;">
                      회원님께서 탈퇴하시는 사유 또는 저희 사이트에 건의하고 싶은 점 있으신가요?<br>
@@ -57,7 +57,7 @@
                   </span>
                </div>
                <div style="margin-bottom:40px;">
-                  <textarea name="" id="" style="margin-top: 20px; width: 100%; height: 150px; resize: none; padding:20px;"></textarea>
+                  <textarea name="leaveReason" id="leaveReason" style="margin-top: 20px; width: 100%; height: 150px; resize: none; padding:20px;"></textarea>
                </div>  <!-- panelDropReasonArea end -->
                
                <div class="panelDropPasswordArea" style="width: 100%;">
@@ -67,6 +67,7 @@
                   <div style="text-align:center; margin-bottom:40px;">
                      <span style="font-size:0.9vw;">비밀번호 : </span>
                      <div class="ui input">
+                     	<input type="hidden" name="mno" value="${ loginUser.mno }"/>
                         <input type="password" name="userPwd" id="userPwd" style="margin-left: 10px;">
                      </div>
                   </div>
@@ -83,12 +84,31 @@
       <%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
    </div>  <!-- wrap end -->
    <script>
-      
-      $("#dropPanelBtn").click(function() {
-         var ajaxPwd = $("#userPwd").val();
-         console.log("${ loginUser.userId }");
-         console.log(ajaxPwd);
-      });
-   </script>
+		
+		$("#dropPanelBtn").click(function() {
+			var ajaxPwd = $("#userPwd").val();
+			console.log("${ loginUser.userId }");
+			console.log(ajaxPwd);
+			$.ajax({
+				url: "checkPasswordAjax.me",
+				type: "post",
+				data : {
+					userId: "${ loginUser.userId }",
+					ajaxPwd: ajaxPwd
+				},
+				success: function(data) {
+					if(data.isEqual == true) {
+						$("#dropForm").submit();
+					} else {
+						Swal.fire('실패', '비밀번호가 일치하지 않습니다', 'warning');
+						return false;
+					}
+				},
+				error: function(data) {
+					Swal.fire('에러', '다시 시도해주세요', 'error');
+				}
+			});
+		});
+	</script>
 </body>
 </html>

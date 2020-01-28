@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.dao.PanelDao;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 
 
@@ -169,5 +171,17 @@ public class PanelServiceImpl implements PanelService {
 	@Override
 	public int updateLeaveMember(PanelMember pm) {
 		return pd.updateLeaveMember(sqlSession, pm);
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 공지사항 select
+	 */
+	@Override
+	public List<Notice> selectMainNoticeList() throws SelectException {
+		return pd.selectMainNoticeList(sqlSession);
 	}
 }

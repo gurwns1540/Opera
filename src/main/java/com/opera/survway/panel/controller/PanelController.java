@@ -20,21 +20,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.opera.survway.common.controller.LoginMemberController;
 import com.opera.survway.common.model.vo.GenerateCertPassword;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.service.PanelService;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 
 @SessionAttributes("loginUser")
@@ -50,6 +49,29 @@ public class PanelController {
 	
 //	로그
 	private Logger log = LoggerFactory.getLogger(PanelController.class);
+	
+	
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 공지사항 select
+	 */
+	@RequestMapping("panelMain.panel")
+	public String showPanelMain(Model model) {
+		try {
+			List<Notice> noticeList = ps.selectMainNoticeList();
+			System.out.println(noticeList);
+			model.addAttribute("noticeList", noticeList);
+			System.out.println(model);
+		} catch (SelectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "main/panelMain";
+	}
+	
 	
 	/**
 	 * @Author      : Ungken
@@ -262,6 +284,12 @@ public class PanelController {
 		}
 	}
 	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 26.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 회원탈퇴처리
+	 */
 	@PostMapping("dropPanel.me")
 	public String dropPanel(Model model, PanelMember pm, SessionStatus status) {
 		String encryptPwd = passwordEncoder.encode(pm.getUserPwd());
@@ -269,12 +297,13 @@ public class PanelController {
 		log.info(pm.toString());
 		
 		int result = ps.updateLeaveMember(pm);
+		log.info(result + "");
 		if(result > 0) {
 //			탈퇴 성공 시 로그아웃 처리
 			status.setComplete();
 			return "redirect:panelResult.panel?message=dropSuccess";
 		} else {
-			return "redirect:myInfoDetail.panel";
+			return "redirect:panelResult.panel?message=dropFail";
 		}
 	}
 }
