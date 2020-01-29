@@ -124,4 +124,10 @@ public class CorpForwardController {
 	public String forwardResearchBigData() {
 		return "infoPages/survwayBigData/researchBigData";
 	}
+	
+	
+	@RequestMapping("corpModal.corp")
+	public String forwardCorpModal() {
+		return "common/corpModal";
+	}
 }

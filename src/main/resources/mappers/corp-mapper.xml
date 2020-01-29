@@ -61,6 +61,63 @@
 			INTO TERMSHISTORY VALUES(SEQ_TERMSHISTORY.NEXTVAL, #{mno}, 5, 'Y')
 		SELECT * FROM DUAL
 	</insert>
+	
+	<insert id="insertResearch" parameterType="Research">
+		INSERT INTO RESEARCH VALUES
+		(SEQ_RESEARCH.NEXTVAL, #{researchName}, #{researchEngagementGoals}, #{researchPeriod}, #{mno}, #{researchPerpose}, NULL)
+		<selectKey keyProperty="researchNo" resultType="_int" order="AFTER">
+			SELECT SEQ_RESEARCH.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertTarget" parameterType="Research">
+		INSERT INTO RESEARCHTARGET VALUES
+		(SEQ_RESEARCHTARGET.NEXTVAL, #{targetGender}, #{targetAgeRange}, #{targetLocation}, #{researchNo}, #{occupationNo}, #{additionaltEtc})
+	</insert>
+	
+	<insert id="insertQuestion" parameterType="ResearchQuestion">
+		INSERT INTO RESEARCHQUESTION VALUES
+		(#{questionFormNo}, SEQ_QUESTION.NEXTVAL, #{researchNo}, 
+		<if test="questionVideoLink != null">
+			#{questionVideoLink}
+		</if>
+		<if test="questionVideoLink == null">
+			NULL
+		</if>
+		,
+		<if test="mediaExplain != null">
+			#{mediaExplain}
+		</if>
+		<if test="mediaExplain == null">
+			NULL
+		</if> , #{questionOrder}, #{rquestionContext})
+		<selectKey keyProperty="questionNo" resultType="_int" order="AFTER">
+			SELECT SEQ_QUESTION.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertChoice" parameterType="ResearchChoice">
+		INSERT INTO RESEARCHCHOICE VALUES
+		(SEQ_CHOICE.NEXTVAL, #{choiceContext}, #{rquestionNo}, #{choiceOrder})
+		<selectKey keyProperty="choiceNo" resultType="_int" order="AFTER">
+			SELECT SEQ_CHOICE.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertImage" parameterType="UploadFile">
+		INSERT INTO UPLOADFILE VALUES 
+		(SEQ_UPLOADFILE.NEXTVAL, #{fileType}, #{originName}, #{changeName}, #{filePath}, SYSDATE, 'Y', NULL, NULL, NULL, #{rquestionNo}, NULL, NULL)
+	</insert>
+	
+	<insert id="insertChoiceImage" parameterType="UploadFile">
+		INSERT INTO UPLOADFILE VALUES 
+		(SEQ_UPLOADFILE.NEXTVAL, #{fileType}, #{originName}, #{changeName}, #{filePath}, SYSDATE, 'Y', NULL, NULL, NULL, NULL, #{rchoiceNo}, NULL)
+	</insert>
+	
+	<insert id="insertResearchState" parameterType="Research">
+		INSERT INTO RSTATUSHISTORY VALUES 
+		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 1, SYSDATE, NULL)
+	</insert>
 </mapper>
 
 

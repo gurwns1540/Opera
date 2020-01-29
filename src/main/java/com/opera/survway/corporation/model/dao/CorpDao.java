@@ -2,7 +2,11 @@ package com.opera.survway.corporation.model.dao;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.opera.survway.admin.model.vo.Research;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.CorpMember;
+import com.opera.survway.corporation.model.vo.ResearchChoice;
+import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.LoginException;
 
 public interface CorpDao {
@@ -17,4 +21,15 @@ public interface CorpDao {
 
 	int insertTermsCorp(SqlSessionTemplate sqlSession, CorpMember cm);
 
+	int insertResearch(SqlSessionTemplate sqlSession, Research research);
+
+	int insertQuestion(SqlSessionTemplate sqlSession, ResearchQuestion question);
+
+	int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice choice);
+
+	int insertImage(SqlSessionTemplate sqlSession, UploadFile uploadFile);
+
+	int insertTarger(SqlSessionTemplate sqlSession, Research research);
+
+	int insertResearchState(SqlSessionTemplate sqlSession, Research research);
 }

@@ -140,13 +140,13 @@
     	font-size: 14pt;
     	color: #ECECEC;
   	}
-  	#quizTable {
+  	.quizTable {
   		width: 80%;
   		margin: 0 auto;
   		border-spacing: 0;
 		border-collapse: collapse;
   	}
-  	#quizTable th, #quizTable td {
+  	.quizTable th, .quizTable td {
   		border: 1px solid #9A9A9A;
   		height: 70px;
   	}
@@ -259,6 +259,15 @@
   	#questionArea {
   		display: none;
   	}
+  	.hide {
+  		display: none;
+  	}
+  	#questionOrder {
+  		width: 12px;
+  		background: none;
+  		border: 0;
+  		color: white;
+  	}
 }
 </style>
 </head>
@@ -286,126 +295,97 @@
 		<table class="editTable">
 			<tr>
 				<td style="width: 20%">
-					<input type="hidden" value="${ research }" name="research" id="research">
-					<form action="" method="post" style="height: 100%;">
-						<div id="editingTools">
-							<div style="font-size: 20px; font-weight: bold;">문항 편집 도구</div>
-							<div style="margin-top: 10px; border-bottom: 1px solid #9C9C9C; padding-bottom: 5px;">전체 <span id="quizAmount"></span>문항</div>
-							<div style="color: #666666; font-size: 11px; text-align: left; margin: 10px auto; width: fit-content;">
-								※ 각 문항 사이 [+]버튼을 통해 문항 추가가 가능합니다.<br>
-								※ 아래 문항을 Drag & Drop하여 문항 순서를 <br>
-								  이동할 수 있습니다.
-							</div>
-							<div style="width: 100%; overflow: auto; height: 500px;">
-								<ul id="sortable">
-									<li class="ui-state-default">
-										<div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div>
-										<div class="plusMain">
-											<div class="ui input" style="width: 85%;">
-												<input type="text" readonly class="choiceNameInput" name="questionNo" style="background: none; border: 0; width: 35px;" value="Q1">
-												<input type="text" class="choiceHead" readonly style="width: 80%; background: none; cursor: pointer; border: 0;">
-											</div>
-											<div style="width: fit-content; float: right;" class="deleteQuiz">
-												<i class="large times icon"></i>
-											</div>
-										</div>
-										<div id="questionArea">
-											<table id="quizTable">
-												<tr>
-													<th id="quizHead" colspan="3">
-														<div>
-															<span id="quizNum">Q<span id="questionOrder">1</span></span>.
-															<div class="ui input" style="width: 85%;">
-																<input type="text" class="quizTitle" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" maxlength="12" placeholder="질문 제목">
-															</div>
-															<input type="hidden" id="questionFormNo" name="questionFormNo">
-															<span style="float: right; font-size: 20pt;">
-																<i class="times icon"></i>
-															</span>
-														</div>
-													</th>
-												</tr>
-												<tr>
-													<td colspan="3">
-														<div id="mediaArea">
-															설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <span class="mediaAdd">여기를 클릭</span>해 주세요.
-															
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td colspan="3" style="padding: 0;">
-														<div id="choiceArea">
-															<div style="width: fit-content; margin: 0 auto;"><i class="plus icon" style="color: #BD45B1; margin-top: 150px;"></i>우측 옵션패널에서 문항형식을 선택해주세요.</div>
-															
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td style="border: 0; width: 40%"><hr></td>
-													<td style="border: 0; width: 20%"><div class="plusBtn2" style="margin: 0 auto; cursor:pointer; width: fit-content; font-size: 16pt;"><span style="color: #BD45B1"><i class="plus circle icon"></i></span>문항 추가</div></td>
-													<td style="border: 0; width: 40%"><hr></td>
-												</tr>
-												<tr>
-													<td colspan="3" style="border: 0;">
-														<div style="float: right; width: 90px; height:40px; cursor: pointer; background: #600050; color: white; text-align: center; line-height: 37px;">완 료</div>
-													</td>
-												</tr>
-											</table>
-										</div>
-									</li>
-								</ul>
-							</div>
-							<!-- <div style="width: 100%; background: #DEDEDE; border-top: 1px solid #9C9C9C; height: 53px; padding: 15px 10px;">
-							</div> -->
+					<div id="editingTools">
+						<div style="font-size: 20px; font-weight: bold;">문항 편집 도구</div>
+						<div style="margin-top: 10px; border-bottom: 1px solid #9C9C9C; padding-bottom: 5px;">전체 <span id="quizAmount"></span>문항</div>
+						<div style="color: #666666; font-size: 11px; text-align: left; margin: 10px auto; width: fit-content;">
+							※ 각 문항 사이 [+]버튼을 통해 문항 추가가 가능합니다.<br>
+							※ 아래 문항을 Drag & Drop하여 문항 순서를 <br>
+							  이동할 수 있습니다.
 						</div>
-					</form>
+						<div style="width: 100%; overflow: auto; height: 500px;">
+							<ul id="sortable">
+								<li class="ui-state-default">
+									<input type="hidden" class="nodeData" value="1">
+									<div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div>
+									<div class="plusMain">
+										<div class="ui input" style="width: 85%;">
+											<input type="text" readonly class="choiceNameInput" name="questionNo" style="background: none; border: 0; width: 45px;" value="Q1">
+											<input type="text" class="choiceHead" readonly style="width: 80%; background: none; cursor: pointer; border: 0;">
+											
+										</div>
+										<div style="width: fit-content; float: right;" class="deleteQuiz">
+											<i class="large times icon"></i>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<!-- <div style="width: 100%; background: #DEDEDE; border-top: 1px solid #9C9C9C; height: 53px; padding: 15px 10px;">
+						</div> -->
+					</div>
 				</td>
 				<td style="width: 60%">
-					<div id="editingMain">
-						<table id="quizTable">
-							<tr>
-								<th id="quizHead" colspan="3">
-									<div>
-										<span id="quizNum">Q<span id="questionOrder">1</span></span>.
-										<div class="ui input" style="width: 85%;">
-											<input type="text" class="quizTitle" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" maxlength="12" placeholder="질문 제목">
+					<form action="insertResearch.corpResearch" id="submitQuiz" method="post" style="height: 100%;" enctype="multipart/form-data">
+						<input type="hidden" value="${ research.researchNo }" name="researchNo">
+						<input type="hidden" value="${ research.researchName }" name="researchName">
+						<input type="hidden" value="${ research.researchEngagementGoals }" name="researchEngagementGoals">
+						<input type="hidden" value="${ research.researchPeriod }" name="researchPeriod">
+						<input type="hidden" value="${ research.mno }" name="mno">
+						<input type="hidden" value="${ research.researchPerpose }" name="researchPerpose">
+						<input type="hidden" value="${ research.targetNo }" name="targetNo">
+						<input type="hidden" value="${ research.targetGender }" name="targetGender">
+						<input type="hidden" value="${ research.targetAgeRange }" name="targetAgeRange">
+						<input type="hidden" value="${ research.targetLocation }" name="targetLocation">
+						<input type="hidden" value="${ research.occupationNo }" name="occupationNo">
+						<input type="hidden" value="${ research.additionaltEtc }" name="additionaltEtc">
+						<div id="editingMain">
+							<table class="quizTable">
+								<tr>
+									<th id="quizHead" colspan="3">
+										<div>
+											<span id="quizNum">Q<input type="text" id="questionOrder" name="questionOrder" value="1"></span>.
+											<input type="hidden" class="nodeData" value="1">
+											<div class="ui input" style="width: 85%;">
+												<input type="text" name="rquestionContext" name="rquestionContext" class="quizTitle" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="질문 제목">
+											</div>
+											<input type="hidden" id="questionFormNo" name="questionFormNo">
+											<span style="float: right; font-size: 20pt;">
+												<i class="times icon"></i>
+											</span>
 										</div>
-										<input type="hidden" id="questionFormNo" name="questionFormNo">
-										<span style="float: right; font-size: 20pt;">
-											<i class="times icon"></i>
-										</span>
-									</div>
-								</th>
-							</tr>
-							<tr>
-								<td colspan="3">
-									<div id="mediaArea">
-										설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <span class="mediaAdd">여기를 클릭</span>해 주세요.
-										
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="3" style="padding: 0;">
-									<div id="choiceArea">
-										<div style="width: fit-content; margin: 0 auto;"><i class="plus icon" style="color: #BD45B1; margin-top: 150px;"></i>우측 옵션패널에서 문항형식을 선택해주세요.</div>
-										
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td style="border: 0; width: 40%"><hr></td>
-								<td style="border: 0; width: 20%"><div class="plusBtn2" style="margin: 0 auto; cursor:pointer; width: fit-content; font-size: 16pt;"><span style="color: #BD45B1"><i class="plus circle icon"></i></span>문항 추가</div></td>
-								<td style="border: 0; width: 40%"><hr></td>
-							</tr>
-							<tr>
-								<td colspan="3" style="border: 0;">
-									<div style="float: right; width: 90px; height:40px; cursor: pointer; background: #600050; color: white; text-align: center; line-height: 37px;">완 료</div>
-								</td>
-							</tr>
-						</table>
-					</div>
+									</th>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<input type="hidden" name="mediaExist" id="mediaExist" value="false">
+										<div id="mediaArea">
+											설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <span class="mediaAdd">여기를 클릭</span>해 주세요.
+											
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3" style="padding: 0;">
+										<div id="choiceArea">
+											<div style="width: fit-content; margin: 0 auto;"><i class="plus icon" style="color: #BD45B1; margin-top: 150px;"></i>우측 옵션패널에서 문항형식을 선택해주세요.</div>
+											
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td style="border: 0; width: 40%"><hr></td>
+									<td style="border: 0; width: 20%"><div class="plusBtn2" style="margin: 0 auto; cursor:pointer; width: fit-content; font-size: 16pt;"><span style="color: #BD45B1"><i class="plus circle icon"></i></span>문항 추가</div></td>
+									<td style="border: 0; width: 40%"><hr></td>
+								</tr>
+								<tr>
+									<td colspan="3" style="border: 0;">
+										<div style="float: right; width: 90px; height:40px; cursor: pointer; background: #600050; color: white; text-align: center; line-height: 37px;" class="submit">완 료</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</form>
 				</td>
 				<td style="width: 20%">
 					<div id="editingOption">
@@ -428,38 +408,43 @@
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 	<script>
+		nodeIndex = 2; // node의 시작 default 테이블이 1
+		
+		$(document).on("click", ".submit", function(){
+			$("#submitQuiz").submit();
+		})
 		/* 문항 선택 */
 		$(document).on("click", "#multipleChoice", function(){
-			$("#editingMain").find("#questionFormNo").val(1);
-			var $choiceArea = $('<div id="multipleChoiceArea"> <div class="choice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" class="choiceNo"><input type="text" class="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> </div> <div class="choice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" class="choiceNo"><input type="text" class="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> </div> <div class="choice"> <div id="plusChoice" style=""><i class="plus icon"></i> 보기추가</div> </div> </div>');
-			$("#editingMain").find("#choiceArea").css("height", "300px");
-			$("#editingMain").find("#choiceArea").html($choiceArea);
+			$(".quizTable:not(.hide)").find("#questionFormNo").val(1);
+			var $choiceArea = $('<div id="multipleChoiceArea"> <div class="choice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" class="choiceNo"><input type="text" class="choiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> </div> <div class="choice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" class="choiceNo"><input type="text" class="choiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> </div> <div class="choice"> <div id="plusChoice" style=""><i class="plus icon"></i> 보기추가</div> </div> </div>');
+			$(".quizTable:not(.hide)").find("#choiceArea").css("height", "300px");
+			$(".quizTable:not(.hide)").find("#choiceArea").html($choiceArea);
 		});
 		$(document).on("click", "#shortAnswer", function(){
-			$("#editingMain").find("#questionFormNo").val(2);
-			$("#editingMain").find("#choiceArea").css("height", "0px");
-			$("#editingMain").find("#choiceArea").html("");
+			$(".quizTable:not(.hide)").find("#questionFormNo").val(2);
+			$(".quizTable:not(.hide)").find("#choiceArea").css("height", "0px");
+			$(".quizTable:not(.hide)").find("#choiceArea").html("");
 		});
 		$(document).on("click", "#multipleImageChoice", function(){
-			$("#editingMain").find("#questionFormNo").val(3);
-			var $choiceArea = $('<div id="multipleImageChoiceArea"> <div class="choice" style="height: 200px;; line-height: 40px;"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" style="margin-top: 35px;" class="choiceNo"> <input type="text" class="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 65%; display: inline-block;"> <input type="file" id="imageChoiceUpload" name="imageChoiceUpload" style="margin-left: 5%;" value="파일 선택"> <div style="font-size: 10pt; text-align: left; margin-left: 20%;"> 이미지 사이즈 : <span style="color: #7A0075;">700px X 100 ~ 600px, 1MB</span>이하<br> 미풍양속을 해치는 이미지를 쓸 경우 큰 불이익을 당할 수 있습니다. </div> </div> <div style="width: 25%; height: 110px; margin-bottom: 20px; display: inline-block;" id="imageArea"><img src="resources/images/imageBackground.png" class="image" style="width: 100%; height:110px;"></div> </div> <div class="choice" style="height: 200px; line-height: 40px;"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" style="margin-top: 35px;" class="choiceNo"> <input type="text" class="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 65%; display: inline-block;"> <input type="file" id="imageChoiceUpload" name="imageChoiceUpload" style="margin-left: 5%;" value="파일 선택"> <div style="font-size: 10pt; text-align: left; margin-left: 20%;"> 이미지 사이즈 : <span style="color: #7A0075;">700px X 100 ~ 600px, 1MB</span>이하<br> 미풍양속을 해치는 이미지를 쓸 경우 큰 불이익을 당할 수 있습니다. </div> </div> <div style="width: 25%; height: 110px; margin-bottom: 20px; display: inline-block;" id="imageArea"><img src="resources/images/imageBackground.png" class="image" style="width: 100%; height:110px;"></div> </div> <div class="choice"> <div id="plusImageChoice"><i class="plus icon"></i> 보기추가</div> </div> </div>');
-			$("#editingMain").find("#choiceArea").css("height", "500px");
-			$("#editingMain").find("#choiceArea").html($choiceArea);
+			$(".quizTable:not(.hide)").find("#questionFormNo").val(3);
+			var $choiceArea = $('<div id="multipleImageChoiceArea"> <div class="choice" style="height: 200px;; line-height: 40px;"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" style="margin-top: 35px;" class="choiceNo"> <input type="text" class="choiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 65%; display: inline-block;"> <input type="file" id="imageChoiceUpload" name="imageChoiceUpload" style="margin-left: 5%;" value="파일 선택"> <div style="font-size: 10pt; text-align: left; margin-left: 20%;"> 이미지 사이즈 : <span style="color: #7A0075;">700px X 100 ~ 600px, 1MB</span>이하<br> 미풍양속을 해치는 이미지를 쓸 경우 큰 불이익을 당할 수 있습니다. </div> </div> <div style="width: 25%; height: 110px; margin-bottom: 20px; display: inline-block;" id="imageArea"><img src="resources/images/imageBackground.png" class="image" style="width: 100%; height:110px;"></div> </div> <div class="choice" style="height: 200px; line-height: 40px;"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" style="margin-top: 35px;" class="choiceNo"> <input type="text" class="choiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 65%; display: inline-block;"> <input type="file" id="imageChoiceUpload" name="imageChoiceUpload" style="margin-left: 5%;" value="파일 선택"> <div style="font-size: 10pt; text-align: left; margin-left: 20%;"> 이미지 사이즈 : <span style="color: #7A0075;">700px X 100 ~ 600px, 1MB</span>이하<br> 미풍양속을 해치는 이미지를 쓸 경우 큰 불이익을 당할 수 있습니다. </div> </div> <div style="width: 25%; height: 110px; margin-bottom: 20px; display: inline-block;" id="imageArea"><img src="resources/images/imageBackground.png" class="image" style="width: 100%; height:110px;"></div> </div> <div class="choice"> <div id="plusImageChoice"><i class="plus icon"></i> 보기추가</div> </div> </div>');
+			$(".quizTable:not(.hide)").find("#choiceArea").css("height", "500px");
+			$(".quizTable:not(.hide)").find("#choiceArea").html($choiceArea);
 		});
 		$(document).on("click", "#likertScale", function(){
-			$("#editingMain").find("#questionFormNo").val(4);
-			$("#editingMain").find("#choiceArea").css("height", "0px");
-			$("#editingMain").find("#choiceArea").html("<div style='margin: 0 auto; width: fit-content;  line-height: 0px;'>리커트 척도는 매우 부정부터 매우 긍정까지 5가지로 구성되어있습니다.</div>");
+			$(".quizTable:not(.hide)").find("#questionFormNo").val(4);
+			$(".quizTable:not(.hide)").find("#choiceArea").css("height", "0px");
+			$(".quizTable:not(.hide)").find("#choiceArea").html("<div style='margin: 0 auto; width: fit-content;  line-height: 0px;'>리커트 척도는 매우 부정부터 매우 긍정까지 5가지로 구성되어있습니다.</div>");
 		});
 		$(document).on("click", "#sumOfChoice", function(){
-			$("#editingMain").find("#questionFormNo").val(5);
-			$("#editingMain").find("#choiceArea").css("height", "300px");
-			$("#editingMain").find("#choiceArea").html('<div id="sumOfChoiceArea"> <div id="sumChoiceArea"> <div class="sumChoice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" class="choiceNo"> <input type="text" class="sumChoiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 100px; height: 30px; display: inline-block; margin-left: 50px; background: white; vertical-align: middle; border: 1px solid #E7E7E7"></div> </div> <div class="sumChoice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" class="choiceNo"> <input type="text" class="sumChoiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 100px; height: 30px; display: inline-block; margin-left: 50px; background: white; vertical-align: middle; border: 1px solid #E7E7E7"></div> </div> </div> <div id="sum"> <div style="width: 59%">합계</div> <div style="width: 40%">100</div> </div> <div class="sumChoice"> <div id="plusSumChoice"><i class="plus icon"></i> 보기추가</div> </div> </div>');
+			$(".quizTable:not(.hide)").find("#questionFormNo").val(5);
+			$(".quizTable:not(.hide)").find("#choiceArea").css("height", "300px");
+			$(".quizTable:not(.hide)").find("#choiceArea").html('<div id="sumOfChoiceArea"> <div id="sumChoiceArea"> <div class="sumChoice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" class="choiceNo"> <input type="text" class="sumChoiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 100px; height: 30px; display: inline-block; margin-left: 50px; background: white; vertical-align: middle; border: 1px solid #E7E7E7"></div> </div> <div class="sumChoice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" class="choiceNo"> <input type="text" class="sumChoiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 100px; height: 30px; display: inline-block; margin-left: 50px; background: white; vertical-align: middle; border: 1px solid #E7E7E7"></div> </div> </div> <div id="sum"> <div style="width: 59%">합계</div> <div style="width: 40%">100</div> </div> <div class="sumChoice"> <div id="plusSumChoice"><i class="plus icon"></i> 보기추가</div> </div> </div>');
 		});
 		/*---------*/
 		
 		$(document).on("keyup", ".quizTitle", function(){
-			var num = $(this).parent().parent().find("#quizNum").text();
+			var num = "Q" + $(this).parent().parent().find("#questionOrder").val();
 			var title = $(this).val();
 			$("#editingTools").find(".choiceNameInput").each(function(){
 				if($(this).val() == num){
@@ -467,48 +452,10 @@
 				}
 			});
 		});
-		$(document).on("click", "#allCheck", function(){
-			$('#allcheckBox').prop('checked',function(){
-		        return !$(this).prop('checked');
-		    });
-			if($("#allcheckBox").prop("checked")){
-	        	$(".deleteCheck").prop("checked",true);
-	        }else{
-	        	$(".deleteCheck").prop("checked",false);
-	        }
-		});
-		$(".row li").on("click", function(){
-			$(this).children("input[type=radio]").prop("checked", true);
-			isChecked();
-		})
+		
 		$(function(){
-			isChecked();
 			orderQuizAmount();
-		})
-		function isChecked() {
-			$("input[type=radio]").each(function(){
-				if($(this).prop("checked")){
-					$(this).parent().css({"background":"#00679A", "color":"white"});
-					if($(this).prop("id") == "all"){
-						$("#genderText").text("전체");
-					}
-					else if($(this).prop("id") == "male"){
-						$("#genderText").text("남성");
-					}
-					else if($(this).prop("id") == "female"){
-						$("#genderText").text("여성");
-					}
-					if($("#config").prop("checked")){
-						console.log("gkgk");
-						$("#rangeAge").css("display", "inline-block");
-					}else {
-						$("#rangeAge").css("display", "none");
-					}
-				}else {
-					$(this).parent().css({"background":"#E7E7E7", "color":"#aaa"});
-				}
-			});
-		}
+		});
 		
 		$(document).on("click", ".deleteQuiz", function(){
 			if($(".deleteQuiz").length == 1){
@@ -523,10 +470,11 @@
 			}
 			orderQuizAmount();
 			quizIndex();
+			connectedNodes();
 		});
 		
 		$(document).on("click", ".deleteChoice", function(){
-			if($(".deleteChoice").length == 2){
+			if($(".quizTable:not(.hide)").find(".deleteChoice").length == 2){
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
@@ -540,44 +488,44 @@
 		});
 		
 		$(document).on("click", "#plusChoice", function(){
-			if($(".deleteChoice").length == 5){
+			if($(".quizTable:not(.hide)").find(".deleteChoice").length == 10){
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
-					text: '보기는 최대 5개까지 가능합니다.',
+					text: '보기는 최대 10개까지 가능합니다.',
 				})
 			}else {
 				$(this).parent().remove();
-				var $choice = $('<div class="choice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" class="choiceNo"><input type="text" class="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> </div> <div class="choice"> <div id="plusChoice" style=""><i class="plus icon"></i> 보기추가</div> </div>');
-				$("#multipleChoiceArea").append($choice);
+				var $choice = $('<div class="choice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" class="choiceNo"><input type="text" class="choiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> </div> <div class="choice"> <div id="plusChoice" style=""><i class="plus icon"></i> 보기추가</div> </div>');
+				$(".quizTable:not(.hide)").find("#multipleChoiceArea").append($choice);
 				choiceIndex();
 			}
 		});
 		
 		$(document).on("click", "#plusImageChoice", function(){
-			if($(".deleteChoice").length == 5){
+			if($(".quizTable:not(.hide)").find(".deleteChoice").length == 10){
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
-					text: '보기는 최대 5개까지 가능합니다.',
+					text: '보기는 최대 10개까지 가능합니다.',
 				})
 			}else {
 				$(this).parent().remove();
-				var $choice = $('<div class="choice" style="height: auto; line-height: 40px;"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" style="margin-top: 35px;" class="choiceNo"> <input type="text" class="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 65%; display: inline-block;"> <input type="file" id="imageUpload" name="uploadImage" style="margin-left: 5%;" value="파일 선택"> <div style="font-size: 10pt; text-align: left; margin-left: 20%;"> 이미지 사이즈 : <span style="color: #7A0075;">700px X 100 ~ 600px, 1MB</span>이하<br> 미풍양속을 해치는 이미지를 쓸 경우 큰 불이익을 당할 수 있습니다. </div> </div> <div style="width: 25%; height: 110px; margin-bottom: 20px; display: inline-block;" id="imageArea"><img src="resources/images/imageBackground.png" id="image" style="width: 100%; height:110px;"></div> </div> <div class="choice"> <div id="plusImageChoice"><i class="plus icon"></i> 보기추가</div> </div>');
-				$("#multipleImageChoiceArea").append($choice);
+				var $choice = $('<div class="choice" style="height: 200px;; line-height: 40px;"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" style="margin-top: 35px;" class="choiceNo"> <input type="text" class="choiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 65%; display: inline-block;"> <input type="file" id="imageChoiceUpload" name="imageChoiceUpload" style="margin-left: 5%;" value="파일 선택"> <div style="font-size: 10pt; text-align: left; margin-left: 20%;"> 이미지 사이즈 : <span style="color: #7A0075;">700px X 100 ~ 600px, 1MB</span>이하<br> 미풍양속을 해치는 이미지를 쓸 경우 큰 불이익을 당할 수 있습니다. </div> </div> <div style="width: 25%; height: 110px; margin-bottom: 20px; display: inline-block;" id="imageArea"><img src="resources/images/imageBackground.png" class="image" style="width: 100%; height:110px;"></div> </div> <div class="choice"> <div id="plusImageChoice"><i class="plus icon"></i> 보기추가</div> </div>');
+				$(".quizTable:not(.hide)").find("#multipleImageChoiceArea").append($choice);
 				choiceIndex();
 			}
 		});
 		$(document).on("click", "#plusSumChoice", function(){
-			if($(".deleteChoice").length == 5){
+			if($(".quizTable:not(.hide)").find(".deleteChoice").length == 10){
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
-					text: '보기는 최대 5개까지 가능합니다.',
+					text: '보기는 최대 10개까지 가능합니다.',
 				})
 			}else {
-				var $choice = $('<div class="sumChoice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" class="choiceNo"> <input type="text" class="sumChoiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 100px; height: 30px; display: inline-block; margin-left: 50px; background: white; vertical-align: middle; border: 1px solid #E7E7E7"></div> </div>');
-				$("#sumChoiceArea").append($choice);
+				var $choice = $('<div class="sumChoice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" class="choiceNo"> <input type="text" class="sumChoiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> <div style="width: 100px; height: 30px; display: inline-block; margin-left: 50px; background: white; vertical-align: middle; border: 1px solid #E7E7E7"></div> </div>');
+				$(".quizTable:not(.hide)").find("#sumChoiceArea").append($choice);
 				choiceIndex();
 			}
 		});
@@ -589,65 +537,39 @@
 		
 		$('#standard_calendar').calendar();
 		$('#standard_calendar2').calendar();
+		
 		function plusQuiz() {
-			if($("#editingMain").find("#questionFormNo").val() == ""){
+			var isEmpty = false;
+			$(".quizTable:not(.hide)").find("input[type=text]").each(function(){
+				if($(this).val() == ""){
+					isEmpty = true;
+				}
+			})
+			if($(".quizTable:not(.hide)").find("#questionFormNo").val() == ""){
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
 					text: '질문 문항을 선택해 주세요.',
 				})
-			}else if($("#editingMain").find("#quizTable").find("input[type=text]").val() == ""){
-				console.log($("#quizTable").find("input[type=text]"));
+			}else if(isEmpty == true){
+				console.log($(".quizTable").find("input[type=text]"));
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
 					text: '질문 내용을 작성해 주세요.',
 				})
 			}else {
-				var valueArr = [];
-				$("#editingMain").find("input").each(function(){
-					valueArr.push($(this).val());
-				});
-				
-				var $question = $("#editingMain").html();
-				var questionNum = $("#editingMain").find("#quizNum").text();
-				
-				$("#sortable").find(".choiceNameInput").each(function(index){
-					if($(this).val() == questionNum){
-						$(this).parent().parent().parent().find("#questionArea").html($question);
-						for(var i = 0; i < valueArr.length; i++){
-							$(this).parent().parent().parent().find("#questionArea").find("input").eq(i).val(valueArr[i]);
-						}
-					}
-				});
+
 				var num = $(".ui-state-default").length + 1;
-				$("#editingMain").html('<table id="quizTable"> <tr> <th id="quizHead" colspan="3"> <div> <span id="quizNum">Q<span id="questionOrder">' + num + '</span></span>. <div class="ui input" style="width: 85%;"> <input type="text" class="quizTitle" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" maxlength="12" placeholder="질문 제목"> </div> <input type="hidden" id="questionFormNo" name="questionFormNo"> <span style="float: right; font-size: 20pt;"> <i class="times icon"></i> </span> </div> </th> </tr> <tr> <td colspan="3"> <div id="mediaArea"> 설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <span class="mediaAdd">여기를 클릭</span>해 주세요. </div> </td> </tr> <tr> <td colspan="3" style="padding: 0;"> <div id="choiceArea"> <div style="width: fit-content; margin: 0 auto;"><i class="plus icon" style="color: #BD45B1; margin-top: 150px;"></i>우측 옵션패널에서 문항형식을 선택해주세요.</div> </div> </td> </tr> <tr> <td style="border: 0; width: 40%"><hr></td> <td style="border: 0; width: 20%"><div class="plusBtn2" style="margin: 0 auto; cursor:pointer; width: fit-content; font-size: 16pt;"><span style="color: #BD45B1"><i class="plus circle icon"></i></span>문항 추가</div></td> <td style="border: 0; width: 40%"><hr></td> </tr> <tr> <td colspan="3" style="border: 0;"> <div style="float: right; width: 90px; height:40px; cursor: pointer; background: #600050; color: white; text-align: center; line-height: 37px;">완 료</div> </td> </tr> </table>');
-				var $quiz = $('<li class="ui-state-default"> <div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div> <div class="plusMain"> <div class="ui input" style="width: 85%;"> <input type="text" readonly class="choiceNameInput" name="questionNo" style="background: none; border: 0; width: 35px;" value="Q1"> <input type="text" class="choiceHead" readonly style="width: 80%; background: none; cursor: pointer; border: 0;"> </div> <div style="width: fit-content; float: right;" class="deleteQuiz"> <i class="large times icon"></i> </div> </div> <div id="questionArea"> <table id="quizTable"> <tr> <th id="quizHead" colspan="3"> <div> <span id="quizNum">Q<span id="questionOrder">' + num + '</span></span>. <div class="ui input" style="width: 85%;"> <input type="text" class="quizTitle" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" maxlength="12" placeholder="질문 제목"> </div> <input type="hidden" id="questionFormNo" name="questionFormNo"> <span style="float: right; font-size: 20pt;"> <i class="times icon"></i> </span> </div> </th> </tr> <tr> <td colspan="3"> <div id="mediaArea"> 설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <span class="mediaAdd">여기를 클릭</span>해 주세요. </div> </td> </tr> <tr> <td colspan="3" style="padding: 0;"> <div id="choiceArea"> <div style="width: fit-content; margin: 0 auto;"><i class="plus icon" style="color: #BD45B1; margin-top: 150px;"></i>우측 옵션패널에서 문항형식을 선택해주세요.</div> </div> </td> </tr> <tr> <td style="border: 0; width: 40%"><hr></td> <td style="border: 0; width: 20%"><div class="plusBtn2" style="margin: 0 auto; cursor:pointer; width: fit-content; font-size: 16pt;"><span style="color: #BD45B1"><i class="plus circle icon"></i></span>문항 추가</div></td> <td style="border: 0; width: 40%"><hr></td> </tr> <tr> <td colspan="3" style="border: 0;"> <div style="float: right; width: 90px; height:40px; cursor: pointer; background: #600050; color: white; text-align: center; line-height: 37px;">완 료</div> </td> </tr> </table> </div> </li>');
+				allQuizHide();
+				$("#editingMain").append('<table class="quizTable"> <tr> <th id="quizHead" colspan="3"> <div> <span id="quizNum">Q<input type="text" id="questionOrder" name="questionOrder" value="' + num + '"></span>. <input type="hidden" class="nodeData" value="' + (nodeIndex++) + '"> <div class="ui input" style="width: 85%;"> <input type="text" name="rquestionContext" class="quizTitle" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="질문 제목"> </div> <input type="hidden" id="questionFormNo" name="questionFormNo"> <span style="float: right; font-size: 20pt;"> <i class="times icon"></i> </span> </div> </th> </tr> <tr> <td colspan="3"> <input type="hidden" name="mediaExist" id="mediaExist" value="false"> <div id="mediaArea"> 설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <span class="mediaAdd">여기를 클릭</span>해 주세요. </div> </td> </tr> <tr> <td colspan="3" style="padding: 0;"> <div id="choiceArea"> <div style="width: fit-content; margin: 0 auto;"><i class="plus icon" style="color: #BD45B1; margin-top: 150px;"></i>우측 옵션패널에서 문항형식을 선택해주세요.</div> </div> </td> </tr> <tr> <td style="border: 0; width: 40%"><hr></td> <td style="border: 0; width: 20%"><div class="plusBtn2" style="margin: 0 auto; cursor:pointer; width: fit-content; font-size: 16pt;"><span style="color: #BD45B1"><i class="plus circle icon"></i></span>문항 추가</div></td> <td style="border: 0; width: 40%"><hr></td> </tr> <tr> <td colspan="3" style="border: 0;"> <div style="float: right; width: 90px; height:40px; cursor: pointer; background: #600050; color: white; text-align: center; line-height: 37px;" class="submit">완 료</div> </td> </tr> </table>');
+				var $quiz = $('<li class="ui-state-default"> <input type="hidden" class="nodeData" value="' + num + '"> <div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div> <div class="plusMain"> <div class="ui input" style="width: 85%;"> <input type="text" readonly class="choiceNameInput" name="questionNo" style="background: none; border: 0; width: 45px;" value="Q' + num + '"> <input type="text" class="choiceHead" readonly style="width: 80%; background: none; cursor: pointer; border: 0;"> </div> <div style="width: fit-content; float: right;" class="deleteQuiz"> <i class="large times icon"></i> </div> </div> </li>');
 				$("#sortable").append($quiz);
 				orderQuizAmount();
 				quizIndex();
 			}
 		}
-		function movePointerQuiz() {
-			var valueArr = [];
-			$("#editingMain").find("input").each(function(){
-				valueArr.push($(this).val());
-			});
-			
-			var $question = $("#editingMain").html();
-			var questionNum = $("#editingMain").find("#quizNum").text();
-			
-			$("#sortable").find(".choiceNameInput").each(function(index){
-				if($(this).val() == questionNum){
-					$(this).parent().parent().parent().find("#questionArea").html($question);
-					for(var i = 0; i < valueArr.length; i++){
-						$(this).parent().parent().parent().find("#questionArea").find("input").eq(i).val(valueArr[i]);
-					}
-				}
-			});
-			orderQuizAmount();
-			quizIndex();
-		}
+
 		$(document).on("click", ".plusBtn", function(){
 			plusQuiz();
 		});
@@ -655,30 +577,31 @@
 			plusQuiz();
 		});
 		$(document).on("click", ".choiceHead", function() {
-			var $question = $(this).parent().parent().parent().find("#questionArea").html();
-			var valueArr = [];
-			$(this).parent().parent().parent().find("#questionArea").find("input").each(function(){
-				valueArr.push($(this).val());
+			allQuizHide();
+			var nodeData = $(this).parent().parent().parent().find(".nodeData").val();
+			console.log(nodeData)
+			$(".hide").each(function(){
+				if($(this).find(".nodeData").val() == nodeData){
+					$(this).removeClass("hide");
+				}
 			});
-			console.log(valueArr);
-			movePointerQuiz();
-			$("#editingMain").html($question);
-			
-			for(var i = 0; i < valueArr.length; i++){
-				$("#editingMain").find("input").eq(i).val(valueArr[i]);
-			}
+			orderQuizAmount();
+			quizIndex();
 		});
 		$(document).on("click", ".mediaAdd", function(){
 			var $image = $('<table style="width: 90%; border: 0;" id="imageTable"> <tr> <td colspan="2"> <div style="float: right;"> <button class="imageBtn"><i class="images outline icon"></i></button> <button class="videoBtn"><i class="video icon"></i></button> </div> </td> </tr> <tr> <td colspan="2"> <textarea name="mediaExplain" style="width: 100%; height: 60px; resize: none; border-radius: 5px; padding: 7px;" placeholder="설명 글을 입력해주세요"></textarea> </td> </tr> <tr> <td style="text-align: left; width: 70%; vertical-align: top; padding-top: 20px;"> <input type="file" id="imageUpload" name="uploadImage" value="파일 선택"> <div style="font-size: 10pt; text-align: left; margin-left: 14%;"> 이미지 사이즈 : <span style="color: #7A0075;">700px X 100 ~ 600px, 1MB</span>이하<br> 미풍양속을 해치는 이미지를 쓸 경우 큰 불이익을 당할 수 있습니다. </div> </td> <td style="width: 30%;"> <div style="width: 100%; height: 110px; margin-bottom: 20px;" id="imageArea"><img src="resources/images/imageBackground.png" id="image" style="width: 100%; height:110px;"></div> </td> </tr> </table>');
-			$("#editingMain").find("#mediaArea").html($image);
+			$(".quizTable:not(.hide)").find("#mediaArea").html($image);
+			$(".quizTable:not(.hide)").find("#mediaExist").val("image");
 		});
 		$(document).on("click", ".imageBtn", function(){
 			var $image = $('<table style="width: 90%; border: 0;" id="imageTable"> <tr> <td colspan="2"> <div style="float: right;"> <button class="imageBtn"><i class="images outline icon"></i></button> <button class="videoBtn"><i class="video icon"></i></button> </div> </td> </tr> <tr> <td colspan="2"> <textarea name="mediaExplain" style="width: 100%; height: 60px; resize: none; border-radius: 5px; padding: 7px;" placeholder="설명 글을 입력해주세요"></textarea> </td> </tr> <tr> <td style="text-align: left; width: 70%; vertical-align: top; padding-top: 20px;"> <input type="file" id="imageUpload" name="uploadImage" value="파일 선택"> <div style="font-size: 10pt; text-align: left; margin-left: 14%;"> 이미지 사이즈 : <span style="color: #7A0075;">700px X 100 ~ 600px, 1MB</span>이하<br> 미풍양속을 해치는 이미지를 쓸 경우 큰 불이익을 당할 수 있습니다. </div> </td> <td style="width: 30%;"> <div style="width: 100%; height: 110px; margin-bottom: 20px;" id="imageArea"><img src="resources/images/imageBackground.png" id="image" style="width: 100%; height:110px;"></div> </td> </tr> </table>');
-			$("#editingMain").find("#mediaArea").html($image);
+			$(".quizTable:not(.hide)").find("#mediaArea").html($image);
+			$(".quizTable:not(.hide)").find("#mediaExist").val("image");
 		});
 		$(document).on("click", ".videoBtn", function(){
 			var $video = $('<table style="width: 90%; border: 0;" id="imageTable"> <tr> <td> <div style="float: right;"> <button class="imageBtn"><i class="images outline icon"></i></button> <button class="videoBtn"><i class="video icon"></i></button> </div> </td> </tr> <tr> <td> <textarea name="mediaExplain" style="width: 100%; height: 60px; resize: none; border-radius: 5px; padding: 7px;" placeholder="설명 글을 입력해주세요"></textarea> </td> </tr> <tr> <td style="text-align: left; width: 70%; vertical-align: top; padding-top: 20px; padding-bottom: 20px;"> <div class="ui labeled input"> <div class="ui label"> https:// </div> <input type="text" name="questionVideoLink" placeholder="youtu.be/..."> </div><span style="font-size: 9pt; margin-left: 30px;">미풍양속을 해치는 동영상을 쓸 경우 큰 불이익을 당할 수 있습니다.</span></td> </tr> </table>');
-			$("#editingMain").find("#mediaArea").html($video);
+			$(".quizTable:not(.hide)").find("#mediaArea").html($video);
+			$(".quizTable:not(.hide)").find("#mediaExist").val("video");
 		});
 		
 		$(document).on("change", "#imageUpload", handleImgFileSelect);
@@ -713,12 +636,12 @@
 
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    $("#image").attr("src", e.target.result);
+                	$(".quizTable:not(.hide)").find("#image").attr("src", e.target.result);
                 }
                 reader.readAsDataURL(f);
             });
         }
-		
+
 		function orderQuizAmount() {
 			var num = $(".ui-state-default").length;
 			$("#quizAmount").text(num);
@@ -731,23 +654,75 @@
 		}
 		function choiceIndex(){
 			var index = 1;
-			$(".choice").each(function(){
+			$(".quizTable:not(.hide)").find(".choice").each(function(){
 				$(this).find(".choiceNo").val(index++);
 			})
 			var index2 = 1;
-			$(".sumChoice").each(function(){
+			$(".quizTable:not(.hide)").find(".sumChoice").each(function(){
 				$(this).find(".choiceNo").val(index2++);
 			})
+		}
+		function allQuizHide(){
+			$("#editingMain").find(".quizTable").each(function(){
+				$(this).addClass("hide");
+			})
+		}
+		
+		function connectedNodes() {
+			$("#sortable").find(".nodeData").each(function(){
+				var sortableNode = $(this).val();
+				var quizNum = $(this).parent().find(".choiceNameInput").val().substr(1, 1);
+				
+				console.log("soratableNode : " + sortableNode);
+				console.log("quizNum : " + quizNum);
+				$("#editingMain").find(".nodeData").each(function(){
+					if(sortableNode == $(this).val()){
+						$(this).parent().find("#questionOrder").val(quizNum);
+					}
+				})
+			})
+			
 		}
 	</script>
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script>
 		$(function() {
-			console.log($("#research").val());
 		 	$( "#sortable" ).sortable({
+		 		cursor: "move",
 		 		placeholder: "ui-state-highlight",
+		 		
+		 		/* start: function(event,ui){ 
+	 		      	//get ID form draggable item 
+	 		      	ui.item.data('start_pos', ui.item.index());
+	 		    }, 
+	 		   */ 
+	 		   stop: function(event,ui){ 
+	 		    	/* before = "Q" + (ui.item.data('start_pos') + 1);
+	 		    	after = "Q" + (ui.item.index() + 1);
+	 		    	value = ui.item[0].childNodes[1].value; 
+	 		    	console.log(ui.item[0].childNodes[1].value);
+	 		      	console.log("before : " + before)
+	 		      	console.log("after : " + after);
+	 		      	
+	 		      	$(".quizTable").each(function(){
+	 		      		if($(this).find(".nodeData").val() == value) {
+	 		      			var num = after.substr(1, 1);
+	 		      			console.log("afternum : " + num)
+	 		      			$(this).find("#quizNum").html('Q<span id="questionOrder">' + num + '</span>')
+	 		      			
+	 		      		}else if($(this).find("#quizNum").text() == after) {
+	 		      			var num = before.substr(1, 1);
+	 		      			console.log("beforenum : " + num)
+	 		      			$(this).find("#quizNum").html('Q<span id="questionOrder">' + num + '</span>')
+	 		      			
+	 		      		}
+	 		      	}); */
+	 		      	
+	 			  	connectedNodes();
+	 		    },
 		 		update: function( event, ui ) {
+		 			
 		 			$(this).find(".choiceNameInput").each(function(index){
 		 				$(this).val('Q' + (index + 1));
 		 			});

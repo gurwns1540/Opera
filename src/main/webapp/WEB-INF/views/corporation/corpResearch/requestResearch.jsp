@@ -216,15 +216,15 @@
 						<div class="row">
 							<ul>
 								<li>
-									<input type="radio" id="all" value="all" name="targetGender" checked>
+									<input type="radio" id="all" value="A" name="targetGender" checked>
 									<label for="all">설정 안함</label>
 								</li>
 								<li>
-									<input type="radio" id="female" value="female" name="targetGender">
+									<input type="radio" id="female" value="F" name="targetGender">
 									<label for="female">여성</label>
 								</li>
 								<li>
-									<input type="radio" id="male" value="male" name="targetGender">
+									<input type="radio" id="male" value="M" name="targetGender">
 									<label for="male">남성</label>
 								</li>
 							</ul>
@@ -285,7 +285,7 @@
 					<td>
 						<select class="ui dropdown" id="occupationNo" name="occupationNo">
 							<option value="">조사 직업 대상</option>
-							<option value="all">전체</option>
+							<option value="13">전체</option>
 							<option value="1">자영업</option>
 							<option value="2">판매/영업 서비스직</option>
 							<option value="3">기능/직업직</option>

@@ -13,8 +13,11 @@
 		<typeAlias type="com.opera.survway.common.model.vo.AllMember" alias="AllMember"/>
 		<typeAlias type="com.opera.survway.admin.model.vo.SearchMember" alias="SearchMember"/>
 		<typeAlias type="com.opera.survway.admin.model.vo.PanelRewardHistory" alias="PanelRewardHistory"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.Research" alias="Research"/>
+		<typeAlias type="com.opera.survway.corporation.model.vo.ResearchChoice" alias="ResearchChoice"/>
+		<typeAlias type="com.opera.survway.corporation.model.vo.ResearchQuestion" alias="ResearchQuestion"/>
+		<typeAlias type="com.opera.survway.common.model.vo.UploadFile" alias="UploadFile"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.Reward" alias="Reward"/>
-		
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>
@@ -22,7 +25,6 @@
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/inquiry-mapper.xml"/>
 		<mapper resource="mappers/admin-mapper.xml"/>
-		
 	</mappers>
 </configuration>
 
