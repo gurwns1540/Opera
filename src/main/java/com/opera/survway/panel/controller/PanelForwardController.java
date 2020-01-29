@@ -24,6 +24,13 @@ public class PanelForwardController {
 		return "customerCenter/faq";
 	}
 	
+
+	//3. 1:1 문의하기
+	@GetMapping("panelNewInquiry.panel")
+	public String showPanelNewInquiry() {
+		return "customerCenter/panelNewInquiry";
+	}
+	//4. 공지사항
 //	//3. 1:1 문의하기
 //	@GetMapping("panelNewInquiry.panel")
 //	public String showPanelNewInquiry() {
@@ -94,15 +101,15 @@ public class PanelForwardController {
 		return "myPage/myRewardMain";
 	}
 	//3-1. 내 리워드 적립내역
-	@GetMapping("myRewardDetail_saved.panel")
-	public String showMyRewardDetail_saved() {
-		return "myPage/myRewardDetail_saved";
-	}
+//	@GetMapping("myRewardDetail_saved.panel")
+//	public String showMyRewardDetail_saved() {
+//		return "myPage/myRewardDetail_saved";
+//	}
 	//3-2. 내 리워드 사용내역
-	@GetMapping("myRewardDetail_used.panel")
-	public String showMyRewardDetail_used() {
-		return "myPage/myRewardDetail_used";
-	}
+//	@GetMapping("myRewardDetail_used.panel")
+//	public String showMyRewardDetail_used() {
+//		return "myPage/myRewardDetail_used";
+//	}
 	//3-3. 리워드 캐시아웃
 	@GetMapping("myRewardCashOut.panel")
 	public String showMyRewardCashOut() {

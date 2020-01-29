@@ -19,7 +19,7 @@
 </style>
 <body>
 	<div class="wrap">
-		<%@ include file="/WEB-INF/views/panel/common/header.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/header.jsp" />
 		<section class="container">
 		<br />
 		
@@ -51,8 +51,8 @@
 				<div class="ui circular segment">
 					<h3 class="ui header">
 						모으신 총 포인트는
-						<div class="sub header" style="">15,600 P</div>
 					</h3>
+						<div class="sub header" style="">15,600 P</div>
 				</div>
 				<div class="ui circular segment">
 				</div>
@@ -62,7 +62,7 @@
 			
 			
 			<div align="center" style="margin-top:80px;">
-				<button class="ui blue button" onclick="location.href='myRewardDetail_saved.panel'">리워드 상세내역</button>
+				<button class="ui blue button" onclick="location.href='myRewardDetail_saved.rewardHistory'">리워드 상세내역</button>
 				<button class="ui blue button" onclick="location.href='myRewardCashOut.panel'">리워드 신청하기</button>
 			</div>
 			
