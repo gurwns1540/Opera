@@ -195,10 +195,5 @@ public class PanelDaoImpl implements PanelDao{
 		}
 		return researchList;
 	}
-
-	@Override
-	public int selectLevelCheck(SqlSessionTemplate sqlSession, int mno) {
-		return sqlSession.selectOne("Panel.selectLevelCheck", mno);
-	}
 	
 }

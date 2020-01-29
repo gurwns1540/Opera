@@ -246,7 +246,7 @@
 // 			리서치 조사번호
 			var researchNo = $(this).children().children().children().eq(0).children().children().children().eq(0).children().eq(0).children().eq(1).text();
 // 			로그인한 패널등급번호
-			var loginUserPanelLevel = ${ loginUser.panelLevel };
+			var loginUserPanelLevel = "${ loginUser.panellevelNo }";
 			console.log(researchNo);
 			console.log(loginUserPanelLevel);
 			if(loginUserPanelLevel == 1) {

@@ -48,8 +48,6 @@ public class PanelServiceImpl implements PanelService {
 		String encPassword = pd.selectEncPassword(sqlSession, pm);
 		if(passwordEncoder.matches(pm.getUserPwd(), encPassword)) {
 			loginUser = pd.loginCheck(sqlSession, pm);
-			int loginUserPanelLevel = pd.selectLevelCheck(sqlSession, loginUser.getMno());
-			loginUser.setPanelLevel(String.valueOf(loginUserPanelLevel));
 		}else {
 			throw new LoginException("로그인 정보가 일치하지 않습니다");
 		}
