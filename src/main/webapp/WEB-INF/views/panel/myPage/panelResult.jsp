@@ -9,7 +9,7 @@
 	<c:if test="${ !empty param.message }">
 		<c:if test="${ param.message eq 'notLoginAccess' }">
 			<script>
-				Swal.fire('접근에러', '로그인 후 이용해주시기 바랍니다', 'warning').then(function(){
+				Swal.fire('안내', '로그인 후 이용해주시기 바랍니다', 'warning').then(function(){
 					location.href="panelLogin.panel";
 				});
 			</script>
