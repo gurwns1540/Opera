@@ -50,6 +50,8 @@ public interface PanelDao {
 
 	List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException;
 
-	List<Research> selectMainResearchList(SqlSessionTemplate sqlSession) throws SelectException;
+	List<Research> selectMainResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser) throws SelectException;
+
+	int selectLevelCheck(SqlSessionTemplate sqlSession, int mno);
 
 }

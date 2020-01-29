@@ -38,6 +38,6 @@ public interface PanelService {
 
 	List<Notice> selectMainNoticeList() throws SelectException;
 
-	List<Research> selectMainResearchList() throws SelectException;
+	List<Research> selectMainResearchList(PanelMember loginUser) throws SelectException;
 
 }

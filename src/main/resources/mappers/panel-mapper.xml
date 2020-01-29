@@ -26,12 +26,6 @@
 		<result property="withdrawAccount" column="WITHDRAW_ACCOUNT"/>
 	</resultMap>
 	
-	<resultMap type="com.opera.survway.panel.model.vo.Notice" id="MainNoticeResultSet">
-		<id property="noticeNo" column="NOTICE_NO"/>
-		<result property="noticeTitle" column="NOTICE_TITLE"/>
-		<result property="noticeDate" column="NOTICE_DATE"/>
-	</resultMap>
-	
 	<resultMap type="com.opera.survway.panel.model.vo.Research" id="MainResearchResultSet">
 		<id property="researchNo" column="RESEARCH_NO"/>
 		<result property="researchName" column="RESEARCH_NAME"/>
@@ -40,6 +34,16 @@
 		<result property="researchReward" column="RESEARCH_REWARD"/>
 	</resultMap>
 	
+	<resultMap type="Notice" id="noticeListResultMap">
+	   <id property="noticeNo" column="NOTICE_NO"/>
+	   <result property="noticeTitle" column="NOTICE_TITLE"/>
+	   <result property="noticeContext" column="NOTICE_CONTEXT"/>
+	   <result property="noticeDate" column="NOTICE_DATE"/>
+	   <result property="noticeViewCount" column="NOTICE_VIEWCOUNT"/>
+	   <result property="mno" column="MNO"/>
+	   <result property="noticeStatus" column="NOTICE_STATUS"/>
+	 </resultMap>
+	 
 	<select id="loginCheck" resultMap="panelMemberResultSet" parameterType="PanelMember">
 		SELECT *
 		FROM MEMBER M
@@ -49,7 +53,11 @@
 		AND LEAVE_DATE IS NULL
 		AND CERTIFICATION = 'Y'
 	</select>
-	
+	<select id="selectLevelCheck" resultType="_int" parameterType="_int">
+		SELECT PANELLEVEL_NO
+		FROM PANEL
+		WHERE MNO = #{mno}
+	</select>
 	<select id="selectPwd" resultType="java.lang.String" parameterType="java.lang.String">
 		SELECT USER_PWD
 		FROM MEMBER
@@ -107,15 +115,6 @@
 	   <include refid="searchNoticeValue"></include>
 	 </select>
 	 	
-	 <resultMap type="Notice" id="noticeListResultMap">
-	   <id property="noticeNo" column="NOTICE_NO"/>
-	   <result property="noticeTitle" column="NOTICE_TITLE"/>
-	   <result property="noticeContext" column="NOTICE_CONTEXT"/>
-	   <result property="noticeDate" column="NOTICE_DATE"/>
-	   <result property="noticeViewCount" column="NOTICE_VIEWCOUNT"/>
-	   <result property="mno" column="MNO"/>
-	   <result property="noticeStatus" column="NOTICE_STATUS"/>
-	 </resultMap>
 	 	
 	 <sql id="searchNoticeValue">
 		<if test="searchValue != null">
@@ -131,13 +130,19 @@
 	   <include refid="searchNoticeValue"></include>
 	 </select>
 	 
-	 <select id="selectMainNoticeList" resultMap="MainNoticeResultSet" parameterType="Notice">
+	 <select id="selectMainNoticeList" resultMap="noticeListResultMap" parameterType="Notice">
 	 	SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE FROM NOTICE
 	 	ORDER BY NOTICE_NO DESC
 	 </select>
   	<select id="selectMainResearchList" resultMap="MainResearchResultSet" parameterType="Research">
   		SELECT RESEARCH_NO, RESEARCH_NAME, RESEARCH_PERIOD, RESEARCH_PERPOSE, RESEARCH_REWARD
 		FROM RESEARCH
+		WHERE RESEARCH_NO != 2
 		ORDER BY RESEARCH_NO DESC
+  	</select>
+  	<select id="selectTSResearchList" resultMap="MainResearchResultSet" parameterType="Research">
+  		SELECT RESEARCH_NO, RESEARCH_NAME, RESEARCH_PERIOD, RESEARCH_PERPOSE, RESEARCH_REWARD
+		FROM RESEARCH
+		WHERE RESEARCH_NO = 1
   	</select>
 </mapper>

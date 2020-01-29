@@ -118,12 +118,16 @@
 						<div class="ui four column grid" id="surveyListArea" style="width:95%; margin: 0 auto;">
 							<c:forEach var="list" items="${ researchList }" varStatus="status">
 								<div class="column">
-									<div class="ui segment cards eachSurveyBox"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
+									<div id="eachSurveyBox" class="ui segment cards eachSurveyBox"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
 										<div class="eachBox" style="width: 100%;">
 											<div class="top">
 												<table style="width: 100%;">
 													<tr>
-														<td class="top-left"><span style="font-size:0.9vw;">[${ list.researchNo }]</span></td>
+														<td class="top-left">
+															<span style="font-size:0.9vw;">[</span>
+															<span style="font-size:0.9vw;">${ list.researchNo }</span>
+															<span style="font-size:0.9vw;">]</span>
+														</td>
 														<td class="top-right">
 															<img src="resources/images/pc.png" alt="" class="icon"/>
 															<img src="resources/images/mobile.png" alt="" class="icon"/>
@@ -230,6 +234,28 @@
 			location.href="notice.customerCenter?noticeNo=" + $(this).children().eq(0).children().eq(0).val();
 		});
 	</script> -->
+	<script>
+//		새로고침 시 쿼리스트링 제거
+		window.onkeydown = function() { 
+			var kcode = event.keyCode; 
+			if(kcode == 116) { 
+				history.replaceState({}, null, location.pathname); 
+			} 
+		}
+		$("#surveyListArea").children().click(function() {
+// 			리서치 조사번호
+			var researchNo = $(this).children().children().children().eq(0).children().children().children().eq(0).children().eq(0).children().eq(1).text();
+// 			로그인한 패널등급번호
+			var loginUserPanelLevel = ${ loginUser.panelLevel };
+			console.log(researchNo);
+			console.log(loginUserPanelLevel);
+			if(loginUserPanelLevel == 1) {
+				Swal.fire('안내', 'Thanks Survey 먼저 진행 해주세요', 'warning').then(function() {
+					location.href="surveyList.panel";
+				});
+			}
+		});
+	</script>
 </body>
 </html>
 
