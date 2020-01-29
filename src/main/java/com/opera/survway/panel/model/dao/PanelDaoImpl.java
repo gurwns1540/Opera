@@ -241,14 +241,6 @@ public class PanelDaoImpl implements PanelDao{
 	@Override
 	public List<Research> selectMainResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser) throws SelectException {
 		List<Research> researchList = null;
-		System.out.println("dao 단 : " + loginUser);
-//		if(loginUser == null || Integer.parseInt(loginUser.getPanelLevel()) != 1) {
-//			RowBounds rowBounds = new RowBounds(0, 4);
-//			researchList = sqlSession.selectList("Panel.selectMainResearchList", null, rowBounds);
-//		} else {
-//			researchList = sqlSession.selectList("Panel.selectMainResearchList");
-//			researchList = sqlSession.selectList("Panel.selectTSResearchList");
-//		}
 		RowBounds rowBounds = new RowBounds(0, 4);
 		researchList = sqlSession.selectList("Panel.selectMainResearchList", null, rowBounds);
 		

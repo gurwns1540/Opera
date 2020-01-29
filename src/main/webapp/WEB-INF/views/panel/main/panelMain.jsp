@@ -114,7 +114,7 @@
 						<a href="surveyList.panel"><img src="resources/images/panelMainSurvey.gif" style="height:inherit;"></a>
 					</td>
 					<td style="width:84%;">
-						<a href="surveyList.panel" class="ui pink right ribbon label"><span style="font-size:0.7vw;">more</span></a>
+						<a class="ui pink right ribbon label" id="moreBtn"><span style="font-size:0.7vw;">more</span></a>
 						<div class="ui four column grid" id="surveyListArea" style="width:95%; margin: 0 auto;">
 							<c:forEach var="list" items="${ researchList }" varStatus="status">
 								<div class="column">
@@ -207,7 +207,7 @@
 				</tr>
 				<tr>
 					<td style="height:100px; text-align:center; padding-top:10px; padding-bottom:20px;">
-						<a href="panelInquiryList.panel"><img src="resources/images/inquiry.png" style="margin-left:7%; height:100%; border:grey;"></a>
+						<a id="inquiryBtn"><img src="resources/images/inquiry.png" style="margin-left:7%; height:100%; border:grey;"></a>
 					</td>
 				</tr>
 			</table>
@@ -249,10 +249,33 @@
 			var loginUserPanelLevel = "${ loginUser.panellevelNo }";
 			console.log(researchNo);
 			console.log(loginUserPanelLevel);
-			if(loginUserPanelLevel == 1) {
-				Swal.fire('안내', 'Thanks Survey 먼저 진행 해주세요', 'warning').then(function() {
+			if(loginUserPanelLevel == "1") {
+				Swal.fire('안내', 'Thanks Survey 먼저 진행해주세요!', 'warning').then(function() {
 					location.href="surveyList.panel";
 				});
+			} else if(loginUserPanelLevel == "") {
+				Swal.fire('안내', '로그인 후 이용해주세요', 'warning').then(function(){
+					location.href="panelLogin.panel";
+				});
+			}
+		});
+		$("#moreBtn").click(function() {
+			var loginUserPanelLevel = "${ loginUser.panellevelNo }";
+			if(${ loginUser == null }) {
+				Swal.fire('안내', '로그인 후 이용해주세요', 'warning').then(function(){
+					location.href="panelLogin.panel";
+				});
+			} else {
+				location.href="surveyList.panel";
+			}
+		});
+		$("#inquiryBtn").css("cursor","pointer").click(function() {
+			if(${ loginUser == null }) {
+				Swal.fire('안내', '로그인 후 이용해주세요', 'warning').then(function(){
+					location.href="panelLogin.panel";
+				});
+			} else {
+				location.href="panelInquiryList.panel";
 			}
 		});
 	</script>
