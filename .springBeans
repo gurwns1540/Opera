@@ -9,7 +9,16 @@
 	<configs>
 	</configs>
 	<autoconfigs>
-		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
+		<config>src/main/webapp/WEB-INF/config/memberManagement-servlet.xml</config>
+		<config>src/main/webapp/WEB-INF/config/member-servlet.xml</config>
+		<config>src/main/webapp/WEB-INF/config/spring-security.xml</config>
+		<config>src/main/resources/root-context.xml</config>
+		<config>src/main/webapp/WEB-INF/config/websocket-servlet.xml</config>
+		<config>src/main/webapp/WEB-INF/config/admin-servlet.xml</config>
+		<config>src/main/webapp/WEB-INF/config/panel-servlet.xml</config>
+		<config>src/main/webapp/WEB-INF/config/customerCenter-servlet.xml</config>
+		<config>src/main/webapp/WEB-INF/config/rewardManagement-servlet.xml</config>
+		<config>src/main/webapp/WEB-INF/config/corp-servlet.xml</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

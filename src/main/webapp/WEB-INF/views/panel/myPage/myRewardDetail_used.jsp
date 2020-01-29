@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
+	<jsp:include page="/WEB-INF/views/panel/common/head.jsp" />
 </head>
 <style>
 #depth1, #depth2, #depth3, #depth4 {
@@ -78,7 +79,7 @@
 </style>
 <body>
 	<div class="wrap">
-		<%@ include file="/WEB-INF/views/panel/common/header.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/header.jsp" />
 		<section class="container">
 		<br />
 		
@@ -105,7 +106,7 @@
 			</div>
 			
 			<div class="ui tabular menu">
-				<a class="item" onclick="location.href='myRewardDetail_saved.panel'"> 적립내역 </a>
+				<a class="item" onclick="location.href='myRewardDetail_saved.rewardHistory'"> 적립내역 </a>
 				<a class="item active"> 사용내역 </a>
 			</div>
 			
@@ -123,31 +124,84 @@
 							</tr>
 						</thead>  <!-- #usedTheadArea end -->
 						<tbody  id="usedTbodyArea">
-							<c:forEach begin="1" end="5" step="1">
+							<c:forEach var="reward" items="${list }">
 							<tr>
-								<td>12345</td>
-								<td>출금</td>
-								<td>2020.01.11</td>
-								<td>10000p</td>
-								<td>3900p</td>
+								<td>${reward.rewardHistoryNo}</td>
+								<c:if test="${reward.surveyNo !=0 }">
+								<td>${reward.surveyTitle }</td>
+								</c:if>
+								<c:if test="${reward.cashoutHistoryNo !=0 }">
+								<td>${reward.changeReason }</td>
+								</c:if>
+								
+								
+								<td>${reward.rewardChangeDate }</td>
+								<td>${reward.changeAmount }</td>
+								<td>${reward.afterChangePoint }</td>
 							</tr>
 						</c:forEach>
 						</tbody>  <!-- #usedTbodyArea end -->
 					</table>  <!-- .usedTableArea end -->
 				</div>  <!-- .usedArea end -->
-				<div id="pagingArea" align="center" style="margin-top: 50px;">
-			        <span>[처음]</span>
-			        <span>[이전]</span>
-			        <c:forEach var="i" begin="1" end="5">
-			        	<span><c:out value="${ i }"/></span>
-			        </c:forEach>
-			        <span>[다음]</span>
-			        <span>[마지막]</span>
-		     	</div>  <!-- #pagingArea end -->
+				<div id="pagingArea" align="center">
+					<c:url var="rewardListFirst"
+						value="myRewardDetail_used.rewardHistory">
+						<c:param name="currentPage" value="${1}" />
+						
+					</c:url>
+					<a href="${rewardListFirst}"><span>[처음]</span></a>&nbsp;
+
+					<c:if test="${pi.currentPage <= 1}">
+						<span>[이전]</span> &nbsp;
+			</c:if>
+					<c:if test="${pi.currentPage > 1}">
+						<c:url var="rewardListBack"
+							value="myRewardDetail_used.rewardHistory">
+							<c:param name="currentPage" value="${pi.currentPage - 1}" />
+							
+						</c:url>
+						<a href="${rewardListBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq pi.currentPage }">
+							<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+						</c:if>
+						<c:if test="${p ne pi.currentPage }">
+							<c:url var="rewardListCheck"
+								value="myRewardDetail_used.rewardHistory">
+								<c:param name="currentPage" value="${ p }" />
+								
+							</c:url>
+							<a href="${ rewardListCheck }"><span>${ p }</span></a>
+						</c:if>
+
+					</c:forEach>
+
+					<c:if test="${pi.currentPage < pi.maxPage}">
+						<c:url var="rewardListNext"
+							value="myRewardDetail_used.rewardHistory">
+							<c:param name="currentPage" value="${pi.currentPage + 1}" />
+							
+						</c:url>
+				&nbsp;<a href="${rewardListNext}"><span>[다음]</span></a>
+					</c:if>
+					<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+					</c:if>
+
+					<c:url var="rewardListEnd" value="myRewardDetail_used.rewardHistory">
+						<c:param name="currentPage" value="${pi.maxPage}" />
+						
+					</c:url>
+					<a href="${rewardListEnd}"><span>[마지막]</span></a>&nbsp;
+				</div>
+				<!-- #pagingArea end -->
+				
 			</div>  <!-- .contentsArea end -->
 		<br />
 		</section>  <!-- container end -->
-		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp" />
 	</div>  <!-- wrap end -->
 </body>
 </html>

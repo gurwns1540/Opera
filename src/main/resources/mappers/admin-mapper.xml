@@ -24,7 +24,7 @@
 		<result property="panelLevel" column="PANELLEVEL_NAME"/>
 		<result property="occupationNo" column="OCCUPATION_NAME"/>
 		<result property="withdrawAccount" column="WITHDRAW_ACCOUNT"/>
-		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="companyName" column="COMPANY_NAME"/> 
 		<result property="cRegistrationNumber" column="C_REGISTRATION_NUMBER"/>
 		<result property="panelRewordPoint" column="REWORD_POINT"/>
 		<result property="researchResponseDate" column="RESEARCH_RESPONSE_DATE"/>

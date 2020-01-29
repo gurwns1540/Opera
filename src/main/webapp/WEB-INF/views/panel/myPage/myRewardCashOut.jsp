@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<%@ include file="/WEB-INF/views/panel/common/head.jsp" %>
+	<jsp:include page="/WEB-INF/views/panel/common/head.jsp" />
 </head>
 <style>
 #depth1, #depth2, #depth3, #depth4 {
@@ -55,7 +56,7 @@
 </style>
 <body>
 	<div class="wrap">
-		<%@ include file="/WEB-INF/views/panel/common/header.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/header.jsp" />
 		<section class="container">
 		<br />
 		
@@ -111,7 +112,7 @@
 					</div>  <!-- moneyResultArea end -->
 					<br /><br />
 					<div class="btnArea" align="center">
-						<button class="ui blue button">신청하기</button>
+						<button class="ui blue button" id="apply">신청하기</button>
 					</div>
 				</div>  <!-- cashOutArea end -->
 			</div>  <!-- .contentsArea end -->
@@ -121,10 +122,14 @@
 					$(this).addClass("active");
 					$("#resultMoney").text($(this).val());
 				});
+				
+				$("#apply").click(function(){
+					
+				});
 			</script>
 		<br />
 		</section>  <!-- container end -->
-		<%@ include file="/WEB-INF/views/panel/common/footer.jsp" %>
+		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp" />
 	</div>  <!-- wrap end -->
 </body>
 </html>
