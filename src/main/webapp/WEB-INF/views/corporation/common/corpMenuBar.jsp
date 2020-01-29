@@ -19,6 +19,7 @@
 	body {
 		margin: 0px;
 		overflow-x: hidden;
+		font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif !important;
 	}
 	#corpHead {
 		width: 100%;

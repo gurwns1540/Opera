@@ -18,6 +18,7 @@
 		<typeAlias type="com.opera.survway.corporation.model.vo.ResearchQuestion" alias="ResearchQuestion"/>
 		<typeAlias type="com.opera.survway.common.model.vo.UploadFile" alias="UploadFile"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.Reward" alias="Reward"/>
+		<typeAlias type="com.opera.survway.corporation.model.vo.SearchResearch" alias="SearchResearch"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>

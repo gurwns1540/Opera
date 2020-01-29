@@ -41,22 +41,10 @@ public class CorpForwardController {
 		return "corpResearch/newResearchMain";
 	}
 	
-	// 리서치 이력
-	@RequestMapping("previousResearchMain.corp")
-	public String forwardPreviousResearchMain() {
-		return "corpResearch/previousResearchMain";
-	}
-	
 	// 리서치 신청하기
 	@RequestMapping("requestResearch.corp")
 	public String forwardRequestResearch() {
 		return "corpResearch/requestResearch";
-	}
-	
-	// 리서치 작성하기
-	@RequestMapping("writeQuestion.corp")
-	public String forwardWriteQuestion() {
-		return "corpResearch/writeQuestion";
 	}
 	
 	//회사 및 사업 소개 - survway 소개

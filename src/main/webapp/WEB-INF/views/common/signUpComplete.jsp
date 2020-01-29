@@ -7,6 +7,9 @@
 <jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
 <title>Insert title here</title>
 <style>
+body {
+	font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+}
 #title {
 	font-weight: bold;
 }

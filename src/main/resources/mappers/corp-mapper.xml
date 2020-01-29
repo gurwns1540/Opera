@@ -21,6 +21,14 @@
 		<result property="cRegistrationNumber" column="C_REGISTRATION_NUMBER"/>
 	</resultMap>
 	
+	<resultMap type="CorpResearch" id="previousResearchResultMap">
+		<id property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="researchPrice" column="RESEARCH_PRICE"/>
+		<result property="isBill" column="ISBILL"/>
+		<result property="researchState" column="RESEARCH_STATE"/>
+	</resultMap>
 	
 	<select id="loginCheck" resultMap="corpMemberResultSet" parameterType="CorpMember">
 		SELECT *
@@ -62,15 +70,15 @@
 		SELECT * FROM DUAL
 	</insert>
 	
-	<insert id="insertResearch" parameterType="corpResearch">
+	<insert id="insertResearch" parameterType="CorpResearch">
 		INSERT INTO RESEARCH VALUES
-		(SEQ_RESEARCH.NEXTVAL, #{researchName}, #{researchEngagementGoals}, #{researchPeriod}, #{mno}, #{researchPerpose}, NULL)
+		(SEQ_RESEARCH.NEXTVAL, #{researchName}, #{researchEngagementGoals}, #{researchPeriod}, #{mno}, #{researchPerpose}, NULL, NULL)
 		<selectKey keyProperty="researchNo" resultType="_int" order="AFTER">
 			SELECT SEQ_RESEARCH.CURRVAL FROM DUAL
 		</selectKey>
 	</insert>
 	
-	<insert id="insertTarget" parameterType="corpResearch">
+	<insert id="insertTarget" parameterType="CorpResearch">
 		INSERT INTO RESEARCHTARGET VALUES
 		(SEQ_RESEARCHTARGET.NEXTVAL, #{targetGender}, #{targetAgeRange}, #{targetLocation}, #{researchNo}, #{occupationNo}, #{additionaltEtc})
 	</insert>
@@ -114,10 +122,43 @@
 		(SEQ_UPLOADFILE.NEXTVAL, #{fileType}, #{originName}, #{changeName}, #{filePath}, SYSDATE, 'Y', NULL, NULL, NULL, NULL, #{rchoiceNo}, NULL)
 	</insert>
 	
-	<insert id="insertResearchState" parameterType="corpResearch">
+	<insert id="insertResearchState" parameterType="CorpResearch">
 		INSERT INTO RSTATUSHISTORY VALUES 
 		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 1, SYSDATE, NULL)
 	</insert>
+	
+	<select id="previousResearch" parameterType="SearchResearch" resultMap="previousResearchResultMap">
+		SELECT R.RESEARCH_NO, R.RESEARCH_NAME, R.RESEARCH_PERIOD, NVL(R.RESEARCH_PRICE, 0) AS RESEARCH_PRICE, RS.RESEARCH_STATE, NVL2(BH.PAYMENT_AMOUNT, '결제 완료', '미결제') AS ISBILL FROM RESEARCH R
+		JOIN RSTATUSHISTORY RH ON (R.RESEARCH_NO = RH.RESEARCH_NO)
+		JOIN RESEARCHSTATE RS ON (RS.RESEARCH_STATE_NO = RH.RESEARCH_STATE_NO)
+		LEFT JOIN BILLINGHISTORY BH ON (BH.RESEARCH_NO = R.RESEARCH_NO)
+		WHERE R.MNO = #{mno}
+		<include refid="researchState"/>
+		<include refid="researchName"/>
+	</select>
+	
+	<sql id="researchState">
+		<if test="researchState != null">
+			AND RS.RESEARCH_STATE = #{researchState}
+		</if>
+	</sql>
+	
+	<sql id="researchName">
+		<if test="researchName != null">
+			AND R.RESEARCH_NAME = #{researchName}
+		</if>
+	</sql>
+	
+	<select id="getListCountResearch" parameterType="SearchResearch" resultType="_int">
+		SELECT COUNT(*)
+		FROM RESEARCH R
+		JOIN RSTATUSHISTORY RH ON (R.RESEARCH_NO = RH.RESEARCH_NO)
+		JOIN RESEARCHSTATE RS ON (RS.RESEARCH_STATE_NO = RH.RESEARCH_STATE_NO)
+		LEFT JOIN BILLINGHISTORY BH ON (BH.RESEARCH_NO = R.RESEARCH_NO)
+		WHERE R.MNO = #{mno}
+		<include refid="researchState"/>
+		<include refid="researchName"/>
+	</select>
 </mapper>
 
 

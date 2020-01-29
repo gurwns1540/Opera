@@ -21,6 +21,7 @@
 	body, html {
 		margin: 0px;
 		height: 100%;
+		font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
 	}
 	#accordian {
 		background: #003E5C;

@@ -72,6 +72,30 @@
   		height: 70px;
   		border-bottom: 1px solid #C5C5C5;
   	}
+  	#pagingArea {
+		margin-top: 40px;
+		
+		/* 드래그 방지용 소스*/
+		-ms-user-select: none; 
+		-moz-user-select: -moz-none; 
+		-webkit-user-select: none; 
+		-khtml-user-select: none; 
+		user-select:none;
+		/* 드래그 방지용 소스*/
+	}
+	#pagingArea span {
+		margin-left: 5px;
+		margin-right: 5px;
+		color: black;
+		font-size: 10pt;
+	}
+	#pagingArea span:hover {
+		margin-left: 5px;
+		margin-right: 5px;
+		font-size: 10pt;
+		color: dodgerblue;
+		cursor: pointer;
+	}
 </style>
 </head>
 <body>
@@ -91,7 +115,7 @@
 			<div id="statusSelect">
 	
 				<div class="ui clearable multiple selection dropdown">
-				  	<input type="hidden" name="language">
+				  	<input type="hidden" name="researchState">
 				  	<i class="dropdown icon"></i>
 				  	<div class="default text">Select Status</div>
 				  	<div class="menu">
@@ -108,7 +132,7 @@
 			</div>
 			<div id="selectBoxArea">
 				<div class="ui action input">
-	  				<input type="text" placeholder="Search...">
+	  				<input type="text" name="researchName" placeholder="프로젝트 명">
 					<button class="ui icon button">
 						<i class="search icon"></i>
 					</button>
@@ -125,26 +149,104 @@
 				<th style="width: 10%;">조사기간</th>
 				<th style="width: 10%;">설문내용</th>
 			</tr>
-			<c:forEach begin="0" end="3">
+			<c:forEach var="research" items="${ researchList }">
 				<tr>
-					<td>번호</td>
-					<td>프로젝트명</td>
-					<td>진행상태</td>
-					<td>결제금액</td>
-					<td>결제상태</td>
-					<td>조사기간</td>
-					<td>설문내용</td>
+					<td>${ research.researchNo }</td>
+					<td>${ research.researchName }</td>
+					<td>${ research.researchState }</td>
+					<td><c:if test="${ research.researchPrice == 0}">
+							-
+						</c:if>
+						<c:if test="${ research.researchPrice != 0}">
+							${ research.researchPrice }
+						</c:if> 
+					</td>
+					<td>${ research.isBill }</td>
+					<td>${ research.additionaltEtc }<br>
+						${ research.researchPeriod }</td>
+					<td><c:if test="${ research.researchState == '승인 대기'}">
+							-
+						</c:if>
+						<c:if test="${ research.researchState != '승인 대기'}">
+							<input type="button" value="미리 보기">
+						</c:if> 
+					</td>
 				</tr>
 			</c:forEach>
 		</table>
 		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
+			<c:url var="researchFirst" value="previousResearchMain.corpResearch">
+				<c:param name="currentPage" value="${1}"/>
+				<c:if test="${ !empty param.researchState }">
+					<c:param name="researchState" value="${param.researchState}"/>
+				</c:if>
+				<c:if test="${ !empty param.researchName }">
+					<c:param name="researchName" value="${param.researchName}"/>
+				</c:if>
+			</c:url>
+			<a href="${researchFirst}"><span>[처음]</span></a>&nbsp;
+			
+			<c:if test="${pi.currentPage <= 1}">
+				<span>[이전]</span> &nbsp;
+			</c:if>
+			<c:if test="${pi.currentPage > 1}">
+				<c:url var="researchBack" value="previousResearchMain.corpResearch">
+					<c:param name="currentPage" value="${pi.currentPage - 1}"/>
+					<c:if test="${ !empty param.researchState }">
+						<c:param name="researchState" value="${param.researchState}"/>
+					</c:if>
+					<c:if test="${ !empty param.researchName }">
+						<c:param name="researchName" value="${param.researchName}"/>
+					</c:if>
+				</c:url>
+				<a href="${researchBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+			
+			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+				<c:if test="${p eq pi.currentPage }">
+					<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+				</c:if>
+				<c:if test="${p ne pi.currentPage }">
+					<c:url var="researchCheck" value="previousResearchMain.corpResearch">
+						<c:param name="currentPage" value="${ p }"/>
+						<c:if test="${ !empty param.researchState }">
+							<c:param name="researchState" value="${param.researchState}"/>
+						</c:if>
+						<c:if test="${ !empty param.researchName }">
+							<c:param name="researchName" value="${param.researchName}"/>
+						</c:if>
+					</c:url>
+					<a href="${ researchCheck }"><span>${ p }</span></a>
+				</c:if>
+				
 			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
+			
+			<c:if test="${pi.currentPage < pi.maxPage}">
+				<c:url var="researchNext" value="previousResearchMain.corpResearch">
+					<c:param name="currentPage" value="${pi.currentPage + 1}"/>
+					<c:if test="${ !empty param.researchState }">
+						<c:param name="researchState" value="${param.researchState}"/>
+					</c:if>
+					<c:if test="${ !empty param.researchName }">
+						<c:param name="researchName" value="${param.researchName}"/>
+					</c:if>
+				</c:url>
+				&nbsp;<a href="${researchNext}"><span>[다음]</span></a>
+			</c:if>
+			<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+			</c:if>
+			
+			<c:url var="researchEnd" value="previousResearchMain.corpResearch">
+				<c:param name="currentPage" value="${pi.maxPage}"/>
+				<c:if test="${ !empty param.researchState }">
+					<c:param name="researchState" value="${param.researchState}"/>
+				</c:if>
+				<c:if test="${ !empty param.researchName }">
+					<c:param name="researchName" value="${param.researchName}"/>
+				</c:if>
+			</c:url>
+			<a href="${researchEnd}"><span>[마지막]</span></a>&nbsp;
 		</div>
 	</div>
 	<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
