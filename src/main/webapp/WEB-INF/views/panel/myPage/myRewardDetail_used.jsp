@@ -106,7 +106,7 @@
 			</div>
 			
 			<div class="ui tabular menu">
-				<a class="item" onclick="location.href='myRewardDetail_saved.rewardHistory'"> 적립내역 </a>
+				<a class="item" onclick="location.href='myRewardDetail_saved.myPage'"> 적립내역 </a>
 				<a class="item active"> 사용내역 </a>
 			</div>
 			
@@ -145,7 +145,7 @@
 				</div>  <!-- .usedArea end -->
 				<div id="pagingArea" align="center">
 					<c:url var="rewardListFirst"
-						value="myRewardDetail_used.rewardHistory">
+						value="myRewardDetail_used.myPage">
 						<c:param name="currentPage" value="${1}" />
 						
 					</c:url>
@@ -156,7 +156,7 @@
 			</c:if>
 					<c:if test="${pi.currentPage > 1}">
 						<c:url var="rewardListBack"
-							value="myRewardDetail_used.rewardHistory">
+							value="myRewardDetail_used.myPage">
 							<c:param name="currentPage" value="${pi.currentPage - 1}" />
 							
 						</c:url>
@@ -169,7 +169,7 @@
 						</c:if>
 						<c:if test="${p ne pi.currentPage }">
 							<c:url var="rewardListCheck"
-								value="myRewardDetail_used.rewardHistory">
+								value="myRewardDetail_used.myPage">
 								<c:param name="currentPage" value="${ p }" />
 								
 							</c:url>
@@ -180,7 +180,7 @@
 
 					<c:if test="${pi.currentPage < pi.maxPage}">
 						<c:url var="rewardListNext"
-							value="myRewardDetail_used.rewardHistory">
+							value="myRewardDetail_used.myPage">
 							<c:param name="currentPage" value="${pi.currentPage + 1}" />
 							
 						</c:url>
@@ -190,7 +190,7 @@
 				&nbsp; <span>[다음]</span>
 					</c:if>
 
-					<c:url var="rewardListEnd" value="myRewardDetail_used.rewardHistory">
+					<c:url var="rewardListEnd" value="myRewardDetail_used.myPage">
 						<c:param name="currentPage" value="${pi.maxPage}" />
 						
 					</c:url>

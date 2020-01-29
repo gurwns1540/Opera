@@ -31,7 +31,7 @@ public class RewardController {
 	 * @ModifyDate	:2020. 1. 27.
 	 * @Description	:리워드 적립내역
 	 */
-	@RequestMapping("myRewardDetail_saved.rewardHistory")
+	@RequestMapping("myRewardDetail_saved.myPage")
 	public String showMyRewardDetail_saved(HttpSession session, Model model,Reward rd) {
 		PanelMember panelMember = (PanelMember)session.getAttribute("loginUser");
 		int mno = panelMember.getMno();
@@ -64,7 +64,7 @@ public class RewardController {
 	 * @ModifyDate	:2020. 1. 28.
 	 * @Description	:리워드 사용내역
 	 */
-	@RequestMapping("myRewardDetail_used.rewardHistory")
+	@RequestMapping("myRewardDetail_used.myPage")
 	public String showMyRewardDetail_used(HttpSession session, Model model, Reward r) {
 		PanelMember panelMember = (PanelMember)session.getAttribute("loginUser");
 		int mno = panelMember.getMno();
@@ -89,7 +89,7 @@ public class RewardController {
 	}
 	
 	
-	@RequestMapping("myRewardCashOut.rewardHistory")
+	@RequestMapping("myRewardCashOut.myPage")
 	public String applyRewardCashOut(HttpSession session, Model model, Reward r) {
 		PanelMember panelMember = (PanelMember) session.getAttribute("loginUser");
 		int mno = panelMember.getMno();
