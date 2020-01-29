@@ -229,18 +229,18 @@ div.ui.segment.eachSurveyBox {
 							<table style="width:100%;">
 								<tr>
 									<td>
-										<button class="ui toggle button">
+										<button class="loginCheck ui toggle button">
 											<i class="heart outline icon"></i> 좋아요
 											</button>
-										<button class="ui basic button" id="commentBtn">
+										<button class="loginCheck ui basic button" id="commentBtn">
 											<i class="comment dots outline icon"></i> 댓글
 										</button>
-										<button class="ui basic button" id="reportBtn">
+										<button class="loginCheck ui basic button" id="reportBtn">
 											<i class="bell outline icon"></i> 신고
 										</button>
 									</td>
 									<td style="text-align:right;">
-										<button id="voteBtn">투표하기</button>
+										<button class="loginCheck" id="voteBtn">투표하기</button>
 									</td>
 								</tr>
 							</table>
@@ -309,18 +309,18 @@ div.ui.segment.eachSurveyBox {
 							<table style="width:100%;">
 								<tr>
 									<td>
-										<button class="ui toggle button">
+										<button class="loginCheck ui toggle button">
 											<i class="heart outline icon"></i> 좋아요
 											</button>
-										<button class="ui basic button" id="commentBtn">
+										<button class="loginCheck ui basic button" id="commentBtn">
 											<i class="comment dots outline icon"></i> 댓글
 										</button>
-										<button class="ui basic button" id="reportBtn">
+										<button class="loginCheck ui basic button" id="reportBtn">
 											<i class="bell outline icon"></i> 신고
 										</button>
 									</td>
 									<td style="text-align:right;">
-										<button id="voteBtn">투표하기</button>
+										<button class="loginCheck" id="voteBtn">투표하기</button>
 									</td>
 								</tr>
 							</table>
@@ -340,7 +340,7 @@ div.ui.segment.eachSurveyBox {
 			<div id="scroll" style="position:absolute;right:0;top:0;">
 				<div class="ui right attached rail">
 					<div class="ui segment" id="firstWing">
-						<button id="uploadBtn">내 투표 올리기</button>
+						<button class="loginCheck" id="uploadBtn">내 투표 올리기</button>
 					</div>
 					<div class="ui segment" id="secondWing">
 						<div id="searchInput">
@@ -409,7 +409,7 @@ div.ui.segment.eachSurveyBox {
 						</div>
 					</div>
 					<div class="ui segment" id="fifthWing">
-						<button id="mySurveyBtn">내 패널서베이 보러가기</button>
+						<button id="mySurveyBtn" class="loginCheck">내 패널서베이 보러가기</button>
 					</div>
 				</div>
 			</div>
@@ -439,48 +439,13 @@ div.ui.segment.eachSurveyBox {
 		$(document).on("click", ".ui.toggle.button", function(){
 			$(this).toggleClass('active');
 		});
-		
+		$(".loginCheck").click(function() {
+			if(${ loginUser == null }) {
+				Swal.fire('안내', '로그인 후 이용해주세요', 'warning').then(function(){
+					location.href="panelLogin.panel";
+				});
+			}
+		});
 	</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

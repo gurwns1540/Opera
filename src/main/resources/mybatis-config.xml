@@ -6,6 +6,8 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.opera.survway.panel.model.vo.PanelMember" alias="PanelMember"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.Notice" alias="Notice"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.Research" alias="Research"/>
 		<typeAlias type="com.opera.survway.corporation.model.vo.CorpMember" alias="CorpMember"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.Inquiry" alias="Inquiry"/>
 		<typeAlias type="com.opera.survway.common.model.vo.AllMember" alias="AllMember"/>
@@ -15,7 +17,7 @@
 		<typeAlias type="com.opera.survway.corporation.model.vo.ResearchChoice" alias="ResearchChoice"/>
 		<typeAlias type="com.opera.survway.corporation.model.vo.ResearchQuestion" alias="ResearchQuestion"/>
 		<typeAlias type="com.opera.survway.common.model.vo.UploadFile" alias="UploadFile"/>
-		
+		<typeAlias type="com.opera.survway.panel.model.vo.Reward" alias="Reward"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>

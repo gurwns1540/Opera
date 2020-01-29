@@ -10,15 +10,16 @@
 <style>
 	#corpMainArea {
 		width: 100%;
-		height:auto;
+		height:inherit;
 		min-height: 700px;
 		margin-top: 30px;
+		display:table;
 	}
 	#sidebar {
 		border-right: 1.5px solid #B7B7B7;
 		width: 20%;
 		float: left;
-		height: 770px;
+		height: inherit;
 	}
 	#sidebarText {
 		width: fit-content;
@@ -40,8 +41,10 @@
 	#mainBox {
 		width: 54%;
 		height: auto;
+		min-height:750px;
 		float:left;
 		margin-left: 50px;
+		display:table-row;
 	}
 	.heading:hover {
 		cursor:pointer;
@@ -66,6 +69,20 @@
 	.ui.blue.button:hover {
 		background-color: #217BA7 !important;
 	}
+	.section {
+		height: 30px;
+		width: 100%;
+		font-size: 16pt;
+		text-align: left;
+		vertical-align: bottom;
+		font-weight: bold;
+		color: #3D3D3D;
+		padding-top:7px;
+		margin-top:20px;
+	}
+	.sectionLine {
+		padding-bottom:40px;
+	}
 </style>
 </head>
 <body>
@@ -75,23 +92,22 @@
 		<div id="sidebar">
 			<div id="sidebarText">
 				<div class="off" onclick="location.href='survwayIntroduction.corp'">SURVWAY 소개</div>
-				<div class="on">SURVWAY 사업</div>
+				<div class="on">SURVWAY 사업 소개</div>
 			</div>
 		</div>
-		
-		
-		<div id=mainbox>
+		<div id="mainBox">
+			<div class="section">
+				◈ SURVWAY 사업
+			</div>
+			<div class="sectionLine">
+				<hr>
+			</div>
+			<div style="width:90%; margin:0 auto; margin-bottom:80px;">
+				<img src="resources/images/businessInfogram.png" style="width:100%; margin-top:20px;">
+			</div>
 		</div>
-		
-		
-		
-		
-		
-		
-		
-		
 	</div>
-	<div style="margin-top: 120px;">
+	<div style="margin-top: 80px;">
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 </body>

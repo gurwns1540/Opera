@@ -49,6 +49,7 @@ public class MemberManagementController {
 		
 		if(queryString != null) { 
 			queryMap = Util.splitQuery(queryString);
+
 			if(queryMap.containsKey("currentPage")) {
 				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
 			}
@@ -109,4 +110,75 @@ public class MemberManagementController {
 		}
 		return mv;
 	}
+	
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 신규 패널 전체 조회 & 검색
+	 */
+	@RequestMapping("newPanelManagement.memberManagement")
+	public String selectNewPanelManagement(HttpServletRequest request, Model model) {
+		String queryString = request.getQueryString();
+		Map<String, List<String>> queryMap = null;
+		
+		int currentPage = 1;
+		String searchInput = "";
+		SearchMember searchMember = new SearchMember();
+		
+		if(queryString != null) {
+			queryMap = Util.splitQuery(queryString);
+			if(queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+			if(queryMap.containsKey("searchInput")) {
+				searchInput = queryMap.get("searchInput").get(0);
+				searchMember.setSearchInput(searchInput);
+			}
+			System.out.println("MemberManagementControler - searchMember : " + searchMember);
+		}
+		
+		int listCount = 0;
+		
+		try {
+			listCount = as.getListCountNewPanel(searchMember);
+			System.out.println(listCount);
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			searchMember.setPi(pi);
+			
+			List<AllMember> newPanelList = as.getListNewPanel(searchMember); 
+			
+			System.out.println("newPanelList : " + newPanelList);
+			model.addAttribute("newPanelList", newPanelList);
+			model.addAttribute("pi", pi);
+			
+			return "newPanelManagement";
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
+	}
+	
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 신규 패널 상세보기 ajax
+	 */
+	@PostMapping("selectNewPanel.memberManagement")
+	public ModelAndView selectNewPanel(String mno, ModelAndView mv) {
+		System.out.println("selectNewPanel mno : " + mno);
+		AllMember newPanel = null;
+		try {
+			newPanel = as.selectNewPanelDetail(Integer.parseInt(mno));
+			
+			mv.addObject("newPanel", newPanel);
+			mv.setViewName("jsonView");
+		} catch (SelectException e) {
+			mv.setViewName("redirect:errorPage.me");
+		}
+		return mv;
+	}
+	
 }

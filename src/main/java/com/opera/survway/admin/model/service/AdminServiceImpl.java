@@ -167,4 +167,56 @@ public class AdminServiceImpl implements AdminService{
 		return rewardCompleteHistoryList;
 	}
 
+	/**
+	 * @throws SelectException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 신규회원관리페이지 페이징을 위해 전체 신규회원리스트 갯수 가져오기
+	 */
+	@Override
+	public int getListCountNewPanel(SearchMember searchMember) throws SelectException {
+		int listCount = ad.getListCountNewPanel(sqlSession, searchMember);
+
+		if(listCount <= 0) {
+			throw new SelectException("신규회원 수 조회 실패");
+		}
+		
+		return listCount;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 신규회원관리페이지 회원정보목록 조회해서 가져오기
+	 */
+	@Override
+	public List<AllMember> getListNewPanel(SearchMember searchMember) throws SelectException {
+
+		List<AllMember> memberList = ad.getListNewPanel(sqlSession, searchMember);
+
+		if(memberList == null) {
+			throw new SelectException("신규회원 조회 실패");
+		}
+		return memberList;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 신규회원관리페이지 신규회원정보 상세보기 모달창에 띄울 정보 조회해서 가져오기
+	 */
+	@Override
+	public AllMember selectNewPanelDetail(int mno) throws SelectException {
+		AllMember newPanelDetail = ad.getNewPanelDetail(sqlSession, mno);
+		if(newPanelDetail == null) {
+			throw new SelectException("신규회원 상세보기 조회 실패");
+		}
+		return newPanelDetail;
+	}
+
 }

@@ -138,6 +138,21 @@
 		<servlet-name>rewardManagementServlet</servlet-name>
 		<url-pattern>*.reward</url-pattern>
 	</servlet-mapping>
+	
+	<!-- rewardHistory 서블릿 연결 -->
+	<servlet>
+		<servlet-name>rewardHistoryServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/rewardHistory-servlet.xml</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>rewardHistoryServlet</servlet-name>
+		<url-pattern>*.myPage</url-pattern>
+	</servlet-mapping>
 
 	<!-- corpResearch 서블릿 연결 -->
 	<servlet>

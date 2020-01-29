@@ -5,8 +5,13 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.Research;
+import com.opera.survway.panel.model.vo.Reward;
+import com.opera.survway.panel.model.vo.SearchNotice;
 
 public interface PanelDao {
 
@@ -37,6 +42,22 @@ public interface PanelDao {
 
 	int getListCountInquiry(SqlSessionTemplate sqlSession, Inquiry iq);
 
+	int getListCountRewardSaved(SqlSessionTemplate sqlSession, Reward rd);
+
+	List<Reward> showMyRewardDetailSaved(SqlSessionTemplate sqlSession, Reward rd);
+
+	List<Reward> showMyRewardDetailUsed(SqlSessionTemplate sqlSession, Reward r);
+
+	int getListCountRewardUsed(SqlSessionTemplate sqlSession, Reward r);
 	int updateLeaveMember(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int getNoticeListCount(SqlSessionTemplate sqlSession ,SearchNotice searchNotice);
+
+	List<Notice> selectNoticeList(SqlSessionTemplate sqlSession, SearchNotice searchNotice);
+
+	List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException;
+
+	List<Research> selectMainResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser) throws SelectException;
+
 
 }

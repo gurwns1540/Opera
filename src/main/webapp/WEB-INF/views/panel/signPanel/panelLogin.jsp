@@ -170,11 +170,11 @@ td.leftTable.second {
 			
 			<br />
 		</section>  <!-- container end -->
-		<c:if test="${ !empty param.msg }">
+		<c:if test="${ !empty param.message }">
 			<script>
 				Swal.fire(
-				      '실패',
-				      '${ param.msg }',
+				      '로그인 실패',
+				      '${ param.message }',
 				      'warning'
 				);
 			</script>
@@ -204,6 +204,13 @@ td.leftTable.second {
 					$("#corpCheckBtn").css({"background":"#00679A", "color":"white"});
 				}
 			});
+		}
+//		새로고침 시 쿼리스트링 제거
+		window.onkeydown = function() { 
+			var kcode = event.keyCode; 
+			if(kcode == 116) { 
+				history.replaceState({}, null, location.pathname); 
+			} 
 		}
 	</script>
 </body>

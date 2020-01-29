@@ -473,7 +473,7 @@
 					var passphrase = "1234";
 			        var decrypted1 = CryptoJS.AES.decrypt(phone, passphrase);
 			        var phone1 = decrypted1.toString(CryptoJS.enc.Utf8);
-			        $("#address").text(address1);
+			        
 					if(type == '기업'){
 						$("#corp td").eq(0).text(data.member.mno);
 						$("#corp td").eq(1).text(data.member.companyName);

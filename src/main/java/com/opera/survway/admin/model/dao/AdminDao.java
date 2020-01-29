@@ -33,4 +33,10 @@ public interface AdminDao {
 
 	List<PanelRewardHistory> manageCashoutComplete(SqlSessionTemplate sqlSession, PageInfo pi);
 
+	int getListCountNewPanel(SqlSessionTemplate sqlSession, SearchMember searchMember);
+
+	List<AllMember> getListNewPanel(SqlSessionTemplate sqlSession, SearchMember searchMember);
+
+	AllMember getNewPanelDetail(SqlSessionTemplate sqlSession, int mno);
+
 }

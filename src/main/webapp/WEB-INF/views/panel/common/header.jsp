@@ -69,7 +69,7 @@
 			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; border-right: 1px solid #b4b4b4; height: 35px; font-size:0.8vw;">
 		   		 고객센터
 		    	<div class="menu">
-			    	<a href="notice.panel" class="item">공지사항</a>
+			    	<a href="notice.customerCenter" class="item">공지사항</a>
 			    	<a href="faq.panel" class="item">자주묻는 질문</a>
 			    	<a href="panelInquiryList.customerCenter"class="item">내 1:1 문의</a>
 		    	</div>

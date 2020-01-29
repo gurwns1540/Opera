@@ -21,12 +21,29 @@
 		<result property="panelGender" column="PANEL_GENDER"/>
 		<result property="referPanelCode" column="REFER_PANEL_CODE"/>
 		<result property="nominee" column="NOMINEE"/>
-		<result property="panelLevel" column="PANEL_LEVEL"/>
+		<result property="panellevelNo" column="PANELLEVEL_NO"/>
 		<result property="occupationNo" column="OCCUPATION_NO"/>
 		<result property="withdrawAccount" column="WITHDRAW_ACCOUNT"/>
 	</resultMap>
 	
+	<resultMap type="com.opera.survway.panel.model.vo.Research" id="MainResearchResultSet">
+		<id property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchReward" column="RESEARCH_REWARD"/>
+	</resultMap>
 	
+	<resultMap type="Notice" id="noticeListResultMap">
+	   <id property="noticeNo" column="NOTICE_NO"/>
+	   <result property="noticeTitle" column="NOTICE_TITLE"/>
+	   <result property="noticeContext" column="NOTICE_CONTEXT"/>
+	   <result property="noticeDate" column="NOTICE_DATE"/>
+	   <result property="noticeViewCount" column="NOTICE_VIEWCOUNT"/>
+	   <result property="mno" column="MNO"/>
+	   <result property="noticeStatus" column="NOTICE_STATUS"/>
+	 </resultMap>
+	 
 	<select id="loginCheck" resultMap="panelMemberResultSet" parameterType="PanelMember">
 		SELECT *
 		FROM MEMBER M
@@ -36,7 +53,11 @@
 		AND LEAVE_DATE IS NULL
 		AND CERTIFICATION = 'Y'
 	</select>
-	
+	<select id="selectLevelCheck" resultType="_int" parameterType="_int">
+		SELECT PANELLEVEL_NO
+		FROM PANEL
+		WHERE MNO = #{mno}
+	</select>
 	<select id="selectPwd" resultType="java.lang.String" parameterType="java.lang.String">
 		SELECT USER_PWD
 		FROM MEMBER
@@ -73,17 +94,129 @@
 		UPDATE MEMBER SET USER_PWD = #{userPwd}, MODIFY_DATE = SYSDATE
 		WHERE MNO = #{mno}
 	</update>
-
-  <insert id="insertRewardPanel" parameterType="PanelMember">
+	
+	 <insert id="insertRewardPanel" parameterType="PanelMember">
 		INSERT INTO PANELREWARD VALUES(0, #{mno})
 	</insert>
 	
 	<insert id="insertTernaryPanel" parameterType="PanelMember">
 		INSERT INTO PANELTERNARY VALUES(#{mno}, 0)
 	</insert>
-  	
-  	<update id="updateLeaveMember" parameterType="PanelMember">
-  		UPDATE MEMBER SET LEAVE_DATE = SYSDATE, MODIFY_DATE = SYSDATE, CERTIFICATION = 'N', LEAVE_REASON = #{leaveReason}
-  		WHERE MNO = #{mno}
-  	</update>
+  
+  <resultMap type="Reward" id="RewardResultSet">
+		<id property="rewardHistoryNo" column="REWARDHISTORY_NO"/>
+		<result property="afterChangePoint" column="AFTERCHANGE_POINT"/>
+		<result property="changeReason" column="CHANGE_REASON"/>
+		<result property="changeAmount" column="CHANGE_AMOUNT"/>
+		<result property="mno" column="MNO"/>
+		<result property="rewardChangeDate" column="REWARD_CHANGEDATE"/>
+		<result property="researchHistoryNo" column="RESEARCHHISTORY_NO"/>
+		<result property="cashoutHistoryNo" column="CASHOUTHISTORY_NO"/>
+		<result property="sHistoryNo" column="SHISTORY_NO"/>
+		<result property="surveyNo" column="SURVEY_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="surveyTitle" column="SURVEY_TITLE"/>
+	</resultMap>
+	
+	<select id="getListCountRewardSaved" resultType="_int" parameterType="Reward">
+		SELECT COUNT(*) FROM REWARDHISTORY
+		WHERE CHANGE_AMOUNT LIKE '%' || '+' || '%'
+		AND MNO = #{mno}
+	</select>
+	
+	<select id="showMyRewardDetailSaved" resultMap="RewardResultSet" parameterType="Reward">
+			SELECT RW.REWARDHISTORY_NO, RW.AFTERCHANGE_POINT, RW.CHANGE_REASON, RW.CHANGE_AMOUNT, RW.MNO,REWARD_CHANGEDATE, RW.RESEARCHHISTORY_NO,R.RESEARCH_NAME
+			FROM REWARDHISTORY RW
+			LEFT JOIN RESEARCHHISTORY RH ON(RW.RESEARCHHISTORY_NO = RH.RESEARCHHISTORY_NO)
+			LEFT JOIN RESEARCH R ON(RH.RESEARCH_NO = R.RESEARCH_NO)
+			WHERE RW.MNO = #{mno}
+			AND CHANGE_AMOUNT LIKE '%' || '+' || '%'
+			AND RH.RESEARCHHISTORY_NO IS NOT NULL
+			
+			UNION
+			
+			SELECT RW.REWARDHISTORY_NO, RW.AFTERCHANGE_POINT, RW.CHANGE_REASON, RW.CHANGE_AMOUNT, RW.MNO,REWARD_CHANGEDATE,RW.SHISTORY_NO,PS.SURVEY_TITLE
+			FROM REWARDHISTORY RW
+			LEFT JOIN SURVEYHISTORY SH ON(RW.SHISTORY_NO = SH.SHISTORY_NO)
+			LEFT JOIN PANELSURVEY PS ON(SH.SURVEY_NO = PS.SURVEY_NO)
+			WHERE RW.MNO = #{mno}
+			AND CHANGE_AMOUNT LIKE '%' || '+' || '%'
+			AND RW.SHISTORY_NO IS NOT NULL
+			ORDER BY REWARD_CHANGEDATE DESC
+	</select>
+	
+	<select id="getListCountRewardUsed" resultType="_int" parameterType="Reward">
+		SELECT COUNT(*)
+		FROM REWARDHISTORY
+		WHERE MNO = #{mno}
+		AND  CHANGE_AMOUNT LIKE '%' || '-' || '%'
+	</select>
+	
+	<select id="showMyRewardDetailUsed" resultMap="RewardResultSet" parameterType="Reward">
+		
+		SELECT RH.REWARDHISTORY_NO, RH.AFTERCHANGE_POINT,RH.CHANGE_REASON,RH.CHANGE_AMOUNT, RH.REWARD_CHANGEDATE,RH.SURVEY_NO, PS.SURVEY_TITLE
+		FROM REWARDHISTORY RH
+		LEFT JOIN PANELSURVEY PS ON(RH.SURVEY_NO = PS.SURVEY_NO)
+		WHERE RH.MNO= #{mno}
+        AND RH.CHANGE_AMOUNT LIKE '%' || '-' || '%'
+		AND RH.SURVEY_NO IS NOT NULL
+		
+		UNION 
+		
+		SELECT R.REWARDHISTORY_NO,R.AFTERCHANGE_POINT, R.CHANGE_REASON, R.CHANGE_AMOUNT, R.REWARD_CHANGEDATE, R.CASHOUTHISTORY_NO,'캐시 아웃'
+		FROM REWARDHISTORY R
+		WHERE R.MNO =#{mno}
+		AND R.CHANGE_AMOUNT LIKE '%' || '-' || '%'
+		AND R.CASHOUTHISTORY_NO IS NOT NULL
+		ORDER BY REWARD_CHANGEDATE DESC
+
+
+	</select>
+	
+
+
+
+	 	
+	 <update id="updateLeaveMember" parameterType="PanelMember">
+	   UPDATE MEMBER SET LEAVE_DATE = SYSDATE, MODIFY_DATE = SYSDATE, CERTIFICATION = 'N', LEAVE_REASON = #{leaveReason}
+	   WHERE MNO = #{mno}
+	 </update>
+	
+	 <select id="getNoticeListCount" resultType="_int">
+	   SELECT COUNT(*) 
+	   FROM NOTICE
+	   WHERE NOTICE_STATUS='Y'
+	   <include refid="searchNoticeValue"></include>
+	 </select>
+	 	
+	 	
+	 <sql id="searchNoticeValue">
+		<if test="searchValue != null">
+			AND NOTICE_TITLE LIKE '%'|| #{searchValue} ||'%'
+		</if>
+	</sql>
+	 	
+	 <select id="selectNoticeList" resultMap="noticeListResultMap">
+	   SELECT *
+	   FROM NOTICE
+	   WHERE NOTICE_STATUS='Y'
+	   ORDER BY NOTICE_NO DESC
+	   <include refid="searchNoticeValue"></include>
+	 </select>
+	 
+	 <select id="selectMainNoticeList" resultMap="noticeListResultMap" parameterType="Notice">
+	 	SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE FROM NOTICE
+	 	ORDER BY NOTICE_NO DESC
+	 </select>
+  	<select id="selectMainResearchList" resultMap="MainResearchResultSet" parameterType="Research">
+  		SELECT RESEARCH_NO, RESEARCH_NAME, RESEARCH_PERIOD, RESEARCH_PERPOSE, RESEARCH_REWARD
+		FROM RESEARCH
+		WHERE RESEARCH_NO != 2
+		ORDER BY RESEARCH_NO DESC
+  	</select>
+  	<select id="selectTSResearchList" resultMap="MainResearchResultSet" parameterType="Research">
+  		SELECT RESEARCH_NO, RESEARCH_NAME, RESEARCH_PERIOD, RESEARCH_PERPOSE, RESEARCH_REWARD
+		FROM RESEARCH
+		WHERE RESEARCH_NO = 1
+  	</select>
 </mapper>
