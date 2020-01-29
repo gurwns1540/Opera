@@ -7,14 +7,13 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
-import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.Research;
+import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 
 
@@ -190,6 +189,7 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.selectOne("Panel.getListCountRewardUsed",r);
 	}
 
+	/*
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 1. 26.
 	 * @ModifyDate  : 2020. 1. 26.

@@ -6,11 +6,9 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
@@ -19,8 +17,8 @@ import com.opera.survway.panel.model.dao.PanelDao;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
-import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.Research;
+import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 
 
@@ -33,8 +31,6 @@ public class PanelServiceImpl implements PanelService {
 	private PanelDao pd;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	@Autowired
-	private DataSourceTransactionManager transactionmanager;
 	
 	/**
 	 * @Author      : Oh
@@ -240,7 +236,7 @@ public class PanelServiceImpl implements PanelService {
 		return listCount;
 	}
 
-	
+	/*
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 1. 26.
 	 * @ModifyDate  : 2020. 1. 26.
