@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -19,30 +18,17 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.opera.survway.common.model.vo.GenerateCertPassword;
-import com.opera.survway.common.model.vo.PageInfo;
-import com.opera.survway.common.model.vo.Pagination;
-import com.opera.survway.common.model.vo.Util;
-import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
-
-import com.opera.survway.exception.RewardException;
-
 import com.opera.survway.exception.SelectException;
-
 import com.opera.survway.panel.model.service.PanelService;
-import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
-
-import com.opera.survway.panel.model.vo.Reward;
-
 import com.opera.survway.panel.model.vo.Research;
 
 
@@ -228,7 +214,6 @@ public class PanelController {
 //	public String dropPanel(Model model)
 
 	
-}
 
 
 	/**
