@@ -31,11 +31,20 @@ import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
+
 import com.opera.survway.exception.RewardException;
+
+import com.opera.survway.exception.SelectException;
+
 import com.opera.survway.panel.model.service.PanelService;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+
 import com.opera.survway.panel.model.vo.Reward;
+
+import com.opera.survway.panel.model.vo.Research;
+
 
 @SessionAttributes("loginUser")
 @Controller
@@ -50,6 +59,31 @@ public class PanelController {
 	
 //	로그
 	private Logger log = LoggerFactory.getLogger(PanelController.class);
+	
+	
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 메인페이지 공지사항, 리서치 select
+	 */
+	@RequestMapping("panelMain.panel")
+	public String showPanelMain(Model model, HttpSession session) {
+		PanelMember loginUser = (PanelMember) session.getAttribute("loginUser");
+		System.out.println(loginUser);
+		try {
+			List<Notice> noticeList = ps.selectMainNoticeList();
+			List<Research> researchList = ps.selectMainResearchList(loginUser);
+			model.addAttribute("noticeList", noticeList);
+			model.addAttribute("researchList", researchList);
+		} catch (SelectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "main/panelMain";
+	}
+	
 	
 	/**
 	 * @Author      : Ungken
@@ -113,80 +147,7 @@ public class PanelController {
 		}
 	}
 	
-//	// 1:1문의 등록
-//	@PostMapping("inquirywrite.customerCenter")
-//	public String insertPanelInquiry(Model model, Inquiry i, HttpServletRequest request) {
-//
-//		int category = Integer.parseInt(request.getParameter("inquiryCategoryNo"));
-//
-//		i.setInquiryCategoryNo(category);
-//
-//		int result;
-//		try {
-//			result = ps.insertInquiry(i);
-//			model.addAttribute("success", result);
-//		} catch (InquiryException e) {
-//			request.setAttribute("msg", e.getMessage());
-//		}
-//
-//		return "redirect:panelInquiryList.customerCenter";
-//	}
-//
-//	// 1:1문의 리스트 보기
-//	@RequestMapping("panelInquiryList.customerCenter")
-//	public String showMyInquiryList(HttpSession session, Model model, HttpServletRequest request, Inquiry iq) {
-//		// Post로 보낸걸 queryString이라고 한다
-//		String queryString = request.getQueryString();
-//		// 그걸 쪼개기 작업하기
-//		Map<String, List<String>> queryMap = null;
-//
-//		int currentPage = 1;
-//		String inquiryTitle = "";
-//		int inquiryCategoryNo = 0;
-//
-//		iq = new Inquiry();
-//
-//		if (queryString != null) {
-//			queryMap = Util.splitQuery(queryString);
-//			if (queryMap.containsKey("currentPage")) {
-//				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
-//			}
-//			if (queryMap.containsKey("inquiryTitle")) {
-//				inquiryTitle = queryMap.get("inquiryTitle").get(0);
-//				iq.setInquiryTitle(inquiryTitle);
-//			}
-//			if (queryMap.containsKey("inquiryCategoryNo")) {
-//				inquiryCategoryNo = Integer.parseInt(queryMap.get("inquiryCategoryNo").get(0));
-//				iq.setInquiryCategoryNo(inquiryCategoryNo);
-//			}
-//			System.out.println(iq);
-//		}
-//
-//		int listCount = 0;
-//
-//		PanelMember loginUser = (PanelMember) session.getAttribute("loginUser");
-//		int mno = loginUser.getMno();
-//
-//		iq.setMno(mno);
-//
-//		
-//		try {
-//			listCount = ps.getListCountInquiry(iq);
-//			System.out.println(listCount);
-//			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-//			
-//			iq.setPi(pi);
-//			
-//			List<Inquiry> list = ps.selectAllMyInquiry(iq);
-//			System.out.println("controllerList"+list);
-//			model.addAttribute("list", list);
-//			model.addAttribute("pi",pi);
-//		} catch (InquiryException e) {
-//			request.setAttribute("msg", e.getMessage());
-//		}
-//
-//		return "panelInquiryList";
-//	}
+
 	
 	/**
 	 * @Author      : yhj
@@ -262,6 +223,7 @@ public class PanelController {
 		}
 	}
 	
+
 //	@PostMapping("dropPanel.me")
 //	public String dropPanel(Model model)
 
@@ -269,20 +231,28 @@ public class PanelController {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 26.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 회원탈퇴처리
+	 */
+	@PostMapping("dropPanel.me")
+	public String dropPanel(Model model, PanelMember pm, SessionStatus status) {
+		String encryptPwd = passwordEncoder.encode(pm.getUserPwd());
+		pm.setUserPwd(encryptPwd);
+		log.info(pm.toString());
+		
+		int result = ps.updateLeaveMember(pm);
+		log.info(result + "");
+		if(result > 0) {
+//			탈퇴 성공 시 로그아웃 처리
+			status.setComplete();
+			return "redirect:panelResult.panel?message=dropSuccess";
+		} else {
+			return "redirect:panelResult.panel?message=dropFail";
+		}
+	}
+}
 
 

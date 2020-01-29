@@ -26,16 +26,17 @@ public class PanelMember {
 	private String panelGender;
 	private String referPanelCode;
 	private String nominee;
-	private String panelLevel;
+	private String panellevelNo;
 	private String occupationNo;
 	private String withdrawAccount;
+	private String leaveReason;
 	private ArrayList<Integer> indexArr;
 	public PanelMember() {}
 	public PanelMember(int mno, String userId, String userPwd, String userName, String post, String address,
 			String detailAddress, String userAddress, String phone1, String phone2, String phone3, String userPhone,
 			String userEmail, String userType, Date leaveDate, Date entDate, Date modifyDate, String panelBirthday,
-			String panelGender, String referPanelCode, String nominee, String panelLevel, String occupationNo,
-			String withdrawAccount, ArrayList<Integer> indexArr) {
+			String panelGender, String referPanelCode, String nominee, String panellevelNo, String occupationNo,
+			String withdrawAccount, String leaveReason, ArrayList<Integer> indexArr) {
 		super();
 		this.mno = mno;
 		this.userId = userId;
@@ -58,9 +59,10 @@ public class PanelMember {
 		this.panelGender = panelGender;
 		this.referPanelCode = referPanelCode;
 		this.nominee = nominee;
-		this.panelLevel = panelLevel;
+		this.panellevelNo = panellevelNo;
 		this.occupationNo = occupationNo;
 		this.withdrawAccount = withdrawAccount;
+		this.leaveReason = leaveReason;
 		this.indexArr = indexArr;
 	}
 	public int getMno() {
@@ -189,11 +191,11 @@ public class PanelMember {
 	public void setNominee(String nominee) {
 		this.nominee = nominee;
 	}
-	public String getPanelLevel() {
-		return panelLevel;
+	public String getPanellevelNo() {
+		return panellevelNo;
 	}
-	public void setPanelLevel(String panelLevel) {
-		this.panelLevel = panelLevel;
+	public void setPanellevelNo(String panellevelNo) {
+		this.panellevelNo = panellevelNo;
 	}
 	public String getOccupationNo() {
 		return occupationNo;
@@ -206,6 +208,12 @@ public class PanelMember {
 	}
 	public void setWithdrawAccount(String withdrawAccount) {
 		this.withdrawAccount = withdrawAccount;
+	}
+	public String getLeaveReason() {
+		return leaveReason;
+	}
+	public void setLeaveReason(String leaveReason) {
+		this.leaveReason = leaveReason;
 	}
 	public ArrayList<Integer> getIndexArr() {
 		return indexArr;
@@ -221,10 +229,9 @@ public class PanelMember {
 				+ userPhone + ", userEmail=" + userEmail + ", userType=" + userType + ", leaveDate=" + leaveDate
 				+ ", entDate=" + entDate + ", modifyDate=" + modifyDate + ", panelBirthday=" + panelBirthday
 				+ ", panelGender=" + panelGender + ", referPanelCode=" + referPanelCode + ", nominee=" + nominee
-				+ ", panelLevel=" + panelLevel + ", occupationNo=" + occupationNo + ", withdrawAccount="
-				+ withdrawAccount + ", indexArr=" + indexArr + "]";
+				+ ", panellevelNo=" + panellevelNo + ", occupationNo=" + occupationNo + ", withdrawAccount="
+				+ withdrawAccount + ", leaveReason=" + leaveReason + ", indexArr=" + indexArr + "]";
 	}
-
 }
 
 

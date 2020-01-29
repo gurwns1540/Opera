@@ -10,14 +10,16 @@
 <style>
 	#corpMainArea {
 		width: 100%;
-		height: 500px;
+		height:inherit;
+		min-height: 700px;
 		margin-top: 30px;
+		display:table;
 	}
 	#sidebar {
 		border-right: 1.5px solid #B7B7B7;
 		width: 20%;
 		float: left;
-		height: 590px;
+		height: inherit;
 	}
 	#sidebarText {
 		width: fit-content;
@@ -35,9 +37,14 @@
 	}
 	#mainBox {
 		width: 54%;
-		height: 500px;
+		height: auto;
+		min-height:750px;
 		float:left;
 		margin-left: 50px;
+		display:table-row;
+	}
+	.heading:hover {
+		cursor:pointer;
 	}
 	.accordion-container {
 		width: 80%;
@@ -52,6 +59,12 @@
 		min-height: 200px;
 		overflow-y: auto;
 		width: 100%;
+	}
+	.ui.blue.button {
+	background-color:#00679A !important;
+	}
+	.ui.blue.button:hover {
+		background-color: #217BA7 !important;
 	}
 </style>
 </head>
@@ -154,7 +167,7 @@
 			});
 		</script>
 	</div>
-	<div style="margin-top: 120px;">
+	<div style="margin-top: 80px;">
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 </body>

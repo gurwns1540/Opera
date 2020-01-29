@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
-<title>Insert title here</title>
 <style>
 	#listArea {
 		width: 90%;
@@ -85,7 +84,7 @@
 	<div id="listMainArea">
 		<div id="listArea">
 			<div id="mainTitle">리서치 의뢰 이력</div>
-			<div id="subTitle">리서치 이력 확인 및 작성한 설문들을 활용할 수 있습니다.</div>
+			<div id="subTitle">리서치 이력 확인 및 리서치 결과를 활용할 수 있습니다.</div>
 		</div>
 		
 		<div id="searchArea">

@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PanelForwardController {
 	
 	
-	//메인페이지
-	@GetMapping("panelMain.panel")
-	public String showPanelMain() {
-		return "main/panelMain";
-	}
+//	//메인페이지
+//	@GetMapping("panelMain.panel")
+//	public String showPanelMain() {
+//		return "main/panelMain";
+//	}
 	
 	
 	
@@ -24,12 +24,19 @@ public class PanelForwardController {
 		return "customerCenter/faq";
 	}
 	
+
 	//3. 1:1 문의하기
 	@GetMapping("panelNewInquiry.panel")
 	public String showPanelNewInquiry() {
 		return "customerCenter/panelNewInquiry";
 	}
 	//4. 공지사항
+//	//3. 1:1 문의하기
+//	@GetMapping("panelNewInquiry.panel")
+//	public String showPanelNewInquiry() {
+//		return "customerCenter/panelNewInquiry";
+//	}
+//	//4. 공지사항
 //	@GetMapping("notice.panel")
 //	public String showNotice() {
 //		return "customerCenter/notice";

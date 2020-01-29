@@ -84,5 +84,31 @@ public class AdminDaoImpl implements AdminDao{
 		return rewardCompleteHistoryList;
 	}
 
+	@Override
+	public int getListCountNewPanel(SqlSessionTemplate sqlSession, SearchMember searchMember) {
+		int listCount = 0;
+		listCount = sqlSession.selectOne("Admin.getListCountNewPanel", searchMember);
+		return listCount;
+	}
+
+	@Override
+	public List<AllMember> getListNewPanel(SqlSessionTemplate sqlSession, SearchMember searchMember) {
+		
+		List<AllMember> memberList = null;
+
+		int offset = (searchMember.getPi().getCurrentPage() - 1) * searchMember.getPi().getLimit();
+
+		RowBounds rowBounds = new RowBounds(offset, searchMember.getPi().getLimit());
+
+		memberList = sqlSession.selectList("Admin.selectNewPanelList", searchMember, rowBounds);
+
+		return memberList;
+	}
+
+	@Override
+	public AllMember getNewPanelDetail(SqlSessionTemplate sqlSession, int mno) {
+		return sqlSession.selectOne("Admin.selectOneNewPanel", mno);
+	}
+
 
 }

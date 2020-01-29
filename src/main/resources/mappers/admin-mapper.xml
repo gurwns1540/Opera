@@ -32,6 +32,18 @@
 		<result property="ternaryCount" column="TERNARY_COUNT"/>
 	</resultMap>
 	
+	<resultMap type="AllMember" id="newPanelResultSet">
+		<id property="mno" column="MNO"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="userAddress" column="USER_ADDRESS"/>
+		<result property="userPhone" column="USER_PHONE"/>
+		<result property="userEmail" column="USER_EMAIL"/>
+		<result property="entDate" column="ENT_DATE"/>
+		<result property="panelBirthday" column="PANEL_BIRTHDAY"/>
+		<result property="panelGender" column="PANEL_GENDER"/>
+	</resultMap>
+	
 	<resultMap type="PanelRewardHistory" id="PanelRewardHistoryResultMap">
 		<id property="cashoutHistoryNo" column="CASHOUTHISTORY_NO"/>
 		<result property="mno" column="MNO"/>
@@ -62,6 +74,12 @@
 			<if test="userType == '기업'">
 				AND COMPANY_NAME LIKE '%' || #{searchInput} || '%'
 			</if>
+		</if>
+	</sql>
+	
+	<sql id="newPanelSearchInputName">
+		<if test="searchInput != null">
+			AND USER_NAME LIKE '%' || #{searchInput} || '%'
 		</if>
 	</sql>
 	
@@ -145,6 +163,37 @@
 		JOIN CASHOUT C ON (C.CASHOUT_NO = CH.CASHOUT_NO)
 		WHERE CH.CASHOUT_CONFIRM_DATE IS NOT NULL
 		ORDER BY CASHOUT_APPLICANT_DATE ASC
+	</select>
+	
+	<select id="getListCountNewPanel" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER M
+		JOIN PANEL P ON (P.MNO = M.MNO)
+		WHERE CERTIFICATION = 'Y'
+		AND PANELLEVEL_NO = 1
+		<include refid="newPanelSearchInputName"/>
+	</select>
+	
+	<select id="selectNewPanelList" resultMap="newPanelResultSet">
+		SELECT
+        M.MNO,  M.USER_NAME, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
+        FROM MEMBER M
+        JOIN PANEL P ON (P.MNO = M.MNO)
+		WHERE CERTIFICATION = 'Y'
+		AND PANELLEVEL_NO = 1
+		<include refid="newPanelSearchInputName"/>
+		ORDER BY ENT_DATE DESC
+	</select>
+	
+	<select id="selectOneNewPanel" parameterType="_int" resultMap="newPanelResultSet">
+		SELECT
+        M.MNO,  M.USER_NAME, M.USER_ID, P.PANEL_GENDER, P.PANEL_BIRTHDAY, M.USER_PHONE, M.USER_EMAIL,
+        M.USER_ADDRESS, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
+        FROM MEMBER M
+        JOIN PANEL P ON (P.MNO = M.MNO)
+		WHERE CERTIFICATION = 'Y'
+		AND PANELLEVEL_NO = 1
+		AND M.MNO = #{mno}
 	</select>
 </mapper>
 

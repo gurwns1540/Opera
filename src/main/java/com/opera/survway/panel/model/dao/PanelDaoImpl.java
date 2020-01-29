@@ -7,10 +7,15 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Reward;
+import com.opera.survway.panel.model.vo.Research;
+import com.opera.survway.panel.model.vo.SearchNotice;
 
 
 @Repository
@@ -22,7 +27,7 @@ public class PanelDaoImpl implements PanelDao{
 		PanelMember loginUser = sqlSession.selectOne("Panel.loginCheck", pm);
 		
 		if(loginUser==null) {
-			throw new LoginException("로그인 정보가 존재하지 않습니다.");
+			throw new LoginException("로그인 정보가 일치하지 않습니다");
 		}
 		
 		return loginUser;
@@ -113,8 +118,8 @@ public class PanelDaoImpl implements PanelDao{
 	}
 
   @Override
-	public int insertRewordPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
-		return sqlSession.insert("Panel.insertRewordPanel", pm);
+	public int insertRewardPanel(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.insert("Panel.insertRewardPanel", pm);
 	}
 
 	@Override
@@ -185,4 +190,73 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.selectOne("Panel.getListCountRewardUsed",r);
 	}
 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 26.
+	 * @ModifyDate  : 2020. 1. 26.
+	 * @Description : 회원탈퇴
+	 */
+	@Override
+	public int updateLeaveMember(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.update("Panel.updateLeaveMember", pm);
+	}
+
+	@Override
+	public int getNoticeListCount(SqlSessionTemplate sqlSession, SearchNotice searchNotice) {
+		return sqlSession.selectOne("Panel.getNoticeListCount",searchNotice);
+	}
+
+	@Override
+	public List<Notice> selectNoticeList(SqlSessionTemplate sqlSession, SearchNotice searchNotice) {
+		int offset = (searchNotice.getPi().getCurrentPage() -1)* searchNotice.getPi().getLimit();
+		RowBounds rowBounds = new RowBounds(offset,searchNotice.getPi().getLimit());
+    
+		return sqlSession.selectList("Panel.selectNoticeList", searchNotice, rowBounds);
+  }
+  
+  /**
+	 * @throws SelectException 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 메인페이지에서 공지사항 조회
+	 */
+	@Override
+	public List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException {
+		RowBounds rowBounds = new RowBounds(0, 5);
+		List<Notice> noticeList = sqlSession.selectList("Panel.selectMainNoticeList", null, rowBounds);
+		if(noticeList == null) {
+			sqlSession.close();
+			throw new SelectException("메인페이지 공지사항 불러오기 실패");
+		}
+		return noticeList;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 메인페이지에서 리서치 조회
+	 */
+	@Override
+	public List<Research> selectMainResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser) throws SelectException {
+		List<Research> researchList = null;
+		System.out.println("dao 단 : " + loginUser);
+//		if(loginUser == null || Integer.parseInt(loginUser.getPanelLevel()) != 1) {
+//			RowBounds rowBounds = new RowBounds(0, 4);
+//			researchList = sqlSession.selectList("Panel.selectMainResearchList", null, rowBounds);
+//		} else {
+//			researchList = sqlSession.selectList("Panel.selectMainResearchList");
+//			researchList = sqlSession.selectList("Panel.selectTSResearchList");
+//		}
+		RowBounds rowBounds = new RowBounds(0, 4);
+		researchList = sqlSession.selectList("Panel.selectMainResearchList", null, rowBounds);
+		
+		if(researchList == null) {
+			sqlSession.close();
+			throw new SelectException("메인페이지에서 리서치 불러오기 실패");
+		}
+		return researchList;
+	}
+	
 }

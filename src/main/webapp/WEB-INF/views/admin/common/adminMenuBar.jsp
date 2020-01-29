@@ -268,7 +268,7 @@
 				<h3><span class="icon-dashboard"></span>회원관리</h3>
 				<ul>
 					<li class="innerMenu"><a href="memberInfoManagement.memberManagement" style="border-top: 0;">회원정보 관리</a></li>
-					<li class="innerMenu"><a href="newPanelManagement.admin" style="border-bottom: 0;">신규 패널 관리</a></li>
+					<li class="innerMenu"><a href="newPanelManagement.memberManagement" style="border-bottom: 0;">신규 패널 관리</a></li>
 				</ul>
 			</li>
 			<li class="topMenu">
@@ -283,7 +283,7 @@
 					<li class="innerMenu"><a href="researchReportStandbyList.admin">리서치 보고서 작성 대기 관리</a></li>
 					<li class="innerMenu"><a href="researchCompletedProcessingList.admin">완료된 리서치 목록</a></li>
 					<li class="innerMenu"><a href="tsQaManagement.admin">TS 질문 관리</a></li>
-					<li class="innerMenu"><a href="#" style="border-bottom: 0;">패널 PC 환경조사 질문 관리</a></li>
+					<li class="innerMenu"><a href="pcQaManagement.admin" style="border-bottom: 0;">패널 PC 환경조사 질문 관리</a></li>
 				</ul>
 			</li>
 			<li class="topMenu">

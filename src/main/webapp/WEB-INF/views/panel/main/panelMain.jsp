@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,9 +31,11 @@
 	hieght: 16px;
 	width: 16px;
 }
-
+.top, .middle, .bottom {
+    width:100%;
+}
 .top-left {
-	width: 30px;
+	width: 30%;
 }
 
 .top-right {
@@ -97,17 +101,13 @@
 .ui.segment.cards.eachSurveyBox {
 	background-color:white;
 }
+
 </style>
 <body>
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
 		<section class="container">
-			
-			<!-- <div class="ui piled segment" style="padding:0px !important; margin-top:40px;"> -->
 			<img src="resources/images/panelMain.png" style="width:100%; margin-top:40px; margin-bottom:20px;">
-			<!-- </div> -->
-			
-			
 			<table style="width:100%; margin-top:30px; background-color:#E2F4F7; padding:10px; height:100px;">
 				<tr>
 					<td style="width:16%; padding-left:15px;">
@@ -116,14 +116,18 @@
 					<td style="width:84%;">
 						<a href="surveyList.panel" class="ui pink right ribbon label"><span style="font-size:0.7vw;">more</span></a>
 						<div class="ui four column grid" id="surveyListArea" style="width:95%; margin: 0 auto;">
-							<c:forEach begin="1" end="4" step="1">
+							<c:forEach var="list" items="${ researchList }" varStatus="status">
 								<div class="column">
-									<div class="ui segment cards eachSurveyBox"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
-										<div class="eachBox">
+									<div id="eachSurveyBox" class="ui segment cards eachSurveyBox"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
+										<div class="eachBox" style="width: 100%;">
 											<div class="top">
-												<table>
+												<table style="width: 100%;">
 													<tr>
-														<td class="top-left"><span style="font-size:0.9vw;">[84782]</span></td>
+														<td class="top-left">
+															<span style="font-size:0.9vw;">[</span>
+															<span style="font-size:0.9vw;">${ list.researchNo }</span>
+															<span style="font-size:0.9vw;">]</span>
+														</td>
 														<td class="top-right">
 															<img src="resources/images/pc.png" alt="" class="icon"/>
 															<img src="resources/images/mobile.png" alt="" class="icon"/>
@@ -133,19 +137,25 @@
 												</table>
 											</div>
 											<div class="middle">
-												<span style="font-size:1vw;">소비자 인식 조사 소비자 인식</span>
+												<span style="font-size:1vw;">${ list.researchName }<br>${ list.researchPerpose }</span>
 											</div>
 											<div class="bottom">
 												<div class="bottom-top" style="text-align:center; padding-top:14px;">
-													<span style="font-weight:bold; font-size:1vw; color:#005E8C;">100~3000P</span>
+													<span style="font-weight:bold; font-size:1vw; color:#005E8C;">${ list.researchReward }P</span>
 												</div>
 												<div class="bottom-middle">
 													<span style="font-size:0.8vw; margin-right:7px;">시작일 :</span>
-													<span style="font-size:0.8vw;">2020.01.01</span>
+													<fmt:parseDate value="${ fn:split(list.researchPeriod, '~')[0] }" var="startDate" pattern="yyyyMMdd"/>
+													<span style="font-size:0.8vw;">
+														<fmt:formatDate value="${ startDate }" pattern="yyyy.MM.dd"/>
+													</span>
 												</div>
 												<div class="bottom-bottom">
 													<span style="font-size:0.8vw; margin-right:7px;">종료일 :</span>
-													<span style="font-size:0.8vw;">2020.01.20</span>
+													<fmt:parseDate value="${ fn:split(list.researchPeriod, '~')[1] }" var="endDate" pattern="yyyyMMdd"/>
+													<span style="font-size:0.8vw;">
+														<fmt:formatDate value="${ endDate }" pattern="yyyy.MM.dd"/>
+													</span>
 												</div>
 											</div>
 										</div>
@@ -165,25 +175,23 @@
 								<td style="width:22%;"><span style="font-size:0.9vw; font-weight:bold;">공지사항</span></td>
 								<td><hr></td>
 								<td style="width:20%; text-align:right;">
-									<a href="notice.panel">
+									<a href="notice.customerCenter">
 									<i class="plus circle icon" style="color:#CC3399;"></i>
 										<span style="font-size:0.8vw; color:grey; font-weight:bold;">more</span>
 									</a>
 								</td>
 							</tr>
 						</table>
-						<!-- <h4 class="ui horizontal left aligned divider header" style="margin-bottom:7px;">
-							<a href="notice.panel">공지사항</a>
-						</h4> -->
 						<div style="height:80%;">
-							<table style="width:100%; table-layout:fixed;">
-								<c:forEach begin="1" end="5" step="1">
+							<table id="mainNoticeListTable" style="width:100%; table-layout:fixed;">
+								<c:forEach var="list" items="${ noticeList }" varStatus="status">
 									<tr>
 										<td style="width:70%;text-overflow:ellipsis; overflow:hidden; white-space:nowrap;border:2px solid #F0F0F0;">
-											<i class="bell icon" style="color:#008499;"></i><span style="font-size:0.8vw;">안녕하세요. 설문조사 리워드에 관한 새로운 방침에 대해 공지합니다.</span>
+											<input type="hidden" value="${ list.noticeNo }"/>
+											<i class="bell icon" style="color:#008499;"></i><span style="font-size:0.8vw;">${ list.noticeTitle }</span>
 										</td>
 										<td style="width:30%; text-align:right;">
-											<span style="font-size:0.8vw;">2020-01-22</span>
+											<span style="font-size:0.8vw;">${ list.noticeDate }</span>
 										</td>
 									</tr>
 								</c:forEach>
@@ -216,7 +224,38 @@
 		</section>  <!-- container end -->
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>  <!-- wrap end -->
-	
+<!-- 	<script>
+		console.log($("#mainNoticeListTable").children().children());
+		$("#mainNoticeListTable").children().children().mouseover(function() {
+			$(this).css({"cursor":"pointer"});
+		}).click(function() {
+// 			공지사항 누르면 해당 공지사항의 no 가져오는 스크립트 구문 (지우지말것)
+			console.log($(this).children().eq(0).children().eq(0).val());
+			location.href="notice.customerCenter?noticeNo=" + $(this).children().eq(0).children().eq(0).val();
+		});
+	</script> -->
+	<script>
+//		새로고침 시 쿼리스트링 제거
+		window.onkeydown = function() { 
+			var kcode = event.keyCode; 
+			if(kcode == 116) { 
+				history.replaceState({}, null, location.pathname); 
+			} 
+		}
+		$("#surveyListArea").children().click(function() {
+// 			리서치 조사번호
+			var researchNo = $(this).children().children().children().eq(0).children().children().children().eq(0).children().eq(0).children().eq(1).text();
+// 			로그인한 패널등급번호
+			var loginUserPanelLevel = "${ loginUser.panellevelNo }";
+			console.log(researchNo);
+			console.log(loginUserPanelLevel);
+			if(loginUserPanelLevel == 1) {
+				Swal.fire('안내', 'Thanks Survey 먼저 진행 해주세요', 'warning').then(function() {
+					location.href="surveyList.panel";
+				});
+			}
+		});
+	</script>
 </body>
 </html>
 

@@ -29,4 +29,10 @@ public interface AdminService {
 	int getListCountManageCashoutComplete() throws SelectException;
 
 	List<PanelRewardHistory> manageCashoutComplete(PageInfo pi) throws SelectException;
+
+	int getListCountNewPanel(SearchMember searchMember) throws SelectException;
+
+	List<AllMember> getListNewPanel(SearchMember searchMember) throws SelectException;
+
+	AllMember selectNewPanelDetail(int mno) throws SelectException;
 }

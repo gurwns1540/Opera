@@ -1,9 +1,6 @@
 package com.opera.survway.common.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +23,7 @@ public class LoginMemberController {
 	private PanelService ps;
 	@Autowired
 	private CorpService cs;
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	
 	
 	/**
 	 * @Author      : Oh
@@ -41,6 +37,7 @@ public class LoginMemberController {
 		if(loginMemberType.equals("panelMember")) {
 			try {
 				PanelMember loginUser = ps.loginMember(pm);
+        
 				model.addAttribute("loginUser", loginUser);
 				
 				if(loginUser.getUserType().equals("관리자")) {
@@ -49,9 +46,8 @@ public class LoginMemberController {
 					return "redirect:panelMain.panel";
 				}
 				
-				
 			} catch (LoginException e) {
-				model.addAttribute("msg", e.getMessage());
+				model.addAttribute("message", e.getMessage());
 				return "redirect:panelLogin.panel";
 			}
 			
@@ -77,13 +73,13 @@ public class LoginMemberController {
 	/**
 	 * @Author      : Oh
 	 * @CreateDate  : 2020-01-19
-	 * @ModifyDate  : 2020-01-21
+	 * @ModifyDate  : 2020-01-28
 	 * @Description : 로그아웃 기능
 	 */
 	@RequestMapping("logout.me")
 	public String logout(SessionStatus status, Model model) {
 		status.setComplete();
-		model.addAttribute("message", "로그아웃 되셨습니다.");
+		model.addAttribute("message", "정상적으로 로그아웃 되었습니다");
 		return "redirect:panelMain.panel";
 	}
 }

@@ -10,13 +10,18 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
+import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.dao.PanelDao;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Reward;
+import com.opera.survway.panel.model.vo.Research;
+import com.opera.survway.panel.model.vo.SearchNotice;
 
 
 @Service
@@ -46,7 +51,7 @@ public class PanelServiceImpl implements PanelService {
 		if(passwordEncoder.matches(pm.getUserPwd(), encPassword)) {
 			loginUser = pd.loginCheck(sqlSession, pm);
 		}else {
-			throw new LoginException("로그인 실패");
+			throw new LoginException("로그인 정보가 일치하지 않습니다");
 		}
 		
 		return loginUser;
@@ -71,7 +76,7 @@ public class PanelServiceImpl implements PanelService {
 			resultPanelTable = pd.insertPanelTable(sqlSession, pm);
 			if(resultPanelTable > 0) {
 				pd.insertTermsPanel(sqlSession, pm);
-				pd.insertRewordPanel(sqlSession, pm);
+				pd.insertRewardPanel(sqlSession, pm);
 				pd.insertTernaryPanel(sqlSession, pm);
 			}
 		}
@@ -236,4 +241,66 @@ public class PanelServiceImpl implements PanelService {
 	}
 
 	
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 26.
+	 * @ModifyDate  : 2020. 1. 26.
+	 * @Description : 회원탈퇴
+	 */
+	@Override
+	public int updateLeaveMember(PanelMember pm) {
+		return pd.updateLeaveMember(sqlSession, pm);
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 1. 27.
+	 * @ModifyDate  : 2020. 1. 27.
+	 * @Description : 공지사항 수 조회 
+	 */
+	@Override
+	public int getNoticeListCount(SearchNotice searchNotice) throws SelectException {
+		int listCount=0;
+		listCount = pd.getNoticeListCount(sqlSession,searchNotice);
+		
+		if(listCount<0) {
+			throw new SelectException("공지사항 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	@Override
+	public List<Notice> selectNoticeList(SearchNotice searchNotice) throws SelectException {
+		List<Notice> noticeList =null;
+		
+		noticeList = pd.selectNoticeList(sqlSession, searchNotice);
+		 
+		if(noticeList == null) {
+			throw new SelectException("공지사항 조회 실패");
+		}
+		return noticeList;
+  }
+	/**
+	 * @throws SelectException 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 메인페이지에서 공지사항 조회
+	 */
+	@Override
+	public List<Notice> selectMainNoticeList() throws SelectException {
+		return pd.selectMainNoticeList(sqlSession);
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 1. 28.
+	 * @ModifyDate  : 2020. 1. 28.
+	 * @Description : 메인페이지에서 리서치 조회
+	 */
+	@Override
+	public List<Research> selectMainResearchList(PanelMember loginUser) throws SelectException {
+		return pd.selectMainResearchList(sqlSession, loginUser);
+	}
 }
