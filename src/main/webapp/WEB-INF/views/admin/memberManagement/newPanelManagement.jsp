@@ -361,7 +361,7 @@
 		});
 		$(".detail").on("click", function(){
 			var mno = $(this).parent().siblings().eq(0).text();
-			
+
 			$.ajax({
 				url:"selectNewPanel.memberManagement",
 				type:"post",
@@ -371,7 +371,6 @@
 					var passphrase = "1234";
 			        var decrypted1 = CryptoJS.AES.decrypt(encodedAddress, passphrase);
 			        var decodedAddress = decrypted1.toString(CryptoJS.enc.Utf8);
-			        $("#address").text(decodedAddress);
 			        
 			        var encodedPhone = data.newPanel.userPhone;
 			        var decrypted1 = CryptoJS.AES.decrypt(encodedPhone, passphrase);

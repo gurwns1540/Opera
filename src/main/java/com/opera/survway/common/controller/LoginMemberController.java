@@ -40,6 +40,7 @@ public class LoginMemberController {
 		if(loginMemberType.equals("panelMember")) {
 			try {
 				PanelMember loginUser = ps.loginMember(pm);
+				System.out.println("loginUser" + loginUser);
 				model.addAttribute("loginUser", loginUser);
 				
 				if(loginUser.getUserType().equals("관리자")) {
