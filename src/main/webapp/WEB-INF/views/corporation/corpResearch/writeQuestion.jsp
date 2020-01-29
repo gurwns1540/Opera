@@ -310,7 +310,7 @@
 									<div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div>
 									<div class="plusMain">
 										<div class="ui input" style="width: 85%;">
-											<input type="text" readonly class="choiceNameInput" name="questionNo" style="background: none; border: 0; width: 35px;" value="Q1">
+											<input type="text" readonly class="choiceNameInput" name="questionNo" style="background: none; border: 0; width: 45px;" value="Q1">
 											<input type="text" class="choiceHead" readonly style="width: 80%; background: none; cursor: pointer; border: 0;">
 											
 										</div>
@@ -408,6 +408,8 @@
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 	<script>
+		nodeIndex = 2; // node의 시작 default 테이블이 1
+		
 		$(document).on("click", ".submit", function(){
 			$("#submitQuiz").submit();
 		})
@@ -467,8 +469,8 @@
 				index--;
 			}
 			orderQuizAmount();
-			connectedNodes();
 			quizIndex();
+			connectedNodes();
 		});
 		
 		$(document).on("click", ".deleteChoice", function(){
@@ -560,8 +562,8 @@
 
 				var num = $(".ui-state-default").length + 1;
 				allQuizHide();
-				$("#editingMain").append('<table class="quizTable"> <tr> <th id="quizHead" colspan="3"> <div> <span id="quizNum">Q<input type="text" id="questionOrder" name="questionOrder" value="' + num + '"></span>. <input type="hidden" class="nodeData" value="' + num + '"> <div class="ui input" style="width: 85%;"> <input type="text" name="rquestionContext" class="quizTitle" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="질문 제목"> </div> <input type="hidden" id="questionFormNo" name="questionFormNo"> <span style="float: right; font-size: 20pt;"> <i class="times icon"></i> </span> </div> </th> </tr> <tr> <td colspan="3"> <input type="hidden" name="mediaExist" id="mediaExist" value="false"> <div id="mediaArea"> 설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <span class="mediaAdd">여기를 클릭</span>해 주세요. </div> </td> </tr> <tr> <td colspan="3" style="padding: 0;"> <div id="choiceArea"> <div style="width: fit-content; margin: 0 auto;"><i class="plus icon" style="color: #BD45B1; margin-top: 150px;"></i>우측 옵션패널에서 문항형식을 선택해주세요.</div> </div> </td> </tr> <tr> <td style="border: 0; width: 40%"><hr></td> <td style="border: 0; width: 20%"><div class="plusBtn2" style="margin: 0 auto; cursor:pointer; width: fit-content; font-size: 16pt;"><span style="color: #BD45B1"><i class="plus circle icon"></i></span>문항 추가</div></td> <td style="border: 0; width: 40%"><hr></td> </tr> <tr> <td colspan="3" style="border: 0;"> <div style="float: right; width: 90px; height:40px; cursor: pointer; background: #600050; color: white; text-align: center; line-height: 37px;" class="submit">완 료</div> </td> </tr> </table>');
-				var $quiz = $('<li class="ui-state-default"> <input type="hidden" class="nodeData" value="' + num + '"> <div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div> <div class="plusMain"> <div class="ui input" style="width: 85%;"> <input type="text" readonly class="choiceNameInput" name="questionNo" style="background: none; border: 0; width: 35px;" value="Q' + num + '"> <input type="text" class="choiceHead" readonly style="width: 80%; background: none; cursor: pointer; border: 0;"> </div> <div style="width: fit-content; float: right;" class="deleteQuiz"> <i class="large times icon"></i> </div> </div> </li>');
+				$("#editingMain").append('<table class="quizTable"> <tr> <th id="quizHead" colspan="3"> <div> <span id="quizNum">Q<input type="text" id="questionOrder" name="questionOrder" value="' + num + '"></span>. <input type="hidden" class="nodeData" value="' + (nodeIndex++) + '"> <div class="ui input" style="width: 85%;"> <input type="text" name="rquestionContext" class="quizTitle" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="질문 제목"> </div> <input type="hidden" id="questionFormNo" name="questionFormNo"> <span style="float: right; font-size: 20pt;"> <i class="times icon"></i> </span> </div> </th> </tr> <tr> <td colspan="3"> <input type="hidden" name="mediaExist" id="mediaExist" value="false"> <div id="mediaArea"> 설명 : 질문에 대한 설명 또는 이미지, 동영상이 필요한 경우 <span class="mediaAdd">여기를 클릭</span>해 주세요. </div> </td> </tr> <tr> <td colspan="3" style="padding: 0;"> <div id="choiceArea"> <div style="width: fit-content; margin: 0 auto;"><i class="plus icon" style="color: #BD45B1; margin-top: 150px;"></i>우측 옵션패널에서 문항형식을 선택해주세요.</div> </div> </td> </tr> <tr> <td style="border: 0; width: 40%"><hr></td> <td style="border: 0; width: 20%"><div class="plusBtn2" style="margin: 0 auto; cursor:pointer; width: fit-content; font-size: 16pt;"><span style="color: #BD45B1"><i class="plus circle icon"></i></span>문항 추가</div></td> <td style="border: 0; width: 40%"><hr></td> </tr> <tr> <td colspan="3" style="border: 0;"> <div style="float: right; width: 90px; height:40px; cursor: pointer; background: #600050; color: white; text-align: center; line-height: 37px;" class="submit">완 료</div> </td> </tr> </table>');
+				var $quiz = $('<li class="ui-state-default"> <input type="hidden" class="nodeData" value="' + num + '"> <div class="plusBtn" style=" width: 30px; height: 40px;"><i class="plus icon"></i></div> <div class="plusMain"> <div class="ui input" style="width: 85%;"> <input type="text" readonly class="choiceNameInput" name="questionNo" style="background: none; border: 0; width: 45px;" value="Q' + num + '"> <input type="text" class="choiceHead" readonly style="width: 80%; background: none; cursor: pointer; border: 0;"> </div> <div style="width: fit-content; float: right;" class="deleteQuiz"> <i class="large times icon"></i> </div> </div> </li>');
 				$("#sortable").append($quiz);
 				orderQuizAmount();
 				quizIndex();
@@ -576,13 +578,12 @@
 		});
 		$(document).on("click", ".choiceHead", function() {
 			allQuizHide();
-			var quizNum = $(this).parent().find(".choiceNameInput").val();
-			console.log(quizNum);
+			var nodeData = $(this).parent().parent().parent().find(".nodeData").val();
+			console.log(nodeData)
 			$(".hide").each(function(){
-				if($(this).find("#quizNum").text() == quizNum){
+				if($(this).find(".nodeData").val() == nodeData){
 					$(this).removeClass("hide");
 				}
-				console.log($(this).find("#quizNum").text());
 			});
 			orderQuizAmount();
 			quizIndex();
@@ -635,7 +636,7 @@
 
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    $("#image").attr("src", e.target.result);
+                	$(".quizTable:not(.hide)").find("#image").attr("src", e.target.result);
                 }
                 reader.readAsDataURL(f);
             });
@@ -676,7 +677,7 @@
 				console.log("quizNum : " + quizNum);
 				$("#editingMain").find(".nodeData").each(function(){
 					if(sortableNode == $(this).val()){
-						$(this).parent().find("#questionOrder").text(quizNum);
+						$(this).parent().find("#questionOrder").val(quizNum);
 					}
 				})
 			})

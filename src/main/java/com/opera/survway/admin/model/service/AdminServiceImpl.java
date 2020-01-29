@@ -8,10 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.dao.AdminDao;
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.Research;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.UploadFile;
+import com.opera.survway.corporation.model.vo.ResearchChoice;
+import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.PanelMember;
@@ -146,6 +151,12 @@ public class AdminServiceImpl implements AdminService{
 		return listCount;
 	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 29.
+	 * @ModifyDate  : 2020. 1. 29.
+	 * @Description : 캐시아웃 완료 이력 조회
+	 */
 	@Override
 	public List<PanelRewardHistory> manageCashoutComplete(PageInfo pi) throws SelectException {
 		List<PanelRewardHistory> rewardCompleteHistoryList = ad.manageCashoutComplete(sqlSession, pi);

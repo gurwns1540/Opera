@@ -7,6 +7,7 @@ public class Research {
 	private String researchPeriod;			// 리서치 기간
 	private int mno;						// 리서치 작성 기업
 	private String researchPerpose;			// 리서치 목적
+	private String researchReward; 			// 리서치 리워드 량
 	
 	private int targetNo;					// 조사 대상자 번호
 	private String targetGender;			// 조사 대상자 성별
@@ -18,8 +19,8 @@ public class Research {
 	public Research() {}
 
 	public Research(int researchNo, String researchName, int researchEngagementGoals, String researchPeriod, int mno,
-			String researchPerpose, int targetNo, String targetGender, String targetAgeRange, String targetLocation,
-			String occupationNo, String additionaltEtc) {
+			String researchPerpose, String researchReward, int targetNo, String targetGender, String targetAgeRange,
+			String targetLocation, String occupationNo, String additionaltEtc) {
 		super();
 		this.researchNo = researchNo;
 		this.researchName = researchName;
@@ -27,6 +28,7 @@ public class Research {
 		this.researchPeriod = researchPeriod;
 		this.mno = mno;
 		this.researchPerpose = researchPerpose;
+		this.researchReward = researchReward;
 		this.targetNo = targetNo;
 		this.targetGender = targetGender;
 		this.targetAgeRange = targetAgeRange;
@@ -83,6 +85,14 @@ public class Research {
 		this.researchPerpose = researchPerpose;
 	}
 
+	public String getResearchReward() {
+		return researchReward;
+	}
+
+	public void setResearchReward(String researchReward) {
+		this.researchReward = researchReward;
+	}
+
 	public int getTargetNo() {
 		return targetNo;
 	}
@@ -135,9 +145,9 @@ public class Research {
 	public String toString() {
 		return "Research [researchNo=" + researchNo + ", researchName=" + researchName + ", researchEngagementGoals="
 				+ researchEngagementGoals + ", researchPeriod=" + researchPeriod + ", mno=" + mno + ", researchPerpose="
-				+ researchPerpose + ", targetNo=" + targetNo + ", targetGender=" + targetGender + ", targetAgeRange="
-				+ targetAgeRange + ", targetLocation=" + targetLocation + ", occupationNo=" + occupationNo
-				+ ", additionaltEtc=" + additionaltEtc + "]";
+				+ researchPerpose + ", researchReward=" + researchReward + ", targetNo=" + targetNo + ", targetGender="
+				+ targetGender + ", targetAgeRange=" + targetAgeRange + ", targetLocation=" + targetLocation
+				+ ", occupationNo=" + occupationNo + ", additionaltEtc=" + additionaltEtc + "]";
 	}
 
 }

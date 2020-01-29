@@ -6,14 +6,16 @@ public class ResearchChoice {
 	private int choiceNo;
 	private int choiceOrder;
 	private String choiceContext;
+	private int rquestionNo;
 	
 	public ResearchChoice() {}
 
-	public ResearchChoice(int choiceNo, int choiceOrder, String choiceContext) {
+	public ResearchChoice(int choiceNo, int choiceOrder, String choiceContext, int rquestionNo) {
 		super();
 		this.choiceNo = choiceNo;
 		this.choiceOrder = choiceOrder;
 		this.choiceContext = choiceContext;
+		this.rquestionNo = rquestionNo;
 	}
 
 	public int getChoiceNo() {
@@ -40,10 +42,18 @@ public class ResearchChoice {
 		this.choiceContext = choiceContext;
 	}
 
+	public int getRquestionNo() {
+		return rquestionNo;
+	}
+
+	public void setRquestionNo(int rquestionNo) {
+		this.rquestionNo = rquestionNo;
+	}
+
 	@Override
 	public String toString() {
 		return "ResearchChoice [choiceNo=" + choiceNo + ", choiceOrder=" + choiceOrder + ", choiceContext="
-				+ choiceContext + "]";
+				+ choiceContext + ", rquestionNo=" + rquestionNo + "]";
 	}
 
 }

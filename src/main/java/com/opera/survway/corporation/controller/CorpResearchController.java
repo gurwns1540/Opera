@@ -17,22 +17,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.opera.survway.admin.model.service.AdminService;
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.Research;
 import com.opera.survway.common.model.vo.OperaFileNamePolicy;
 import com.opera.survway.common.model.vo.UploadFile;
+import com.opera.survway.corporation.model.service.CorpService;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 
 @Controller
 public class CorpResearchController {
 	@Autowired
-	private AdminService as;
+	private CorpService cs;
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 29.
+	 * @ModifyDate  : 2020. 1. 29.
+	 * @Description : 기업 리서치 기본 정보 fowarding
+	 */
 	@PostMapping("requestResearch.corpResearch")
 	public String requestResearch(Research research, String targetAgeRangeAmount, String mno, String companyNo, String startDate, String endDate, Model model) {
+		String startDateSplit= startDate.split("-")[0] + startDate.split("-")[1] + startDate.split("-")[2];
+		String endDateSplit= endDate.split("-")[0] + endDate.split("-")[1] + endDate.split("-")[2];
 		
-		research.setResearchPeriod(startDate + "/" + endDate);
+		research.setResearchPeriod(startDateSplit + "~" + endDateSplit);
 		research.setMno(Integer.parseInt(companyNo));
 		
 		if(research.getTargetAgeRange().equals("config")) {
@@ -46,20 +55,25 @@ public class CorpResearchController {
 		return "writeQuestion";
 	}
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 29.
+	 * @ModifyDate  : 2020. 1. 29.
+	 * @Description : 기업 리서치 정보 문항 작성
+	 */
 	@PostMapping("insertResearch.corpResearch")
-	public String insertResearch(HttpServletRequest request, Research research, String[] questionFormNo, String[] rquestionContext, MultipartFile[] uploadImage, @RequestParam("imageChoiceUpload") MultipartFile[] imageChoiceUpload, String[] mediaExist, String[] questionVideoLink, String[] mediaExplain, String[] questionOrder, String[] choiceContext, String[] choiceNo) {
-		
+	public String insertResearch(HttpServletRequest request, Research research, String[] questionFormNo, String[] rquestionContext, MultipartFile[] uploadImage, @RequestParam("imageChoiceUpload") MultipartFile[] imageChoiceUpload, String[] mediaExist, String[] questionVideoLink, String[] mediaExplain, String[] questionOrder, String[] choiceContext, String[] choiceNo, Model model) {
+		System.out.println(research);
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "\\uploadFiles";
-		System.out.println(root);
 		
 		ArrayList<String> saveFiles = new ArrayList<>();
 		ArrayList<String> originFiles = new ArrayList<>();
 		ArrayList<String> exts = new ArrayList<>();
 		
-		for(int i = 0; i < choiceNo.length; i++) {
-			System.out.println(choiceNo[i]);
-		}
+		ArrayList<String> choiceSaveFiles = new ArrayList<>();
+		ArrayList<String> choiceOriginFiles = new ArrayList<>();
+		ArrayList<String> choiceExts = new ArrayList<>();
 		
  		for(MultipartFile file : uploadImage) {
  			String saveFile = OperaFileNamePolicy.getRandomString();
@@ -68,12 +82,27 @@ public class CorpResearchController {
 			saveFiles.add(saveFile);
 			originFiles.add(originFileName);
 			exts.add(ext);
-//			try {
-//				file.transferTo(new File(savePath + "\\" + saveFile + ext));
-//			} catch (IllegalStateException | IOException e) {
-//				e.printStackTrace();
-//			}
+			try {
+				file.transferTo(new File(savePath + "\\" + saveFile + ext));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
 		}
+ 		
+ 		for(MultipartFile file : imageChoiceUpload) {
+ 			String saveFile = OperaFileNamePolicy.getRandomString();
+ 			String originFileName = file.getOriginalFilename();
+ 			String ext = originFileName.substring(originFileName.lastIndexOf("."));
+ 			choiceSaveFiles.add(saveFile);
+ 			choiceOriginFiles.add(originFileName);
+ 			choiceExts.add(ext);
+			try {
+				file.transferTo(new File(savePath + "\\" + saveFile + ext));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+		}
+ 		
  		int uploadFileIndex = 0;
  		int uploadChoiceFileIndex = 0;
  		
@@ -115,8 +144,17 @@ public class CorpResearchController {
 					ResearchChoice researchChoice = new ResearchChoice();
 					researchChoice.setChoiceOrder(Integer.parseInt(choiceNo[j]));
 					researchChoice.setChoiceContext(choiceContext[j]);
-					//System.out.println(researchChoice);
+
 					choiceList.add(researchChoice);
+					if(Integer.parseInt(questionFormNo[i]) == 3) {
+						UploadFile uploadfile = new UploadFile();
+						uploadfile.setFilePath(savePath);
+						uploadfile.setOriginName(choiceOriginFiles.get(uploadChoiceFileIndex));
+						uploadfile.setChangeName(choiceSaveFiles.get(uploadChoiceFileIndex++));
+						uploadfile.setFileType("리서치 보기");
+						uploadfile.setRchoiceNo(Integer.parseInt(choiceNo[j])); //나중에 select키로 문항에 대한 시퀀스 가져와야함
+						uploadFiles.add(uploadfile);
+					}
 					if(j != choiceNo.length - 1) {
 						if(Integer.parseInt(choiceNo[j + 1]) == 1) {
 							choiceIndex = j + 1;
@@ -128,9 +166,16 @@ public class CorpResearchController {
 			researchQuestion.setRequestChoiceList(choiceList);
 			questionList.add(researchQuestion);
 		}
-		System.out.println(questionList);
-		System.out.println(uploadFiles);
 		
-		return "";
+		try {
+			cs.insertResearch(research, questionList, uploadFiles);
+			
+			model.addAttribute("message", "researchComplete");
+			return "redirect:corpModal.corp";
+		} catch (ResearchException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
+		
 	}
 }
