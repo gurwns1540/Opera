@@ -197,26 +197,29 @@
 								<tr class="title"
 									style="color: black !important; font-weight: normal;">
 									<td>${ Inquiry.inquiryNo }</td>
-									<td><c:if test="${Inquiry.inquiryCategoryNo == 1 }">
-                           			가입
-                           		</c:if> <c:if
-											test="${Inquiry.inquiryCategoryNo == 2 }">
-                           			조사
-                           		</c:if> <c:if
-											test="${Inquiry.inquiryCategoryNo == 3 }">
-                           			리워드
-                           		</c:if> <c:if
-											test="${Inquiry.inquiryCategoryNo == 4 }">
-                           			기타
-                           		</c:if></td>
+									<td>
+										<c:if test="${Inquiry.inquiryCategoryNo == 1 }">
+                           					가입
+                           				</c:if> 
+                           				<c:if test="${Inquiry.inquiryCategoryNo == 2 }">
+                           					조사
+                           				</c:if> 
+                           				<c:if test="${Inquiry.inquiryCategoryNo == 3 }">
+                           					리워드
+                           				</c:if> 
+                           				<c:if test="${Inquiry.inquiryCategoryNo == 4 }">
+                           					기타
+                           				</c:if>
+                           			</td>
 									<td><c:out value="${Inquiry.inquiryTitle }" /></td>
 									<td><c:out value="${Inquiry.inquiryDate }" /></td>
 									<td><c:if test="${Inquiry.inquiryAnswerDate == null}"> 
-                           			 답변 대기 
-                           		 </c:if> <c:if
-											test="${Inquiry.inquiryAnswerDate != null }">
+                           			 		답변 대기 
+                           		 		</c:if> 
+                           		 		<c:if test="${Inquiry.inquiryAnswerDate != null }">
 											<c:out value=" ${Inquiry.inquiryAnswerDate  }" />
-										</c:if></td>
+										</c:if>
+									</td>
 								</tr>
 								<tr class="content">
 									<td colspan="5">
