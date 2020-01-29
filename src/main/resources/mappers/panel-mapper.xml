@@ -26,7 +26,7 @@
 		<result property="withdrawAccount" column="WITHDRAW_ACCOUNT"/>
 	</resultMap>
 	
-	<resultMap type="com.opera.survway.panel.model.vo.Research" id="MainResearchResultSet">
+	<resultMap type="PanelResearch" id="MainResearchResultSet">
 		<id property="researchNo" column="RESEARCH_NO"/>
 		<result property="researchName" column="RESEARCH_NAME"/>
 		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
@@ -208,13 +208,13 @@
 	 	SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE FROM NOTICE
 	 	ORDER BY NOTICE_NO DESC
 	 </select>
-  	<select id="selectMainResearchList" resultMap="MainResearchResultSet" parameterType="Research">
+  	<select id="selectMainResearchList" resultMap="MainResearchResultSet" parameterType="PanelResearch">
   		SELECT RESEARCH_NO, RESEARCH_NAME, RESEARCH_PERIOD, RESEARCH_PERPOSE, RESEARCH_REWARD
 		FROM RESEARCH
 		WHERE RESEARCH_NO != 2
 		ORDER BY RESEARCH_NO DESC
   	</select>
-  	<select id="selectTSResearchList" resultMap="MainResearchResultSet" parameterType="Research">
+  	<select id="selectTSResearchList" resultMap="MainResearchResultSet" parameterType="PanelResearch">
   		SELECT RESEARCH_NO, RESEARCH_NAME, RESEARCH_PERIOD, RESEARCH_PERPOSE, RESEARCH_REWARD
 		FROM RESEARCH
 		WHERE RESEARCH_NO = 1

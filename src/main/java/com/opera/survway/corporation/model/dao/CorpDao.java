@@ -2,7 +2,7 @@ package com.opera.survway.corporation.model.dao;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
-import com.opera.survway.admin.model.vo.Research;
+import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.CorpMember;
 import com.opera.survway.corporation.model.vo.ResearchChoice;

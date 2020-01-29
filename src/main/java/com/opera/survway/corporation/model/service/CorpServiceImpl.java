@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.exception.ResearchException;
-import com.opera.survway.admin.model.vo.Research;
+import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.dao.CorpDao;
 import com.opera.survway.corporation.model.vo.CorpMember;

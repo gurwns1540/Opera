@@ -1,4 +1,4 @@
-package com.opera.survway.admin.model.vo;
+package com.opera.survway.corporation.model.vo;
 
 public class Research {
 	private int researchNo;					// 리서치 번호

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.opera.survway.admin.model.exception.ResearchException;
-import com.opera.survway.admin.model.vo.Research;
+import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.common.model.vo.OperaFileNamePolicy;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.service.CorpService;

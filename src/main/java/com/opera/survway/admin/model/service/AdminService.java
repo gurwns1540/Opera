@@ -1,20 +1,14 @@
 package com.opera.survway.admin.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
-import com.opera.survway.admin.model.vo.Research;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
-import com.opera.survway.common.model.vo.UploadFile;
-import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
-import com.opera.survway.panel.model.vo.PanelMember;
 
 @Service
 public interface AdminService {

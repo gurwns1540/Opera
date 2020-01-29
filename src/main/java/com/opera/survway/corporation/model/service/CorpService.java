@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.exception.ResearchException;
-import com.opera.survway.admin.model.vo.Research;
+import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.CorpMember;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;

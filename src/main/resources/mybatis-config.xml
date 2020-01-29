@@ -7,13 +7,13 @@
 	<typeAliases>
 		<typeAlias type="com.opera.survway.panel.model.vo.PanelMember" alias="PanelMember"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.Notice" alias="Notice"/>
-		<typeAlias type="com.opera.survway.panel.model.vo.Research" alias="Research"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.Research" alias="PanelResearch"/>
 		<typeAlias type="com.opera.survway.corporation.model.vo.CorpMember" alias="CorpMember"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.Inquiry" alias="Inquiry"/>
 		<typeAlias type="com.opera.survway.common.model.vo.AllMember" alias="AllMember"/>
 		<typeAlias type="com.opera.survway.admin.model.vo.SearchMember" alias="SearchMember"/>
 		<typeAlias type="com.opera.survway.admin.model.vo.PanelRewardHistory" alias="PanelRewardHistory"/>
-		<typeAlias type="com.opera.survway.admin.model.vo.Research" alias="Research"/>
+		<typeAlias type="com.opera.survway.corporation.model.vo.Research" alias="CorpResearch"/>
 		<typeAlias type="com.opera.survway.corporation.model.vo.ResearchChoice" alias="ResearchChoice"/>
 		<typeAlias type="com.opera.survway.corporation.model.vo.ResearchQuestion" alias="ResearchQuestion"/>
 		<typeAlias type="com.opera.survway.common.model.vo.UploadFile" alias="UploadFile"/>
