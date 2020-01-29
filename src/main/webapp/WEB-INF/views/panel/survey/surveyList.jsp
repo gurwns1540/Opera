@@ -207,14 +207,29 @@
 					</c:forEach>
 					<span>[다음]</span> <span>[마지막]</span>
 				</div>
-				
-				
-				<div class="ui modal" id="tsModal">
-					
+
+
+				<div class="ui overlay fullscreen modal scrolling" id="tsModal">
+					<div class="header">
+						Welcome to the <span class="ui teal text">overlay
+							fullscreen modal</span>
+					</div>
+					<div class="content">
+						<div class="description">
+							<div class="ui header">Even if there is not much content
+								here...</div>
+							...the overlay fullscreen modal will occupy the entire screen
+						</div>
+					</div>
+					<div class="actions">
+						<div class="ui primary approve button">
+							Proceed <i class="right chevron icon"></i>
+						</div>
+					</div>
 				</div>
-				
-				
-				
+
+
+
 				<br />
 			</section>
 			<!-- container end -->
