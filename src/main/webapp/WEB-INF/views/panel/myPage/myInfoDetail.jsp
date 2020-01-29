@@ -25,243 +25,249 @@
 }
 </style>
 <body>
-	<div class="wrap">
-		<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
-		<section class="container">
-			<br />
-			<table id="titleTable" height="10px;" width="99%;">
-				<tr>
-					<td id="menuTitle">내 정보 관리</td>
-					<td id="pagePath">
-						<div class="ui breadcrumb">
-							<a class="section" id="depth1" href="panelMain.panel">Home</a>
-							<i class="right angle icon divider"></i>
-							<a class="section" id="depth2" href="myInfo.panel">마이페이지</a>
-							<i class="right angle icon divider"></i>
-							<div class="active section" id="depth3">내 정보 관리</div>
-						</div>  <!-- .ui .breadcrumb end -->
-					</td>
-				</tr>
-			</table>  <!-- #titleTable end -->
-			
-			<div class="sectionLine">
-				<hr>
-			</div>  <!-- .sectionLine end -->
-			
-			<div class="infoConfirm" style="width: 100%;">
-				<form id="updateForm" action="updateMemberInfo.me" method="post" style="width: inherit;">
-					<table align="center" id="joinform" style="width: inherit;">
-						<tr>
-							<td colspan="3" class="tdLabelArea">
-								<h4>아이디</h4>
-							</td>
-							<td colspan="3" class="inputArea">
-								<div class="ui">
-									<h4>${ loginUser.userId }</h4>
-								</div>
-							</td>
-						</tr>
-						
-						<tr>
-							<td colspan="3" class="tdLabelArea">
-								<h4>비밀번호</h4>
-							</td>
-							<td colspan="3" class="inputArea">
-								<div class="ui input">
-									<button class="ui blue button" type="button" id="changePwdBtn">비밀번호 변경</button>
-								</div>
-							</td>
-						</tr>
-						
-						
-						<tr>
-							<td colspan="3" class="tdLabelArea">
-								<h4>이름</h4>
-							</td>
-							<td colspan="3" class="inputArea">
-								<div class="ui">
-									<h4>${ loginUser.userName }</h4>
-								</div>
-							</td>
-						</tr>
-						
-						<tr>
-							<td colspan="3" class="tdLabelArea">
-								<h4>생년월일</h4>
-							</td>
-							<td colspan="3" class="inputArea">
-								<div class="ui">
-									<h4>${ loginUser.panelBirthday }</h4>
-								</div>
-							</td>
-						</tr>
-						
-						<tr>
-							<td colspan="3" class="tdLabelArea">
-								<h4>성별</h4>
-							</td>
-							<td colspan="3" class="inputArea">
-								<h4 id="gender"></h4>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3" class="tdLabelArea"><h4>휴대전화</h4></td>
-							<td colspan="2" class="inputArea">
-								<h4 id="phone"></h4>
-							</td>
-							<td></td>
-						</tr>
-						
-						<tr>
-							<td colspan="3" class="tdLabelArea"><h4>주소</h4></td>
-							<td colspan="2" class="inputArea">
-								<div class="ui input">
-									<input type="hidden" id="userAddress" name="userAddress" readonly/>
-									<input type="text" name="post" id="post" size="7px;" readonly>
-								</div>
-								<div class="ui input">
-									<input type="text" name="address" id="address" size="22px;">
-								</div>
-								<button id="findAddress" class="ui blue button" type="button">찾기</button>
-							</td>
-							<td></td>
-						</tr>
-						
-						<tr>
-							<td colspan="3"></td>
-							<td colspan="3" class="inputArea">
-								<div class="ui input">
-									<input type="text" name="detailAddress" id="detailAddress" size="35px;">
-								</div>
-							</td>
-						</tr>
-						
-						<tr>
-							<td colspan="3" class="tdLabelArea">
-								<h4>이메일</h4>
-							</td>
-							<td colspan="2" class="inputArea">
-								<div class="ui input">
-									<h4>${ loginUser.userEmail }</h4>
-								</div>
-							</td>
-							<td></td>
-						</tr>
-						
-						<tr>
-							<td colspan="3" class="tdLabelArea">
-								<h4>추천인</h4>
-							</td>
-							<td colspan="3" class="inputArea">
-								<div class="ui input">
-									<input type="text" name="nominee">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td><br>
-							<br></td>
-						</tr>
-						<tr>
-							<td colspan="6"><hr></td>
-						</tr>
-						<tr>
-							<td colspan="6" align="right" style="height:100px;">
-								<button type="button" class="ui blue button" id="updateBtn">정보수정</button>
-								<button type="reset" class="ui blue button" onclick="location.href='panelMain.panel'">메인으로</button>
-							</td>
-						</tr>
-					</table>  <!-- #joinForm end -->
-				</form>
-			</div>  <!-- infoConfirm end -->
-			
-			<br />
-			
-			<c:if test="${ !empty param.message }">
-				<c:if test="${ param.message eq 'success' }">
-					<script>
-						Swal.fire('수정완료', '개인정보수정이 완료되었습니다', 'success');
-					</script>
+	<c:if test="${ loginUser != null }">
+		<div class="wrap">
+			<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
+			<section class="container">
+				<br />
+				<table id="titleTable" height="10px;" width="99%;">
+					<tr>
+						<td id="menuTitle">내 정보 관리</td>
+						<td id="pagePath">
+							<div class="ui breadcrumb">
+								<a class="section" id="depth1" href="panelMain.panel">Home</a>
+								<i class="right angle icon divider"></i>
+								<a class="section" id="depth2" href="myInfo.panel">마이페이지</a>
+								<i class="right angle icon divider"></i>
+								<div class="active section" id="depth3">내 정보 관리</div>
+							</div>  <!-- .ui .breadcrumb end -->
+						</td>
+					</tr>
+				</table>  <!-- #titleTable end -->
+				
+				<div class="sectionLine">
+					<hr>
+				</div>  <!-- .sectionLine end -->
+				
+				<div class="infoConfirm" style="width: 100%;">
+					<form id="updateForm" action="updateMemberInfo.me" method="post" style="width: inherit;">
+						<table align="center" id="joinform" style="width: inherit;">
+							<tr>
+								<td colspan="3" class="tdLabelArea">
+									<h4>아이디</h4>
+								</td>
+								<td colspan="3" class="inputArea">
+									<div class="ui">
+										<h4>${ loginUser.userId }</h4>
+									</div>
+								</td>
+							</tr>
+							
+							<tr>
+								<td colspan="3" class="tdLabelArea">
+									<h4>비밀번호</h4>
+								</td>
+								<td colspan="3" class="inputArea">
+									<div class="ui input">
+										<button class="ui blue button" type="button" id="changePwdBtn">비밀번호 변경</button>
+									</div>
+								</td>
+							</tr>
+							
+							
+							<tr>
+								<td colspan="3" class="tdLabelArea">
+									<h4>이름</h4>
+								</td>
+								<td colspan="3" class="inputArea">
+									<div class="ui">
+										<h4>${ loginUser.userName }</h4>
+									</div>
+								</td>
+							</tr>
+							
+							<tr>
+								<td colspan="3" class="tdLabelArea">
+									<h4>생년월일</h4>
+								</td>
+								<td colspan="3" class="inputArea">
+									<div class="ui">
+										<h4>${ loginUser.panelBirthday }</h4>
+									</div>
+								</td>
+							</tr>
+							
+							<tr>
+								<td colspan="3" class="tdLabelArea">
+									<h4>성별</h4>
+								</td>
+								<td colspan="3" class="inputArea">
+									<h4 id="gender"></h4>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3" class="tdLabelArea"><h4>휴대전화</h4></td>
+								<td colspan="2" class="inputArea">
+									<h4 id="phone"></h4>
+								</td>
+								<td></td>
+							</tr>
+							
+							<tr>
+								<td colspan="3" class="tdLabelArea"><h4>주소</h4></td>
+								<td colspan="2" class="inputArea">
+									<div class="ui input">
+										<input type="hidden" id="userAddress" name="userAddress" readonly/>
+										<input type="text" name="post" id="post" size="7px;" readonly>
+									</div>
+									<div class="ui input">
+										<input type="text" name="address" id="address" size="22px;">
+									</div>
+									<button id="findAddress" class="ui blue button" type="button">찾기</button>
+								</td>
+								<td></td>
+							</tr>
+							
+							<tr>
+								<td colspan="3"></td>
+								<td colspan="3" class="inputArea">
+									<div class="ui input">
+										<input type="text" name="detailAddress" id="detailAddress" size="35px;">
+									</div>
+								</td>
+							</tr>
+							
+							<tr>
+								<td colspan="3" class="tdLabelArea">
+									<h4>이메일</h4>
+								</td>
+								<td colspan="2" class="inputArea">
+									<div class="ui input">
+										<h4>${ loginUser.userEmail }</h4>
+									</div>
+								</td>
+								<td></td>
+							</tr>
+							
+							<tr>
+								<td colspan="3" class="tdLabelArea">
+									<h4>추천인</h4>
+								</td>
+								<td colspan="3" class="inputArea">
+									<div class="ui input">
+										<input type="text" name="nominee">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td><br>
+								<br></td>
+							</tr>
+							<tr>
+								<td colspan="6"><hr></td>
+							</tr>
+							<tr>
+								<td colspan="6" align="right" style="height:100px;">
+									<button type="button" class="ui blue button" id="updateBtn">정보수정</button>
+									<button type="reset" class="ui blue button" onclick="location.href='panelMain.panel'">메인으로</button>
+								</td>
+							</tr>
+						</table>  <!-- #joinForm end -->
+					</form>
+				</div>  <!-- infoConfirm end -->
+				
+				<br />
+				
+				<c:if test="${ !empty param.message }">
+					<c:if test="${ param.message eq 'success' }">
+						<script>
+							Swal.fire('수정완료', '개인정보수정이 완료되었습니다', 'success');
+						</script>
+					</c:if>
+					<c:if test="${ param.message eq 'fail' }">
+						<script>
+							Swal.fire('수정완료', '개인정보 수정을 실패했습니다.', 'warning');
+						</script>
+					</c:if>
 				</c:if>
-				<c:if test="${ param.message eq 'fail' }">
-					<script>
-						Swal.fire('수정완료', '개인정보 수정을 실패했습니다.', 'warning');
-					</script>
-				</c:if>
-			</c:if>
-		</section>  <!-- container end -->
-		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
-	</div>  <!-- wrap end -->
-	
-	<div class="ui basic modal" id="changePwdModal">
-		<div class="ui icon header">
-			<h2>비밀번호 변경</h2>
-		</div>
-		<div class="content" align="center">
-			<form id="changePwdModalForm" action="updatePassword.me" method="post">
-				<table style="width: 450px; height: 200px;">
-					<tr>
-						<td align="right" style="width: 32%;">
-							<div style="width: 100%; text-align: left;">
-								현재 비밀번호
-							</div>
-						</td>
-						<td style="width: 68%;"align="center">
-							<div class="ui input">
-								<input type="hidden" name="mno" value="${ loginUser.mno }" />
-								<input type="password" name="userPwd" id="userPwd"/>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td style="height: 30px;"></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td align="right">
-							<div style="width: 100%; text-align: left;">
-								새 비밀번호
-							</div>
-						</td>
-						<td align="center">
-							<div class="ui input">
-								<input type="password" name="changePwd" id="changePwd"/>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td align="center" style="font-size: 7pt; font-weight: bold; height: 26px;"><span id="pass1Check"></span></td>
-					</tr>
-					<tr>
-						<td align="right">
-							<div style="width: 100%; text-align: left;">
-								새 비밀번호 확인
-							</div>
-						</td>
-						<td align="center">
-							<div class="ui input">
-								<input type="password" name="changePwd2" id="changePwd2"/>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td align="center" style="font-size: 7pt; font-weight: bold; height: 26px;"><span id="pass2Check"></span></td>
-					</tr>
-				</table>
-			</form>  <!-- #changePwdModalForm end -->
-		</div>  <!-- .contents end -->
-		<div class="actions">
-			<div class="ui green ok inverted button" id="okModalBtn">
-				<i class="checkmark icon"></i> 변경하기
-			</div>  <!-- #okModalBtn end -->
-			<div class="ui red basic cancel inverted button" id="cancelModalBtn">
-				<i class="remove icon"></i> 취소하기
-			</div>  <!-- cancelModalBtn end -->
-		</div>  <!-- .actions end -->
-	</div>  <!-- #changePwdModal end -->
-
+			</section>  <!-- container end -->
+			<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
+		</div>  <!-- wrap end -->
+		
+		<div class="ui basic modal" id="changePwdModal">
+			<div class="ui icon header">
+				<h2>비밀번호 변경</h2>
+			</div>
+			<div class="content" align="center">
+				<form id="changePwdModalForm" action="updatePassword.me" method="post">
+					<table style="width: 450px; height: 200px;">
+						<tr>
+							<td align="right" style="width: 32%;">
+								<div style="width: 100%; text-align: left;">
+									현재 비밀번호
+								</div>
+							</td>
+							<td style="width: 68%;"align="center">
+								<div class="ui input">
+									<input type="hidden" name="mno" value="${ loginUser.mno }" />
+									<input type="password" name="userPwd" id="userPwd"/>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td style="height: 30px;"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td align="right">
+								<div style="width: 100%; text-align: left;">
+									새 비밀번호
+								</div>
+							</td>
+							<td align="center">
+								<div class="ui input">
+									<input type="password" name="changePwd" id="changePwd"/>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td align="center" style="font-size: 7pt; font-weight: bold; height: 26px;"><span id="pass1Check"></span></td>
+						</tr>
+						<tr>
+							<td align="right">
+								<div style="width: 100%; text-align: left;">
+									새 비밀번호 확인
+								</div>
+							</td>
+							<td align="center">
+								<div class="ui input">
+									<input type="password" name="changePwd2" id="changePwd2"/>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td align="center" style="font-size: 7pt; font-weight: bold; height: 26px;"><span id="pass2Check"></span></td>
+						</tr>
+					</table>
+				</form>  <!-- #changePwdModalForm end -->
+			</div>  <!-- .contents end -->
+			<div class="actions">
+				<div class="ui green ok inverted button" id="okModalBtn">
+					<i class="checkmark icon"></i> 변경하기
+				</div>  <!-- #okModalBtn end -->
+				<div class="ui red basic cancel inverted button" id="cancelModalBtn">
+					<i class="remove icon"></i> 취소하기
+				</div>  <!-- cancelModalBtn end -->
+			</div>  <!-- .actions end -->
+		</div>  <!-- #changePwdModal end -->
+	</c:if>
+	<c:if test="${ loginUser == null }">
+		<script>
+			location.href="panelResult.panel?message=notLoginAccess";
+		</script>
+	</c:if>
 
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>

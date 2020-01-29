@@ -57,16 +57,17 @@ public class PanelController {
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 1. 28.
 	 * @ModifyDate  : 2020. 1. 28.
-	 * @Description : 메인페이지 공지사항 select
+	 * @Description : 메인페이지 공지사항, 리서치 select
 	 */
 	@RequestMapping("panelMain.panel")
-	public String showPanelMain(Model model) {
+	public String showPanelMain(Model model, HttpSession session) {
+		PanelMember loginUser = (PanelMember) session.getAttribute("loginUser");
+		System.out.println(loginUser);
 		try {
 			List<Notice> noticeList = ps.selectMainNoticeList();
-			List<Research> researchList = ps.selectMainResearchList();
+			List<Research> researchList = ps.selectMainResearchList(loginUser);
 			model.addAttribute("noticeList", noticeList);
 			model.addAttribute("researchList", researchList);
-			System.out.println(researchList);
 		} catch (SelectException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
