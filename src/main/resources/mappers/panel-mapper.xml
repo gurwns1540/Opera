@@ -21,7 +21,7 @@
 		<result property="panelGender" column="PANEL_GENDER"/>
 		<result property="referPanelCode" column="REFER_PANEL_CODE"/>
 		<result property="nominee" column="NOMINEE"/>
-		<result property="panelLevel" column="PANEL_LEVEL"/>
+		<result property="panellevelNo" column="PANELLEVEL_NO"/>
 		<result property="occupationNo" column="OCCUPATION_NO"/>
 		<result property="withdrawAccount" column="WITHDRAW_ACCOUNT"/>
 	</resultMap>
