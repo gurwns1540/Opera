@@ -18,6 +18,9 @@
 		<typeAlias type="com.opera.survway.corporation.model.vo.ResearchQuestion" alias="ResearchQuestion"/>
 		<typeAlias type="com.opera.survway.common.model.vo.UploadFile" alias="UploadFile"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.Reward" alias="Reward"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.ResearchQuestion" alias="PanelResearchQuestion"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.ResearchChoice" alias="PanelResearchChoice"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.ResearchAnswer" alias="PanelResearchAnswer"/>
 		<typeAlias type="com.opera.survway.corporation.model.vo.SearchResearch" alias="SearchResearch"/>
 	</typeAliases>
 	<mappers>
@@ -28,4 +31,3 @@
 		<mapper resource="mappers/admin-mapper.xml"/>
 	</mappers>
 </configuration>
-

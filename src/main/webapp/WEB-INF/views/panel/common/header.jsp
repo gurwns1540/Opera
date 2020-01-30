@@ -56,7 +56,7 @@
 			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px; font-size:0.8vw;">
 		   		 서베이
 		   		 <div class="menu">
-			    	<a href="surveyList.panel" class="item">진행중인 설문조사</a>
+			    	<a href="surveyList.survey" class="item">진행중인 설문조사</a>
 			    	<a href="mySurveyList_complete.panel" class="item">참여한 설문조사</a>
 			    	<a href="panelSurveyList.panel" class="item">패널서베이</a>
 		    	</div>

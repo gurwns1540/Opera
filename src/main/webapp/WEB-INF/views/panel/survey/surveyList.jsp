@@ -237,7 +237,8 @@
 					</c:forEach>
 					<span>[다음]</span> <span>[마지막]</span>
 				</div>
-
+				
+				<!-- 조사 시작해서 처음뜨는 모달창 - 조사참여가이드 -->
 				<div class="ui overlay fullscreen modal" id="surveyStart">
 					<div class="header" style="height:61px; padding-left:8px;">
 						<img src="resources/images/footerLogo.png" alt="" id="footerImg">
@@ -298,6 +299,7 @@
 					</div>
 				</div>
 				
+				<!-- 서베이 응답들어가기 전 설명 -->
 				<div class="ui overlay fullscreen modal" id="Q0">
 					<div class="header" style="height:61px; padding:5px;">
 						<table style="width:100%;">
@@ -604,32 +606,34 @@
 			<!-- container end -->
 			<%@ include file="/WEB-INF/views/panel/common/footer.jsp"%>
 			
-			
 			<script>
 				
+				/* 설문조사목록에서 TS조사 클릭하면 조사시작 모달창 띄우기 */
 				$(document).on('click', '#thanksSurvey',function(){
-					$('#surveyStart') .modal('setting', 'closable', false).modal('show');
+					$('#surveyStart').modal('setting', 'closable', false).modal('show');
 				});
+				
+				/* 설문조사가이드 모달창에서 조사시작버튼누르면 설문조사설명모달창으로 넘기기 */
 				$('#goSurveyBtn').on('click', function(){
-					$('#Q0') .modal('setting', 'closable', false).modal('show');
+					$('#Q0').modal('setting', 'closable', false).modal('show');
 					$('#surveyStart').modal('hide');
 				});
-					
+				
+				/* 설문조사 모달창 next누르면 현재창 숨기고 다음창 띄우기 */
 				$(".modal").find(".button").each(function(i, e){
+					
 					var btn = 'nextBtn'+i;
 					var current = 'Q' + i;
 					var next = 'Q' + (i+1);
+					
 					$('#'+btn).on('click', function(){
 						$('#'+next).modal('setting', 'closable', false).modal('show');
 						$('#'+current).modal('hide');
 					});
+					
 				});
 				
-				
 			</script>
-			
-			
-			
 		</div>
 		<!-- wrap end -->
 	</c:if>
