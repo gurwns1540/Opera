@@ -89,6 +89,7 @@
 		-ms-transition: all 0.15s;
 		transition: all 0.15s;
 	}
+	
 	#accordian ul ul li a:hover {
 		background: #36677E;
 		text-shadow:
