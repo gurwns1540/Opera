@@ -70,6 +70,11 @@
 	cursor: pointer;
 }
 /* 페이징 css end */
+.insetBox {
+	width: 100px;
+	background: #FBFBFB;
+	box-shadow: 0px 4px 4px #E2E2E2 inset;
+}
 </style>
 <body>
 	<div class="wrap">
@@ -137,8 +142,8 @@
 									<td>1</td>									
 									<td>2020.01.03</td>
 								</tr>
-								<tr class="content">
-									<td colspan="4">
+								<tr class="content insetBox">
+									<td colspan="4" style="padding:100px;">
 										<span style="text-align: center;">
 											얼마나 오아이스도 인간은 대고, 미묘한 뜨고, 설산에서 곳으로 사막이다. 않는 청춘의 안고, 그와 끓는 밥을
 											되려니와, 부패뿐이다. 것은 그들은 영원히 굳세게 영락과 속에서 때에, 황금시대다. 같이, 장식하는 밝은

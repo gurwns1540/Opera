@@ -47,35 +47,42 @@
 
 /*페이징 css */
 #pagingArea {
-		margin-top: 40px;
-		
-		/* 드래그 방지용 소스*/
-		-ms-user-select: none; 
-		-moz-user-select: -moz-none; 
-		-webkit-user-select: none; 
-		-khtml-user-select: none; 
-		user-select:none;
-		/* 드래그 방지용 소스*/
-	}
-	#pagingArea span {
-		margin-left: 5px;
-		margin-right: 5px;
-		color: black;
-		font-size: 10pt;
-	}
-	#pagingArea span:hover {
-		margin-left: 5px;
-		margin-right: 5px;
-		font-size: 10pt;
-		color: dodgerblue;
-		cursor: pointer;
-	}
-	
-	#write{
-		float: right;
-		margin-top: 2%;
-		margin-right: 2%;
-	}
+	margin-top: 40px;
+	/* 드래그 방지용 소스*/
+	-ms-user-select: none;
+	-moz-user-select: -moz-none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+	/* 드래그 방지용 소스*/
+}
+
+#pagingArea span {
+	margin-left: 5px;
+	margin-right: 5px;
+	color: black;
+	font-size: 10pt;
+}
+
+#pagingArea span:hover {
+	margin-left: 5px;
+	margin-right: 5px;
+	font-size: 10pt;
+	color: dodgerblue;
+	cursor: pointer;
+}
+
+#write {
+	float: right;
+	margin-top: 2%;
+	margin-right: 2%;
+}
+
+.insetBox {
+	width: 100px;
+	background: #FBFBFB;
+	box-shadow: 0px 4px 4px #E2E2E2 inset;
+}
 /* 페이징 css end */
 </style>
 <body>
@@ -147,8 +154,8 @@
 										<td>${notice.noticeTitle }</td>
 										<td>${notice.noticeDate }</td>
 									</tr>
-									<tr class="content">
-										<td colspan="4">
+									<tr class="content insetBox">
+										<td colspan="4" style="padding:100px;">
 											<span style="text-align: center;">
 												${notice.noticeContext }
 											</span>
