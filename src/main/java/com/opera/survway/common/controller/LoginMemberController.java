@@ -59,7 +59,7 @@ public class LoginMemberController {
 				model.addAttribute("loginUser", loginUser);
 				return "redirect:corpMain.corp";
 			} catch (LoginException e) {
-				model.addAttribute("msg", e.getMessage());
+				model.addAttribute("message", e.getMessage());
 				return "redirect:panelLogin.panel";
 			}
 			

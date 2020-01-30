@@ -26,4 +26,8 @@ public interface CorpService {
 	List<Research> previousResearch(SearchResearch searchResearch) throws SelectException;
 
 	int getListCountResearch(SearchResearch searchResearch) throws SelectException;
+
+	Research previousResearchDetail(int researchNo) throws SelectException;
+
+	int getQuestionCount(int researchNo);
 }

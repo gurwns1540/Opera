@@ -1,16 +1,18 @@
 package com.opera.survway.corporation.model.vo;
 
+import java.util.Arrays;
+
 import com.opera.survway.common.model.vo.PageInfo;
 
 public class SearchResearch {
-	private String researchState;
+	private String[] researchState;
 	private String researchName;
 	private PageInfo pi;
 	private int mno;
 	
 	public SearchResearch() {}
 
-	public SearchResearch(String researchState, String researchName, PageInfo pi, int mno) {
+	public SearchResearch(String[] researchState, String researchName, PageInfo pi, int mno) {
 		super();
 		this.researchState = researchState;
 		this.researchName = researchName;
@@ -18,11 +20,11 @@ public class SearchResearch {
 		this.mno = mno;
 	}
 
-	public String getResearchState() {
+	public String[] getResearchState() {
 		return researchState;
 	}
 
-	public void setResearchState(String researchState) {
+	public void setResearchState(String[] researchState) {
 		this.researchState = researchState;
 	}
 
@@ -52,8 +54,8 @@ public class SearchResearch {
 
 	@Override
 	public String toString() {
-		return "SearchResearch [researchState=" + researchState + ", researchName=" + researchName + ", pi=" + pi
-				+ ", mno=" + mno + "]";
+		return "SearchResearch [researchState=" + Arrays.toString(researchState) + ", researchName=" + researchName
+				+ ", pi=" + pi + ", mno=" + mno + "]";
 	}
-	
+
 }

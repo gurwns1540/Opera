@@ -394,6 +394,7 @@
 						
 						<div class="ui vertical buttons">
 							<button type="button" class="ui button" id="multipleChoice">객관식</button>
+							<button type="button" class="ui button" id="multiplyChoice">객관식(다중선택)</button>
 							<button type="button" class="ui button" id="shortAnswer">주관식</button>
 							<button type="button" class="ui button" id="multipleImageChoice">객관식 & 이미지</button>
 							<button type="button" class="ui button" id="likertScale">리커트 척도</button>
@@ -416,6 +417,12 @@
 		/* 문항 선택 */
 		$(document).on("click", "#multipleChoice", function(){
 			$(".quizTable:not(.hide)").find("#questionFormNo").val(1);
+			var $choiceArea = $('<div id="multipleChoiceArea"> <div class="choice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" class="choiceNo"><input type="text" class="choiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> </div> <div class="choice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" class="choiceNo"><input type="text" class="choiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> </div> <div class="choice"> <div id="plusChoice" style=""><i class="plus icon"></i> 보기추가</div> </div> </div>');
+			$(".quizTable:not(.hide)").find("#choiceArea").css("height", "300px");
+			$(".quizTable:not(.hide)").find("#choiceArea").html($choiceArea);
+		});
+		$(document).on("click", "#multiplyChoice", function(){
+			$(".quizTable:not(.hide)").find("#questionFormNo").val(6);
 			var $choiceArea = $('<div id="multipleChoiceArea"> <div class="choice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="1" name="choiceNo" class="choiceNo"><input type="text" class="choiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> </div> <div class="choice"> <div style="width: 100%; height: fit-content;"><i class="large times icon deleteChoice" style="float: right; margin: 2px;"></i></div> <input type="text" readonly value="2" name="choiceNo" class="choiceNo"><input type="text" class="choiceContext" name="choiceContext" style="background: none; border: 0; border-bottom: 1px solid gray; border-radius: 0;" placeholder="보기 내용"> </div> <div class="choice"> <div id="plusChoice" style=""><i class="plus icon"></i> 보기추가</div> </div> </div>');
 			$(".quizTable:not(.hide)").find("#choiceArea").css("height", "300px");
 			$(".quizTable:not(.hide)").find("#choiceArea").html($choiceArea);

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -211,7 +212,8 @@ public class CorpResearchController {
 			}
 			if(queryMap.containsKey("researchState")) {
 				researchState = queryMap.get("researchState").get(0);
-				searchResearch.setResearchState(researchState);
+				String[] stateArr = researchState.split(",");
+				searchResearch.setResearchState(stateArr);
 			}
 			if(queryMap.containsKey("researchName")) {
 				researchName = queryMap.get("researchName").get(0);
@@ -239,6 +241,30 @@ public class CorpResearchController {
 			model.addAttribute("pi", pi);
 			
 			return "previousResearchMain";
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
+	}
+	@RequestMapping("previousResearchDetail.corpResearch")
+	public String previousResearchDetail(Model model, String researchNo) {
+
+		try {
+			Research research = cs.previousResearchDetail(Integer.parseInt(researchNo));
+			System.out.println(research);
+			
+			String[] beforPeriod = research.getResearchPeriod().split("~");
+			research.setResearchPeriod(beforPeriod[0].substring(0, 4) + "-" + beforPeriod[0].substring(4, 6) + "-" + beforPeriod[0].substring(6, 8) + " ~ " + beforPeriod[1].substring(0, 4) + "-" + beforPeriod[1].substring(4, 6) + "-" + beforPeriod[1].substring(6, 8));
+			
+			int questionCount = cs.getQuestionCount(research.getResearchNo());
+			
+			model.addAttribute("research", research);
+			model.addAttribute("questionCount", questionCount);
+			return "previousResearchDetail";
+			
+		} catch (NumberFormatException e) {
+			model.addAttribute("msg", "리서치 조회 실패");
+			return "redirect:errorPage.me";
 		} catch (SelectException e) {
 			model.addAttribute("msg", e.getMessage());
 			return "redirect:errorPage.me";

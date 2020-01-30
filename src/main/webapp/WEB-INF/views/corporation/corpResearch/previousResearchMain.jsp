@@ -112,32 +112,33 @@
 		</div>
 		
 		<div id="searchArea">
-			<div id="statusSelect">
-	
-				<div class="ui clearable multiple selection dropdown">
-				  	<input type="hidden" name="researchState">
-				  	<i class="dropdown icon"></i>
-				  	<div class="default text">Select Status</div>
-				  	<div class="menu">
-				    	<div class="item">전체</div>
-				    	<div class="item">승인 대기중</div>
-				    	<div class="item">납부 대기중</div>
-				    	<div class="item">재구성 대기중</div>
-				    	<div class="item">검토 대기중</div>
-				    	<div class="item">메일링 대기중</div>
-				    	<div class="item">리서치 진행중</div>
-				    	<div class="item">리서치 완료</div>
-				  	</div>
+			<form action="previousResearchMain.corpResearch" method="get">
+				<div id="statusSelect">
+					<div class="ui clearable multiple selection dropdown">
+					  	<input type="hidden" name="researchState">
+					  	<i class="dropdown icon"></i>
+					  	<div class="default text">Select Status</div>
+					  	<div class="menu">
+					    	<div class="item" value="승인 대기">승인 대기</div>
+					    	<div class="item" value="납부 대기">납부 대기</div>
+					    	<div class="item" value="질문 재구성 대기">질문 재구성 대기</div>
+					    	<div class="item" value="검토 대기">검토 대기</div>
+					    	<div class="item" value="메일링 대기">메일링 대기</div>
+					    	<div class="item" value="리서치 배포중">리서치 배포중</div>
+					    	<div class="item" value="리서치 완료">리서치 완료</div>
+					    	<div class="item" value="반려">반려</div>
+					  	</div>
+					</div>
 				</div>
-			</div>
-			<div id="selectBoxArea">
-				<div class="ui action input">
-	  				<input type="text" name="researchName" placeholder="프로젝트 명">
-					<button class="ui icon button">
-						<i class="search icon"></i>
-					</button>
+				<div id="selectBoxArea">
+					<div class="ui action input">
+		  				<input type="text" name="researchName" placeholder="프로젝트 명">
+						<button class="ui icon button">
+							<i class="search icon"></i>
+						</button>
+					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 		<table id="researchTable">
 			<tr>
@@ -260,6 +261,17 @@
 		  });
 		
 		$("#researchMenu td div").eq(2).addClass("on");
+		
+		$(document).on("click", "#researchTable tr", function(){
+			var researchNo = $(this).find("td").eq(0).text();
+			location.href = "previousResearchDetail.corpResearch?researchNo=" + researchNo;
+		});
+		$(document).on("mouseenter", "#researchTable tr", function(){
+			$(this).css({"background":"#FAFAFA", "cursor":"pointer"});
+		});
+		$(document).on("mouseleave", "#researchTable tr", function(){
+			$(this).css("background","white");
+		});
 	</script>
 
 </body>

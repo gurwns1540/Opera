@@ -139,13 +139,16 @@
 	
 	<sql id="researchState">
 		<if test="researchState != null">
-			AND RS.RESEARCH_STATE = #{researchState}
+			AND RS.RESEARCH_STATE IN
+			<foreach collection="researchState" item="item" index="index" separator=", " open="(" close=")">
+				#{item}
+			</foreach>
 		</if>
 	</sql>
 	
 	<sql id="researchName">
 		<if test="researchName != null">
-			AND R.RESEARCH_NAME = #{researchName}
+			AND R.RESEARCH_NAME LIKE '%' || #{researchName} || '%'
 		</if>
 	</sql>
 	
@@ -158,6 +161,44 @@
 		WHERE R.MNO = #{mno}
 		<include refid="researchState"/>
 		<include refid="researchName"/>
+	</select>
+	<resultMap type="CorpResearch" id="previousResearchDetailResult">
+		<id property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="mno" column="MNO"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchReward" column="RESEARCH_REWARD"/>
+		<result property="researchPrice" column="RESEARCH_PRICE"/>
+		<result property="isBill" column="ISBILL"/>
+		<result property="researchState" column="RESEARCH_STATE"/>
+		<result property="targetNo" column="TARGET_NO"/>
+		<result property="targetGender" column="TARGET_GENDER"/>
+		<result property="targetAgeRange" column="TARGET_AGERANGE"/>
+		<result property="targetLocation" column="TARGET_LOCATION"/>
+		<result property="occupationNo" column="OCCUPATION_NAME"/>
+		<result property="additionaltEtc" column="ADDITIONAL_ETC"/>
+	</resultMap>
+	<select id="previousResearchDetail" parameterType="_int" resultMap="previousResearchDetailResult">
+		SELECT R.RESEARCH_NO, R.RESEARCH_NAME, R.RESEARCH_ENGAGEMENT_GOALS, R.RESEARCH_PERIOD, R.MNO, 
+			   R.RESEARCH_PERPOSE, R.RESEARCH_REWARD, NVL(R.RESEARCH_PRICE, 0) AS RESEARCH_PRICE, 
+			   RS.RESEARCH_STATE, NVL2(BH.PAYMENT_AMOUNT, '결제 완료', '미결제') AS ISBILL,
+			   RT.TARGET_NO, RT.TARGET_GENDER, RT.TARGET_AGERANGE, RT.TARGET_LOCATION,
+			   O.OCCUPATION_NAME, RT.ADDITIONAL_ETC
+		FROM RESEARCH R
+		JOIN RSTATUSHISTORY RH ON (R.RESEARCH_NO = RH.RESEARCH_NO)
+		JOIN RESEARCHSTATE RS ON (RS.RESEARCH_STATE_NO = RH.RESEARCH_STATE_NO)
+		LEFT JOIN BILLINGHISTORY BH ON (BH.RESEARCH_NO = R.RESEARCH_NO)
+        JOIN RESEARCHTARGET RT ON (RT.RESEARCH_NO = R.RESEARCH_NO)
+        JOIN OCCUPATION O ON (O.OCCUPATION_NO = RT.OCCUPATION_NO)
+		WHERE R.RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<select id="getQuestionCount" resultType="_int" parameterType="_int">
+		SELECT COUNT(*)
+		FROM RESEARCHQUESTION
+		WHERE RESEARCH_NO = #{researchNo}
 	</select>
 </mapper>
 

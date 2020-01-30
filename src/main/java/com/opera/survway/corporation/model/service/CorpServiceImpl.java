@@ -146,6 +146,12 @@ public class CorpServiceImpl implements CorpService {
 		}
 	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 이력 조회 
+	 */
 	@Override
 	public List<Research> previousResearch(SearchResearch searchResearch) throws SelectException {
 		List<Research> researchList = cd.previousResearch(sqlSession, searchResearch);
@@ -156,6 +162,12 @@ public class CorpServiceImpl implements CorpService {
 		return researchList;
 	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 이력 수 조회
+	 */
 	@Override
 	public int getListCountResearch(SearchResearch searchResearch) throws SelectException {
 		int listCount = cd.getListCountResearch(sqlSession, searchResearch);
@@ -164,6 +176,34 @@ public class CorpServiceImpl implements CorpService {
 			throw new SelectException("리서치 이력 수 조회 실패");
 		}
 		return listCount;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 상세 조회 
+	 */
+	@Override
+	public Research previousResearchDetail(int researchNo) throws SelectException {
+
+		Research research = cd.previousResearchDetail(sqlSession, researchNo);
+		
+		if(research == null) {
+			throw new SelectException("리서치 상세 조회 실패");
+		}
+		return research;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 문항 수 조회(리서치 상세)
+	 */
+	@Override
+	public int getQuestionCount(int researchNo) {
+		return cd.getQuestionCount(sqlSession, researchNo);
 	}
 
 }

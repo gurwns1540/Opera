@@ -22,7 +22,7 @@ public class CorpDaoImpl implements CorpDao {
 		
 		CorpMember loginUser = sqlSession.selectOne("Corp.loginCheck", cm);
 
-		if(loginUser==null) {
+		if(loginUser == null) {
 			throw new LoginException("로그인 정보가 존재하지 않습니다.");
 		}
 
@@ -96,5 +96,15 @@ public class CorpDaoImpl implements CorpDao {
 	@Override
 	public int getListCountResearch(SqlSessionTemplate sqlSession, SearchResearch searchResearch) {
 		return sqlSession.selectOne("Corp.getListCountResearch", searchResearch);
+	}
+
+	@Override
+	public Research previousResearchDetail(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Corp.previousResearchDetail", researchNo);
+	}
+
+	@Override
+	public int getQuestionCount(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Corp.getQuestionCount", researchNo);
 	}
 }

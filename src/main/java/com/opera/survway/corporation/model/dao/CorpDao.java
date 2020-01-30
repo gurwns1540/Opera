@@ -39,4 +39,8 @@ public interface CorpDao {
 	List<Research> previousResearch(SqlSessionTemplate sqlSession, SearchResearch searchResearch);
 
 	int getListCountResearch(SqlSessionTemplate sqlSession, SearchResearch searchResearch);
+
+	Research previousResearchDetail(SqlSessionTemplate sqlSession, int researchNo);
+
+	int getQuestionCount(SqlSessionTemplate sqlSession, int researchNo);
 }
