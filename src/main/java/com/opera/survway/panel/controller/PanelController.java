@@ -57,7 +57,7 @@ public class PanelController {
 	@RequestMapping("panelMain.panel")
 	public String showPanelMain(Model model, HttpSession session) {
 		PanelMember loginUser = (PanelMember) session.getAttribute("loginUser");
-		System.out.println(loginUser);
+		
 		try {
 			List<Notice> noticeList = ps.selectMainNoticeList();
 			List<Research> researchList = ps.selectMainResearchList(loginUser);

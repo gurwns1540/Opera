@@ -8,6 +8,9 @@ public class Research {
 	private int mno;						// 리서치 작성 기업
 	private String researchPerpose;			// 리서치 목적
 	private String researchReward; 			// 리서치 리워드 량
+	private int researchPrice;				// 리서치 가격
+	private String isBill;					// 결제 여부
+	private String researchState;			// 리서치 상태
 	
 	private int targetNo;					// 조사 대상자 번호
 	private String targetGender;			// 조사 대상자 성별
@@ -19,8 +22,9 @@ public class Research {
 	public Research() {}
 
 	public Research(int researchNo, String researchName, int researchEngagementGoals, String researchPeriod, int mno,
-			String researchPerpose, String researchReward, int targetNo, String targetGender, String targetAgeRange,
-			String targetLocation, String occupationNo, String additionaltEtc) {
+			String researchPerpose, String researchReward, int researchPrice, String isBill, String researchState,
+			int targetNo, String targetGender, String targetAgeRange, String targetLocation, String occupationNo,
+			String additionaltEtc) {
 		super();
 		this.researchNo = researchNo;
 		this.researchName = researchName;
@@ -29,6 +33,9 @@ public class Research {
 		this.mno = mno;
 		this.researchPerpose = researchPerpose;
 		this.researchReward = researchReward;
+		this.researchPrice = researchPrice;
+		this.isBill = isBill;
+		this.researchState = researchState;
 		this.targetNo = targetNo;
 		this.targetGender = targetGender;
 		this.targetAgeRange = targetAgeRange;
@@ -93,6 +100,30 @@ public class Research {
 		this.researchReward = researchReward;
 	}
 
+	public int getResearchPrice() {
+		return researchPrice;
+	}
+
+	public void setResearchPrice(int researchPrice) {
+		this.researchPrice = researchPrice;
+	}
+
+	public String getIsBill() {
+		return isBill;
+	}
+
+	public void setIsBill(String isBill) {
+		this.isBill = isBill;
+	}
+
+	public String getResearchState() {
+		return researchState;
+	}
+
+	public void setResearchState(String researchState) {
+		this.researchState = researchState;
+	}
+
 	public int getTargetNo() {
 		return targetNo;
 	}
@@ -145,9 +176,10 @@ public class Research {
 	public String toString() {
 		return "Research [researchNo=" + researchNo + ", researchName=" + researchName + ", researchEngagementGoals="
 				+ researchEngagementGoals + ", researchPeriod=" + researchPeriod + ", mno=" + mno + ", researchPerpose="
-				+ researchPerpose + ", researchReward=" + researchReward + ", targetNo=" + targetNo + ", targetGender="
-				+ targetGender + ", targetAgeRange=" + targetAgeRange + ", targetLocation=" + targetLocation
-				+ ", occupationNo=" + occupationNo + ", additionaltEtc=" + additionaltEtc + "]";
+				+ researchPerpose + ", researchReward=" + researchReward + ", researchPrice=" + researchPrice
+				+ ", isBill=" + isBill + ", researchState=" + researchState + ", targetNo=" + targetNo
+				+ ", targetGender=" + targetGender + ", targetAgeRange=" + targetAgeRange + ", targetLocation="
+				+ targetLocation + ", occupationNo=" + occupationNo + ", additionaltEtc=" + additionaltEtc + "]";
 	}
 
 }

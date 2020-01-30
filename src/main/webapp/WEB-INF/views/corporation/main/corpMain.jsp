@@ -52,7 +52,7 @@
 			<tr>
 				<td><div onclick="location.href='sampleResearchMain.corp'"><img alt="sampleResearch" src="${ contextPath }/resources/images/sampleResearch.png"></div></td>
 				<td><div onclick="location.href='newResearchMain.corp'"><img alt="newResearch" src="${ contextPath }/resources/images/newResearch.png"></div></td>
-				<td><div onclick="location.href='previousResearchMain.corp'"><img alt="previousResearch" src="${ contextPath }/resources/images/previousResearch.png"></div></td>
+				<td><div onclick="location.href='previousResearchMain.corpResearch'"><img alt="previousResearch" src="${ contextPath }/resources/images/previousResearch.png"></div></td>
 			</tr>
 		</table>
 	</div>

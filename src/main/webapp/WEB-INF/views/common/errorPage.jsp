@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Error</title>
-
+<link rel="shortcut icon" href="resources/images/cross.ico" type="image/x-icon" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- 시멘틱ui -->

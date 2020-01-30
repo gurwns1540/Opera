@@ -10,6 +10,9 @@
 			width: 95%;
 		}
 	}
+	body, html {
+		font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif !important;
+	}
 </style>
 <header class="headerArea">
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
