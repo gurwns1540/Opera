@@ -243,8 +243,8 @@
 						<img src="resources/images/footerLogo.png" alt="" id="footerImg">
 					</div>
 					<div class="content insetBox">
-						<div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:47%; left:50%; transform: translate(-50%, -50%);">
-							<div class="ui header" style="text-align:center; margin-top:60px; margin-bottom:40px;">
+						<div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
+							<div class="ui header" style="text-align:center; margin-top:70px; margin-bottom:70px;">
 								<span style="font-size:35px; color:#00679A;">TS 조사 참여 가이드</span>
 							</div>
 							<table style="margin:0 auto; width: 72%;">
@@ -319,7 +319,7 @@
 						</table>
 					</div>
 					<div class="content insetBox">
-						<div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:47%; left:50%; transform: translate(-50%, -50%);">
+						<div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
 							<div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;">
 								<span style="line-height:180%; font-size:1.1vw;">
 									<b>${ sessionScope.loginUser.userName }</b>님, 안녕하세요.<br>서브웨이 패널회원으로 가입해주셔서 감사합니다.<br><br>지금부터 몇 가지 기본 정보를 여쭙고자 합니다.<br><br><u>본 조사에 참여하셔야 앞으로 ${ sessionScope.loginUser.userName }님께 맞는 조사를 제공</u>해드릴 수 있으니,<br>성실한 답변을 부탁드립니다.
@@ -360,8 +360,8 @@
 							</table>
 						</div>
 						<div class="content insetBox">
-							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:47%; left:50%; transform: translate(-50%, -50%);">
-								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:50px; padding:25px; background-color:#EFF8FA;">
+							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
+								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
 									<div class="questionArea" style="width:100%;">
 										<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
 											<tr>
@@ -379,16 +379,16 @@
 										</table>
 									</div>
 								</div>
-								<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px;">
+								<div class="choiceArea" style="height:320px; overflow-y:auto; width:90%; margin:0 auto; margin-top:30px;">
 									<div class="ui two column grid" id="surveyListArea" style="width: inherit; margin: 0 auto; margin-top:10px;">
-										<c:forEach var="no" begin="1" end="9" step="1">
+										<c:forEach var="no" begin="1" end="30" step="1">
 											<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
 												<div class="eachSurveyBox" style="height:auto;">
 													<div class="eachBox" style="min-height:20px;">
 														<div class="choiceNameArea" style="padding-top:5px;">
 															<div class="ui radio checkbox" style="margin-bottom: 5px;">
-																<input type="radio" name="interests" class="choiceBox" id="choice${ no }" value="choice${ no }">
-																<label for="choice${ no }" style="cursor: pointer;"> 보기 ${ no }</label>
+																<input type="radio" name="interests" class="choiceBox" id="rChoice${ no }" value="${ no }">
+																<label for="rChoice${ no }" style="cursor: pointer;"> 보기 ${ no }</label>
 															</div>
 														</div>
 													</div>
@@ -433,8 +433,8 @@
 							</table>
 						</div>
 						<div class="content insetBox">
-							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:47%; left:50%; transform: translate(-50%, -50%);">
-								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:50px; padding:25px; background-color:#EFF8FA;">
+							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
+								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
 									<div class="questionArea" style="width:100%;">
 										<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
 											<tr>
@@ -460,8 +460,8 @@
 													<div class="eachBox" style="min-height:20px;">
 														<div class="choiceNameArea" style="padding-top:5px;">
 															<div class="ui checked checkbox" style="margin-bottom: 5px;">
-																<input type="checkBox" name="interests" class="choiceBox" id="choice${ no }" value="choice${ no }">
-																<label for="choice${ no }" style="cursor: pointer;"> 보기 ${ no }</label>
+																<input type="checkBox" name="interests" class="choiceBox" id="cChoice${ no }" value="${ no }">
+																<label for="cChoice${ no }" style="cursor: pointer;"> 보기 ${ no }</label>
 															</div>
 														</div>
 													</div>
@@ -506,8 +506,8 @@
 							</table>
 						</div>
 						<div class="content insetBox">
-							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:47%; left:50%; transform: translate(-50%, -50%);">
-								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:50px; padding:25px; background-color:#EFF8FA;">
+							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:45%; left:50%; transform: translate(-50%, -50%);">
+								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
 									<div class="questionArea" style="width:100%;">
 										<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
 											<tr>
@@ -564,8 +564,8 @@
 							</table>
 						</div>
 						<div class="content insetBox">
-							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:47%; left:50%; transform: translate(-50%, -50%);">
-								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:50px; padding:25px; background-color:#EFF8FA;">
+							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:45%; left:50%; transform: translate(-50%, -50%);">
+								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
 									<div class="questionArea" style="width:100%;">
 										<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
 											<tr>
@@ -584,7 +584,7 @@
 									</div>
 								</div>
 								<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px; text-align:center;">
-									<div class="ui form" style="width:100%; margin-top:0px; text-align:center;"><textarea style="margin:0 auto; margin-top:20px; resize:none;"></textarea></div>
+									<div class="ui form" style="width:100%; margin-top:0px; text-align:center;"><textarea style="margin:0 auto; margin-top:20px; resize:none;" placeholder="300자 이내"></textarea></div>
 								</div>
 								<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
 									<button class="ui blue button" id="nextBtn${ qNum }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
@@ -604,14 +604,8 @@
 			<!-- container end -->
 			<%@ include file="/WEB-INF/views/panel/common/footer.jsp"%>
 			
-			<script src="/javascript/library/less.min.js"></script>
 			
 			<script>
-			
-				
-				$(document).on("click", ".ui.toggle.button", function(){
-					$(this).toggleClass('active');
-				});
 				
 				$(document).on('click', '#thanksSurvey',function(){
 					$('#surveyStart') .modal('setting', 'closable', false).modal('show');
