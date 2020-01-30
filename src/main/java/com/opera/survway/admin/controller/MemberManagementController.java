@@ -19,7 +19,6 @@ import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.exception.SelectException;
-import com.opera.survway.panel.model.vo.PanelMember;
 
 @Controller
 public class MemberManagementController {
