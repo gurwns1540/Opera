@@ -1,5 +1,8 @@
 package com.opera.survway.corporation.model.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +11,7 @@ import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.CorpMember;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
+import com.opera.survway.corporation.model.vo.SearchResearch;
 import com.opera.survway.exception.LoginException;
 
 @Repository
@@ -18,7 +22,7 @@ public class CorpDaoImpl implements CorpDao {
 		
 		CorpMember loginUser = sqlSession.selectOne("Corp.loginCheck", cm);
 
-		if(loginUser==null) {
+		if(loginUser == null) {
 			throw new LoginException("로그인 정보가 존재하지 않습니다.");
 		}
 
@@ -78,5 +82,29 @@ public class CorpDaoImpl implements CorpDao {
 	@Override
 	public int insertResearchState(SqlSessionTemplate sqlSession, Research research) {
 		return sqlSession.insert("Corp.insertResearchState", research);
+	}
+
+	@Override
+	public List<Research> previousResearch(SqlSessionTemplate sqlSession, SearchResearch searchResearch) {
+		int offset = (searchResearch.getPi().getCurrentPage() - 1) * searchResearch.getPi().getLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, searchResearch.getPi().getLimit());
+		
+		return sqlSession.selectList("Corp.previousResearch", searchResearch, rowBounds);
+	}
+
+	@Override
+	public int getListCountResearch(SqlSessionTemplate sqlSession, SearchResearch searchResearch) {
+		return sqlSession.selectOne("Corp.getListCountResearch", searchResearch);
+	}
+
+	@Override
+	public Research previousResearchDetail(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Corp.previousResearchDetail", researchNo);
+	}
+
+	@Override
+	public int getQuestionCount(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Corp.getQuestionCount", researchNo);
 	}
 }

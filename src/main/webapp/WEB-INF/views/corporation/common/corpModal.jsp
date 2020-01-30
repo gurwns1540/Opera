@@ -10,7 +10,7 @@
 		<c:if test="${ param.message eq 'researchComplete' }">
 			<script>
 				Swal.fire('리서치 작성완료', '작성한 리서치가 신청되었습니다.', 'success').then(function(){
-					location.replace("previousResearchMain.corp");
+					location.replace("previousResearchMain.corpResearch");
 				});
 			</script>
 		</c:if>
