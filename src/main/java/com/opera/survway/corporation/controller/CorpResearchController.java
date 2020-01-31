@@ -5,25 +5,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.corporation.model.vo.CorpMember;
 import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.common.model.vo.OperaFileNamePolicy;
+import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.UploadFile;
+import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.corporation.model.service.CorpService;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
+import com.opera.survway.corporation.model.vo.SearchResearch;
+import com.opera.survway.exception.SelectException;
 
 @Controller
 public class CorpResearchController {
@@ -177,5 +186,88 @@ public class CorpResearchController {
 			return "redirect:errorPage.me";
 		}
 		
+	}
+	
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 30.
+	 * @ModifyDate  : 2020. 1. 30.
+	 * @Description : 리서치 이력
+	 */
+	@RequestMapping("previousResearchMain.corpResearch")
+	public String previousResearch(HttpServletRequest request, Model model) {
+		String queryString = request.getQueryString();
+		
+		Map<String, List<String>> queryMap =  null;
+		
+		int currentPage = 1; 
+		String researchState = "";
+		String researchName = "";
+		SearchResearch searchResearch = new SearchResearch();
+		if(queryString != null) { 
+			queryMap = Util.splitQuery(queryString);
+			if(queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+			if(queryMap.containsKey("researchState")) {
+				researchState = queryMap.get("researchState").get(0);
+				String[] stateArr = researchState.split(",");
+				searchResearch.setResearchState(stateArr);
+			}
+			if(queryMap.containsKey("researchName")) {
+				researchName = queryMap.get("researchName").get(0);
+				searchResearch.setResearchName(researchName);
+			}
+		}
+		int listCount = 0;
+
+		try {
+			searchResearch.setMno(((CorpMember)request.getSession().getAttribute("loginUser")).getMno());
+			listCount = cs.getListCountResearch(searchResearch);
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			searchResearch.setPi(pi);
+			
+			List<Research> researchList = cs.previousResearch(searchResearch);
+			for(int i = 0; i < researchList.size(); i++) {
+				String[] beforPeriod = researchList.get(i).getResearchPeriod().split("~");
+				researchList.get(i).setAdditionaltEtc(beforPeriod[0].substring(0, 4) + "-" + beforPeriod[0].substring(4, 6) + "-" + beforPeriod[0].substring(6, 8));
+				researchList.get(i).setResearchPeriod(beforPeriod[1].substring(0, 4) + "-" + beforPeriod[1].substring(4, 6) + "-" + beforPeriod[1].substring(6, 8));
+			}
+			
+			model.addAttribute("researchList", researchList);
+			model.addAttribute("pi", pi);
+			
+			return "previousResearchMain";
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
+	}
+	@RequestMapping("previousResearchDetail.corpResearch")
+	public String previousResearchDetail(Model model, String researchNo) {
+
+		try {
+			Research research = cs.previousResearchDetail(Integer.parseInt(researchNo));
+			System.out.println(research);
+			
+			String[] beforPeriod = research.getResearchPeriod().split("~");
+			research.setResearchPeriod(beforPeriod[0].substring(0, 4) + "-" + beforPeriod[0].substring(4, 6) + "-" + beforPeriod[0].substring(6, 8) + " ~ " + beforPeriod[1].substring(0, 4) + "-" + beforPeriod[1].substring(4, 6) + "-" + beforPeriod[1].substring(6, 8));
+			
+			int questionCount = cs.getQuestionCount(research.getResearchNo());
+			
+			model.addAttribute("research", research);
+			model.addAttribute("questionCount", questionCount);
+			return "previousResearchDetail";
+			
+		} catch (NumberFormatException e) {
+			model.addAttribute("msg", "리서치 조회 실패");
+			return "redirect:errorPage.me";
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
 	}
 }

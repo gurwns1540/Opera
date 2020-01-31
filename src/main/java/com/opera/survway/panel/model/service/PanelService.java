@@ -10,6 +10,7 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
+import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 
@@ -52,5 +53,7 @@ public interface PanelService {
 	Reward getPanelReward(int mno) throws RewardException;
 
 	int insertCashOutHistory(Reward r) throws RewardException;
+  
+	List<ResearchQuestion> getTsQuestionList() throws SelectException;
 
 }

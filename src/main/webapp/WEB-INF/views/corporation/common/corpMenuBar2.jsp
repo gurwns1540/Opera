@@ -5,6 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <style>
+	body {
+		font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+	}
 	#subMenu{
 		width: 100%;
 		height: 75px;
@@ -56,7 +59,7 @@
 				<tr>
 					<td><div onclick="location.href='sampleResearchMain.corp'">Survway 리서치 체험</div></td>
 					<td><div onclick="location.href='newResearchMain.corp'">새 리서치 신청</div></td>
-					<td><div onclick="location.href='previousResearchMain.corp'">리서치 의뢰 이력</div></td>
+					<td><div onclick="location.href='previousResearchMain.corpResearch'">리서치 의뢰 이력</div></td>
 				</tr>
 			</table>
 		</div>

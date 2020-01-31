@@ -1,6 +1,7 @@
 package com.opera.survway.corporation.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ import com.opera.survway.corporation.model.dao.CorpDao;
 import com.opera.survway.corporation.model.vo.CorpMember;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
+import com.opera.survway.corporation.model.vo.SearchResearch;
 import com.opera.survway.exception.LoginException;
+import com.opera.survway.exception.SelectException;
 
 @Service
 public class CorpServiceImpl implements CorpService {
@@ -141,6 +144,66 @@ public class CorpServiceImpl implements CorpService {
 		if(!(result > 0)){
 			throw new ResearchException("리서치 작성 오류");
 		}
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 이력 조회 
+	 */
+	@Override
+	public List<Research> previousResearch(SearchResearch searchResearch) throws SelectException {
+		List<Research> researchList = cd.previousResearch(sqlSession, searchResearch);
+		
+		if(researchList == null) {
+			throw new SelectException("리서치 이력 조회 실패");
+		}
+		return researchList;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 이력 수 조회
+	 */
+	@Override
+	public int getListCountResearch(SearchResearch searchResearch) throws SelectException {
+		int listCount = cd.getListCountResearch(sqlSession, searchResearch);
+		
+		if(listCount < 0) {
+			throw new SelectException("리서치 이력 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 상세 조회 
+	 */
+	@Override
+	public Research previousResearchDetail(int researchNo) throws SelectException {
+
+		Research research = cd.previousResearchDetail(sqlSession, researchNo);
+		
+		if(research == null) {
+			throw new SelectException("리서치 상세 조회 실패");
+		}
+		return research;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 문항 수 조회(리서치 상세)
+	 */
+	@Override
+	public int getQuestionCount(int researchNo) {
+		return cd.getQuestionCount(sqlSession, researchNo);
 	}
 
 }

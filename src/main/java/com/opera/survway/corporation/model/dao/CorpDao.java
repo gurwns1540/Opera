@@ -1,5 +1,7 @@
 package com.opera.survway.corporation.model.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.opera.survway.corporation.model.vo.Research;
@@ -7,6 +9,7 @@ import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.CorpMember;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
+import com.opera.survway.corporation.model.vo.SearchResearch;
 import com.opera.survway.exception.LoginException;
 
 public interface CorpDao {
@@ -32,4 +35,12 @@ public interface CorpDao {
 	int insertTarger(SqlSessionTemplate sqlSession, Research research);
 
 	int insertResearchState(SqlSessionTemplate sqlSession, Research research);
+
+	List<Research> previousResearch(SqlSessionTemplate sqlSession, SearchResearch searchResearch);
+
+	int getListCountResearch(SqlSessionTemplate sqlSession, SearchResearch searchResearch);
+
+	Research previousResearchDetail(SqlSessionTemplate sqlSession, int researchNo);
+
+	int getQuestionCount(SqlSessionTemplate sqlSession, int researchNo);
 }

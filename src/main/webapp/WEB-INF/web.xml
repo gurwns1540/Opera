@@ -156,7 +156,7 @@
 
 	<!-- corpResearch 서블릿 연결 -->
 	<servlet>
-		<servlet-name>corpResearchtServlet</servlet-name>
+		<servlet-name>corpResearchServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
@@ -165,8 +165,23 @@
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>corpResearchtServlet</servlet-name>
+		<servlet-name>corpResearchServlet</servlet-name>
 		<url-pattern>*.corpResearch</url-pattern>
+	</servlet-mapping>
+
+	<!-- survey 서블릿 연결 -->
+	<servlet>
+		<servlet-name>surveyServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/survey-servlet.xml</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>surveyServlet</servlet-name>
+		<url-pattern>*.survey</url-pattern>
 	</servlet-mapping>
 	<!-- 인코딩 필터 -->
   	<filter>

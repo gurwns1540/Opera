@@ -2,6 +2,7 @@ package com.opera.survway.panel.model.service;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,6 +19,8 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
+import com.opera.survway.panel.model.vo.ResearchChoice;
+import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 
@@ -341,5 +344,51 @@ public class PanelServiceImpl implements PanelService {
 			throw new RewardException("cashouthistory insert 실패");
 		}
 		return result;
+  }
+	 * @throws SelectException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : ts조사 질문 문항들 및 보기 리스트 조회
+	 */
+	@Override
+	public List<ResearchQuestion> getTsQuestionList() throws SelectException {
+		
+		//TS문제 정보들 받아와서 ResearchQuestion 리스트에 담기
+		List<ResearchQuestion> tsQuestions = null;
+		tsQuestions = pd.getTsQuestionList(sqlSession);
+		
+		//반복문으로 rquestionNo 하나씩 보내서 해당 choice들 조회해와서 ResearchChoice 어레이리스트에 담고 이걸 setter로 ResearchQuestion객체에 담기
+		List<ResearchChoice> tsChoices = null;
+		for(int i=0; i<tsQuestions.size(); i++) {
+			tsChoices = pd.getTsChoiceList(sqlSession, tsQuestions.get(i).getRquestionNo());
+			tsQuestions.get(i).setChoiceList(tsChoices);
+		}
+		return tsQuestions;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
