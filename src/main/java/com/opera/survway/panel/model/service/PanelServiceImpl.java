@@ -345,6 +345,7 @@ public class PanelServiceImpl implements PanelService {
 		}
 		return result;
   }
+
 	/*
 	 * @throws SelectException 
 	 * @Author      : Sooo
@@ -368,28 +369,3 @@ public class PanelServiceImpl implements PanelService {
 		return tsQuestions;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
