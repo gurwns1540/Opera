@@ -65,7 +65,7 @@
 				
 				<div align="center" style="margin-top:80px;">
 					<button class="ui blue button" onclick="location.href='myRewardDetail_saved.myPage'">리워드 상세내역</button>
-					<button class="ui blue button" onclick="location.href='myRewardCashOut.panel'">리워드 신청하기</button>
+					<button class="ui blue button" onclick="location.href='myRewardCashOut.myPage'">리워드 신청하기</button>
 				</div>
 				
 				

@@ -49,4 +49,8 @@ public interface PanelService {
 
 	int getListCountRewardUsed(Reward r) throws RewardException;
 
+	Reward getPanelReward(int mno) throws RewardException;
+
+	int insertCashOutHistory(Reward r) throws RewardException;
+
 }

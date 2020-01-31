@@ -299,4 +299,47 @@ public class PanelServiceImpl implements PanelService {
 	public List<Research> selectMainResearchList(PanelMember loginUser) throws SelectException {
 		return pd.selectMainResearchList(sqlSession, loginUser);
 	}
+
+	/**
+	 * @throws RewardException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 1. 30.
+	 * @ModifyDate	:2020. 1. 30.
+	 * @Description	:패널 리워드량 가져오기
+	 */
+	@Override
+	public Reward getPanelReward(int mno) throws RewardException {
+		Reward r = null;
+		
+		r = pd.getPanelReward(sqlSession, mno);
+		
+		if(r == null) {
+			throw new RewardException("패널이 보유한 리워드를 조회하지 못했습니다.");
+		}
+		return r;
+	}
+
+	/**
+	 * @throws RewardException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 1. 30.
+	 * @ModifyDate	:2020. 1. 30.
+	 * @Description	:insert cashoutHistory, insertRewardHistory, updatePanelReward
+	 */
+	@Override
+	public int insertCashOutHistory(Reward r) throws RewardException {
+		
+		int result = pd.insertCashOutHistory(sqlSession,r);
+		if(result >0) {
+			result = pd.insertRewardHistory(sqlSession,r);
+			if(result >0) {
+				result = pd.updatePanelReward(sqlSession,r);
+			}else if(result<0) {
+				throw new RewardException("rewardHistory insert 실패");
+			}
+		}else if(result <0) {
+			throw new RewardException("cashouthistory insert 실패");
+		}
+		return result;
+	}
 }

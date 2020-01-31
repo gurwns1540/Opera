@@ -59,5 +59,13 @@ public interface PanelDao {
 
 	List<Research> selectMainResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser) throws SelectException;
 
+	Reward getPanelReward(SqlSessionTemplate sqlSession, int mno);
+
+	int insertCashOutHistory(SqlSessionTemplate sqlSession, Reward r);
+
+	int insertRewardHistory(SqlSessionTemplate sqlSession, Reward r);
+
+	int updatePanelReward(SqlSessionTemplate sqlSession, Reward r);
+
 
 }
