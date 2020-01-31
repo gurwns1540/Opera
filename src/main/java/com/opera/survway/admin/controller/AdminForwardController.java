@@ -18,12 +18,6 @@ public class AdminForwardController {
 		return "memberManagement/newPanelManagement";
 	}
 	
-	// 리서치 승인 대기중
-	@RequestMapping("researchApprovalWaitList.admin")
-	public String forwardResearchApprovalWaitList() {
-		return "adminResearch/researchApprovalWaitList";
-	}
-	
 	//반려
 	@RequestMapping("researchReferList.admin")
 	public String forwardResearchReferList() {

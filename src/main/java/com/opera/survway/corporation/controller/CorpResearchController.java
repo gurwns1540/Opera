@@ -99,9 +99,9 @@ public class CorpResearchController {
 		}
  		
  		for(MultipartFile file : imageChoiceUpload) {
- 			String saveFile = OperaFileNamePolicy.getRandomString();
  			String originFileName = file.getOriginalFilename();
  			String ext = originFileName.substring(originFileName.lastIndexOf("."));
+ 			String saveFile = OperaFileNamePolicy.getRandomString() + "." + ext;
  			choiceSaveFiles.add(saveFile);
  			choiceOriginFiles.add(originFileName);
  			choiceExts.add(ext);

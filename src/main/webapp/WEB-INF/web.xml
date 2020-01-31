@@ -168,6 +168,22 @@
 		<servlet-name>corpResearchServlet</servlet-name>
 		<url-pattern>*.corpResearch</url-pattern>
 	</servlet-mapping>
+	
+	<!-- adminResearch 서블릿 연결 -->
+	<servlet>
+		<servlet-name>adminResearchServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/adminResearch-servlet.xml</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>adminResearchServlet</servlet-name>
+		<url-pattern>*.adminResearch</url-pattern>
+	</servlet-mapping>
+	
 	<!-- 인코딩 필터 -->
   	<filter>
   		<filter-name>encodingFilter</filter-name>

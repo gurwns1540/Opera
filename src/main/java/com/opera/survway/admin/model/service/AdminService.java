@@ -1,6 +1,7 @@
 package com.opera.survway.admin.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,11 @@ public interface AdminService {
 	List<AllMember> getListNewPanel(SearchMember searchMember) throws SelectException;
 
 	AllMember selectNewPanelDetail(int mno) throws SelectException;
+
+	List<Map<String, String>> researchApprovalWaitList(PageInfo pi) throws SelectException;
+
+	int getListCountArrovalList() throws SelectException;
+
+	List<Map<String, Object>> researchApprovalDetail(int researchNo);
   
 }
