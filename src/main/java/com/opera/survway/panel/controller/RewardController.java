@@ -35,7 +35,6 @@ public class RewardController {
 		PanelMember panelMember = (PanelMember)session.getAttribute("loginUser");
 		int mno = panelMember.getMno();
 		rd.setMno(mno);
-		System.out.println(panelMember);
 		int listCount = 0;
 		int currentPage =1;
 		
@@ -45,7 +44,7 @@ public class RewardController {
 			rd.setPi(pi);
 			List<Reward> list = ps.showMyRewardDetailSaved(rd);
 			
-			System.out.println(list);
+			
 			
 			model.addAttribute("list",list);
 			model.addAttribute("pi",pi);
@@ -69,7 +68,7 @@ public class RewardController {
 		int mno = panelMember.getMno();
 		int listCount = 0;
 		int currentPage =1;
-		System.out.println("mno : "+mno);
+		
 		r.setMno(mno);
 		try {
 			listCount = ps.getListCountRewardUsed(r);
@@ -92,14 +91,14 @@ public class RewardController {
 	public String getPanelReward(HttpSession session, Model model, Reward r) {
 		PanelMember panelMember = (PanelMember) session.getAttribute("loginUser");
 		int mno = panelMember.getMno();
-		System.out.println("cashout mno : "+ mno);
+		
 		
 		
 		try {
 			Reward reward = ps.getPanelReward(mno);
 			model.addAttribute("Reward",reward);
 		} catch (RewardException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
@@ -129,12 +128,12 @@ public class RewardController {
 		}else if(cashout == 50000) {
 			cashout =5;
 		}
-		System.out.println(cash);
+		
 		r.setMno(mno);
 		r.setCashoutNo(cashout);
 		int num=0;
 		String changeAmount ="-"+cash;
-		System.out.println("리워드 변경량"+changeAmount);
+		
 		r.setChangeAmount(changeAmount);
 		
 		try {
@@ -143,7 +142,7 @@ public class RewardController {
 			mv.addObject("num",num);
 			mv.setViewName("jsonView");//ModelAndView를 setViewName("jsonView");라고 지정을 하면 ajax로 사용할 수 있다.
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		

@@ -345,7 +345,8 @@ public class PanelServiceImpl implements PanelService {
 		}
 		return result;
   }
-	 /*
+
+	/*
 	 * @throws SelectException 
 	 * @Author      : Sooo
 	 * @CreateDate  : 2020. 1. 31.
@@ -368,28 +369,3 @@ public class PanelServiceImpl implements PanelService {
 		return tsQuestions;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

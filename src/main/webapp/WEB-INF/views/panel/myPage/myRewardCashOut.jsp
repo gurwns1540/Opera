@@ -140,16 +140,10 @@
 					
 				});
 				
-				/* $("#apply").click(function(){
-					var cash = $(".moneyArea").find(".active").val();
-					console.log(cash);
-					Swal.fire('확인', '정말로 캐시아웃을 신청하시겠습니까?', 'success').then(function(){
-						 location.href="applyRewardCashOut.myPage?num="+cash; 	
-					});
-				}); */
+				
 				$("#apply").click(function(){
 					var cash = $(".moneyArea").find(".active").val();
-					console.log(cash);
+					
 					Swal.fire({
 						  title: '캐시아웃 신청',
 						  text: '한번 사용한 리워드는 반환되지 않습니다.',
@@ -161,7 +155,7 @@
 						  cancelButtonText: '취소'
 						}).then(result =>{
 						  if(result.value){
-						  console.log("123"); 
+						 
 							$.ajax({
 								url: "applyRewardCashOut.myPage",
 								type: "post",
@@ -169,7 +163,7 @@
 									cash:cash
 								},
 								success: function(data){
-									console.log(data.num);
+									
 									if(data.num >0){
 										 Swal.fire(
 											      '신청 완료!',
@@ -191,63 +185,7 @@
 						  }
 						}); 	
 						
-					/* const swalWithBootstrapButtons = Swal.mixin({
-						  customClass: {
-						    confirmButton: 'btn btn-success',
-						    cancelButton: 'btn btn-danger'
-						  },
-						  buttonsStyling: false
-						})
 
-						swalWithBootstrapButtons.fire({
-						  title: '캐시아웃을 신청하겠습니까',
-						  text: "한번 사용한 리워드는 반환되지 않습니다.",
-						  icon: 'warning',
-						  showCancelButton: true,
-						  confirmButtonText: '신청',
-						  cancelButtonText: '취소',
-						  reverseButtons: true
-						}).then((result) => {
-							
-						  if (result.value) {
-							  $.ajax({
-									url: "applyRewardCashOut.myPage",
-									type: "post",
-									data: {
-										cash:cash
-									},
-									success: function(data){
-										console.log(data.num);
-										if(data.num >0){
-											swalWithBootstrapButtons.fire(
-												      '신청완료!',
-												      '회원님의 캐시아웃 신청을 완료하였습니다.',
-												      'success'
-												    )
-										}else{
-											swalWithBootstrapButtons.fire(
-												      '신청에러!',
-												      '회원님의 캐시아웃 신청을 실패하였습니다.',
-												      'success'
-												    )
-										}
-									},
-									error: function(){
-										console.log("ajax에러");
-									}
-								});
-						    
-						  } else if (
-						    
-						    result.dismiss === Swal.DismissReason.cancel
-						  ) {
-						    swalWithBootstrapButtons.fire(
-						      '신청 취소',
-						      '회원님의 캐시아웃 신청이 취소되었습니다.',
-						      'error'
-						    )
-						  }
-						}) */
 				});
 				
 				
