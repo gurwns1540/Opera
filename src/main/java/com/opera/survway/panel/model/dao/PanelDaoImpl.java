@@ -62,7 +62,7 @@ public class PanelDaoImpl implements PanelDao{
 	@Override
 	public int insertInquiry(SqlSessionTemplate sqlSession, Inquiry i) {
 		
-		return sqlSession.insert("Inquiry.insertInquiry", i);
+		return sqlSession.insert("Panel.insertInquiry", i);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class PanelDaoImpl implements PanelDao{
 		
 		RowBounds rowBounds = new RowBounds(offset, i.getPi().getLimit());
 		
-		list = sqlSession.selectList("Inquiry.selectAllMyInquiry", i,rowBounds);
+		list = sqlSession.selectList("Panel.selectAllMyInquiry", i,rowBounds);
 		
 		return list;
 	}
@@ -82,7 +82,7 @@ public class PanelDaoImpl implements PanelDao{
 	public int getListCountInquiry(SqlSessionTemplate sqlSession, Inquiry iq) {
 		int listCount =0;
 		
-		listCount = sqlSession.selectOne("Inquiry.getListCountInquiry",iq);
+		listCount = sqlSession.selectOne("Panel.getListCountInquiry",iq);
 		return listCount;
 	}
 
