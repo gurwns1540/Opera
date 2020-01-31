@@ -173,6 +173,11 @@
 
 	</select>
 	
+	<select id="getPanelReward" resultMap="RewardResultSet" parameterType="_int">
+		SELECT *
+		FROM(SELECT * FROM REWARDHISTORY WHERE MNO =#{mno} ORDER BY REWARD_CHANGEDATE DESC)
+		WHERE ROWNUM =1
+	</select>
 
 
 
@@ -220,6 +225,23 @@
 		WHERE RESEARCH_NO = 1
   	</select>
   	
+  	<insert id="insertCashOutHistory" parameterType="Reward">
+  		INSERT INTO CASHOUTHISTORY VALUES(SEQ_CASHOUTHISTORY.NEXTVAL,#{cashoutNo},#{mno},SYSDATE,NULL)
+  		<selectKey keyProperty="cashoutHistoryNo" resultType="_int" order="AFTER">
+  			SELECT SEQ_CASHOUTHISTORY.CURRVAL FROM DUAL
+  		</selectKey>
+  	</insert>
+  	
+  	<insert id="insertRewardHistory" parameterType="Reward">
+  		<selectKey keyProperty="afterChangePoint" resultType="_int" order="BEFORE">
+  			SELECT REWARD_POINT-(SELECT CASHOUT_AMOUNT FROM CASHOUT WHERE CASHOUT_NO =#{cashoutNo}) FROM PANELREWARD WHERE MNO=#{mno}
+  		</selectKey>
+  		INSERT INTO REWARDHISTORY VALUES(SEQ_REWARDHISTORY.NEXTVAL, #{afterChangePoint},'캐시 아웃',#{changeAmount},#{mno},SYSDATE, NULL,#{cashoutHistoryNo},NULL,NULL)
+  	</insert>
+  	
+  	<update id="updatePanelReard" parameterType="Reward">
+  		UPDATE PANELREWARD SET REWARD_POINT = #{afterChangePoint} WHERE MNO =#{mno}
+  	</update>
 	
   	<resultMap type="PanelResearchQuestion" id="tsQuestionResultSet">
 		<id property="rquestionNo" column="RQUESTION_NO"/>

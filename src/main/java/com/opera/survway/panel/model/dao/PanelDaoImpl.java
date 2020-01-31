@@ -195,6 +195,41 @@ public class PanelDaoImpl implements PanelDao{
 		return researchList;
 	}
 
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 1. 30.
+	 * @ModifyDate	:2020. 1. 30.
+	 * @Description	:패널 보유 리워드 조회
+	 */
+	@Override
+	public Reward getPanelReward(SqlSessionTemplate sqlSession, int mno) {
+		
+		return sqlSession.selectOne("Panel.getPanelReward",mno);
+	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 1. 30.
+	 * @ModifyDate	:2020. 1. 30.
+	 * @Description	:insert cashoutHistory
+	 */
+	@Override
+	public int insertCashOutHistory(SqlSessionTemplate sqlSession, Reward r) {
+		
+		return sqlSession.insert("Panel.insertCashOutHistory", r);
+	}
+
+	@Override
+	public int insertRewardHistory(SqlSessionTemplate sqlSession, Reward r) {
+		
+		return sqlSession.insert("Panel.insertRewardHistory",r);
+	}
+
+	@Override
+	public int updatePanelReward(SqlSessionTemplate sqlSession, Reward r) {
+		
+		return sqlSession.update("Panel.updatePanelReard",r);
+	}
 	@Override
 	public List<ResearchQuestion> getTsQuestionList(SqlSessionTemplate sqlSession) throws SelectException {
 		List<ResearchQuestion> tsQuestions = null;
