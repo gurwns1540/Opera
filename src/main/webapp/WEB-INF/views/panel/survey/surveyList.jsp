@@ -128,6 +128,9 @@
 		left: 20px;
 		width: fit-content;
 	}
+	.choiceNameArea {
+		font-size:0.9vw;
+	}
 </style>
 <body>
 	<c:if test="${ loginUser != null }">
@@ -176,10 +179,10 @@
 										<span style="font-size:1vw;">Thanks Survey</span>
 									</div>
 									<div class="bottom" style="height: 111px;">
-										<div class="bottom-top" style="height: 25%; text-align:center; padding-top:14px;">
+										<div class="bottom-top" style="height: 25%; text-align:center; padding-top:${ qCount }px;">
 											<span style="font-weight:bold; font-size:1vw; color:#005E8C;">1000P</span>
 										</div>
-										<div class="bottom-middle" style="padding-top:14px;">
+										<div class="bottom-middle" style="padding-top:${ qCount }px;">
 											<span style="font-size:0.8vw; font-weight:bold;">${ sessionScope.loginUser.userName }님, 안녕하세요!</span>
 										</div>
 										<div class="bottom-bottom" style="height: 45%; padding-top:5px;">
@@ -211,7 +214,7 @@
 											<span style="font-size:1vw;">소비자 인식 조사 소비자 인식</span>
 										</div>
 										<div class="bottom">
-											<div class="bottom-top" style="text-align:center; padding-top:14px;">
+											<div class="bottom-top" style="text-align:center; padding-top:${ qCount }px;">
 												<span style="font-weight:bold; font-size:1vw; color:#005E8C;">100~3000P</span>
 											</div>
 											<div class="bottom-middle">
@@ -246,19 +249,33 @@
 					<div class="content insetBox">
 						<div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
 							<div class="ui header" style="text-align:center; margin-top:70px; margin-bottom:70px;">
-								<span style="font-size:35px; color:#00679A;">TS 조사 참여 가이드</span>
+								<c:if test="${ sessionScope.loginUser.panellevelNo eq 1 }">
+									<span style="font-size:35px; color:#00679A;">TS 조사 참여 가이드</span>
+								</c:if>
+								<%-- <c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
+									<span style="font-size:35px; color:#00679A;">조사 참여 가이드</span>
+								</c:if> --%>
 							</div>
 							<table style="margin:0 auto; width: 72%;">
 								<tr>
-									<td style="width:45%;"><img src="resources/images/noGoBack.png" style="width:100%;"></td>
+									<td style="width:45%;">
+										<img src="resources/images/noGoBack.png" style="width:100%;">
+									</td>
 									<td style="width:10%"></td>
-									<td style="width:45%; text-align:right;"><img src="resources/images/retryAllowed.png" style="width:100%;"></td>
+									<td style="width:45%; text-align:right;">
+										<c:if test="${ sessionScope.loginUser.panellevelNo eq 1 }">
+											<img src="resources/images/retryAllowed.png" style="width:100%;">
+										</c:if>
+										<%-- <c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
+											<img src="resources/images/retryNotAllowed.png" style="width:100%;">
+										</c:if> --%>
+									</td>
 								</tr>
 							</table>
 							<div class="actions" style="text-align:center; margin-top:40px;">
 								<button class="ui blue button" id="goSurveyBtn" style="border-radius:2px; font-size:1.2vw;">조사  참여하기 <i class="right chevron icon"></i></button>
 							</div>
-							<div style="margin-top:60px; height:140px; background-color:#EAEAEA;">
+							<div style="margin-top:60px; height:${ qCount }0px; background-color:#EAEAEA;">
 								<table style="width:100%; height:100%;">
 									<tr>
 										<td colspan="2" style="width:100%; height:10%;"></td>
@@ -309,10 +326,11 @@
 								</td>
 								<td style="width:70%; height:inherit; padding-right:20px;">
 								<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
-									0 of 14 done
+									0 of ${ qCount } done
 								</div>
-								<div class="ui indicating progress active" data-value="0" data-total="14" id="example5" data-percent="0%" style="margin-top:10px; width:40%; float:right;">
-									<div class="bar" style="transition-duration: 200ms; display: block; width: 0%;">
+								<div class="ui indicating progress active" data-value="0" data-total="${ qCount }" id="progress0" data-percent="0%" style="margin-top:10px; width:40%; float:right;">
+									<input type="text" value="0" style="display:none;">
+									<div class="bar" style="transition-duration: 200ms; display: block;">
 										<div class="progress">0%</div>
 									</div>
 								</div>
@@ -323,9 +341,16 @@
 					<div class="content insetBox">
 						<div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
 							<div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;">
+							<c:if test="${ sessionScope.loginUser.panellevelNo eq 1 }">
 								<span style="line-height:180%; font-size:1.1vw;">
 									<b>${ sessionScope.loginUser.userName }</b>님, 안녕하세요.<br>서브웨이 패널회원으로 가입해주셔서 감사합니다.<br><br>지금부터 몇 가지 기본 정보를 여쭙고자 합니다.<br><br><u>본 조사에 참여하셔야 앞으로 ${ sessionScope.loginUser.userName }님께 맞는 조사를 제공</u>해드릴 수 있으니,<br>성실한 답변을 부탁드립니다.
 								</span>
+							</c:if>
+							<c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
+								<span style="line-height:180%; font-size:1.1vw;">
+									<b>${ sessionScope.loginUser.userName }</b>님, 안녕하세요.<br><br>본 조사의 예상 소요시간은 n분이며, 조사 목적 또는 패널님의 응답 퀄리티에 따라 000~000P의 리워드를 받으실 수 있습니다.<br><br>설문 답변 소요시간이 (문항수*5초) 미만인 경우 또는 (n*2)분을 초과하는 경우,<br>답변의 질에 상관 없이 최저 리워드를 드리니 시간을 엄수하여 주시기 바랍니다.
+								</span>
+							</c:if>
 							</div>
 							<div class="actions" style="text-align:center; margin-top:70px;">
 								<button class="ui blue button" id="nextBtn0" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
@@ -339,267 +364,326 @@
 					</div>
 				</div>
 				
-				<!-- 객관식 하나선택 디자인 -->
-				<c:forEach var="qNum" begin="1" end="1">
-					<div class="ui overlay fullscreen modal" id="Q${ qNum }">
-						<div class="header" style="height:61px; padding:5px;">
-							<table style="width:100%; height:100%;">
-								<tr>
-									<td style="width:30%; height:inherit;">
-										<img src="resources/images/footerLogo.png" alt="" id="footerImg">
-									</td>
-									<td style="width:70%; height:inherit; padding-right:20px;">
-										<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
-											${ qNum } of 14 done
-										</div>
-										<div class="ui indicating progress active" data-value="0" data-total="14" id="example5" data-percent="1%" style="margin-top:10px; width:40%; float:right;">
-											<div class="bar" style="transition-duration: 200ms; display: block; width: 0%;">
-												<div class="progress">1%</div>
+				<c:forEach var="q" items="${ researchQuestionList }">
+					<!-- 객관식 하나선택 디자인 -->
+					<c:if test="${ q.questionFormNo eq 1 }">
+						<div class="ui overlay fullscreen modal" id="Q${ q.researchOrder }">
+							<div class="header" style="height:61px; padding:5px;">
+								<table style="width:100%; height:100%;">
+									<tr>
+										<td style="width:30%; height:inherit;">
+											<img src="resources/images/footerLogo.png" alt="" id="footerImg">
+										</td>
+										<td style="width:70%; height:inherit; padding-right:20px;">
+											<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
+												${ q.researchOrder -1 } of ${ qCount } done
 											</div>
+											<div class="ui indicating progress active" data-value="${ q.researchOrder }" data-total="${ qCount }" id="progress${ q.researchOrder }" data-percent="${ q.progressDataPercent }%" style="margin-top:10px; width:40%; float:right;">
+												<input type="text" value="${ q.progressDataPercent }" style="display:none;">
+												<div class="bar" style="transition-duration: 200ms; display: block;">
+													<div class="progress">${ q.progressDataPercent }%</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="content insetBox">
+								<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
+									<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
+										<div class="questionArea" style="width:100%;">
+											<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
+												<tr>
+													<th style="width: 3%;">
+														<div class="iconDiv">
+															<span style="font-size:1vw;"><b>Q${ q.researchOrder }.</b></span>
+														</div>
+													</th>
+													<td style="width:97%; padding-right:20px;">
+														<span style="font-size:1vw;">
+															${ q.rquestionContext }
+														</span>
+													</td>
+												</tr>
+											</table>
 										</div>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<div class="content insetBox">
-							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
-								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
-									<div class="questionArea" style="width:100%;">
-										<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
-											<tr>
-												<th style="width: 2%;">
-													<div class="iconDiv">
-														<span style="font-size:1vw;"><b>Q${ qNum }.</b></span>
-													</div>
-												</th>
-												<td style="width:98%; padding-right:20px;">
-													<span style="font-size:1vw;">
-														귀하와 귀하의 가족이 벌어들이는 연간 소득은 어느 정도 됩니까? 이자소득 등 각종 수입을 모두 포함하여 답변해주십시오.
-													</span>
-												</td>
-											</tr>
-										</table>
 									</div>
-								</div>
-								<div class="choiceArea" style="height:320px; overflow-y:auto; width:90%; margin:0 auto; margin-top:30px;">
-									<div class="ui two column grid" id="surveyListArea" style="width: inherit; margin: 0 auto; margin-top:10px;">
-										<c:forEach var="no" begin="1" end="30" step="1">
-											<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
-												<div class="eachSurveyBox" style="height:auto;">
-													<div class="eachBox" style="min-height:20px;">
-														<div class="choiceNameArea" style="padding-top:5px;">
-															<div class="ui radio checkbox" style="margin-bottom: 5px;">
-																<input type="radio" name="interests" class="choiceBox" id="rChoice${ no }" value="${ no }">
-																<label for="rChoice${ no }" style="cursor: pointer;"> 보기 ${ no }</label>
+									<div class="choiceArea" style="height:320px; overflow-y:auto; width:90%; margin:0 auto; margin-top:30px;">
+										<div class="ui two column grid" id="surveyListArea" style="width: inherit; margin: 0 auto; margin-top:10px;">
+											<c:forEach var="c" items="${ q.choiceList }">
+												<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
+													<div class="eachSurveyBox" style="height:auto;">
+														<div class="eachBox" style="min-height:20px;">
+															<div class="choiceNameArea" style="padding-top:5px;">
+																<div class="ui radio checkbox" style="margin-bottom: 5px;">
+																	<input type="radio" name="${ q.researchOrder }" class="choiceBox" id="${ q.researchOrder }choice${ c.rchoiceOrder }" value="${ c.rchoiceOrder }">
+																	<label for="${ q.researchOrder }choice${ c.rchoiceOrder }" style="cursor: pointer;"> ${ c.rchoiceContext }</label>
+																</div>
 															</div>
 														</div>
 													</div>
 												</div>
-											</div>
-										</c:forEach>
+											</c:forEach>
+										</div>
+									</div>
+									<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
+										<button class="ui blue button" id="nextBtn${ q.researchOrder }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
 									</div>
 								</div>
-								<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
-									<button class="ui blue button" id="nextBtn${ qNum }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
+							</div>
+							<div class="actions">
+								<div class="ui primary approve button" style="background-color:#6A6A6A;">
+									돌아가기 
 								</div>
 							</div>
 						</div>
-						<div class="actions">
-							<div class="ui primary approve button" style="background-color:#6A6A6A;">
-								돌아가기 
-							</div>
-						</div>
-					</div>
-				</c:forEach>
+					</c:if>
 				
-				<!-- 객관식 다중선택 디자인 -->
-				<c:forEach var="qNum" begin="2" end="2">
-					<div class="ui overlay fullscreen modal" id="Q${ qNum }">
-						<div class="header" style="height:61px; padding:5px;">
-							<table style="width:100%; height:100%;">
-								<tr>
-									<td style="width:30%; height:inherit;">
-										<img src="resources/images/footerLogo.png" alt="" id="footerImg">
-									</td>
-									<td style="width:70%; height:inherit; padding-right:20px;">
-										<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
-											${ qNum } of 14 done
-										</div>
-										<div class="ui indicating progress active" data-value="0" data-total="14" id="example5" data-percent="1%" style="margin-top:10px; width:40%; float:right;">
-											<div class="bar" style="transition-duration: 200ms; display: block; width: 0%;">
-												<div class="progress">1%</div>
+					<!-- 객관식 다중선택 디자인 -->
+					<c:if test="${ q.questionFormNo eq 6 }">
+						<div class="ui overlay fullscreen modal" id="Q${ q.researchOrder }">
+							<div class="header" style="height:61px; padding:5px;">
+								<table style="width:100%; height:100%;">
+									<tr>
+										<td style="width:30%; height:inherit;">
+											<img src="resources/images/footerLogo.png" alt="" id="footerImg">
+										</td>
+										<td style="width:70%; height:inherit; padding-right:20px;">
+											<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
+												${ q.researchOrder -1 } of ${ qCount } done
 											</div>
+											<div class="ui indicating progress active" data-value="${ q.researchOrder }" data-total="${ qCount }" id="progress${ q.researchOrder }" data-percent="${ q.progressDataPercent }%" style="margin-top:10px; width:40%; float:right;">
+												<input type="text" value="${ q.progressDataPercent }" style="display:none;">
+												<div class="bar" style="transition-duration: 200ms; display: block;">
+													<div class="progress">${ q.progressDataPercent }%</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="content insetBox">
+								<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
+									<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
+										<div class="questionArea" style="width:100%;">
+											<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
+												<tr>
+													<th style="width: 3%;">
+														<div class="iconDiv">
+															<span style="font-size:1vw;"><b>Q${ q.researchOrder }.</b></span>
+														</div>
+													</th>
+													<td style="width:97%; padding-right:20px;">
+														<span style="font-size:1vw;">
+															${ q.rquestionContext }
+														</span>
+													</td>
+												</tr>
+											</table>
 										</div>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<div class="content insetBox">
-							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
-								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
-									<div class="questionArea" style="width:100%;">
-										<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
-											<tr>
-												<th style="width: 2%;">
-													<div class="iconDiv">
-														<span style="font-size:1vw;"><b>Q${ qNum }.</b></span>
-													</div>
-												</th>
-												<td style="width:98%; padding-right:20px;">
-													<span style="font-size:1vw;">
-														귀하와 귀하의 가족이 벌어들이는 연간 소득은 어느 정도 됩니까? 이자소득 등 각종 수입을 모두 포함하여 답변해주십시오.
-													</span>
-												</td>
-											</tr>
-										</table>
 									</div>
-								</div>
-								<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px;">
-									<div class="ui two column grid" id="surveyListArea" style="width: inherit; margin: 0 auto; margin-top:10px;">
-										<c:forEach var="no" begin="1" end="9" step="1">
-											<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
-												<div class="eachSurveyBox" style="height:auto;">
-													<div class="eachBox" style="min-height:20px;">
-														<div class="choiceNameArea" style="padding-top:5px;">
-															<div class="ui checked checkbox" style="margin-bottom: 5px;">
-																<input type="checkBox" name="interests" class="choiceBox" id="cChoice${ no }" value="${ no }">
-																<label for="cChoice${ no }" style="cursor: pointer;"> 보기 ${ no }</label>
+									<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px;">
+										<div class="ui two column grid" id="surveyListArea" style="width: inherit; margin: 0 auto; margin-top:10px;">
+											<c:forEach var="c" items="${ q.choiceList }">
+												<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
+													<div class="eachSurveyBox" style="height:auto;">
+														<div class="eachBox" style="min-height:20px;">
+															<div class="choiceNameArea" style="padding-top:5px;">
+																<div class="ui checked checkbox" style="margin-bottom: 5px;">
+																	<input type="checkBox" name="${ q.researchOrder }" class="choiceBox" id="${ q.researchOrder }choice${ c.rchoiceOrder }" value="${ c.rchoiceOrder }">
+																	<label for="${ q.researchOrder }choice${ c.rchoiceOrder }" style="cursor: pointer;"> ${ c.rchoiceContext }</label>
+																</div>
 															</div>
 														</div>
 													</div>
 												</div>
-											</div>
-										</c:forEach>
+											</c:forEach>
+										</div>
+									</div>
+									<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
+										<button class="ui blue button" id="nextBtn${ q.researchOrder }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
 									</div>
 								</div>
-								<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
-									<button class="ui blue button" id="nextBtn${ qNum }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
+							</div>
+							<div class="actions">
+								<div class="ui primary approve button" style="background-color:#6A6A6A;">
+									돌아가기 
 								</div>
 							</div>
 						</div>
-						<div class="actions">
-							<div class="ui primary approve button" style="background-color:#6A6A6A;">
-								돌아가기 
+					</c:if>
+				
+					<!-- 주관식 단답형 디자인 -->
+					<c:if test="${ q.questionFormNo eq 2 }">
+						<div class="ui overlay fullscreen modal" id="Q${ q.researchOrder }">
+							<div class="header" style="height:61px; padding:5px;">
+								<table style="width:100%; height:100%;">
+									<tr>
+										<td style="width:30%; height:inherit;">
+											<img src="resources/images/footerLogo.png" alt="" id="footerImg">
+										</td>
+										<td style="width:70%; height:inherit; padding-right:20px;">
+											<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
+												${ q.researchOrder -1 } of ${ qCount } done
+											</div>
+											<div class="ui indicating progress active" data-value="${ q.researchOrder }" data-total="${ qCount }" id="progress${ q.researchOrder }" data-percent="${ q.progressDataPercent }%" style="margin-top:10px; width:40%; float:right;">
+												<input type="text" value="${ q.progressDataPercent }" style="display:none;">
+												<div class="bar" style="transition-duration: 200ms; display: block;">
+													<div class="progress">${ q.progressDataPercent }%</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="content insetBox">
+								<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:45%; left:50%; transform: translate(-50%, -50%);">
+									<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
+										<div class="questionArea" style="width:100%;">
+											<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
+												<tr>
+													<th style="width: 3%;">
+														<div class="iconDiv">
+															<span style="font-size:1vw;"><b>Q${ q.researchOrder }.</b></span>
+														</div>
+													</th>
+													<td style="width:97%; padding-right:20px;">
+														<span style="font-size:1vw;">
+															${ q.rquestionContext }
+														</span>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px; text-align:center;">
+										<div class="ui input" style="width:30%; margin-top:100px;"><input type="text" name="${ q.researchOrder }"></div>
+									</div>
+									<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
+										<button class="ui blue button" id="nextBtn${ q.researchOrder }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="actions">
+								<div class="ui primary approve button" style="background-color:#6A6A6A;">
+									돌아가기 
+								</div>
 							</div>
 						</div>
-					</div>
+					</c:if>
+				
+					<!-- 주관식 서술형 디자인 -->
+					<c:if test="${ q.questionFormNo eq 7 }">
+						<div class="ui overlay fullscreen modal" id="Q${ q.researchOrder }">
+							<div class="header" style="height:61px; padding:5px;">
+								<table style="width:100%; height:100%;">
+									<tr>
+										<td style="width:30%; height:inherit;">
+											<img src="resources/images/footerLogo.png" alt="" id="footerImg">
+										</td>
+										<td style="width:70%; height:inherit; padding-right:20px;">
+											<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
+												${ q.researchOrder -1 } of ${ qCount } done
+											</div>
+											<div class="ui indicating progress active" data-value="${ q.researchOrder }" data-total="${ qCount }" id="progress${ q.researchOrder }" data-percent="${ q.progressDataPercent }%" style="margin-top:10px; width:40%; float:right;">
+												<input type="text" value="${ q.progressDataPercent }" style="display:none;">
+												<div class="bar" style="transition-duration: 200ms; display: block;">
+													<div class="progress">${ q.progressDataPercent }%</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="content insetBox">
+								<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:45%; left:50%; transform: translate(-50%, -50%);">
+									<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
+										<div class="questionArea" style="width:100%;">
+											<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
+												<tr>
+													<th style="width: 3%;">
+														<div class="iconDiv">
+															<span style="font-size:1vw;"><b>Q${ q.researchOrder }.</b></span>
+														</div>
+													</th>
+													<td style="width:97%; padding-right:20px;">
+														<span style="font-size:1vw;">
+															${ q.rquestionContext }
+														</span>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px; text-align:center;">
+										<div class="ui form" style="width:100%; margin-top:0px; text-align:center;"><textarea style="margin:0 auto; margin-top:20px; resize:none;" placeholder="300자 이내" name="${ q.rquestionOrder }"></textarea></div>
+									</div>
+									<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
+										<button class="ui blue button" id="nextBtn${ q.researchOrder }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="actions">
+								<div class="ui primary approve button" style="background-color:#6A6A6A;">
+									돌아가기 
+								</div>
+							</div>
+						</div>
+					</c:if>
 				</c:forEach>
 				
-				<!-- 주관식 단답형 디자인 -->
-				<c:forEach var="qNum" begin="3" end="3">
-					<div class="ui overlay fullscreen modal" id="Q${ qNum }">
-						<div class="header" style="height:61px; padding:5px;">
-							<table style="width:100%; height:100%;">
-								<tr>
-									<td style="width:30%; height:inherit;">
-										<img src="resources/images/footerLogo.png" alt="" id="footerImg">
-									</td>
-									<td style="width:70%; height:inherit; padding-right:20px;">
-										<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
-											${ qNum } of 14 done
-										</div>
-										<div class="ui indicating progress active" data-value="0" data-total="14" id="example5" data-percent="1%" style="margin-top:10px; width:40%; float:right;">
-											<div class="bar" style="transition-duration: 200ms; display: block; width: 0%;">
-												<div class="progress">1%</div>
-											</div>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<div class="content insetBox">
-							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:45%; left:50%; transform: translate(-50%, -50%);">
-								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
-									<div class="questionArea" style="width:100%;">
-										<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
-											<tr>
-												<th style="width: 2%;">
-													<div class="iconDiv">
-														<span style="font-size:1vw;"><b>Q${ qNum }.</b></span>
-													</div>
-												</th>
-												<td style="width:98%; padding-right:20px;">
-													<span style="font-size:1vw;">
-														주관식 단답형
-													</span>
-												</td>
-											</tr>
-										</table>
+				<!-- 응답 종료 후 마무리 모달 -->
+				<div class="ui overlay fullscreen modal" id="Q${ qCount +1 }">
+					<div class="header" style="height:61px; padding:5px;">
+						<table style="width:100%;">
+							<tr>
+								<td style="width:30%; height:inherit;transform:translateY(-4px);">
+									<img src="resources/images/footerLogo.png" alt="" id="footerImg">
+								</td>
+								<td style="width:70%; height:inherit; padding-right:20px;">
+								<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
+									${ qCount } of ${ qCount } done
+								</div>
+								<div class="ui indicating progress active" data-value="${ qCount }" data-total="${ qCount }" id="progress${ qCount +1 }" data-percent="100%" style="margin-top:10px; width:40%; float:right;">
+									<input type="text" value="100" style="display:none;">
+									<div class="bar" style="transition-duration: 200ms; display: block;">
+										<div class="progress">100%</div>
 									</div>
 								</div>
-								<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px; text-align:center;">
-									<div class="ui input"style="width:30%; margin-top:100px;"><input type="text"></div>
-								</div>
-								<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
-									<button class="ui blue button" id="nextBtn${ qNum }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
-								</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="content insetBox">
+						<div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
+							<div class="ui header" style="text-align:center; margin-top:70px; margin-bottom:70px;">
+								<c:if test="${ sessionScope.loginUser.panellevelNo eq 1 }">
+									<span style="font-size:35px; color:#00679A;">조사가 완료되었습니다. 감사합니다.</span>
+								</c:if>
 							</div>
-						</div>
-						<div class="actions">
-							<div class="ui primary approve button" style="background-color:#6A6A6A;">
-								돌아가기 
+							<div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;">
+							<c:if test="${ sessionScope.loginUser.panellevelNo eq 1 }">
+								<span style="line-height:180%; font-size:1.1vw;">
+									<b>${ sessionScope.loginUser.userName }</b>님, 안녕하세요.<br>서브웨이 패널회원으로 가입해주셔서 감사합니다.<br><br>지금부터 몇 가지 기본 정보를 여쭙고자 합니다.<br><br><u>본 조사에 참여하셔야 앞으로 ${ sessionScope.loginUser.userName }님께 맞는 조사를 제공</u>해드릴 수 있으니,<br>성실한 답변을 부탁드립니다.
+								</span>
+							</c:if>
+							<c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
+								<span style="line-height:180%; font-size:1.1vw;">
+									<b>${ sessionScope.loginUser.userName }</b>님, 안녕하세요.<br><br>본 조사의 예상 소요시간은 n분이며, 조사 목적 또는 패널님의 응답 퀄리티에 따라 000~000P의 리워드를 받으실 수 있습니다.<br><br>설문 답변 소요시간이 (문항수*5초) 미만인 경우 또는 (n*2)분을 초과하는 경우,<br>답변의 질에 상관 없이 최저 리워드를 드리니 시간을 엄수하여 주시기 바랍니다.
+								</span>
+							</c:if>
+							</div>
+							<div class="actions" style="text-align:center; margin-top:70px;">
+								<button class="ui blue button" id="nextBtn0" style="border-radius:2px; font-size:18px;">내 리워드 확인하기 <i class="right chevron icon"></i></button>
 							</div>
 						</div>
 					</div>
-				</c:forEach>
-				
-				<!-- 주관식 서술형 디자인 -->
-				<c:forEach var="qNum" begin="4" end="4">
-					<div class="ui overlay fullscreen modal" id="Q${ qNum }">
-						<div class="header" style="height:61px; padding:5px;">
-							<table style="width:100%; height:100%;">
-								<tr>
-									<td style="width:30%; height:inherit;">
-										<img src="resources/images/footerLogo.png" alt="" id="footerImg">
-									</td>
-									<td style="width:70%; height:inherit; padding-right:20px;">
-										<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
-											${ qNum } of 14 done
-										</div>
-										<div class="ui indicating progress active" data-value="0" data-total="14" id="example5" data-percent="1%" style="margin-top:10px; width:40%; float:right;">
-											<div class="bar" style="transition-duration: 200ms; display: block; width: 0%;">
-												<div class="progress">1%</div>
-											</div>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<div class="content insetBox">
-							<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:45%; left:50%; transform: translate(-50%, -50%);">
-								<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
-									<div class="questionArea" style="width:100%;">
-										<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
-											<tr>
-												<th style="width: 2%;">
-													<div class="iconDiv">
-														<span style="font-size:1vw;"><b>Q${ qNum }.</b></span>
-													</div>
-												</th>
-												<td style="width:98%; padding-right:20px;">
-													<span style="font-size:1vw;">
-														주관식 서술형
-													</span>
-												</td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px; text-align:center;">
-									<div class="ui form" style="width:100%; margin-top:0px; text-align:center;"><textarea style="margin:0 auto; margin-top:20px; resize:none;" placeholder="300자 이내"></textarea></div>
-								</div>
-								<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
-									<button class="ui blue button" id="nextBtn${ qNum }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
-								</div>
-							</div>
-						</div>
-						<div class="actions">
-							<div class="ui primary approve button" style="background-color:#6A6A6A;">
-								돌아가기 
-							</div>
+					<div class="actions">
+						<div class="ui primary approve button" style="background-color:#6A6A6A;">
+							창 닫기 
 						</div>
 					</div>
-				</c:forEach>
+				</div>
 				
 				<br />
 			</section>
@@ -631,6 +715,13 @@
 						$('#'+current).modal('hide');
 					});
 					
+				});
+				
+				//프로그레스 바 길이 설정
+				$(".modal").find(".bar").each(function(){
+					var pct = $(this).siblings("input").val()+'%';
+					console.log(pct);
+					$(this).css('width', pct);
 				});
 				
 			</script>
