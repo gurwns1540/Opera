@@ -381,7 +381,7 @@
 		$(".ui.dropdown").dropdown();
 		var today = new Date();
 		$('#standard_calendar').calendar({
-			minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()) + 14,
+			minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
 			type: 'date',
 			formatter: {
 				date: function (date, settings) {
@@ -400,7 +400,7 @@
 	      	}
 		});
 		$('#standard_calendar2').calendar({
-			minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()) + 19,
+			minDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
 			type: 'date',
 			formatter: {
 				date: function (date, settings) {

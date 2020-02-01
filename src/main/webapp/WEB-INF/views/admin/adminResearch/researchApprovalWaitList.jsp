@@ -180,6 +180,20 @@
 		text-align: right;
 		font-size: 11pt;
 	}
+	.questionImage, .questionVideo {
+		width: 80%;
+		height: 100px;
+		margin: 10px auto;
+	}
+	.mediaExplain {
+		width: 50%;
+		text-align: left;
+		margin: 0 auto;
+		margin-top: 10px;
+	}
+	.questionVideo {
+		margin-bottom: 65px;
+	}
 </style>
 </head>
 <body>
@@ -347,6 +361,7 @@
 				data:{researchNoStr:researchNoStr},
 				success:function(data){
 					console.log(data.researchDetail[0]);
+					$("#sortable").text("");
 					var researchDetail = data.researchDetail[0];
 					var gender = "";
 					var location = "";
@@ -376,6 +391,10 @@
 					var endDate = researchDetail.researchPeriod.split("~")[1].substr(0, 4) + "-" + researchDetail.researchPeriod.split("~")[1].substr(4, 2) + "-" + researchDetail.researchPeriod.split("~")[1].substr(6, 2);
 					$("#corpTable").find("td").eq(6).text(startDate + " ~ " + endDate);
 
+					if(researchDetail.additionalEtc != null && researchDetail.additionalEtc != ""){
+						var $etcTr = $("<tr><th>추가 요구 사항</th><td>" + researchDetail.additionalEtc + "</td></tr>");
+						$("#corpTable").append($etcTr);
+					}
 					var questionList = data.researchDetail[0].questionList;
 					
 					$("#research").find(".header").text(data.researchDetail[0].researchName);
@@ -403,18 +422,31 @@
 						}
 						var $questionFormDiv = $('<div class="questionForm"> ' + questionForm + '</div>');
 						$question.append($questionFormDiv);
+						
+						if(questionList[i].image != null && questionList[i].image != ""){
+							$questionImage = $('<div class="questionImage"><img src="${contextPath}/resources/uploadFiles/' + questionList[i].image.changeName +'"></div>');
+							$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div>');
+							$question.append($questionImage);
+							$question.append($mediaExplain);
+						}else {
+							if(questionList[i].mediaExplain != null && questionList[i].mediaExplain != ""){
+								$questionVideo = $('<div class="questionVideo"><iframe style="width: 100%;" src="https://www.youtube.com/embed/bwWYkChr3Qg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
+								$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div>');
+								$question.append($questionVideo);
+								$question.append($mediaExplain);
+							}
+						}
 						for(var j = 0; j < choiceList.length; j++){
 							var $choice = $('<div class="choice">' + choiceList[j].choiceOrder + '. ' + choiceList[j].choiceContext + '</div></li>')
 							if(choiceList[j].choiceImage != null){
-								var $image = $('<br><img src="${contextPath}/resources/uploadFiles/' + choiceList[j].choiceImage.changeName +'" style="width: 200px; height: 90px;">')
-								$choice.append($image);
+								var $choiceimage = $('<br><img src="${contextPath}/resources/uploadFiles/' + choiceList[j].choiceImage.changeName +'" style="width: 200px; height: 90px;">')
+								$choice.append($choiceimage);
 							}
 							$question.append($choice);
 						}
 						$("#sortable").append($question);
 					}
-					/* <li class="ui-state-default">Q1.
-					<div class="choice">보기</div></li> */
+
 					$('#corp').modal('show'); 
 				},
 				error:function(status){

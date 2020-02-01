@@ -85,14 +85,14 @@ public class CorpResearchController {
 		ArrayList<String> choiceExts = new ArrayList<>();
 		
  		for(MultipartFile file : uploadImage) {
- 			String saveFile = OperaFileNamePolicy.getRandomString();
  			String originFileName = file.getOriginalFilename();
  			String ext = originFileName.substring(originFileName.lastIndexOf("."));
+ 			String saveFile = OperaFileNamePolicy.getRandomString() + ext;
 			saveFiles.add(saveFile);
 			originFiles.add(originFileName);
 			exts.add(ext);
 			try {
-				file.transferTo(new File(savePath + "\\" + saveFile + ext));
+				file.transferTo(new File(savePath + "\\" + saveFile));
 			} catch (IllegalStateException | IOException e) {
 				e.printStackTrace();
 			}
@@ -101,12 +101,12 @@ public class CorpResearchController {
  		for(MultipartFile file : imageChoiceUpload) {
  			String originFileName = file.getOriginalFilename();
  			String ext = originFileName.substring(originFileName.lastIndexOf("."));
- 			String saveFile = OperaFileNamePolicy.getRandomString() + "." + ext;
+ 			String saveFile = OperaFileNamePolicy.getRandomString() + ext;
  			choiceSaveFiles.add(saveFile);
  			choiceOriginFiles.add(originFileName);
  			choiceExts.add(ext);
 			try {
-				file.transferTo(new File(savePath + "\\" + saveFile + ext));
+				file.transferTo(new File(savePath + "\\" + saveFile));
 			} catch (IllegalStateException | IOException e) {
 				e.printStackTrace();
 			}
@@ -144,7 +144,8 @@ public class CorpResearchController {
 					uploadFiles.add(uploadfile);
 					
 				}else if(mediaExist[i].equals("video")) {
-					researchQuestion.setQuestionVideoLink(questionVideoLink[videoIndex++]);
+					String videoLink = (questionVideoLink[videoIndex++].replace("https://", "")).replace("http://", "");
+					researchQuestion.setQuestionVideoLink(videoLink);
 				}
 			}
 			if(Integer.parseInt(questionFormNo[i]) != 2 && Integer.parseInt(questionFormNo[i]) != 4){
@@ -161,7 +162,7 @@ public class CorpResearchController {
 						uploadfile.setOriginName(choiceOriginFiles.get(uploadChoiceFileIndex));
 						uploadfile.setChangeName(choiceSaveFiles.get(uploadChoiceFileIndex++));
 						uploadfile.setFileType("리서치 보기");
-						uploadfile.setRchoiceNo(Integer.parseInt(choiceNo[j])); //나중에 select키로 문항에 대한 시퀀스 가져와야함
+						uploadfile.setRchoiceNo(researchChoice.getChoiceOrder()); //나중에 select키로 문항에 대한 시퀀스 가져와야함
 						uploadFiles.add(uploadfile);
 					}
 					if(j != choiceNo.length - 1) {
