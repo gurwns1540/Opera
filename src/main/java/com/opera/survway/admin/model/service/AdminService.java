@@ -9,6 +9,7 @@ import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.exception.SelectException;
 
 @Service
@@ -40,5 +41,13 @@ public interface AdminService {
 	int getListCountArrovalList() throws SelectException;
 
 	List<Map<String, Object>> researchApprovalDetail(int researchNo);
+
+	boolean researchApproved(int researchNo);
+
+	boolean researchRefer(ResearchState researchState);
+
+	int getListCountReferList() throws SelectException;
+
+	List<Map<String, String>> researchReferList(PageInfo pi) throws SelectException;
   
 }

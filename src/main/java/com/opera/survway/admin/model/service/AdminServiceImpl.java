@@ -12,6 +12,7 @@ import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
@@ -120,7 +121,7 @@ public class AdminServiceImpl implements AdminService{
 	 */
 	@Override
 	public boolean cashoutPeople(List<String> cnoArr) {
-		System.out.println(cnoArr);
+		
 		int result = ad.cashoutPeople(sqlSession, cnoArr);
 		
 		if(result > 0) {
@@ -265,11 +266,76 @@ public class AdminServiceImpl implements AdminService{
 			ArrayList<ResearchChoice> choiceList = questionList.get(i).getRequestChoiceList();
 			for(int j = 0; j < choiceList.size(); j++) {
 				UploadFile choiceImage = ad.choiceImage(sqlSession, choiceList.get(j).getChoiceNo());
-				System.out.println(i + "번째 : " + choiceImage + ", choiceNo : " + choiceList.get(j).getChoiceNo());
+				
 				((ArrayList<ResearchQuestion>)researchApprovalDetail.get(0).get("questionList")).get(i).getRequestChoiceList().get(j).setChoiceImage(choiceImage);
 			}
 		}
 		return researchApprovalDetail;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 신청 승인
+	 */
+	@Override
+	public boolean researchApproved(int researchNo) {
+		boolean isApproved = false;
+		int result = ad.researchApproved(sqlSession, researchNo);
+		
+		if(result > 0) {
+			isApproved = true;
+		}
+		return isApproved;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 반려
+	 */
+	@Override
+	public boolean researchRefer(ResearchState researchState) {
+		boolean isRefer = false;
+		int result = ad.researchRefer(sqlSession, researchState);
+		if(result > 0) {
+			isRefer = true;
+		}
+		return isRefer;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 반려 목록 수
+	 */
+	@Override
+	public int getListCountReferList() throws SelectException {
+		int listCount = ad.getListCountReferList(sqlSession);
+		if(listCount == 0) {
+			throw new SelectException("리서치 반려 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 반려 목록 조회
+	 */
+	@Override
+	public List<Map<String, String>> researchReferList(PageInfo pi) throws SelectException {
+		List<Map<String, String>> researchReferList = ad.researchReferList(sqlSession, pi);
+		if(researchReferList == null) {
+			throw new SelectException("리서치 신청 리스트 조회 실패");
+		}
+		return researchReferList;
 	}
 
 }

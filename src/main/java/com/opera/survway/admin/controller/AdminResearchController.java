@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.opera.survway.admin.model.service.AdminService;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.exception.SelectException;
 
@@ -52,7 +53,7 @@ public class AdminResearchController {
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			
 			List<Map<String, String>> researchApprovalWaitList = as.researchApprovalWaitList(pi);
-			System.out.println(researchApprovalWaitList);
+			
 			model.addAttribute("researchApprovalWaitList", researchApprovalWaitList);
 			model.addAttribute("pi", pi);
 			return "researchApprovalWaitList";
@@ -62,6 +63,12 @@ public class AdminResearchController {
 		}
 	}
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 신청 리서치 상세 보기
+	 */
 	@PostMapping("researchApprovalDetail.adminResearch")
 	public ModelAndView researchApprovalDetail(ModelAndView mv, String researchNoStr) {
 		int researchNo = Integer.parseInt(researchNoStr);
@@ -73,9 +80,72 @@ public class AdminResearchController {
 		
 		return mv;
 	}
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 승인
+	 */
+	@PostMapping("researchApproved.adminResearch")
+	public ModelAndView researchApproved(ModelAndView mv, String researchNoStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		
+		boolean isApproved = as.researchApproved(researchNo);
+		
+		mv.addObject("isApproved", isApproved);
+		mv.setViewName("jsonView");
+		return mv;
+	}
 	
+	@PostMapping("researchRefer.adminResearch")
+	public ModelAndView researchRefer(ModelAndView mv, String researchNoStr, String referReason) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		
+		ResearchState researchState = new ResearchState();
+		researchState.setReferReason(referReason);
+		researchState.setResearchNo(researchNo);
+		
+		boolean isRefer = as.researchRefer(researchState);
+		
+		mv.addObject("isRefer", isRefer);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 반려 목록
+	 */
 	@RequestMapping("researchReferList.adminResearch")
 	public String researchReferList(HttpServletRequest request, Model model) {
-		return "";
+		String queryString = request.getQueryString();
+		
+		Map<String, List<String>> queryMap =  null;
+		
+		int currentPage = 1; 
+		
+		if(queryString != null) { 
+			queryMap = Util.splitQuery(queryString);
+			if(queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+		}
+	  
+		int listCount = 0;
+		try {
+			listCount = as.getListCountReferList();
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			List<Map<String, String>> researchReferList = as.researchReferList(pi);
+			System.out.println(researchReferList);
+			model.addAttribute("researchReferList", researchReferList);
+			model.addAttribute("pi", pi);
+			return "researchReferList";
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
 	}
 }

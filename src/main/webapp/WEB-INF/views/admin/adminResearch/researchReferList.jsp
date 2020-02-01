@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -145,20 +146,16 @@
 			<tr id="tableTitle">
 				<th style="width: 10%;">리서치 번호</th>
 				<th style="width: 20%;">기업명</th>
-				<th style="width: 30%;">리서치 제목</th>
-				<th style="width: 10%;">신청일</th>
-				<th style="width: 10%;">처리일</th>
-				<th style="width: 10%;">결과</th>
+				<th style="width: 40%;">리서치 제목</th>
+				<th style="width: 20%;">처리일</th>
 				<th style="width: 10%;">상세보기</th>
 			</tr>
-			<c:forEach var="i" begin="0" end="9">
+			<c:forEach var="research" items="${ researchReferList }">
 				<tr class="tableContext">
-					<td>리서치 번호</td>
-					<td>기업명</td>
-					<td>리서치 제목</td>
-					<td>신청일</td>
-					<td>처리일</td>
-					<td>결과</td>
+					<td>${ research.researchNo }</td>
+					<td>${ research.companyName }</td>
+					<td>${ research.researchName }</td>
+					<td><fmt:formatDate value="${ research.lastDate }"/></td>
 					<td><button class="detail">상세 보기</button></td>
 				</tr>
 			</c:forEach>

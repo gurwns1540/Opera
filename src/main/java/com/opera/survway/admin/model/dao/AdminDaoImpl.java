@@ -10,6 +10,7 @@ import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 
 @Repository
@@ -137,6 +138,30 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public UploadFile choiceImage(SqlSessionTemplate sqlSession, int choiceNo) {
 		return sqlSession.selectOne("Admin.choiceUploadFiles", choiceNo);
+	}
+
+	@Override
+	public int researchApproved(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.insert("Admin.researchApproved",  researchNo);
+	}
+
+	@Override
+	public int researchRefer(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.researchRefer",  researchState);
+	}
+
+	@Override
+	public int getListCountReferList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListCountReferList");
+	}
+
+	@Override
+	public List<Map<String, String>> researchReferList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return sqlSession.selectList("Admin.researchReferList", null, rowBounds);
 	}
 
 }

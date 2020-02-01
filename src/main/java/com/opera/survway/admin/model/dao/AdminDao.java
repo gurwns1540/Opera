@@ -8,6 +8,7 @@ import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 
 public interface AdminDao {
@@ -43,5 +44,13 @@ public interface AdminDao {
 	UploadFile questionImage(SqlSessionTemplate sqlSession, int questionNo);
 
 	UploadFile choiceImage(SqlSessionTemplate sqlSession, int choiceNo);
+
+	int researchApproved(SqlSessionTemplate sqlSession, int researchNo);
+
+	int researchRefer(SqlSessionTemplate sqlSession, ResearchState researchState);
+
+	int getListCountReferList(SqlSessionTemplate sqlSession);
+
+	List<Map<String, String>> researchReferList(SqlSessionTemplate sqlSession, PageInfo pi);
 
 }

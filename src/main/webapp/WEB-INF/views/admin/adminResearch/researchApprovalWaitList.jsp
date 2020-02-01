@@ -234,8 +234,8 @@
 				<th style="width: 10%;">리서치 번호</th>
 				<th style="width: 20%;">기업명</th>
 				<th style="width: 40%;">리서치 제목</th>
-				<th style="width: 15%;">신청일</th>
-				<th style="width: 15%;">상세보기</th>
+				<th style="width: 20%;">신청일</th>
+				<th style="width: 10%;">상세보기</th>
 			</tr>
 			<c:forEach var="r" items="${ researchApprovalWaitList }">
 				<tr class="tableContext">
@@ -353,7 +353,7 @@
 			$('#research').modal('show');
 		});
 		$(".detail").on("click", function(){
-			var researchNoStr = $(this).parent().siblings().eq(0).text();
+			researchNoStr = $(this).parent().siblings().eq(0).text();
 			var companyName = $(this).parent().siblings().eq(1).text();
 			$.ajax({
 				url:"researchApprovalDetail.adminResearch",
@@ -468,11 +468,22 @@
 			  confirmButtonText: 'Yes'
 			}).then((result) => {
 			  if (result.value) {
-			    Swal.fire(
-			      '승인!',
-			      '이 리서치는 승인되었습니다.',
-			      'success'
-			    )
+				$.ajax({
+					url:"researchApproved.adminResearch",
+					type:"post",
+					data:{researchNoStr:researchNoStr},
+					success:function(data){
+						Swal.fire(
+					      '승인!',
+					      '이 리서치는 승인되었습니다.',
+					      'success'
+					    )
+					},
+					error:function(status){
+						console.log(status);
+					}
+				});
+			    
 			  }else {
 				  $('#research').modal('show');
 			  }
@@ -505,11 +516,24 @@
 					  confirmButtonText: 'Yes'
 					}).then((result) => {
 					  if (result.value) {
-						  Swal.fire(
-				      		'반려!',
-				      		'이 리서치는 반려되었습니다.',
-				      		'success'
-				    		)
+						  $.ajax({
+								url:"researchRefer.adminResearch",
+								type:"post",
+								data:{
+									researchNoStr:researchNoStr,
+									referReason : text
+								},
+								success:function(data){
+									Swal.fire(
+								      		'반려!',
+								      		'이 리서치는 반려되었습니다.',
+								      		'success'
+								    		)
+								},
+								error:function(status){
+									console.log(status);
+								}
+							});
 					  }else {
 						  $('#research').modal('show');
 					  }
