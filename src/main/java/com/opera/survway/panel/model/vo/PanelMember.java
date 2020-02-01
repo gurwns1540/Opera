@@ -23,7 +23,9 @@ public class PanelMember {
 	private Date entDate;
 	private Date modifyDate;
 	private String panelBirthday;
+	private int panelAge;
 	private String panelGender;
+	private String panelArea;
 	private String referPanelCode;
 	private String nominee;
 	private int panellevelNo;
@@ -37,8 +39,8 @@ public class PanelMember {
 	public PanelMember(int mno, String userId, String userPwd, String userName, String post, String address,
 			String detailAddress, String userAddress, String phone1, String phone2, String phone3, String userPhone,
 			String userEmail, String userType, Date leaveDate, Date entDate, Date modifyDate, String panelBirthday,
-			String panelGender, String referPanelCode, String nominee, int panellevelNo, String occupationNo,
-			String withdrawAccount, String leaveReason, ArrayList<Integer> indexArr) {
+			int panelAge, String panelGender, String panelArea, String referPanelCode, String nominee, int panellevelNo,
+			String occupationNo, String withdrawAccount, String leaveReason, ArrayList<Integer> indexArr) {
 		super();
 		this.mno = mno;
 		this.userId = userId;
@@ -58,7 +60,9 @@ public class PanelMember {
 		this.entDate = entDate;
 		this.modifyDate = modifyDate;
 		this.panelBirthday = panelBirthday;
+		this.panelAge = panelAge;
 		this.panelGender = panelGender;
+		this.panelArea = panelArea;
 		this.referPanelCode = referPanelCode;
 		this.nominee = nominee;
 		this.panellevelNo = panellevelNo;
@@ -212,12 +216,28 @@ public class PanelMember {
 		this.panelBirthday = panelBirthday;
 	}
 
+	public int getPanelAge() {
+		return panelAge;
+	}
+
+	public void setPanelAge(int panelAge) {
+		this.panelAge = panelAge;
+	}
+
 	public String getPanelGender() {
 		return panelGender;
 	}
 
 	public void setPanelGender(String panelGender) {
 		this.panelGender = panelGender;
+	}
+
+	public String getPanelArea() {
+		return panelArea;
+	}
+
+	public void setPanelArea(String panelArea) {
+		this.panelArea = panelArea;
 	}
 
 	public String getReferPanelCode() {
@@ -283,40 +303,12 @@ public class PanelMember {
 				+ userAddress + ", phone1=" + phone1 + ", phone2=" + phone2 + ", phone3=" + phone3 + ", userPhone="
 				+ userPhone + ", userEmail=" + userEmail + ", userType=" + userType + ", leaveDate=" + leaveDate
 				+ ", entDate=" + entDate + ", modifyDate=" + modifyDate + ", panelBirthday=" + panelBirthday
-				+ ", panelGender=" + panelGender + ", referPanelCode=" + referPanelCode + ", nominee=" + nominee
-				+ ", panellevelNo=" + panellevelNo + ", occupationNo=" + occupationNo + ", withdrawAccount="
-				+ withdrawAccount + ", leaveReason=" + leaveReason + ", indexArr=" + indexArr + "]";
+				+ ", panelAge=" + panelAge + ", panelGender=" + panelGender + ", panelArea=" + panelArea
+				+ ", referPanelCode=" + referPanelCode + ", nominee=" + nominee + ", panellevelNo=" + panellevelNo
+				+ ", occupationNo=" + occupationNo + ", withdrawAccount=" + withdrawAccount + ", leaveReason="
+				+ leaveReason + ", indexArr=" + indexArr + "]";
 	}
+
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

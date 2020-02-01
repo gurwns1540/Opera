@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
@@ -73,6 +75,10 @@ public interface PanelDao {
 	List<ResearchQuestion> getTsQuestionList(SqlSessionTemplate sqlSession) throws SelectException;
 
 	List<ResearchChoice> getTsChoiceList(SqlSessionTemplate sqlSession, int rquestionNo) throws SelectException;
+
+	int getCountMyResearch(SqlSessionTemplate sqlSession, PanelMember loginUser);
+
+	List<Research> getMyResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser, PageInfo pi) throws SurveyException;
 
 
 
