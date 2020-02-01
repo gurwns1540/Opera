@@ -176,19 +176,19 @@
   			<table class="reason">
 					<tr>
 						<th>프로젝트 명</th>
-						<td>피자 선호도 조사</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>목적</th>
-						<td>우리 브랜드 피자 선호도는 얼마나 되는가 궁금한 점과 앞으로 나아갈 피자의 방향</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>목표 인원</th>
-						<td>200명</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>반려 사유</th>
-						<td>외설된 질문 포함</td>
+						<td></td>
 					</tr>
 				</table>
   		</div>
@@ -199,8 +199,28 @@
 		
 	
 	<script>
-		$(".detail").on("click", function(){
-			$('.ui.modal').modal('show');
+		$(document).on("click", ".detail", function(){
+			researchNoStr = $(this).parent().siblings().eq(0).text();
+			$.ajax({
+				url:"researchReferDetail.adminResearch",
+				type:"post",
+				data:{researchNoStr:researchNoStr},
+				success:function(data){
+					console.log(data);
+					
+					var researchDetail = data.researchDetail[0];
+					$(".reason").find("td").eq(0).text(researchDetail.researchName);
+					$(".reason").find("td").eq(1).text(researchDetail.researchPerpose);
+					$(".reason").find("td").eq(2).text(researchDetail.researchEngagementGoals + "명");
+					$(".reason").find("td").eq(3).text(researchDetail.researchReferReason);
+					
+					$('.ui.modal').modal('show');
+				},
+				error:function(data){
+					console.log(data);
+				}
+			});
+			
 		});
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(1)").addClass("on");

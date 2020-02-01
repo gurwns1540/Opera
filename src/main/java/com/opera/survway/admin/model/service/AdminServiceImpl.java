@@ -338,4 +338,15 @@ public class AdminServiceImpl implements AdminService{
 		return researchReferList;
 	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 반려 상세 조회 
+	 */
+	@Override
+	public List<Map<String, Object>> researchReferDetail(int researchNo) {
+		return ad.researchReferDetail(sqlSession, researchNo);
+	}
+
 }

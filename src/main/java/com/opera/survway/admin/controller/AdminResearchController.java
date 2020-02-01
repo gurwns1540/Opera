@@ -148,4 +148,16 @@ public class AdminResearchController {
 			return "redirect:errorPage.me";
 		}
 	}
+	
+	@PostMapping("researchReferDetail.adminResearch")
+	public ModelAndView researchReferDetail(ModelAndView mv, String researchNoStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		
+		List<Map<String, Object>> researchDetail = as.researchReferDetail(researchNo);
+		
+		mv.addObject("researchDetail", researchDetail);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
 }

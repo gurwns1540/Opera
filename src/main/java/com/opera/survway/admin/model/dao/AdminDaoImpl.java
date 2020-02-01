@@ -164,4 +164,9 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectList("Admin.researchReferList", null, rowBounds);
 	}
 
+	@Override
+	public List<Map<String, Object>> researchReferDetail(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.researchReferDetail", researchNo);
+	}
+
 }

@@ -332,6 +332,25 @@
 		WHERE RESEARCH_STATE_NO = 8
 	</select>
 
+	<resultMap type="map" id="researchReferDetailMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchReferReason" column="RESEARCH_REFERREASON"/>
+	</resultMap>
+	
+	<select id="researchReferDetail" parameterType="_int" resultMap="researchReferDetailMap">
+		SELECT *
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+		WHERE RESEARCH_STATE_NO = 8
+        AND R.RESEARCH_NO = #{researchNo}
+	</select>
 </mapper>
 
 

@@ -352,7 +352,7 @@
 		$("#nextBtn").on("click", function(){
 			$('#research').modal('show');
 		});
-		$(".detail").on("click", function(){
+		$(document).on("click", ".detail", function(){
 			researchNoStr = $(this).parent().siblings().eq(0).text();
 			var companyName = $(this).parent().siblings().eq(1).text();
 			$.ajax({

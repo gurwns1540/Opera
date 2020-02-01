@@ -49,5 +49,7 @@ public interface AdminService {
 	int getListCountReferList() throws SelectException;
 
 	List<Map<String, String>> researchReferList(PageInfo pi) throws SelectException;
+
+	List<Map<String, Object>> researchReferDetail(int researchNo);
   
 }

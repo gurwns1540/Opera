@@ -53,4 +53,6 @@ public interface AdminDao {
 
 	List<Map<String, String>> researchReferList(SqlSessionTemplate sqlSession, PageInfo pi);
 
+	List<Map<String, Object>> researchReferDetail(SqlSessionTemplate sqlSession, int researchNo);
+
 }
