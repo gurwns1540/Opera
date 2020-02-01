@@ -295,4 +295,31 @@
 		<include refid="searchCategoryInquiry"/>
 		
 	</select>
+
+	<resultMap type="PanelResearchQuestion" id="tsQuestionResultSet">
+		<id property="rquestionNo" column="RQUESTION_NO" />
+		<result property="questionFormNo" column="QUESTION_FORM_NO" />
+		<result property="researchOrder" column="RESEARCH_ORDER" />
+		<result property="rquestionContext" column="RQUESTION_CONTEXT" />
+	</resultMap>
+
+	<select id="selectTsQuestionList" resultMap="tsQuestionResultSet">
+		SELECT *
+		FROM RESEARCHQUESTION
+		WHERE RESEARCH_NO = 1
+	</select>
+
+
+	<resultMap type="PanelResearchChoice" id="tsChoiceResultSet">
+		<id property="rchoiceNo" column="RCHOICE_NO" />
+		<result property="rchoiceOrder" column="RCHOICE_ORDER" />
+		<result property="rchoiceContext" column="RCHOICE_CONTEXT" />
+	</resultMap>
+
+	<select id="selectTsChoiceList" resultMap="tsChoiceResultSet" parameterType="_int">
+		SELECT *
+		FROM RESEARCHCHOICE
+		WHERE RQUESTION_NO = #{ rquestionNo }
+	</select>
+	
 </mapper>

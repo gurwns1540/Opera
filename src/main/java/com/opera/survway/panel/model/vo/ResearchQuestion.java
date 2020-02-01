@@ -19,6 +19,7 @@ public class ResearchQuestion {
 	private int researchOrder;
 	private String rquestionContext;
 	private List<ResearchChoice> choiceList;
+	private int progressDataPercent;
 	//첨부파일 있을경우
 	private String rquestionVideolink;
 	private String mediaExplain;
@@ -31,8 +32,9 @@ public class ResearchQuestion {
 	public ResearchQuestion() {}
 
 	public ResearchQuestion(int questionFormNo, int rquestionNo, int researchNo, int researchOrder,
-			String rquestionContext, List<ResearchChoice> choiceList, String rquestionVideolink, String mediaExplain,
-			int fileNo, String fileType, String originName, String changeName, String filePath) {
+			String rquestionContext, List<ResearchChoice> choiceList, int progressDataPercent,
+			String rquestionVideolink, String mediaExplain, int fileNo, String fileType, String originName,
+			String changeName, String filePath) {
 		super();
 		this.questionFormNo = questionFormNo;
 		this.rquestionNo = rquestionNo;
@@ -40,6 +42,7 @@ public class ResearchQuestion {
 		this.researchOrder = researchOrder;
 		this.rquestionContext = rquestionContext;
 		this.choiceList = choiceList;
+		this.progressDataPercent = progressDataPercent;
 		this.rquestionVideolink = rquestionVideolink;
 		this.mediaExplain = mediaExplain;
 		this.fileNo = fileNo;
@@ -95,6 +98,14 @@ public class ResearchQuestion {
 
 	public void setChoiceList(List<ResearchChoice> choiceList) {
 		this.choiceList = choiceList;
+	}
+
+	public int getProgressDataPercent() {
+		return progressDataPercent;
+	}
+
+	public void setProgressDataPercent(int progressDataPercent) {
+		this.progressDataPercent = progressDataPercent;
 	}
 
 	public String getRquestionVideolink() {
@@ -157,9 +168,10 @@ public class ResearchQuestion {
 	public String toString() {
 		return "ResearchQuestion [questionFormNo=" + questionFormNo + ", rquestionNo=" + rquestionNo + ", researchNo="
 				+ researchNo + ", researchOrder=" + researchOrder + ", rquestionContext=" + rquestionContext
-				+ ", choiceList=" + choiceList + ", rquestionVideolink=" + rquestionVideolink + ", mediaExplain="
-				+ mediaExplain + ", fileNo=" + fileNo + ", fileType=" + fileType + ", originName=" + originName
-				+ ", changeName=" + changeName + ", filePath=" + filePath + "]";
+				+ ", choiceList=" + choiceList + ", progressDataPercent=" + progressDataPercent
+				+ ", rquestionVideolink=" + rquestionVideolink + ", mediaExplain=" + mediaExplain + ", fileNo=" + fileNo
+				+ ", fileType=" + fileType + ", originName=" + originName + ", changeName=" + changeName + ", filePath="
+				+ filePath + "]";
 	}
 	
 }

@@ -56,4 +56,6 @@ public interface PanelService {
   
 	List<ResearchQuestion> getTsQuestionList() throws SelectException;
 
+	int getCountResearch(PanelMember loginUser);
+
 }

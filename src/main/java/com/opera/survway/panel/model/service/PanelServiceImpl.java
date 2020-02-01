@@ -368,4 +368,16 @@ public class PanelServiceImpl implements PanelService {
 		}
 		return tsQuestions;
 	}
+
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 로그인된 패널이 참여할 수 있는 설문조사 갯수 조회
+	 */
+	@Override
+	public int getCountResearch(PanelMember loginUser) {
+		
+		return 0;
+	}
 }
