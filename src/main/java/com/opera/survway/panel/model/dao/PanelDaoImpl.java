@@ -7,8 +7,10 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
@@ -248,6 +250,23 @@ public class PanelDaoImpl implements PanelDao{
 			throw new SelectException("TS조사 문항별 보기 리스트 불러오기 실패");
 		}
 		return tsChoices;
+	}
+
+	@Override
+	public int getCountMyResearch(SqlSessionTemplate sqlSession, PanelMember loginUser) {
+		return sqlSession.selectOne("Panel.selectCountMyResearch", loginUser);
+	}
+
+	@Override
+	public List<Research> getMyResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser, PageInfo pi) throws SurveyException {
+		List<Research> myResearchList = null;
+		int offset = (pi.getCurrentPage()-1)*pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		myResearchList = sqlSession.selectList("Panel.selectMyResearchList", loginUser, rowBounds);
+		if(myResearchList == null) {
+			throw new SurveyException("참여가능한 리서치 리스트 조회 실패");
+		}
+		return myResearchList;
 	}
 
 	

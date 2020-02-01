@@ -2,7 +2,6 @@ package com.opera.survway.panel.model.service;
 
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.dao.PanelDao;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
@@ -370,14 +371,33 @@ public class PanelServiceImpl implements PanelService {
 	}
 
 	/**
+	 * @throws SurveyException 
 	 * @Author      : Sooo
 	 * @CreateDate  : 2020. 2. 1.
 	 * @ModifyDate  : 2020. 2. 1.
 	 * @Description : 로그인된 패널이 참여할 수 있는 설문조사 갯수 조회
 	 */
 	@Override
-	public int getCountResearch(PanelMember loginUser) {
+	public int getCountMyResearch(PanelMember loginUser) throws SurveyException {
 		
-		return 0;
+		int listCount = pd.getCountMyResearch(sqlSession, loginUser);
+		if(listCount <=0) {
+			throw new SurveyException("참여가능한 설문조사 갯수 조회 실패");
+		}
+		return listCount;
+	}
+
+	/**
+	 * @throws SurveyException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 로그인된 패널이 참여할 수 있는 설문조사 목록 조회
+	 */
+	@Override
+	public List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi) throws SurveyException {
+		List<Research> myResearchList = null;
+		myResearchList = pd.getMyResearchList(sqlSession, loginUser, pi);
+		return myResearchList;
 	}
 }

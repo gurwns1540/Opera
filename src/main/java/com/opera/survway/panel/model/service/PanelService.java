@@ -2,10 +2,12 @@ package com.opera.survway.panel.model.service;
 
 import java.util.List;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
@@ -56,6 +58,8 @@ public interface PanelService {
   
 	List<ResearchQuestion> getTsQuestionList() throws SelectException;
 
-	int getCountResearch(PanelMember loginUser);
+	int getCountMyResearch(PanelMember loginUser) throws SurveyException;
+
+	List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi) throws SurveyException;
 
 }

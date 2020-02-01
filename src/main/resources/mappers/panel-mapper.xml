@@ -322,4 +322,99 @@
 		WHERE RQUESTION_NO = #{ rquestionNo }
 	</select>
 	
+	<select id="selectCountMyResearch" resultType="_int" parameterType="PanelMember">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM RESEARCH R
+		LEFT JOIN RESEARCHTARGET RT USING (RESEARCH_NO)
+		LEFT JOIN ATTEMPTPARTICIPANT AP USING (RESEARCH_NO)
+		JOIN (SELECT RESEARCH_NO, RESEARCH_STATE_NO, RESEARCH_CHANGEDATE
+		FROM RSTATUSHISTORY
+		JOIN (SELECT RESEARCH_NO AS RNO, MAX(RESEARCH_CHANGEDATE) AS CDATE
+		        FROM RSTATUSHISTORY
+		        GROUP BY RESEARCH_NO) ON (RNO = RESEARCH_NO)
+		        WHERE RESEARCH_CHANGEDATE = CDATE
+		        AND RESEARCH_STATE_NO = 8) USING (RESEARCH_NO)
+		WHERE RESEARCH_NO ^= 1
+		AND RESEARCH_NO ^= 2
+		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO
+		                        FROM ATTEMPTPARTICIPANT
+		                        WHERE MNO = #{ mno })
+		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO FROM RESEARCHTARGET) OR (
+		 (TARGET_GENDER = 'A' OR TARGET_GENDER = (SELECT P.PANEL_GENDER
+		                                                FROM MEMBER M
+		                                                JOIN PANEL P USING (MNO)
+		                                                WHERE MNO = #{ mno }))
+		AND (TARGET_AGERANGE = 'all'
+		    OR ( SUBSTR(TARGET_AGERANGE, 1, 2) <= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+		                                            FROM MEMBER M
+		                                            JOIN PANEL P USING (MNO)
+		                                            WHERE MNO = #{ mno })
+		        AND SUBSTR(TARGET_AGERANGE, 3, 2) >= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+		                                                FROM MEMBER M
+		                                                JOIN PANEL P USING (MNO)
+		                                                WHERE MNO = #{ mno })))
+		AND (TARGET_LOCATION = 'all'
+		    OR TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'metropolitan', 2, 'metropolitan', 8, 'metropolitan', 'out')
+		                            FROM MEMBER M
+		                            LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+		                            WHERE MNO = #{ mno }
+		                            AND RH.RESEARCH_NO = 1
+		                            AND RH.RQUESTION_NO = 8)
+		    OR TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'city', 2, 'city', 3, 'city', 4, 'city', 5, 'city', 6, 'city', 7, 'city', 'out')
+		                            FROM MEMBER M
+		                            LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+		                            WHERE MNO = #{ mno }
+		                            AND RH.RESEARCH_NO = 1
+		                            AND RH.RQUESTION_NO = 8)))
+		]]>
+	</select>
+	<select id="selectMyResearchList" resultMap="MainResearchResultSet" parameterType="PanelMember">
+		<![CDATA[
+		SELECT RESEARCH_NO, RESEARCH_NAME, RESEARCH_PERIOD, RESEARCH_PERPOSE, RESEARCH_REWARD
+		FROM RESEARCH R
+		LEFT JOIN RESEARCHTARGET RT USING (RESEARCH_NO)
+		LEFT JOIN ATTEMPTPARTICIPANT AP USING (RESEARCH_NO)
+		JOIN (SELECT RESEARCH_NO, RESEARCH_STATE_NO, RESEARCH_CHANGEDATE
+		FROM RSTATUSHISTORY
+		JOIN (SELECT RESEARCH_NO AS RNO, MAX(RESEARCH_CHANGEDATE) AS CDATE
+		        FROM RSTATUSHISTORY
+		        GROUP BY RESEARCH_NO) ON (RNO = RESEARCH_NO)
+		        WHERE RESEARCH_CHANGEDATE = CDATE
+		        AND RESEARCH_STATE_NO = 8) USING (RESEARCH_NO)
+		WHERE RESEARCH_NO ^= 1
+		AND RESEARCH_NO ^= 2
+		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO
+		                        FROM ATTEMPTPARTICIPANT
+		                        WHERE MNO = #{ mno })
+		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO FROM RESEARCHTARGET) OR (
+		 (TARGET_GENDER = 'A' OR TARGET_GENDER = (SELECT P.PANEL_GENDER
+		                                                FROM MEMBER M
+		                                                JOIN PANEL P USING (MNO)
+		                                                WHERE MNO = #{ mno }))
+		AND (TARGET_AGERANGE = 'all'
+		    OR ( SUBSTR(TARGET_AGERANGE, 1, 2) <= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+		                                            FROM MEMBER M
+		                                            JOIN PANEL P USING (MNO)
+		                                            WHERE MNO = #{ mno })
+		        AND SUBSTR(TARGET_AGERANGE, 3, 2) >= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+		                                                FROM MEMBER M
+		                                                JOIN PANEL P USING (MNO)
+		                                                WHERE MNO = #{ mno })))
+		AND (TARGET_LOCATION = 'all'
+		    OR TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'metropolitan', 2, 'metropolitan', 8, 'metropolitan', 'out')
+		                            FROM MEMBER M
+		                            LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+		                            WHERE MNO = #{ mno }
+		                            AND RH.RESEARCH_NO = 1
+		                            AND RH.RQUESTION_NO = 8)
+		    OR TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'city', 2, 'city', 3, 'city', 4, 'city', 5, 'city', 6, 'city', 7, 'city', 'out')
+		                            FROM MEMBER M
+		                            LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+		                            WHERE MNO = #{ mno }
+		                            AND RH.RESEARCH_NO = 1
+		                            AND RH.RQUESTION_NO = 8)))
+		 ]]>
+	</select>
+	
 </mapper>

@@ -169,7 +169,6 @@
 												<td class="top-left"><span style="font-size:0.9vw;">[ TS ]</span></td>
 												<td class="top-right">
 													<img src="resources/images/pc.png" alt="" class="icon"/>
-													<img src="resources/images/mobile.png" alt="" class="icon"/>
 												</td>
 											</tr>
 											<tr>
@@ -214,7 +213,7 @@
 											<span style="font-size:1vw;">소비자 인식 조사 소비자 인식</span>
 										</div>
 										<div class="bottom">
-											<div class="bottom-top" style="text-align:center; padding-top:${ qCount }px;">
+											<div class="bottom-top" style="text-align:center; padding-top:14px;">
 												<span style="font-weight:bold; font-size:1vw; color:#005E8C;">100~3000P</span>
 											</div>
 											<div class="bottom-middle">
@@ -232,14 +231,54 @@
 						</c:forEach>
 					</c:if>
 				</div>
-	
-				<div id="pagingArea" align="center">
-					<span>[처음]</span> <span>[이전]</span>
-					<c:forEach var="i" begin="1" end="10">
-						<span><c:out value="${ i }" /></span>
-					</c:forEach>
-					<span>[다음]</span> <span>[마지막]</span>
-				</div>
+				
+				<c:if test="${ pi.maxPage ne 1 }">
+					<div id="pagingArea" align="center">
+					
+						<c:url var="surveyListFirst" value="surveyList.survey">
+							<c:param name="currentPage" value="${ 1 }"/>
+						</c:url>
+						<a href="${ surveyListFirst }"><span>[처음]</span></a>&nbsp;
+						
+						<c:if test="${ pi.currentPage <= 1 }">
+							<span>[이전]</span> &nbsp;
+						</c:if>
+						<c:if test="${ pi.currentPage > 1 }">
+							<c:url var="surveyListBack" value="surveyList.survey">
+								<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
+							</c:url>
+							<a href="${ surveyListBack }"><span>[이전]</span></a>&nbsp;
+						</c:if>
+						
+						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+							<c:if test="${ p eq pi.currentPage }">
+								<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+							</c:if>
+							<c:if test="${p ne pi.currentPage }">
+								<c:url var="surveyListEachPage" value="surveyList.survey">
+									<c:param name="currentPage" value="${ p }"/>
+								</c:url>
+								<a href="${ surveyListEachPage }"><span>${ p }</span></a>
+							</c:if>
+						</c:forEach>
+				
+						<c:if test="${ pi.currentPage < pi.maxPage }">
+							<c:url var="surveyListNext" value="surveyList.survey">
+								<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
+							</c:url>
+							&nbsp;<a href="${ surveyListNext }"><span>[다음]</span></a>
+						</c:if>
+						<c:if test="${ pi.currentPage >= pi.maxPage }">
+							&nbsp; <span>[다음]</span>
+						</c:if>
+						
+						<c:url var="surveyListEnd" value="surveyList.survey">
+							<c:param name="currentPage" value="${ pi.maxPage }"/>
+						</c:url>
+						<a href="${ surveyListEnd }"><span>[마지막]</span></a>&nbsp;
+						
+					</div>
+				</c:if>
 				
 				<!-- 조사 시작해서 처음뜨는 모달창 - 조사참여가이드 -->
 				<div class="ui overlay fullscreen modal" id="surveyStart">
