@@ -179,4 +179,23 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.update("Admin.updateResearchPrice", researchState);
 	}
 
+	@Override
+	public int getListResearchWaitingPayment(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListResearchWaitingPayment");
+	}
+
+	@Override
+	public List<Map<String, String>> researchWaitingPayment(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return sqlSession.selectList("Admin.researchWaitingPayment", null, rowBounds);
+	}
+
+	@Override
+	public List<Map<String, Object>> researchWaitPaymentDetail(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.researchWaitPaymentDetail", researchNo);
+	}
+
 }

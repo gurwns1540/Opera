@@ -266,4 +266,65 @@ public class AdminResearchController {
 		return mv;
 	}
 	
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 리스트
+	 */
+	@RequestMapping("researchWaitingPayment.adminResearch")
+	public String researchWaitingPayment(HttpServletRequest request, Model model) {
+		String queryString = request.getQueryString();
+		
+		Map<String, List<String>> queryMap =  null;
+		
+		int currentPage = 1; 
+		
+		if(queryString != null) { 
+			queryMap = Util.splitQuery(queryString);
+			if(queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+		}
+	  
+		int listCount = 0;
+		try {
+			listCount = as.getListResearchWaitingPayment();
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			List<Map<String, String>> researchWaitingPayment = as.researchWaitingPayment(pi);
+			
+			model.addAttribute("researchWaitingPayment", researchWaitingPayment);
+			model.addAttribute("pi", pi);
+			return "researchWaitingPayment";
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 상세 보기
+	 */
+	@PostMapping("researchWaitPaymentDetail.adminResearch")
+	public ModelAndView researchWaitPaymentDetail(ModelAndView mv, String researchNoStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		
+		List<Map<String, Object>> researchDetail = as.researchWaitPaymentDetail(researchNo);
+
+		mv.addObject("researchDetail", researchDetail);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	//협의완료
+	@RequestMapping("researchConsultationCompleted.adminResearch")
+	public String forwardResearchConsultationCompleted() {
+		return"researchConsultationCompleted";
+	}
+	
 }

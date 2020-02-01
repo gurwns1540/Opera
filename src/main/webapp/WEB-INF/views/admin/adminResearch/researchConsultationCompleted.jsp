@@ -146,15 +146,15 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='researchWaitingPayment.admin'">협의중</button>
-						<button onclick="location.href='researchConsultationCompleted.admin'" id="clickBtn">협의완료</button>
+						<button onclick="location.href='researchWaitingPayment.adminResearch'">협의중</button>
+						<button onclick="location.href='researchConsultationCompleted.adminResearch'" id="clickBtn">결제 완료</button>
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<div id="adminTitle">
-						리서치 협의 완료 목록
+						리서치 결제 완료 목록
 					</div>
 				</td>
 			</tr>

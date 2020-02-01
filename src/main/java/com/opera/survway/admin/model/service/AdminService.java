@@ -51,5 +51,11 @@ public interface AdminService {
 	List<Map<String, String>> researchReferList(PageInfo pi) throws SelectException;
 
 	List<Map<String, Object>> researchReferDetail(int researchNo);
+
+	int getListResearchWaitingPayment() throws SelectException;
+
+	List<Map<String, String>> researchWaitingPayment(PageInfo pi) throws SelectException;
+
+	List<Map<String, Object>> researchWaitPaymentDetail(int researchNo);
   
 }

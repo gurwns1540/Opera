@@ -483,6 +483,9 @@
 					      '이 리서치는 승인되었습니다.',
 					      'success'
 					    )
+					    setTimeout(function(){
+						  	location.reload();
+						},1500)
 					},
 					error:function(status){
 						console.log(status);

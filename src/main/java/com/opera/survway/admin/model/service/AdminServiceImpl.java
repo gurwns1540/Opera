@@ -226,7 +226,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int getListCountArrovalList() throws SelectException {
 		int listCount = ad.getListCountArrovalList(sqlSession);
-		if(listCount == 0) {
+		if(listCount < 0) {
 			throw new SelectException("리서치 신청 수 조회 실패");
 		}
 		return listCount;
@@ -319,7 +319,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int getListCountReferList() throws SelectException {
 		int listCount = ad.getListCountReferList(sqlSession);
-		if(listCount == 0) {
+		if(listCount < 0) {
 			throw new SelectException("리서치 반려 수 조회 실패");
 		}
 		return listCount;
@@ -350,6 +350,49 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<Map<String, Object>> researchReferDetail(int researchNo) {
 		return ad.researchReferDetail(sqlSession, researchNo);
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 리스트 수
+	 */
+	@Override
+	public int getListResearchWaitingPayment() throws SelectException {
+		int listCount = ad.getListResearchWaitingPayment(sqlSession);
+		if(listCount < 0) {
+			throw new SelectException("리서치 납부 대기 및 가격 협상 리스트 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 리스트
+	 */
+	@Override
+	public List<Map<String, String>> researchWaitingPayment(PageInfo pi) throws SelectException {
+		List<Map<String, String>> researchWaitingPayment = ad.researchWaitingPayment(sqlSession, pi);
+		if(researchWaitingPayment == null) {
+			throw new SelectException("리서치 납부 대기 및 가격 협상 리스트 조회 실패");
+		}
+		return researchWaitingPayment;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 상세 보기
+	 */
+	@Override
+	public List<Map<String, Object>> researchWaitPaymentDetail(int researchNo) {
+		return ad.researchWaitPaymentDetail(sqlSession, researchNo);
 	}
 
 }

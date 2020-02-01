@@ -59,4 +59,10 @@ public interface AdminDao {
 
 	int updateResearchPrice(SqlSessionTemplate sqlSession, ResearchState researchState);
 
+	int getListResearchWaitingPayment(SqlSessionTemplate sqlSession);
+
+	List<Map<String, String>> researchWaitingPayment(SqlSessionTemplate sqlSession, PageInfo pi);
+
+	List<Map<String, Object>> researchWaitPaymentDetail(SqlSessionTemplate sqlSession, int researchNo);
+
 }

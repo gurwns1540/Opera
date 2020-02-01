@@ -365,6 +365,70 @@
 		RESEARCH_PRICE = #{price}
 		WHERE RESEARCH_NO = #{researchNo}
 	</update>
+	
+	<select id="getListResearchWaitingPayment" resultType="_int">
+		SELECT COUNT(*)
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+		WHERE RESEARCH_STATE_NO IN (2, 10)
+	</select>
+	
+	<resultMap type="map" id="waitingPaymentListMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="mno" column="MNO"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchReward" column="RESEARCH_REWARD"/>
+		<result property="researchPrice" column="RESEARCH_PRICE"/>
+		<result property="lastDate" column="LAST_DATE"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="researchReferReason" column="RESEARCH_REFERREASON"/>
+		<result property="researchState" column="RESEARCH_STATE"/>
+	</resultMap>
+	<select id="researchWaitingPayment" resultMap="waitingPaymentListMap">
+		SELECT *
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+        JOIN RESEARCHSTATE RS ON (RH.RESEARCH_STATE_NO = RS.RESEARCH_STATE_NO)
+		WHERE RS.RESEARCH_STATE_NO IN (2, 10)
+	</select>
+	
+	<resultMap type="map" id="researchWaitPaymentDetailMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="targetGender" column="TARGET_GENDER"/>
+		<result property="targetAgeRange" column="TARGET_AGERANGE"/>
+		<result property="targetLocation" column="TARGET_LOCATION"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="researchPrice" column="RESEARCH_PRICE"/>
+		<result property="conferencePrice" column="CONFERENCE_PRICE"/>
+	</resultMap>
+	
+	<select id="researchWaitPaymentDetail" parameterType="_int" resultMap="researchWaitPaymentDetailMap">
+		SELECT *
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+        JOIN RESEARCHTARGET RT ON (RT.RESEARCH_NO = R.RESEARCH_NO)
+        LEFT JOIN CONFERENCEHISTORY CH ON (CH.RESEARCH_STATE_HISTORY_NO = RH.RESEARCH_STATE_HISTORY_NO)
+		WHERE RESEARCH_STATE_NO IN (2, 10)
+        AND R.RESEARCH_NO = #{researchNo}
+	</select>
 </mapper>
 
 
