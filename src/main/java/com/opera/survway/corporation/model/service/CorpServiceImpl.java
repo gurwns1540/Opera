@@ -121,9 +121,13 @@ public class CorpServiceImpl implements CorpService {
 								uploadFiles.get(i).setResearchNo(questionList.get(j).getResearchNo());
 							}
 						}
-						for(int j = 0; j < choiceList.size(); j++) {
-							if(uploadFiles.get(i).getRchoiceNo() == choiceList.get(j).getChoiceOrder()) {
-								uploadFiles.get(i).setRchoiceNo(choiceList.get(j).getChoiceNo());
+						for(int k = 0; k < questionList.size(); k++) {
+							for(int j = 0; j < questionList.get(k).getRequestChoiceList().size(); j++) {
+								if(questionList.get(k).getQuestionFormNo() == 3) {
+									if(uploadFiles.get(i).getRchoiceNo() == questionList.get(k).getRequestChoiceList().get(j).getChoiceOrder()) {
+										uploadFiles.get(i).setRchoiceNo(questionList.get(k).getRequestChoiceList().get(j).getChoiceNo());
+									}
+								}
 							}
 						}
 					}

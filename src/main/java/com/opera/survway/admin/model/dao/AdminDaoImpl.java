@@ -1,6 +1,8 @@
 package com.opera.survway.admin.model.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -8,6 +10,8 @@ import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.ResearchState;
+import com.opera.survway.common.model.vo.UploadFile;
 
 @Repository
 public class AdminDaoImpl implements AdminDao{
@@ -104,6 +108,65 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public AllMember getNewPanelDetail(SqlSessionTemplate sqlSession, int mno) {
 		return sqlSession.selectOne("Admin.selectOneNewPanel", mno);
+	}
+
+	@Override
+	public int getListCountArrovalList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListCountArrovalList");
+	}
+
+	@Override
+	public List<Map<String, String>> researchApprovalWaitList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return sqlSession.selectList("Admin.researchApprovalWaitList", null, rowBounds);
+	}
+
+	@Override
+	public List<Map<String, Object>> researchApprovalDetail(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.researchApprovalDetail", researchNo);
+	}
+
+	@Override
+	public UploadFile questionImage(SqlSessionTemplate sqlSession, int questionNo) {
+		return sqlSession.selectOne("Admin.questionUploadFiles", questionNo);
+	}
+
+	@Override
+	public UploadFile choiceImage(SqlSessionTemplate sqlSession, int choiceNo) {
+		return sqlSession.selectOne("Admin.choiceUploadFiles", choiceNo);
+	}
+
+	@Override
+	public int researchApproved(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.insert("Admin.researchApproved",  researchNo);
+	}
+
+	@Override
+	public int researchRefer(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.researchRefer",  researchState);
+	}
+
+	@Override
+	public int getListCountReferList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListCountReferList");
+	}
+
+	@Override
+	public List<Map<String, String>> researchReferList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return sqlSession.selectList("Admin.researchReferList", null, rowBounds);
+	}
+
+	@Override
+	public List<Map<String, Object>> researchReferDetail(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.researchReferDetail", researchNo);
 	}
 
 }

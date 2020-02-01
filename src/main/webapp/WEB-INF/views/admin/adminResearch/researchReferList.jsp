@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -116,8 +117,8 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='researchApprovalWaitList.admin'">미처리 목록</button>
-						<button onclick="location.href='researchReferList.admin'" id="clickBtn">반려 목록</button>
+						<button onclick="location.href='researchApprovalWaitList.adminResearch'">미처리 목록</button>
+						<button onclick="location.href='researchReferList.adminResearch'" id="clickBtn">반려 목록</button>
 					</div>
 				</td>
 			</tr>
@@ -145,20 +146,16 @@
 			<tr id="tableTitle">
 				<th style="width: 10%;">리서치 번호</th>
 				<th style="width: 20%;">기업명</th>
-				<th style="width: 30%;">리서치 제목</th>
-				<th style="width: 10%;">신청일</th>
-				<th style="width: 10%;">처리일</th>
-				<th style="width: 10%;">결과</th>
+				<th style="width: 40%;">리서치 제목</th>
+				<th style="width: 20%;">처리일</th>
 				<th style="width: 10%;">상세보기</th>
 			</tr>
-			<c:forEach var="i" begin="0" end="9">
+			<c:forEach var="research" items="${ researchReferList }">
 				<tr class="tableContext">
-					<td>리서치 번호</td>
-					<td>기업명</td>
-					<td>리서치 제목</td>
-					<td>신청일</td>
-					<td>처리일</td>
-					<td>결과</td>
+					<td>${ research.researchNo }</td>
+					<td>${ research.companyName }</td>
+					<td>${ research.researchName }</td>
+					<td><fmt:formatDate value="${ research.lastDate }"/></td>
 					<td><button class="detail">상세 보기</button></td>
 				</tr>
 			</c:forEach>
@@ -179,19 +176,19 @@
   			<table class="reason">
 					<tr>
 						<th>프로젝트 명</th>
-						<td>피자 선호도 조사</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>목적</th>
-						<td>우리 브랜드 피자 선호도는 얼마나 되는가 궁금한 점과 앞으로 나아갈 피자의 방향</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>목표 인원</th>
-						<td>200명</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>반려 사유</th>
-						<td>외설된 질문 포함</td>
+						<td></td>
 					</tr>
 				</table>
   		</div>
@@ -202,8 +199,28 @@
 		
 	
 	<script>
-		$(".detail").on("click", function(){
-			$('.ui.modal').modal('show');
+		$(document).on("click", ".detail", function(){
+			researchNoStr = $(this).parent().siblings().eq(0).text();
+			$.ajax({
+				url:"researchReferDetail.adminResearch",
+				type:"post",
+				data:{researchNoStr:researchNoStr},
+				success:function(data){
+					console.log(data);
+					
+					var researchDetail = data.researchDetail[0];
+					$(".reason").find("td").eq(0).text(researchDetail.researchName);
+					$(".reason").find("td").eq(1).text(researchDetail.researchPerpose);
+					$(".reason").find("td").eq(2).text(researchDetail.researchEngagementGoals + "명");
+					$(".reason").find("td").eq(3).text(researchDetail.researchReferReason);
+					
+					$('.ui.modal').modal('show');
+				},
+				error:function(data){
+					console.log(data);
+				}
+			});
+			
 		});
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(1)").addClass("on");

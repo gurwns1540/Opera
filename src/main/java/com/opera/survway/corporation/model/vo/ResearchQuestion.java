@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.opera.survway.common.model.vo.UploadFile;
+
 public class ResearchQuestion {
 	private int questionNo;
 	private int questionFormNo;
@@ -14,12 +16,13 @@ public class ResearchQuestion {
 	private String mediaExplain;
 	private int questionOrder;
 	
+	private UploadFile image;
 	private ArrayList<ResearchChoice> requestChoiceList;
 
 	public ResearchQuestion() {}
 
 	public ResearchQuestion(int questionNo, int questionFormNo, String rquestionContext, int researchNo,
-			String mediaExist, String questionVideoLink, String mediaExplain, int questionOrder,
+			String mediaExist, String questionVideoLink, String mediaExplain, int questionOrder, UploadFile image,
 			ArrayList<ResearchChoice> requestChoiceList) {
 		super();
 		this.questionNo = questionNo;
@@ -30,6 +33,7 @@ public class ResearchQuestion {
 		this.questionVideoLink = questionVideoLink;
 		this.mediaExplain = mediaExplain;
 		this.questionOrder = questionOrder;
+		this.image = image;
 		this.requestChoiceList = requestChoiceList;
 	}
 
@@ -97,6 +101,14 @@ public class ResearchQuestion {
 		this.questionOrder = questionOrder;
 	}
 
+	public UploadFile getImage() {
+		return image;
+	}
+
+	public void setImage(UploadFile image) {
+		this.image = image;
+	}
+
 	public ArrayList<ResearchChoice> getRequestChoiceList() {
 		return requestChoiceList;
 	}
@@ -110,7 +122,8 @@ public class ResearchQuestion {
 		return "ResearchQuestion [questionNo=" + questionNo + ", questionFormNo=" + questionFormNo
 				+ ", rquestionContext=" + rquestionContext + ", researchNo=" + researchNo + ", mediaExist=" + mediaExist
 				+ ", questionVideoLink=" + questionVideoLink + ", mediaExplain=" + mediaExplain + ", questionOrder="
-				+ questionOrder + ", requestChoiceList=" + requestChoiceList + "]\n";
+				+ questionOrder + ", image=" + image + ", requestChoiceList=" + requestChoiceList + "]";
 	}
+
 
 }
