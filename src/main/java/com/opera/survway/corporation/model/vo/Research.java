@@ -11,6 +11,8 @@ public class Research {
 	private int researchPrice;				// 리서치 가격
 	private String isBill;					// 결제 여부
 	private String researchState;			// 리서치 상태
+	private String referReason;				// 반려 사유
+	private int conferencePrice;			// 협상 가격
 	
 	private int targetNo;					// 조사 대상자 번호
 	private String targetGender;			// 조사 대상자 성별
@@ -23,8 +25,8 @@ public class Research {
 
 	public Research(int researchNo, String researchName, int researchEngagementGoals, String researchPeriod, int mno,
 			String researchPerpose, String researchReward, int researchPrice, String isBill, String researchState,
-			int targetNo, String targetGender, String targetAgeRange, String targetLocation, String occupationNo,
-			String additionaltEtc) {
+			String referReason, int conferencePrice, int targetNo, String targetGender, String targetAgeRange,
+			String targetLocation, String occupationNo, String additionaltEtc) {
 		super();
 		this.researchNo = researchNo;
 		this.researchName = researchName;
@@ -36,6 +38,8 @@ public class Research {
 		this.researchPrice = researchPrice;
 		this.isBill = isBill;
 		this.researchState = researchState;
+		this.referReason = referReason;
+		this.conferencePrice = conferencePrice;
 		this.targetNo = targetNo;
 		this.targetGender = targetGender;
 		this.targetAgeRange = targetAgeRange;
@@ -124,6 +128,22 @@ public class Research {
 		this.researchState = researchState;
 	}
 
+	public String getReferReason() {
+		return referReason;
+	}
+
+	public void setReferReason(String referReason) {
+		this.referReason = referReason;
+	}
+
+	public int getConferencePrice() {
+		return conferencePrice;
+	}
+
+	public void setConferencePrice(int conferencePrice) {
+		this.conferencePrice = conferencePrice;
+	}
+
 	public int getTargetNo() {
 		return targetNo;
 	}
@@ -177,9 +197,10 @@ public class Research {
 		return "Research [researchNo=" + researchNo + ", researchName=" + researchName + ", researchEngagementGoals="
 				+ researchEngagementGoals + ", researchPeriod=" + researchPeriod + ", mno=" + mno + ", researchPerpose="
 				+ researchPerpose + ", researchReward=" + researchReward + ", researchPrice=" + researchPrice
-				+ ", isBill=" + isBill + ", researchState=" + researchState + ", targetNo=" + targetNo
-				+ ", targetGender=" + targetGender + ", targetAgeRange=" + targetAgeRange + ", targetLocation="
-				+ targetLocation + ", occupationNo=" + occupationNo + ", additionaltEtc=" + additionaltEtc + "]";
+				+ ", isBill=" + isBill + ", researchState=" + researchState + ", referReason=" + referReason
+				+ ", conferencePrice=" + conferencePrice + ", targetNo=" + targetNo + ", targetGender=" + targetGender
+				+ ", targetAgeRange=" + targetAgeRange + ", targetLocation=" + targetLocation + ", occupationNo="
+				+ occupationNo + ", additionaltEtc=" + additionaltEtc + "]";
 	}
 
 }

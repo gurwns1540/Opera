@@ -5,6 +5,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.CorpMember;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
@@ -43,4 +44,9 @@ public interface CorpDao {
 	Research previousResearchDetail(SqlSessionTemplate sqlSession, int researchNo);
 
 	int getQuestionCount(SqlSessionTemplate sqlSession, int researchNo);
+
+	int insertConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchstate);
+
+	int insertConferenceState(SqlSessionTemplate sqlSession, ResearchState researchstate);
+
 }

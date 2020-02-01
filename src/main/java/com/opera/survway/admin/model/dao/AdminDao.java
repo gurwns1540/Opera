@@ -45,7 +45,7 @@ public interface AdminDao {
 
 	UploadFile choiceImage(SqlSessionTemplate sqlSession, int choiceNo);
 
-	int researchApproved(SqlSessionTemplate sqlSession, int researchNo);
+	int researchApproved(SqlSessionTemplate sqlSession, ResearchState researchState);
 
 	int researchRefer(SqlSessionTemplate sqlSession, ResearchState researchState);
 
@@ -54,5 +54,9 @@ public interface AdminDao {
 	List<Map<String, String>> researchReferList(SqlSessionTemplate sqlSession, PageInfo pi);
 
 	List<Map<String, Object>> researchReferDetail(SqlSessionTemplate sqlSession, int researchNo);
+
+	int insertConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState);
+
+	int updateResearchPrice(SqlSessionTemplate sqlSession, ResearchState researchState);
 
 }

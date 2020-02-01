@@ -42,7 +42,7 @@ public interface AdminService {
 
 	List<Map<String, Object>> researchApprovalDetail(int researchNo);
 
-	boolean researchApproved(int researchNo);
+	boolean researchApproved(ResearchState researchState);
 
 	boolean researchRefer(ResearchState researchState);
 

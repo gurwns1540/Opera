@@ -280,11 +280,14 @@ public class AdminServiceImpl implements AdminService{
 	 * @Description : 리서치 신청 승인
 	 */
 	@Override
-	public boolean researchApproved(int researchNo) {
+	public boolean researchApproved(ResearchState researchState) {
 		boolean isApproved = false;
-		int result = ad.researchApproved(sqlSession, researchNo);
+		int result1 = ad.researchApproved(sqlSession, researchState);
 		
-		if(result > 0) {
+		int result2 = ad.insertConferenceHistory(sqlSession, researchState);
+		
+		int result3 = ad.updateResearchPrice(sqlSession, researchState);
+		if(result1 > 0 && result2 > 0 && result3 > 0) {
 			isApproved = true;
 		}
 		return isApproved;

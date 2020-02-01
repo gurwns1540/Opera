@@ -32,27 +32,27 @@
 	}
 	#listMainArea {
 		width: 100%;
-		height: 800px;
+		height: auto;
 	}
 	.menu.transition.visible {
 		height: 150px;
 	}
-	#corpTable {
+	#corpTable, #priceConferenceTable, #referTable {
   		width: 70%;
   		margin: 0 auto;
   		border-spacing: 0;
 		border-collapse: collapse;
   	}
-  	#corpTable th {
+  	#corpTable th, #priceConferenceTable th, #referTable th {
   		width: 20%;
   		height: 70px;
   		border-bottom: 1px solid #C5C5C5;
   	}
-  	#corpTable td {
+  	#corpTable td, #priceConferenceTable td, #referTable td {
   		width: 80%;
   		border-bottom: 1px solid #C5C5C5;
   	}
-		#payTable {
+	#payTable {
 		width: 70%;
   		margin: 0 auto;
   		border-spacing: 0;
@@ -106,6 +106,9 @@
 	input[type=button]:focus {
 		outline: none;
 	}
+	.swal2-input[type=number] {
+   		max-width: 16em !important;
+	}	
 </style>
 </head>
 <body>
@@ -176,193 +179,220 @@
 					<td>${ research.researchPeriod }</td>
 				</tr>
 			</table>
-			<table id="payTable">
-					<tr>
-						<td rowspan="5" style="width: 50%; /* 드래그 방지용 소스*/ -ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none; /* 드래그 방지용 소스*/">
-							<div id="paymentStatus" style="padding-top: 20px; padding-bottom: 20px;">
-								<div class="payStatus" id="completePayment">승인 대기중</div>
-								<div class="arrow" id="completeArrow"><i class="large primary chevron down icon"></i></div>
-								<div class="payStatus" id="completePayment">결제 대기중</div>
-								<div class="arrow" id="completeArrow"><i class="large primary chevron down icon"></i></div>
-								<div class="payStatus" id="completePayment">결제 완료</div>
-							</div>
-						</td>
-						<th>문항 수</th>
-						<td>${ questionCount }개</td>
-					</tr>
-					<tr>
-						<th>설문 예상소요시간</th>
-						<td>
-							<c:choose>
-								<c:when test="${ questionCount <= 10 }">
-									5분(10문항 이내)
-								</c:when>
-								<c:when test="${ questionCount > 10 and questionCount <= 30 }">
-									10분(11~30문항 이내)
-								</c:when>
-								<c:when test="${ questionCount > 30 and questionCount <= 50 }">
-									15분(31~50문항 이내)
-								</c:when>
-								<c:when test="${ questionCount > 50 and questionCount <= 70 }">
-									20분(51~70문항 이내)
-								</c:when>
-								<c:otherwise>
-									20분 이상(70문항 이상)
-								</c:otherwise>
-							</c:choose>
-						</td>
-					</tr>
-					<tr>
-						<th>목표 인원</th>
-						<td>${ research.researchEngagementGoals }명</td>
-					</tr>
-					<tr>
-						<th>
-							<c:if test="${ research.researchPrice == 0 }">
-								예상 금액
-							</c:if>
-							<c:if test="${ research.researchPrice != 0 }">
-								<c:if test="${ researchState == '가격 협의중' }">
-									마지막 협의 가격
-								</c:if>
-								<c:if test="${ researchState != '가격 협의중' }">
-									결제 금액
-								</c:if>
-							</c:if>
-						</th>
-						<td>
-							<c:if test="${ research.researchState == '승인 대기' }">
+			<c:if test="${ research.researchState != '반려' }">
+				<table id="payTable">
+						<tr>
+							<td rowspan="5" style="width: 50%; /* 드래그 방지용 소스*/ -ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none; /* 드래그 방지용 소스*/">
+								<div id="paymentStatus" style="padding-top: 20px; padding-bottom: 20px;">
+									<div class="payStatus" id="completePayment">승인 대기중</div>
+									<div class="arrow" id="completeArrow"><i class="large primary chevron down icon"></i></div>
+									<div class="payStatus" id="completePayment">결제 대기중</div>
+									<div class="arrow" id="completeArrow"><i class="large primary chevron down icon"></i></div>
+									<div class="payStatus" id="completePayment">결제 완료</div>
+								</div>
+							</td>
+							<th>문항 수</th>
+							<td>${ questionCount }개</td>
+						</tr>
+						<tr>
+							<th>설문 예상소요시간</th>
+							<td>
 								<c:choose>
 									<c:when test="${ questionCount <= 10 }">
-										<c:choose>
-											<c:when test="${ research.researchEngagementGoals == 100}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 4500 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 200}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 3800 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 300}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 3400 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 400}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 3000 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 500}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 2800 }"/>
-											</c:when> 
-										</c:choose>
+										5분(10문항 이내)
 									</c:when>
 									<c:when test="${ questionCount > 10 and questionCount <= 30 }">
-										<c:choose>
-											<c:when test="${ research.researchEngagementGoals == 100}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 5100 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 200}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 4500 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 300}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 3800 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 400}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 3400 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 500}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 2800 }"/>
-											</c:when> 
-										</c:choose>
+										10분(11~30문항 이내)
 									</c:when>
 									<c:when test="${ questionCount > 30 and questionCount <= 50 }">
-										<c:choose>
-											<c:when test="${ research.researchEngagementGoals == 100}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 6700 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 200}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 5500 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 300}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 4700 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 400}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 4200 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 500}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 3700 }"/>
-											</c:when> 
-										</c:choose>
+										15분(31~50문항 이내)
 									</c:when>
 									<c:when test="${ questionCount > 50 and questionCount <= 70 }">
-										<c:choose>
-											<c:when test="${ research.researchEngagementGoals == 100}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 8400 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 200}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 7000 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 300}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 6300 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 400}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 5800 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 500}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 4500 }"/>
-											</c:when> 
-										</c:choose>
+										20분(51~70문항 이내)
 									</c:when>
 									<c:otherwise>
-										<c:choose>
-											<c:when test="${ research.researchEngagementGoals == 100}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 9400 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 200}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 8000 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 300}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 7300 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 400}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 6500 }"/>
-											</c:when> 
-											<c:when test="${ research.researchEngagementGoals == 500}">
-												<fmt:formatNumber value="${ research.researchEngagementGoals * 5700 }"/>
-											</c:when> 
-										</c:choose>
+										20분 이상(70문항 이상)
 									</c:otherwise>
 								</c:choose>
-								 원 + ∂ (추후 협의)
-							</c:if>
-							<c:if test="${ research.researchState != '승인 대기' }">
-								<c:if test="${ research.researchState == '가격 협의중' }">
-									${ research.researchPrice } 원 (협의 중)
+							</td>
+						</tr>
+						<tr>
+							<th>목표 인원</th>
+							<td>${ research.researchEngagementGoals }명</td>
+						</tr>
+						<tr>
+							<th>
+								<c:if test="${ research.researchPrice == 0 }">
+									예상 금액
 								</c:if>
-								<c:if test="${ research.researchState != '가격 협의중' }">
-									${ research.researchPrice } 원
+								<c:if test="${ research.researchPrice != 0 }">
+									<c:if test="${ researchState == '가격 협의중' }">
+										마지막 협의 가격
+									</c:if>
+									<c:if test="${ researchState != '가격 협의중' }">
+										결제 금액
+									</c:if>
 								</c:if>
-							</c:if>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<div style="width: 50%; margin: 0 auto;"><input type="button" id="payment" value="결  제" align="center" disabled style="border: 0; width: 100%; height: 50px;"></div>
-						</td>
-					</tr>
-				</table>
-				
+							</th>
+							<td>
+								<c:if test="${ research.researchState == '승인 대기' }">
+									<c:choose>
+										<c:when test="${ questionCount <= 10 }">
+											<c:choose>
+												<c:when test="${ research.researchEngagementGoals == 100}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 4500 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 200}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 3800 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 300}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 3400 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 400}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 3000 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 500}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 2800 }"/>
+												</c:when> 
+											</c:choose>
+										</c:when>
+										<c:when test="${ questionCount > 10 and questionCount <= 30 }">
+											<c:choose>
+												<c:when test="${ research.researchEngagementGoals == 100}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 5100 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 200}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 4500 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 300}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 3800 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 400}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 3400 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 500}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 2800 }"/>
+												</c:when> 
+											</c:choose>
+										</c:when>
+										<c:when test="${ questionCount > 30 and questionCount <= 50 }">
+											<c:choose>
+												<c:when test="${ research.researchEngagementGoals == 100}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 6700 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 200}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 5500 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 300}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 4700 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 400}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 4200 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 500}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 3700 }"/>
+												</c:when> 
+											</c:choose>
+										</c:when>
+										<c:when test="${ questionCount > 50 and questionCount <= 70 }">
+											<c:choose>
+												<c:when test="${ research.researchEngagementGoals == 100}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 8400 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 200}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 7000 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 300}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 6300 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 400}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 5800 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 500}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 4500 }"/>
+												</c:when> 
+											</c:choose>
+										</c:when>
+										<c:otherwise>
+											<c:choose>
+												<c:when test="${ research.researchEngagementGoals == 100}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 9400 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 200}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 8000 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 300}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 7300 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 400}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 6500 }"/>
+												</c:when> 
+												<c:when test="${ research.researchEngagementGoals == 500}">
+													<fmt:formatNumber value="${ research.researchEngagementGoals * 5700 }"/>
+												</c:when> 
+											</c:choose>
+										</c:otherwise>
+									</c:choose>
+									 원 + ∂ (추후 협의)
+								</c:if>
+								<c:if test="${ research.researchState != '승인 대기' }">
+									<c:if test="${ research.researchState == '가격 협의중' }">
+										<fmt:formatNumber value="${ research.researchPrice }"/> 원 (협의 중)
+									</c:if>
+									<c:if test="${ research.researchState != '가격 협의중' }">
+										<fmt:formatNumber value="${ research.researchPrice }"/> 원
+									</c:if>
+								</c:if>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div style="width: 45%; margin: 0 auto;">
+									<input type="button" id="payment" value="결  제" disabled style="border: 0; width: 100%; height: 50px;">
+								</div>
+							</td>
+						</tr>
+					</table>
+				</c:if>
+				<c:if test="${ research.researchState == '반려' }">
+					<table id="referTable">
+						<tr>
+							<th><div class="thDiv">반려 사유</div></th>
+							<td>${ research.referReason }</td>
+						</tr>
+					</table>
+				</c:if>
 				<c:if test="${ research.researchState == '리서치 완료' }">
 					데이터들 들어갈거임
 				</c:if>
 				<c:if test="${ research.researchState == '질문 재구성 협의중' }">
 					질문 재구성 협의 시 질문들 나올거임
 				</c:if>
-				<c:if test="${ research.researchState == '가격 협의중' }">
-					가격 협의 시 데이터 들어갈거임
+				<c:if test="${ research.researchState == '가격 협의중' || research.researchState == '납부 대기' }">
+					<table id="priceConferenceTable">
+						<tr>
+							<th><div class="thDiv">이전 협상 가격</div></th>
+							<td><fmt:formatNumber value="${ research.conferencePrice }"/> 원</td>
+						</tr>
+						<tr>
+							<th><div class="thDiv">현재 가격</div></th>
+							<td><fmt:formatNumber value="${ research.researchPrice }"/> 원</td>
+						</tr>
+						<tr>
+							<th colspan="2">
+								<div style="width: 40%; margin: 0px auto;">
+									<input type="hidden" id="priceConference" value="가격  협의" disabled style="border: 0; width: 100%; height: 50px;">
+								</div>
+							</th>
+						</tr>
+					</table>
 				</c:if>
 				<div style="width: fit-content; margin: 30px auto;">
 					<input type="button" onclick="location.href='previousResearchMain.corpResearch'" value="목록으로" style="color: white; background: #00679A; border: 0; width: 270px; height: 50px;">
 				</div>
 			</div>
 	</div>
-	<div style="margin-top: 300px;">
+	<div style="margin-top: 100px;">
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 	<script>
@@ -379,12 +409,18 @@
 				$(".payStatus").eq(1).addClass("disabledStatus");
 				$(".payStatus").eq(2).addClass("disabledStatus");
 				$(".arrow i").eq(1).addClass("disabledArrow");
+				$("#priceConference").prop("type", "button");
+				$("#priceConference").val("가격 협의중");
+				$("#payment").prop("type", "hidden");
+				$("#priceConference").css({"background":"#EFEFEF", "color":"#808080", "margin":"auto;"});
 				$("#payment").css({"background":"#EFEFEF", "color":"#808080"});
 			}else if(researchState == '납부 대기') {
 				$(".payStatus").eq(2).addClass("disabledStatus");
 				$(".arrow i").eq(1).addClass("disabledArrow");
 				$("#payment").css({"background":"#00679A", "color":"white"});
+				$("#priceConference").prop("type", "button");
 				$("#payment").prop("disabled", false);
+				$("#priceConference").prop("disabled", false);
 			}else {
 				$("#payment").css({"background":"#EFEFEF", "color":"#808080"});
 				$("#payment").val("결제  완료");
@@ -394,8 +430,64 @@
 		$(document).on("click", "#payment", function(){
 			console.log("하하");
 			// 결제 api쓸 예정
-		})
-		
+		});
+		researchNo = ${research.researchNo}
+		$(document).on("click", "#priceConference", function(){
+			
+			const start = async function() {
+				const { value: text } = await Swal.fire({
+					  input: 'number',
+					  inputPlaceholder: '협상하실 가격을 적어주세요',
+					  inputAttributes: {
+					    'aria-label': 'Type your message here'
+					  },
+					  showCancelButton: true,
+					  inputValidator: (value) => {
+					    if (!value) {
+					      return '협상가격을 적어주세요!'
+					    }
+					  }
+				});
+	
+				if (text) {
+					Swal.fire({
+					  title: '가격 협상을 진행하시겠습니까?',
+					  text: "협상을 통해 가격을 조정하실 수 있습니다.",
+					  icon: 'question',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'Yes'
+					}).then((result) => {
+					  	if (result.value) {
+					  		
+						  	$.ajax({
+								url:"priceConference.corpResearch",
+								type:"post",
+								data:{
+									researchNoStr:researchNo,
+									priceStr : text
+								},
+								success:function(data){
+									Swal.fire(
+							      		'가격협상!',
+							      		'입력하신 가격으로 협상을 진행하였습니다.',
+							      		'success'
+						    		)
+								  	setTimeout(function(){
+									  location.reload();
+									},1500)
+								},
+								error:function(status){
+									console.log(status);
+								}
+							});
+					  }
+					})
+				}
+			}
+			start();
+		});
 	</script>
 
 </body>

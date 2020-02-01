@@ -141,8 +141,8 @@ public class AdminDaoImpl implements AdminDao{
 	}
 
 	@Override
-	public int researchApproved(SqlSessionTemplate sqlSession, int researchNo) {
-		return sqlSession.insert("Admin.researchApproved",  researchNo);
+	public int researchApproved(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.researchApproved",  researchState);
 	}
 
 	@Override
@@ -167,6 +167,16 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<Map<String, Object>> researchReferDetail(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.selectList("Admin.researchReferDetail", researchNo);
+	}
+
+	@Override
+	public int insertConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.insertConferenceHistory", researchState);
+	}
+
+	@Override
+	public int updateResearchPrice(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.update("Admin.updateResearchPrice", researchState);
 	}
 
 }

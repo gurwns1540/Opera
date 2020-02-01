@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.CorpMember;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
@@ -106,5 +107,15 @@ public class CorpDaoImpl implements CorpDao {
 	@Override
 	public int getQuestionCount(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.selectOne("Corp.getQuestionCount", researchNo);
+	}
+
+	@Override
+	public int insertConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchstate) {
+		return sqlSession.insert("Corp.insertConferenceHistory", researchstate);
+	}
+
+	@Override
+	public int insertConferenceState(SqlSessionTemplate sqlSession, ResearchState researchstate) {
+		return sqlSession.insert("Corp.insertConferenceState", researchstate);
 	}
 }

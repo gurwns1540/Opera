@@ -87,10 +87,109 @@ public class AdminResearchController {
 	 * @Description : 리서치 승인
 	 */
 	@PostMapping("researchApproved.adminResearch")
-	public ModelAndView researchApproved(ModelAndView mv, String researchNoStr) {
+	public ModelAndView researchApproved(ModelAndView mv, String researchNoStr, String engagementGoalsStr, String qCountStr) {
 		int researchNo = Integer.parseInt(researchNoStr);
+		int engagementGoals = Integer.parseInt(engagementGoalsStr);
+		int qCount = Integer.parseInt(qCountStr);
 		
-		boolean isApproved = as.researchApproved(researchNo);
+		int price = 0;
+		
+		if(qCount <= 10) {
+			switch(engagementGoals) {
+				case 100:
+					price = engagementGoals * 4500;
+					break;
+				case 200:
+					price = engagementGoals * 3800;
+					break;
+				case 300:
+					price = engagementGoals * 3400;
+					break;
+				case 400:
+					price = engagementGoals * 3000;
+					break;
+				case 500:
+					price = engagementGoals * 2800;
+					break;
+			}
+		}else if(qCount > 10 && qCount <= 30) {
+			switch(engagementGoals) {
+			case 100:
+				price = engagementGoals * 5100;
+				break;
+			case 200:
+				price = engagementGoals * 4500;
+				break;
+			case 300:
+				price = engagementGoals * 3800;
+				break;
+			case 400:
+				price = engagementGoals * 3400;
+				break;
+			case 500:
+				price = engagementGoals * 2800;
+				break;
+			}
+		}else if(qCount > 30 && qCount <= 50) {
+			switch(engagementGoals) {
+			case 100:
+				price = engagementGoals * 6700;
+				break;
+			case 200:
+				price = engagementGoals * 5500;
+				break;
+			case 300:
+				price = engagementGoals * 4700;
+				break;
+			case 400:
+				price = engagementGoals * 4200;
+				break;
+			case 500:
+				price = engagementGoals * 3700;
+				break;
+			}
+		}else if(qCount > 50 && qCount <= 70) {
+			switch(engagementGoals) {
+			case 100:
+				price = engagementGoals * 8400;
+				break;
+			case 200:
+				price = engagementGoals * 7000;
+				break;
+			case 300:
+				price = engagementGoals * 6300;
+				break;
+			case 400:
+				price = engagementGoals * 5800;
+				break;
+			case 500:
+				price = engagementGoals * 4500;
+				break;
+			}
+		}else if(qCount > 70) {
+			switch(engagementGoals) {
+			case 100:
+				price = engagementGoals * 9400;
+				break;
+			case 200:
+				price = engagementGoals * 8000;
+				break;
+			case 300:
+				price = engagementGoals * 7300;
+				break;
+			case 400:
+				price = engagementGoals * 6500;
+				break;
+			case 500:
+				price = engagementGoals * 5700;
+				break;
+			}
+		}
+		
+		ResearchState researchState = new ResearchState();
+		researchState.setResearchNo(researchNo);
+		researchState.setPrice(price);
+		boolean isApproved = as.researchApproved(researchState);
 		
 		mv.addObject("isApproved", isApproved);
 		mv.setViewName("jsonView");
@@ -139,7 +238,7 @@ public class AdminResearchController {
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			
 			List<Map<String, String>> researchReferList = as.researchReferList(pi);
-			System.out.println(researchReferList);
+			
 			model.addAttribute("researchReferList", researchReferList);
 			model.addAttribute("pi", pi);
 			return "researchReferList";
@@ -149,6 +248,12 @@ public class AdminResearchController {
 		}
 	}
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 반려 상세 조회
+	 */
 	@PostMapping("researchReferDetail.adminResearch")
 	public ModelAndView researchReferDetail(ModelAndView mv, String researchNoStr) {
 		int researchNo = Integer.parseInt(researchNoStr);
@@ -160,4 +265,5 @@ public class AdminResearchController {
 		
 		return mv;
 	}
+	
 }

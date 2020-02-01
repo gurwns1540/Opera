@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.corporation.model.vo.CorpMember;
@@ -26,6 +27,7 @@ import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.common.model.vo.OperaFileNamePolicy;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.corporation.model.service.CorpService;
@@ -247,12 +249,18 @@ public class CorpResearchController {
 			return "redirect:errorPage.me";
 		}
 	}
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 이력 상세
+	 */
 	@RequestMapping("previousResearchDetail.corpResearch")
 	public String previousResearchDetail(Model model, String researchNo) {
 
 		try {
 			Research research = cs.previousResearchDetail(Integer.parseInt(researchNo));
-			System.out.println(research);
+			
 			
 			String[] beforPeriod = research.getResearchPeriod().split("~");
 			research.setResearchPeriod(beforPeriod[0].substring(0, 4) + "-" + beforPeriod[0].substring(4, 6) + "-" + beforPeriod[0].substring(6, 8) + " ~ " + beforPeriod[1].substring(0, 4) + "-" + beforPeriod[1].substring(4, 6) + "-" + beforPeriod[1].substring(6, 8));
@@ -270,5 +278,27 @@ public class CorpResearchController {
 			model.addAttribute("msg", e.getMessage());
 			return "redirect:errorPage.me";
 		}
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 가격 협의
+	 */
+	@PostMapping("priceConference.corpResearch")
+	public ModelAndView priceConference(ModelAndView mv, String researchNoStr, String priceStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		int price = Integer.parseInt(priceStr);
+		
+		ResearchState researchstate = new ResearchState();
+		researchstate.setResearchNo(researchNo);
+		researchstate.setPrice(price);
+		
+		boolean isConference = cs.priceConference(researchstate);
+		
+		mv.addObject("isConference", isConference);
+		mv.setViewName("jsonView");
+		return mv;
 	}
 }

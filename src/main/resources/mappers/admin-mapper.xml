@@ -300,12 +300,15 @@
 		WHERE RC.RCHOICE_NO = #{choiceNo}
 	</select>
 	
-	<insert id="researchApproved" parameterType="_int">
+	<insert id="researchApproved" parameterType="ResearchState">
 		INSERT INTO RSTATUSHISTORY VALUES
 		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 2, SYSDATE, NULL)
+		<selectKey keyProperty="researchHistoryNo" resultType="_int" order="AFTER">
+			SELECT SEQ_RSTATUSHISTORY.CURRVAL FROM DUAL
+		</selectKey>
 	</insert>
 	
-	<insert id="researchRefer" parameterType="com.opera.survway.common.model.vo.ResearchState">
+	<insert id="researchRefer" parameterType="ResearchState">
 		INSERT INTO RSTATUSHISTORY VALUES
 		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 8, SYSDATE, #{referReason})
 	</insert>
@@ -351,6 +354,17 @@
 		WHERE RESEARCH_STATE_NO = 8
         AND R.RESEARCH_NO = #{researchNo}
 	</select>
+	
+	<insert id="insertConferenceHistory" parameterType="ResearchState">
+		INSERT INTO CONFERENCEHISTORY VALUES
+		(SEQ_CONFERENCEHISTORY.NEXTVAL, NULL, #{researchHistoryNo}, #{price})
+	</insert>
+	
+	<update id="updateResearchPrice" parameterType="ResearchState">
+		UPDATE RESEARCH SET
+		RESEARCH_PRICE = #{price}
+		WHERE RESEARCH_NO = #{researchNo}
+	</update>
 </mapper>
 
 
