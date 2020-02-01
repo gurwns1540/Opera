@@ -137,7 +137,7 @@ public class CustomerCenterController {
              inquiryCategoryNo = Integer.parseInt(queryMap.get("inquiryCategoryNo").get(0));
              iq.setInquiryCategoryNo(inquiryCategoryNo);
           }
-          System.out.println(iq);
+         
        }
 
        int listCount = 0;
@@ -150,13 +150,13 @@ public class CustomerCenterController {
 
        try {
           listCount = ps.getListCountInquiry(iq);
-          System.out.println(listCount);
+          
           PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 
           iq.setPi(pi);
 
           List<Inquiry> list = ps.selectAllMyInquiry(iq);
-          System.out.println("controllerList"+list);
+         
           model.addAttribute("list", list);
           model.addAttribute("pi",pi);
        } catch (InquiryException e) {

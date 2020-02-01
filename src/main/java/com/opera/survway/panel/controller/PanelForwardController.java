@@ -110,10 +110,10 @@ public class PanelForwardController {
 //		return "myPage/myRewardDetail_used";
 //	}
 	//3-3. 리워드 캐시아웃
-	@GetMapping("myRewardCashOut.panel")
-	public String showMyRewardCashOut() {
-		return "myPage/myRewardCashOut";
-	}
+//	@GetMapping("myRewardCashOut.panel")
+//	public String showMyRewardCashOut() {
+//		return "myPage/myRewardCashOut";
+//	}
 	//4. 패널 탈퇴
 	@GetMapping("panelDrop.panel")
 	public String showPanelDrop() {

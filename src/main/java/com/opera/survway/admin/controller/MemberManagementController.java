@@ -19,7 +19,6 @@ import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.exception.SelectException;
-import com.opera.survway.panel.model.vo.PanelMember;
 
 @Controller
 public class MemberManagementController {
@@ -135,21 +134,18 @@ public class MemberManagementController {
 				searchInput = queryMap.get("searchInput").get(0);
 				searchMember.setSearchInput(searchInput);
 			}
-			System.out.println("MemberManagementControler - searchMember : " + searchMember);
 		}
 		
 		int listCount = 0;
 		
 		try {
 			listCount = as.getListCountNewPanel(searchMember);
-			System.out.println(listCount);
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			
 			searchMember.setPi(pi);
 			
 			List<AllMember> newPanelList = as.getListNewPanel(searchMember); 
 			
-			System.out.println("newPanelList : " + newPanelList);
 			model.addAttribute("newPanelList", newPanelList);
 			model.addAttribute("pi", pi);
 			
@@ -168,7 +164,6 @@ public class MemberManagementController {
 	 */
 	@PostMapping("selectNewPanel.memberManagement")
 	public ModelAndView selectNewPanel(String mno, ModelAndView mv) {
-		System.out.println("selectNewPanel mno : " + mno);
 		AllMember newPanel = null;
 		try {
 			newPanel = as.selectNewPanelDetail(Integer.parseInt(mno));

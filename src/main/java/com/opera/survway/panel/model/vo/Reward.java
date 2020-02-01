@@ -18,12 +18,13 @@ public class Reward {
 	private PageInfo pi;
 	private String researchName;
 	private String surveyTitle;
+	private int cashoutNo;			//리워드 량
 	
 	public Reward() {}
-
+	
 	public Reward(int rewardHistoryNo, int afterChangePoint, String changeReason, String changeAmount, int mno,
 			Date rewardChangeDate, int researchHistoryNo, int cashoutHistoryNo, int sHistoryNo, int surveyNo,
-			PageInfo pi, String researchName, String surveyTitle) {
+			PageInfo pi, String researchName, String surveyTitle, int cashoutNo) {
 		super();
 		this.rewardHistoryNo = rewardHistoryNo;
 		this.afterChangePoint = afterChangePoint;
@@ -38,6 +39,7 @@ public class Reward {
 		this.pi = pi;
 		this.researchName = researchName;
 		this.surveyTitle = surveyTitle;
+		this.cashoutNo = cashoutNo;
 	}
 
 	public int getRewardHistoryNo() {
@@ -144,14 +146,25 @@ public class Reward {
 		this.surveyTitle = surveyTitle;
 	}
 
+	public int getCashoutNo() {
+		return cashoutNo;
+	}
+
+	public void setCashoutNo(int cashoutNo) {
+		this.cashoutNo = cashoutNo;
+	}
+
 	@Override
 	public String toString() {
 		return "Reward [rewardHistoryNo=" + rewardHistoryNo + ", afterChangePoint=" + afterChangePoint
 				+ ", changeReason=" + changeReason + ", changeAmount=" + changeAmount + ", mno=" + mno
 				+ ", rewardChangeDate=" + rewardChangeDate + ", researchHistoryNo=" + researchHistoryNo
 				+ ", cashoutHistoryNo=" + cashoutHistoryNo + ", sHistoryNo=" + sHistoryNo + ", surveyNo=" + surveyNo
-				+ ", pi=" + pi + ", researchName=" + researchName + ", surveyTitle=" + surveyTitle + "]";
+				+ ", pi=" + pi + ", researchName=" + researchName + ", surveyTitle=" + surveyTitle + ", cashoutNo="
+				+ cashoutNo + "]";
 	}
+	
+	
 
 	
 	

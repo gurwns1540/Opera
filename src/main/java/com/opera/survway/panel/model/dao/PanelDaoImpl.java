@@ -13,6 +13,8 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
+import com.opera.survway.panel.model.vo.ResearchChoice;
+import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 
@@ -60,7 +62,7 @@ public class PanelDaoImpl implements PanelDao{
 	@Override
 	public int insertInquiry(SqlSessionTemplate sqlSession, Inquiry i) {
 		
-		return sqlSession.insert("Inquiry.insertInquiry", i);
+		return sqlSession.insert("Panel.insertInquiry", i);
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class PanelDaoImpl implements PanelDao{
 		
 		RowBounds rowBounds = new RowBounds(offset, i.getPi().getLimit());
 		
-		list = sqlSession.selectList("Inquiry.selectAllMyInquiry", i,rowBounds);
+		list = sqlSession.selectList("Panel.selectAllMyInquiry", i,rowBounds);
 		
 		return list;
 	}
@@ -80,7 +82,7 @@ public class PanelDaoImpl implements PanelDao{
 	public int getListCountInquiry(SqlSessionTemplate sqlSession, Inquiry iq) {
 		int listCount =0;
 		
-		listCount = sqlSession.selectOne("Inquiry.getListCountInquiry",iq);
+		listCount = sqlSession.selectOne("Panel.getListCountInquiry",iq);
 		return listCount;
 	}
 
@@ -94,23 +96,11 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.insert("Panel.insertTermsPanel", pm);
 	}
 	
-	/**
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 1. 22.
-	 * @ModifyDate  : 2020. 1. 22.
-	 * @Description : 회원정보수정(비밀번호X)
-	 */
 	@Override
 	public int updateMemberInfo(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.update("Panel.updateMemberInfo", pm);
 	}
 
-	/**
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 1. 24.
-	 * @ModifyDate  : 2020. 1. 24.
-	 * @Description : 회원비밀번호수정
-	 */
 	@Override
 	public int updatePassword(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.update("Panel.updatePassword", pm);
@@ -126,23 +116,11 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.insert("Panel.insertTernaryPanel", pm);
 	}
 
-	/**
-	 * @Author	:hansol
-	 * @CreateDate	:2020. 1. 27.
-	 * @ModifyDate	:2020. 1. 27.
-	 * @Description	:리워드 적립내역 listcount 조회
-	 */
 	@Override
 	public int getListCountRewardSaved(SqlSessionTemplate sqlSession, Reward rd) {
 		return sqlSession.selectOne("Panel.getListCountRewardSaved",rd);
 	}
 
-	/**
-	 * @Author	:hansol
-	 * @CreateDate	:2020. 1. 27.
-	 * @ModifyDate	:2020. 1. 27.
-	 * @Description	:리워드 적립내역 조회
-	 */
 	@Override
 	public List<Reward> showMyRewardDetailSaved(SqlSessionTemplate sqlSession, Reward rd) {
 		
@@ -158,12 +136,6 @@ public class PanelDaoImpl implements PanelDao{
 		
 	}
 
-	/**
-	 * @Author	:hansol
-	 * @CreateDate	:2020. 1. 28.
-	 * @ModifyDate	:2020. 1. 28.
-	 * @Description	:리워드 사용 내역 조회
-	 */
 	@Override
 	public List<Reward> showMyRewardDetailUsed(SqlSessionTemplate sqlSession, Reward r) {
 		List<Reward> list = null;
@@ -177,24 +149,12 @@ public class PanelDaoImpl implements PanelDao{
 		return list;
 	}
 
-	/**
-	 * @Author	:hansol
-	 * @CreateDate	:2020. 1. 28.
-	 * @ModifyDate	:2020. 1. 28.
-	 * @Description	:리워드 사용내역 listCount
-	 */
 	@Override
 	public int getListCountRewardUsed(SqlSessionTemplate sqlSession, Reward r) {
 		
 		return sqlSession.selectOne("Panel.getListCountRewardUsed",r);
 	}
 
-	/*
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 1. 26.
-	 * @ModifyDate  : 2020. 1. 26.
-	 * @Description : 회원탈퇴
-	 */
 	@Override
 	public int updateLeaveMember(SqlSessionTemplate sqlSession, PanelMember pm) {
 		return sqlSession.update("Panel.updateLeaveMember", pm);
@@ -213,31 +173,16 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.selectList("Panel.selectNoticeList", searchNotice, rowBounds);
   }
   
-  /**
-	 * @throws SelectException 
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 1. 28.
-	 * @ModifyDate  : 2020. 1. 28.
-	 * @Description : 메인페이지에서 공지사항 조회
-	 */
 	@Override
 	public List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException {
 		RowBounds rowBounds = new RowBounds(0, 5);
 		List<Notice> noticeList = sqlSession.selectList("Panel.selectMainNoticeList", null, rowBounds);
 		if(noticeList == null) {
-			sqlSession.close();
 			throw new SelectException("메인페이지 공지사항 불러오기 실패");
 		}
 		return noticeList;
 	}
 
-	/**
-	 * @throws SelectException 
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 1. 28.
-	 * @ModifyDate  : 2020. 1. 28.
-	 * @Description : 메인페이지에서 리서치 조회
-	 */
 	@Override
 	public List<Research> selectMainResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser) throws SelectException {
 		List<Research> researchList = null;
@@ -245,10 +190,65 @@ public class PanelDaoImpl implements PanelDao{
 		researchList = sqlSession.selectList("Panel.selectMainResearchList", null, rowBounds);
 		
 		if(researchList == null) {
-			sqlSession.close();
 			throw new SelectException("메인페이지에서 리서치 불러오기 실패");
 		}
 		return researchList;
 	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 1. 30.
+	 * @ModifyDate	:2020. 1. 30.
+	 * @Description	:패널 보유 리워드 조회
+	 */
+	@Override
+	public Reward getPanelReward(SqlSessionTemplate sqlSession, int mno) {
+		
+		return sqlSession.selectOne("Panel.getPanelReward",mno);
+	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 1. 30.
+	 * @ModifyDate	:2020. 1. 30.
+	 * @Description	:insert cashoutHistory
+	 */
+	@Override
+	public int insertCashOutHistory(SqlSessionTemplate sqlSession, Reward r) {
+		
+		return sqlSession.insert("Panel.insertCashOutHistory", r);
+	}
+
+	@Override
+	public int insertRewardHistory(SqlSessionTemplate sqlSession, Reward r) {
+		
+		return sqlSession.insert("Panel.insertRewardHistory",r);
+	}
+
+	@Override
+	public int updatePanelReward(SqlSessionTemplate sqlSession, Reward r) {
+		
+		return sqlSession.update("Panel.updatePanelReard",r);
+	}
+	@Override
+	public List<ResearchQuestion> getTsQuestionList(SqlSessionTemplate sqlSession) throws SelectException {
+		List<ResearchQuestion> tsQuestions = null;
+		tsQuestions = sqlSession.selectList("Panel.selectTsQuestionList");
+		if(tsQuestions == null) {
+			throw new SelectException("TS조사 문항 리스트 불러오기 실패");
+		}
+		return tsQuestions;
+	}
+
+	@Override
+	public List<ResearchChoice> getTsChoiceList(SqlSessionTemplate sqlSession, int rquestionNo) throws SelectException {
+		List<ResearchChoice> tsChoices = null;
+		tsChoices = sqlSession.selectList("Panel.selectTsChoiceList", rquestionNo);
+		if(tsChoices == null) {
+			throw new SelectException("TS조사 문항별 보기 리스트 불러오기 실패");
+		}
+		return tsChoices;
+	}
+
 	
 }

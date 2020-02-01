@@ -1,5 +1,6 @@
 package com.opera.survway.panel.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,6 +11,8 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
+import com.opera.survway.panel.model.vo.ResearchChoice;
+import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 
@@ -58,6 +61,19 @@ public interface PanelDao {
 	List<Notice> selectMainNoticeList(SqlSessionTemplate sqlSession) throws SelectException;
 
 	List<Research> selectMainResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser) throws SelectException;
+
+	Reward getPanelReward(SqlSessionTemplate sqlSession, int mno);
+
+	int insertCashOutHistory(SqlSessionTemplate sqlSession, Reward r);
+
+	int insertRewardHistory(SqlSessionTemplate sqlSession, Reward r);
+
+	int updatePanelReward(SqlSessionTemplate sqlSession, Reward r);
+
+	List<ResearchQuestion> getTsQuestionList(SqlSessionTemplate sqlSession) throws SelectException;
+
+	List<ResearchChoice> getTsChoiceList(SqlSessionTemplate sqlSession, int rquestionNo) throws SelectException;
+
 
 
 }

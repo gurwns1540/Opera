@@ -85,7 +85,7 @@
 				<div><b>회원님의 리워드를 캐시아웃 신청하는 공간입니다.</b></div>
 				<br />
 				<div class="cashOutImgArea">
-				
+					나의 보유 리워드 양 : ${Reward.afterChangePoint  }
 				</div>  <!-- .cashOutImgArea end -->
 				<br />
 				<hr />
@@ -94,19 +94,35 @@
 					<div><b>금액을 선택해주세요</b></div>
 					<br />
 					<div class="ui buttons moneyArea">
+						<c:if test="${Reward.afterChangePoint >=10000 }">
 						<button class="ui button active" value="10000">1만원</button>
+						</c:if>
+						<c:if test="${Reward.afterChangePoint >=20000 }">
 						<button class="ui button" value="20000">2만원</button>
+						</c:if>
+						<c:if test="${Reward.afterChangePoint >=30000 }">
 						<button class="ui button" value="30000">3만원</button>
+						</c:if>
+						<c:if test="${Reward.afterChangePoint >=40000 }">
 						<button class="ui button" value="40000">4만원</button>
+						<</c:if>
+						<c:if test="${Reward.afterChangePoint >=50000 }">
 						<button class="ui button" value="50000">5만원</button>
+						</c:if>
 					</div>
 					<br /><br />
+					
 					<div class="moneyResultArea">
 						<table id="resultTableArea">
 							<tr>
+								<c:if test="${Reward.afterChangePoint >=10000 }">
 								<td class="result" id="resultName">신청 금액</td>
 								<td class="result" id="resultMoney">10000</td>
 								<td class="result" id="resultMoneyKor">원</td>
+								</c:if>
+								<c:if test="${Reward.afterChangePoint <10000}">
+								<td class="result" id="resultMoney">신청할수 있는 금액이 없습니다.</td>
+								</c:if>
 							</tr>
 						</table>
 					</div>  <!-- moneyResultArea end -->
@@ -119,14 +135,64 @@
 			<script>
 				$(".moneyArea").children().click(function(){
 					$(".moneyArea").children().removeClass("active");
-					$(this).addClass("active");
-					$("#resultMoney").text($(this).val());
-				});
-				
-				$("#apply").click(function(){
+								$(this).addClass("active");
+								$("#resultMoney").text($(this).val());
 					
 				});
+				
+				
+				$("#apply").click(function(){
+					var cash = $(".moneyArea").find(".active").val();
+					
+					Swal.fire({
+						  title: '캐시아웃 신청',
+						  text: '한번 사용한 리워드는 반환되지 않습니다.',
+						  icon: 'warning',
+						  showCancelButton: true,
+						  confirmButtonColor: '#3085d6',
+						  cancelButtonColor: '#d33',
+						  confirmButtonText: '신청',
+						  cancelButtonText: '취소'
+						}).then(result =>{
+						  if(result.value){
+						 
+							$.ajax({
+								url: "applyRewardCashOut.myPage",
+								type: "post",
+								data: {
+									cash:cash
+								},
+								success: function(data){
+									
+									if(data.num >0){
+										 Swal.fire(
+											      '신청 완료!',
+											      '회원님의 캐시아웃이 성공적으로 신청이 완료되었습니다.',
+											      'success'
+											    )
+									}else{
+										Swal.fire(
+											      '신청 실패!',
+											      '회원님의 캐시아웃 신청이 실패되었습니다.',
+											      'error'
+											    )
+									}
+								},
+								error: function(){
+									console.log("ajax에러");
+								}
+							});
+						  }
+						}); 	
+						
+
+				});
+				
+				
+				
 			</script>
+			
+		
 		<br />
 		</section>  <!-- container end -->
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp" />

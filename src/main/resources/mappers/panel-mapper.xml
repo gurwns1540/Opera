@@ -173,6 +173,11 @@
 
 	</select>
 	
+	<select id="getPanelReward" resultMap="RewardResultSet" parameterType="_int">
+		SELECT *
+		FROM(SELECT * FROM REWARDHISTORY WHERE MNO =#{mno} ORDER BY REWARD_CHANGEDATE DESC)
+		WHERE ROWNUM =1
+	</select>
 
 
 
@@ -219,4 +224,102 @@
 		FROM RESEARCH
 		WHERE RESEARCH_NO = 1
   	</select>
+  	
+  	<insert id="insertCashOutHistory" parameterType="Reward">
+  		INSERT INTO CASHOUTHISTORY VALUES(SEQ_CASHOUTHISTORY.NEXTVAL,#{cashoutNo},#{mno},SYSDATE,NULL)
+  		<selectKey keyProperty="cashoutHistoryNo" resultType="_int" order="AFTER">
+  			SELECT SEQ_CASHOUTHISTORY.CURRVAL FROM DUAL
+  		</selectKey>
+  	</insert>
+  	
+  	<insert id="insertRewardHistory" parameterType="Reward">
+  		<selectKey keyProperty="afterChangePoint" resultType="_int" order="BEFORE">
+  			SELECT REWARD_POINT-(SELECT CASHOUT_AMOUNT FROM CASHOUT WHERE CASHOUT_NO =#{cashoutNo}) FROM PANELREWARD WHERE MNO=#{mno}
+  		</selectKey>
+  		INSERT INTO REWARDHISTORY VALUES(SEQ_REWARDHISTORY.NEXTVAL, #{afterChangePoint},'캐시 아웃',#{changeAmount},#{mno},SYSDATE, NULL,#{cashoutHistoryNo},NULL,NULL)
+  	</insert>
+  	
+  	<update id="updatePanelReard" parameterType="Reward">
+  		UPDATE PANELREWARD SET REWARD_POINT = #{afterChangePoint} WHERE MNO =#{mno}
+  	</update>
+  	
+  	<resultMap type="Inquiry" id="InquiryResultSet">
+		<id property="inquiryNo" column="INQUIRY_NO"/>
+		<result property="inquiryTitle" column="INQUIRY_TITLE"/>
+		<result property="inquiryContext" column="INQUIRY_CONTEXT"/>
+		<result property="inquiryAnswer" column="INQUIRY_ANSWER"/>
+		<result property="mno" column="MNO"/>
+		<result property="inquiryCategoryNo" column="INQUIRYCATEGORY_NO"/>
+		<result property="inquiryDate" column="INQUIRY_DATE"/>
+		<result property="inquiryAnswerDate" column="INQUIRY_ANSWERDATE"/>
+	</resultMap>
+	
+	
+	<insert id="insertInquiry" parameterType="Inquiry">
+		INSERT INTO INQUIRYHISTORY VALUES(SEQ_INQUIRY.NEXTVAL, #{inquiryTitle}, #{inquiryContext}, NULL, #{mno},#{inquiryCategoryNo},SYSDATE,NULL)
+	</insert>
+	
+	<select id="selectAllMyInquiry" resultMap="InquiryResultSet" parameterType="Inquiry">
+		SELECT INQUIRY_NO, INQUIRY_TITLE, INQUIRY_CONTEXT, INQUIRY_ANSWER, MNO, INQUIRYCATEGORY_NO, INQUIRY_DATE, INQUIRY_ANSWERDATE 
+		FROM INQUIRYHISTORY 
+		WHERE MNO = #{mno}
+		<include refid="searchCategoryInquiry"/>
+		<include refid="InquiryTitleExist"/>
+		ORDER BY INQUIRY_DATE DESC
+	</select>
+	
+	<sql id="searchCategoryInquiry">
+		<if test="inquiryCategoryNo == 1">
+			AND INQUIRYCATEGORY_NO = 1
+		</if>
+		<if test="inquiryCategoryNo == 2">
+			AND INQUIRYCATEGORY_NO = 2
+		</if>
+		<if test="inquiryCategoryNo == 3">
+			AND INQUIRYCATEGORY_NO = 3
+		</if>
+		<if test="inquiryCategoryNo == 4">
+			AND INQUIRYCATEGORY_NO = 4
+		</if>
+	</sql>
+	
+	<sql id="InquiryTitleExist">
+		<if test="inquiryTitle != null">
+			AND INQUIRY_TITLE LIKE '%' || #{inquiryTitle} || '%'
+		</if>
+	</sql>
+	
+	<select id="getListCountInquiry" resultType="_int" parameterType="Inquiry">
+		SELECT COUNT(*) FROM INQUIRYHISTORY
+		WHERE MNO = #{mno}
+		<include refid="searchCategoryInquiry"/>
+		
+	</select>
+
+	<resultMap type="PanelResearchQuestion" id="tsQuestionResultSet">
+		<id property="rquestionNo" column="RQUESTION_NO" />
+		<result property="questionFormNo" column="QUESTION_FORM_NO" />
+		<result property="researchOrder" column="RESEARCH_ORDER" />
+		<result property="rquestionContext" column="RQUESTION_CONTEXT" />
+	</resultMap>
+
+	<select id="selectTsQuestionList" resultMap="tsQuestionResultSet">
+		SELECT *
+		FROM RESEARCHQUESTION
+		WHERE RESEARCH_NO = 1
+	</select>
+
+
+	<resultMap type="PanelResearchChoice" id="tsChoiceResultSet">
+		<id property="rchoiceNo" column="RCHOICE_NO" />
+		<result property="rchoiceOrder" column="RCHOICE_ORDER" />
+		<result property="rchoiceContext" column="RCHOICE_CONTEXT" />
+	</resultMap>
+
+	<select id="selectTsChoiceList" resultMap="tsChoiceResultSet" parameterType="_int">
+		SELECT *
+		FROM RESEARCHCHOICE
+		WHERE RQUESTION_NO = #{ rquestionNo }
+	</select>
+	
 </mapper>
