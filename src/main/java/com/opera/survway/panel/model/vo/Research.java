@@ -15,6 +15,7 @@ public class Research {
 	private int researchMinReward;
 	private int researchMaxReward;
 	private String researchReward;
+	private String rquestionVideolink;
 	private List<ResearchQuestion> researchQuestionList;
 	
 	public Research() {
@@ -23,7 +24,8 @@ public class Research {
 
 	public Research(int researchNo, String researchName, int researchEngagementGoals, Date researchStartDate,
 			Date researchEndDate, String researchPeriod, int mno, String researchPerpose, int researchMinReward,
-			int researchMaxReward, String researchReward, List<ResearchQuestion> researchQuestionList) {
+			int researchMaxReward, String researchReward, String rquestionVideolink,
+			List<ResearchQuestion> researchQuestionList) {
 		super();
 		this.researchNo = researchNo;
 		this.researchName = researchName;
@@ -36,6 +38,7 @@ public class Research {
 		this.researchMinReward = researchMinReward;
 		this.researchMaxReward = researchMaxReward;
 		this.researchReward = researchReward;
+		this.rquestionVideolink = rquestionVideolink;
 		this.researchQuestionList = researchQuestionList;
 	}
 
@@ -127,6 +130,14 @@ public class Research {
 		this.researchReward = researchReward;
 	}
 
+	public String getRquestionVideolink() {
+		return rquestionVideolink;
+	}
+
+	public void setRquestionVideolink(String rquestionVideolink) {
+		this.rquestionVideolink = rquestionVideolink;
+	}
+
 	public List<ResearchQuestion> getResearchQuestionList() {
 		return researchQuestionList;
 	}
@@ -141,8 +152,8 @@ public class Research {
 				+ researchEngagementGoals + ", researchStartDate=" + researchStartDate + ", researchEndDate="
 				+ researchEndDate + ", researchPeriod=" + researchPeriod + ", mno=" + mno + ", researchPerpose="
 				+ researchPerpose + ", researchMinReward=" + researchMinReward + ", researchMaxReward="
-				+ researchMaxReward + ", researchReward=" + researchReward + ", researchQuestionList="
-				+ researchQuestionList + "]";
+				+ researchMaxReward + ", researchReward=" + researchReward + ", rquestionVideolink="
+				+ rquestionVideolink + ", researchQuestionList=" + researchQuestionList + "]";
 	}
 	
 }

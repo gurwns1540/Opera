@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -146,7 +146,7 @@
 							<div class="ui breadcrumb">
 								<a class="section" id="depth1" href="panelMain.panel">Home</a>
 								<i class="right angle icon divider"></i>
-								<a class="section" id="depth2" href="surveyList.panel">서베이</a>
+								<a class="section" id="depth2" href="surveyList.survey">서베이</a>
 								<i class="right angle icon divider"></i>
 								<div class="active section" id="depth3">진행중인 설문조사</div>
 							</div>
@@ -154,83 +154,112 @@
 					</tr>
 				</table>
 				
-				<div class="sectionLine">
+				<div class="sectionLine" style="padding-bottom:20px;">
 					<hr>
-				</div>
-	
-				<div class="ui five column grid" id="surveyListArea" style="width:95%; margin: 0 auto;">
-					<c:if test="${ sessionScope.loginUser.panellevelNo eq 1 }">
-						<div class="column">
-							<div class="ui segment cards eachSurveyBox" id="thanksSurvey"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
-								<div class="eachBox" style="width: 100%;">
-									<div class="top">
-										<table style="width: 100%;">
-											<tr>
-												<td class="top-left"><span style="font-size:0.9vw;">[ TS ]</span></td>
-												<td class="top-right">
-													<img src="resources/images/pc.png" alt="" class="icon"/>
-												</td>
-											</tr>
-											<tr>
-										</table>
-									</div>
-									<div class="middle" style="height: 60px;">
-										<span style="font-size:1vw;">Thanks Survey</span>
-									</div>
-									<div class="bottom" style="height: 111px;">
-										<div class="bottom-top" style="height: 25%; text-align:center; padding-top:${ qCount }px;">
-											<span style="font-weight:bold; font-size:1vw; color:#005E8C;">1000P</span>
-										</div>
-										<div class="bottom-middle" style="padding-top:${ qCount }px;">
-											<span style="font-size:0.8vw; font-weight:bold;">${ sessionScope.loginUser.userName }님, 안녕하세요!</span>
-										</div>
-										<div class="bottom-bottom" style="height: 45%; padding-top:5px;">
-											<span style="font-size:0.7vw;">Thanks Survey에 참여하신 후<br>다양한 설문조사를 받아보세요.</span>
-										</div>
-									</div>
-								</div>
-							</div>
+					<c:if test="${ msg == 'noMessage' }">
+						<div style="width:100%; text-align:right; margin-top:20px; padding-right:20px;">
+							<img src="resources/images/pc.png" alt="" class="icon" style="width:12px; height:12px;"/><span style="font-size:13px; margin-right:5px;"> PC참여가능 </span>
+							<img src="resources/images/mobile.png" alt="" class="icon" style="width:12px; height:12px;"/><span style="font-size:13px;"> 모바일참여가능</span>
 						</div>
 					</c:if>
-					<c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
-						<c:forEach begin="1" end="10" step="1">
+				</div>
+				
+				
+				<c:if test="${ msg == 'noMessage' }">
+					<div class="ui five column grid" id="surveyListArea" style="width:95%; margin: 0 auto;">
+						<c:if test="${ sessionScope.loginUser.panellevelNo eq 1 }">
 							<div class="column">
-								<div class="ui segment cards eachSurveyBox"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
+								<div class="ui segment cards eachSurveyBox" id="thanksSurvey"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
 									<div class="eachBox" style="width: 100%;">
 										<div class="top">
 											<table style="width: 100%;">
 												<tr>
-													<td class="top-left"><span style="font-size:0.9vw;">[84782]</span></td>
+													<td class="top-left"><span style="font-size:0.9vw;">[ TS ]</span></td>
 													<td class="top-right">
 														<img src="resources/images/pc.png" alt="" class="icon"/>
-														<img src="resources/images/mobile.png" alt="" class="icon"/>
 													</td>
 												</tr>
 												<tr>
 											</table>
 										</div>
-										<div class="middle">
-											<span style="font-size:1vw;">소비자 인식 조사 소비자 인식</span>
+										<div class="middle" style="height: 60px;">
+											<span style="font-size:1vw;">Thanks Survey</span>
 										</div>
-										<div class="bottom">
-											<div class="bottom-top" style="text-align:center; padding-top:14px;">
-												<span style="font-weight:bold; font-size:1vw; color:#005E8C;">100~3000P</span>
+										<div class="bottom" style="height: 111px;">
+											<div class="bottom-top" style="height: 25%; text-align:center; padding-top:${ qCount }px;">
+												<span style="font-weight:bold; font-size:1vw; color:#005E8C;">1000P</span>
 											</div>
-											<div class="bottom-middle">
-												<span style="font-size:0.8vw; margin-right:7px;">시작일 :</span>
-												<span style="font-size:0.8vw;">2020.01.01</span>
+											<div class="bottom-middle" style="padding-top:${ qCount }px;">
+												<span style="font-size:0.8vw; font-weight:bold;">${ sessionScope.loginUser.userName }님, 안녕하세요!</span>
 											</div>
-											<div class="bottom-bottom">
-												<span style="font-size:0.8vw; margin-right:7px;">종료일 :</span>
-												<span style="font-size:0.8vw;">2020.01.20</span>
+											<div class="bottom-bottom" style="height: 45%; padding-top:5px;">
+												<span style="font-size:0.7vw;">Thanks Survey에 참여하신 후<br>다양한 설문조사를 받아보세요.</span>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</c:forEach>
-					</c:if>
-				</div>
+						</c:if>
+						<c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
+						<c:forEach var="list" items="${ researchList }" varStatus="status">
+								<div class="column">
+									<div class="ui segment cards eachSurveyBox"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
+										<div class="eachBox" style="width: 100%;">
+											<div class="top">
+												<table style="width: 100%;">
+													<tr>
+														<td class="top-left">
+															<span style="font-size:0.9vw;">[</span>
+															<span style="font-size:0.9vw;">${ list.researchNo }</span>
+															<span style="font-size:0.9vw;">]</span>
+														</td>
+														<td class="top-right">
+															<img src="resources/images/pc.png" alt="" class="icon"/>
+															<c:if test="${ list.rquestionVideolink == null }">
+																<img src="resources/images/mobile.png" alt="" class="icon"/>
+															</c:if>
+														</td>
+													</tr>
+													<tr>
+												</table>
+											</div>
+											<div class="middle">
+												<span style="font-size:1vw;">${ list.researchName }</span>
+											</div>
+											<div class="bottom">
+												<div class="bottom-top" style="text-align:center; padding-top:14px;">
+													<span style="font-weight:bold; font-size:1vw; color:#005E8C;">${ list.researchReward }P</span>
+												</div>
+												<div class="bottom-middle">
+													<span style="font-size:0.8vw; margin-right:7px;">시작일 :</span>
+													<fmt:parseDate value="${ fn:split(list.researchPeriod, '~')[0] }" var="startDate" pattern="yyyyMMdd"/>
+													<span style="font-size:0.8vw;">
+														<fmt:formatDate value="${ startDate }" pattern="yyyy.MM.dd"/>
+													</span>
+												</div>
+												<div class="bottom-bottom">
+													<span style="font-size:0.8vw; margin-right:7px;">종료일 :</span>
+													<fmt:parseDate value="${ fn:split(list.researchPeriod, '~')[1] }" var="endDate" pattern="yyyyMMdd"/>
+													<span style="font-size:0.8vw;">
+														<fmt:formatDate value="${ endDate }" pattern="yyyy.MM.dd"/>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:if>
+					</div>
+				</c:if>
+				
+				<c:if test="${ msg != 'noMessage' }">
+					<div style="height:auto; width:100%; padding-top:80px; padding-bottom:80px; margin-bottom:45px; text-align:center;">
+						<span style="font-size:1vw; line-height:300%; color:#595959;">${ msg }</span>
+					</div>
+					<hr>
+					<button class="ui blue button" style="float:right; margin-top:20px;" onclick="location.href='panelMain.panel'">메인으로</button>
+				</c:if>
 				
 				<c:if test="${ pi.maxPage ne 1 }">
 					<div id="pagingArea" align="center">

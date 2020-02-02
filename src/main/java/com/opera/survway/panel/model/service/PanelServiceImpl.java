@@ -378,13 +378,8 @@ public class PanelServiceImpl implements PanelService {
 	 * @Description : 로그인된 패널이 참여할 수 있는 설문조사 갯수 조회
 	 */
 	@Override
-	public int getCountMyResearch(PanelMember loginUser) throws SurveyException {
-		
-		int listCount = pd.getCountMyResearch(sqlSession, loginUser);
-		if(listCount <=0) {
-			throw new SurveyException("참여가능한 설문조사 갯수 조회 실패");
-		}
-		return listCount;
+	public int getCountMyResearch(PanelMember loginUser) {
+		return pd.getCountMyResearch(sqlSession, loginUser);
 	}
 
 	/**
@@ -395,7 +390,7 @@ public class PanelServiceImpl implements PanelService {
 	 * @Description : 로그인된 패널이 참여할 수 있는 설문조사 목록 조회
 	 */
 	@Override
-	public List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi) throws SurveyException {
+	public List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi) {
 		List<Research> myResearchList = null;
 		myResearchList = pd.getMyResearchList(sqlSession, loginUser, pi);
 		return myResearchList;
