@@ -258,14 +258,11 @@ public class PanelDaoImpl implements PanelDao{
 	}
 
 	@Override
-	public List<Research> getMyResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser, PageInfo pi) throws SurveyException {
+	public List<Research> getMyResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser, PageInfo pi) {
 		List<Research> myResearchList = null;
 		int offset = (pi.getCurrentPage()-1)*pi.getLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
 		myResearchList = sqlSession.selectList("Panel.selectMyResearchList", loginUser, rowBounds);
-		if(myResearchList == null) {
-			throw new SurveyException("참여가능한 리서치 리스트 조회 실패");
-		}
 		return myResearchList;
 	}
 

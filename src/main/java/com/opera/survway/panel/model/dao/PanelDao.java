@@ -78,7 +78,7 @@ public interface PanelDao {
 
 	int getCountMyResearch(SqlSessionTemplate sqlSession, PanelMember loginUser);
 
-	List<Research> getMyResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser, PageInfo pi) throws SurveyException;
+	List<Research> getMyResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser, PageInfo pi);
 
 
 

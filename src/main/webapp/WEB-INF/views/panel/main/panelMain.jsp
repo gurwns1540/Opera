@@ -111,7 +111,7 @@
 			<table style="width:100%; margin-top:30px; background-color:#E2F4F7; padding:10px; height:100px;">
 				<tr>
 					<td style="width:16%; padding-left:15px;">
-						<a href="surveyList.panel"><img src="resources/images/panelMainSurvey.gif" style="height:inherit;"></a>
+						<a href="surveyList.survey"><img src="resources/images/panelMainSurvey.gif" style="height:inherit;"></a>
 					</td>
 					<td style="width:84%;">
 						<a class="ui pink right ribbon label" id="moreBtn"><span style="font-size:0.7vw;">more</span></a>
@@ -137,7 +137,7 @@
 												</table>
 											</div>
 											<div class="middle">
-												<span style="font-size:1vw;">${ list.researchName }<br>${ list.researchPerpose }</span>
+												<span style="font-size:1vw;">${ list.researchName }</span>
 											</div>
 											<div class="bottom">
 												<div class="bottom-top" style="text-align:center; padding-top:14px;">
@@ -251,7 +251,7 @@
 			console.log(loginUserPanelLevel);
 			if(loginUserPanelLevel == "1") {
 				Swal.fire('안내', 'Thanks Survey 먼저 진행해주세요!', 'warning').then(function() {
-					location.href="surveyList.panel";
+					location.href="surveyList.survey";
 				});
 			} else if(loginUserPanelLevel == "") {
 				Swal.fire('안내', '로그인 후 이용해주세요', 'warning').then(function(){
@@ -266,7 +266,7 @@
 					location.href="panelLogin.panel";
 				});
 			} else {
-				location.href="surveyList.panel";
+				location.href="surveyList.survey";
 			}
 		});
 		$("#inquiryBtn").css("cursor","pointer").click(function() {

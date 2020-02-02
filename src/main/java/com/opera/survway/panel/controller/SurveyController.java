@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.logging.log4j.core.appender.SyslogAppender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +42,7 @@ public class SurveyController {
 		List<Research> researchList = null;
 		List<ResearchQuestion> researchQuestionList = null;
 		int qCount = 0;
-		String message = "";
+		String msg = "noMessage";
 		
 		//페이징
 		String queryString = request.getQueryString();
@@ -79,27 +80,33 @@ public class SurveyController {
 				pi = Pagination.getPageInfo(currentPage, listCount);
 				List<Research> myResearches = ps.getMyResearchList(loginUser, pi);
 				researchList = myResearches;
+				if(listCount == 0) {
+					pi.setMaxPage(1);
+					msg = "현재 참여 가능한 설문조사가 없습니다.";
+				}
 				break;
 				
 			//휴면회원일때
 			case 5 :
-				message = "SURVWAY를 오랫동안 이용하지 않아 회원님의 아이디가 휴면 상태로 전환되었습니다. 회원정보 재인증 후 이용하실 수 있습니다.";
+				msg = "SURVWAY를 오랫동안 이용하지 않아 회원님의 아이디가 휴면 상태로 전환되었습니다.<br>회원정보 재인증 후 이용하실 수 있습니다.";
+				listCount = 1;
+				pi = Pagination.getPageInfo(currentPage, listCount);
+				pi.setMaxPage(1);
 				break;
 				
 			//블랙회원일때
 			case 6 :
-				message = "회원님께서는 3회 불량 응답하였으므로 설문조사에 응하실 수 없습니다.";
+				msg = "회원님께서는 3회 불량 응답하였으므로 설문조사에 응하실 수 없습니다.";
+				listCount = 1;
+				pi = Pagination.getPageInfo(currentPage, listCount);
+				pi.setMaxPage(1);
 				break;
-			
-			default: break;
 			
 			}
 			
 		} catch (SelectException e) {
 			e.printStackTrace();
 			return "";
-		} catch (SurveyException e) {
-			e.printStackTrace();
 		}
 		
 		
@@ -108,8 +115,9 @@ public class SurveyController {
 		model.addAttribute("qCount", qCount);
 		//일반회원용
 		model.addAttribute("researchList", researchList);
+		model.addAttribute("researchCount", listCount);
 		//휴면or블랙리스트회원용
-		model.addAttribute("message", message);
+		model.addAttribute("msg", msg);
 		//페이징용(공통)
 		model.addAttribute("pi", pi);
 		

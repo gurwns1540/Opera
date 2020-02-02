@@ -58,8 +58,8 @@ public interface PanelService {
   
 	List<ResearchQuestion> getTsQuestionList() throws SelectException;
 
-	int getCountMyResearch(PanelMember loginUser) throws SurveyException;
+	int getCountMyResearch(PanelMember loginUser);
 
-	List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi) throws SurveyException;
+	List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi);
 
 }
