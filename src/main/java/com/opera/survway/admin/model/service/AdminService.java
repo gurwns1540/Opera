@@ -10,6 +10,7 @@ import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
+import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.exception.SelectException;
 
 @Service
@@ -42,7 +43,7 @@ public interface AdminService {
 
 	List<Map<String, Object>> researchApprovalDetail(int researchNo);
 
-	boolean researchApproved(int researchNo);
+	boolean researchApproved(ResearchState researchState);
 
 	boolean researchRefer(ResearchState researchState);
 
@@ -51,5 +52,13 @@ public interface AdminService {
 	List<Map<String, String>> researchReferList(PageInfo pi) throws SelectException;
 
 	List<Map<String, Object>> researchReferDetail(int researchNo);
-  
+
+	int getListResearchWaitingPayment() throws SelectException;
+
+	List<Map<String, String>> researchWaitingPayment(PageInfo pi) throws SelectException;
+
+	List<Map<String, Object>> researchWaitPaymentDetail(int researchNo);
+
+	boolean researchPaymentRefer(ResearchState researchState);
+
 }

@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.CorpMember;
+import com.opera.survway.corporation.model.vo.Payment;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.corporation.model.vo.SearchResearch;
 import com.opera.survway.exception.LoginException;
@@ -30,4 +32,8 @@ public interface CorpService {
 	Research previousResearchDetail(int researchNo) throws SelectException;
 
 	int getQuestionCount(int researchNo);
+
+	boolean priceConference(ResearchState researchstate);
+
+	boolean researchPayment(Payment payment);
 }

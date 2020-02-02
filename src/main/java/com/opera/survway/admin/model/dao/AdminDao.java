@@ -10,6 +10,7 @@ import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
+import com.opera.survway.corporation.model.vo.Research;
 
 public interface AdminDao {
 
@@ -45,7 +46,7 @@ public interface AdminDao {
 
 	UploadFile choiceImage(SqlSessionTemplate sqlSession, int choiceNo);
 
-	int researchApproved(SqlSessionTemplate sqlSession, int researchNo);
+	int researchApproved(SqlSessionTemplate sqlSession, ResearchState researchState);
 
 	int researchRefer(SqlSessionTemplate sqlSession, ResearchState researchState);
 
@@ -54,5 +55,17 @@ public interface AdminDao {
 	List<Map<String, String>> researchReferList(SqlSessionTemplate sqlSession, PageInfo pi);
 
 	List<Map<String, Object>> researchReferDetail(SqlSessionTemplate sqlSession, int researchNo);
+
+	int insertConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState);
+
+	int updateResearchPrice(SqlSessionTemplate sqlSession, ResearchState researchState);
+
+	int getListResearchWaitingPayment(SqlSessionTemplate sqlSession);
+
+	List<Map<String, String>> researchWaitingPayment(SqlSessionTemplate sqlSession, PageInfo pi);
+
+	List<Map<String, Object>> researchWaitPaymentDetail(SqlSessionTemplate sqlSession, int researchNo);
+
+	int insertReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState);
 
 }

@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.dao.CorpDao;
 import com.opera.survway.corporation.model.vo.CorpMember;
+import com.opera.survway.corporation.model.vo.Payment;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.corporation.model.vo.SearchResearch;
@@ -208,6 +210,46 @@ public class CorpServiceImpl implements CorpService {
 	@Override
 	public int getQuestionCount(int researchNo) {
 		return cd.getQuestionCount(sqlSession, researchNo);
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 가격 협상
+	 */
+	@Override
+	public boolean priceConference(ResearchState researchstate) {
+		boolean isConference = false;
+		
+		int result1 = cd.insertConferenceState(sqlSession, researchstate);
+		
+		int result2 = cd.insertConferenceHistory(sqlSession, researchstate);
+		
+		if(result1 > 0 && result2 > 0) {
+			isConference = true;
+		}
+		return isConference;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 결제
+	 */
+	@Override
+	public boolean researchPayment(Payment payment) {
+		boolean isPayment = false;
+		
+		int result1 = cd.insertPayment(sqlSession, payment);
+		
+		int result2 = cd.insertPaymentState(sqlSession, payment);
+		
+		if(result1 > 0 && result2 > 0) {
+			isPayment = true;
+		}
+		return isPayment;
 	}
 
 }

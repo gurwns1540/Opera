@@ -18,22 +18,6 @@ public class AdminForwardController {
 		return "memberManagement/newPanelManagement";
 	}
 	
-	//반려
-	@RequestMapping("researchReferList.admin")
-	public String forwardResearchReferList() {
-		return "adminResearch/researchReferList";
-	}
-	//협의중
-	@RequestMapping("researchWaitingPayment.admin")
-	public String forwardResearchWaitingPayment() {
-		return "adminResearch/researchWaitingPayment";
-	}
-	//협의완료
-	@RequestMapping("researchConsultationCompleted.admin")
-	public String forwardResearchConsultationCompleted() {
-		return"adminResearch/researchConsultationCompleted";
-	}
-	
 	//서베이 문항 재구성 대기문항
 	@RequestMapping("serveyReconstructionList.admin")
 	public String forwardSurveyReconstructionList() {

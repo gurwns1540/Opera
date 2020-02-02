@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,12 +78,14 @@
 	#pagingArea span {
 		margin-left: 5px;
 		margin-right: 5px;
+		color: black;
 		font-size: 10pt;
 	}
 	#pagingArea span:hover {
 		margin-left: 5px;
 		margin-right: 5px;
 		font-size: 10pt;
+		color: dodgerblue;
 		cursor: pointer;
 	}
 	.detail {
@@ -91,19 +94,19 @@
 		width: 80px;
 		height: 30px;
 	}
-	#corpTable {
+	#corpTable, #priceTable {
   		width: 80%;
   		margin: 0 auto;
   		border-spacing: 0;
 		border-collapse: collapse;
 		text-align: center;
   	}
-  	#corpTable th {
+  	#corpTable th, #priceTable th {
   		width: 50%;
   		height: 70px;
   		border-bottom: 1px solid #C5C5C5;
   	}
-  	#corpTable td {
+  	#corpTable td, #priceTable td {
   		width: 50%;
   		border-bottom: 1px solid #C5C5C5;
   	}
@@ -129,8 +132,8 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='researchWaitingPayment.admin'" id="clickBtn">협의중</button>
-						<button onclick="location.href='researchConsultationCompleted.admin'">협의완료</button>
+						<button onclick="location.href='researchWaitingPayment.adminResearch'" id="clickBtn">협의중</button>
+						<button onclick="location.href='researchConsultationCompleted.adminResearch'">결제 완료</button>
 					</div>
 				</td>
 			</tr>
@@ -163,32 +166,67 @@
 				<th style="width: 10%;">상태</th>
 				<th style="width: 10%;">상세보기</th>
 			</tr>
-			<c:forEach var="i" begin="0" end="9">
+			<c:forEach var="research" items="${ researchWaitingPayment }">
 				<tr class="tableContext">
-					<td>리서치 번호</td>
-					<td>기업명</td>
-					<td>리서치 제목</td>
-					<td>승인일</td>
-					<td>상태</td>
+					<td>${ research.researchNo }</td>
+					<td>${ research.companyName }</td>
+					<td>${ research.researchName }</td>
+					<td><fmt:formatDate value="${ research.lastDate }"/></td>
+					<td>${ research.researchState }</td>
 					<td><button class="detail">상세 보기</button></td>
 				</tr>
 			</c:forEach>
 		</table>
 		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
+			<c:url var="researchFirst" value="researchWaitingPayment.adminResearch">
+				<c:param name="currentPage" value="${1}"/>
+			</c:url>
+			<a href="${researchFirst}"><span>[처음]</span></a>&nbsp;
+			
+			<c:if test="${pi.currentPage <= 1}">
+				<span>[이전]</span> &nbsp;
+			</c:if>
+			<c:if test="${pi.currentPage > 1}">
+				<c:url var="researchBack" value="researchWaitingPayment.adminResearch">
+					<c:param name="currentPage" value="${pi.currentPage - 1}"/>
+				</c:url>
+				<a href="${researchBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+			
+			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+				<c:if test="${p eq pi.currentPage }">
+					<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+				</c:if>
+				<c:if test="${p ne pi.currentPage }">
+					<c:url var="researchCheck" value="researchWaitingPayment.adminResearch">
+						<c:param name="currentPage" value="${ p }"/>
+					</c:url>
+					<a href="${ researchCheck }"><span>${ p }</span></a>
+				</c:if>
+				
 			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
+			
+			<c:if test="${pi.currentPage < pi.maxPage}">
+				<c:url var="researchNext" value="researchWaitingPayment.adminResearch">
+					<c:param name="currentPage" value="${pi.currentPage + 1}"/>
+				</c:url>
+				&nbsp;<a href="${researchNext}"><span>[다음]</span></a>
+			</c:if>
+			<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+			</c:if>
+			
+			<c:url var="researchEnd" value="researchWaitingPayment.adminResearch">
+				<c:param name="currentPage" value="${pi.maxPage}"/>
+			</c:url>
+			<a href="${researchEnd}"><span>[마지막]</span></a>&nbsp;
 		</div>
 	</div>
 	<div class="ui mini modal" id="research">
 		<div class="header">리서치 제목</div>
 		<div class="scrolling content">
 			<div>
-				<table id="corpTable">
+				<table id="priceTable">
 					<tr>
 						<th>이전 협상 금액</th>
 						<td>2,700,000 원</td>
@@ -213,31 +251,31 @@
 				<table id="corpTable">
 					<tr>
 						<th>프로젝트 명</th>
-						<td>피자 선호도 조사</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>목적</th>
-						<td>우리 브랜드 피자 선호도는 얼마나 되는가 궁금한 점과 앞으로 나아갈 피자의 방향</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>목표 인원</th>
-						<td>200명</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>조사 대상 성별</th>
-						<td>전체</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>조사 대상 연령</th>
-						<td>20~29</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>조사 대상 지역</th>
-						<td>서울 및 수도권</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>조사 예상 기간</th>
-						<td>2020-01-20 ~ 2020-01-27</td>
+						<td></td>
 					</tr>
 				</table>
 			</div>
@@ -252,10 +290,91 @@
 			$('#research').modal('show');
 		});
 		$(".detail").on("click", function(){
-			var num = $(this).parent().siblings().eq(0).text();
-			$('#corp').modal('show');
-			//console.log(num);
+			researchNoStr = $(this).parent().siblings().eq(0).text();
+			var researchState = $(this).parent().siblings().eq(4).text();
+			var companyName = $(this).parent().siblings().eq(1).text();
+			
+			if(researchState == '납부 대기'){
+				$("#approvalBtn").hide();
+				$("#referBtn").hide();
+			}else {
+				$("#approvalBtn").show();
+				$("#referBtn").show();
+			}
+			$.ajax({
+				url:"researchWaitPaymentDetail.adminResearch",
+				type:"post",
+				data:{researchNoStr:researchNoStr},
+				success:function(data){
+					var researchDetail = data.researchDetail[0];
+					var gender = "";
+					var location = "";
+					
+					$("#corp").find(".header").text(companyName);
+					$("#corpTable").find("td").eq(0).text(researchDetail.researchName);
+					$("#corpTable").find("td").eq(1).text(researchDetail.researchPerpose);
+					$("#corpTable").find("td").eq(2).text(researchDetail.researchEngagementGoals + '명');
+					engagementGoals = researchDetail.researchEngagementGoals;
+					if(researchDetail.targetGender == 'A') {
+						gender = "전체";
+					}else if(researchDetail.targetGender == 'M') {
+						gender = "남성";
+					}else if(researchDetail.targetGender == 'F') {
+						gender = "여성"; 
+					}
+					$("#corpTable").find("td").eq(3).text(gender);
+					$("#corpTable").find("td").eq(4).text(researchDetail.targetAgeRange);
+					if(researchDetail.targetLocation == 'all'){
+						location = "전체";
+					}else if(researchDetail.targetLocation == 'metropolitan'){
+						location = "서울 및 수도권";
+					}else if(researchDetail.targetLocation == 'city'){
+						location = "서울, 경기 및 9대 광역시";
+					}
+					$("#corpTable").find("td").eq(5).text(location);
+					var startDate = researchDetail.researchPeriod.split("~")[0].substr(0, 4) + "-" + researchDetail.researchPeriod.split("~")[0].substr(4, 2) + "-" + researchDetail.researchPeriod.split("~")[0].substr(6, 2);
+					var endDate = researchDetail.researchPeriod.split("~")[1].substr(0, 4) + "-" + researchDetail.researchPeriod.split("~")[1].substr(4, 2) + "-" + researchDetail.researchPeriod.split("~")[1].substr(6, 2);
+					$("#corpTable").find("td").eq(6).text(startDate + " ~ " + endDate);
+
+					if(researchDetail.additionalEtc != null && researchDetail.additionalEtc != ""){
+						var $etcTr = $("<tr><th>추가 요구 사항</th><td>" + researchDetail.additionalEtc + "</td></tr>");
+						$("#corpTable").append($etcTr);
+					}
+					
+					$("#priceTable").find("td").eq(0).text(comma(researchDetail.researchPrice) + " 원");
+					console.log(researchDetail.researchPrice + " " + researchDetail.conferencePrice)
+					researchPrice = researchDetail.researchPrice;
+					if(researchDetail.researchPrice == researchDetail.conferencePrice){
+						$("#priceTable").find("td").eq(1).text('-');
+					}else {
+						$("#priceTable").find("td").eq(1).text(comma(researchDetail.conferencePrice) + " 원");
+						conferencePrice = researchDetail.conferencePrice;
+					} 
+					$('#corp').modal('show'); 
+				},
+				error:function(status){
+					console.log(status);
+				}
+			});
 		});
+		
+		function comma(num){
+			var len, point, str;  
+			  
+			num = num + "";  
+			point = num.length % 3 ;
+			len = num.length;  
+		  
+			str = num.substring(0, point);  
+			while (point < len) {  
+			    if (str != "") str += ",";  
+			    str += num.substring(point, point + 3);  
+			    point += 3;  
+			}  
+			return str;
+		
+		}
+		
 		$("#approvalBtn").on("click", function(){
 			Swal.fire({
 			  title: '정말 승인하시겠습니까?',
@@ -267,11 +386,29 @@
 			  confirmButtonText: 'Yes'
 			}).then((result) => {
 			  if (result.value) {
-			    Swal.fire(
-			      '승인!',
-			      '금액 협상이 완료되었습니다.',
-			      'success'
-			    )
+				  $.ajax({
+						url:"researchPaymentApproved.adminResearch",
+						type:"post",
+						data:{
+							researchNoStr:researchNoStr,
+							conferencePriceStr:conferencePrice
+						},
+						success:function(data){
+							console.log(data);
+							Swal.fire(
+								'승인!',
+								'금액 협상이 완료되었습니다.',
+								'success'
+						    )
+							setTimeout(function(){
+							    location.reload();
+							},1500)
+						},
+						error:function(data){
+							console.log(data);					
+						}
+					})
+			    
 			  }else {
 				  $('#research').modal('show');
 			  }
@@ -281,14 +418,14 @@
 			const start = async function() {
 				const { value: text } = await Swal.fire({
 					  input: 'textarea',
-					  inputPlaceholder: '협상 금액을 적어주세요..',
+					  inputPlaceholder: '반려 사유를 적어주세요..',
 					  inputAttributes: {
 					    'aria-label': 'Type your message here'
 					  },
 					  showCancelButton: true,
 					  inputValidator: (value) => {
 					    if (!value) {
-					      return '협상 금액을 적어주세요!'
+					      return '반려 사유를 적어주세요!'
 					    }
 					  }
 				})
@@ -304,11 +441,30 @@
 					  confirmButtonText: 'Yes'
 					}).then((result) => {
 					  if (result.value) {
-						  Swal.fire(
-				      		'재 협상 신청!',
-				      		'금액 재 협상을 신청하였습니다.',
-				      		'success'
-				    		)
+						  $.ajax({
+								url:"researchPaymentRefer.adminResearch",
+								type:"post",
+								data:{
+									researchNoStr:researchNoStr,
+									researchPriceStr:researchPrice,
+									referReason:text
+								},
+								success:function(data){
+									console.log(data);
+									Swal.fire(
+							      		'협상 반려!',
+							      		'가격 협상을 반려하였습니다.',
+							      		'success'
+						    		)	
+									setTimeout(function(){
+									    location.reload();
+									},1500)
+								},
+								error:function(data){
+									console.log(data);					
+								}
+							})
+						 
 					  }else {
 						  $('#research').modal('show');
 					  }

@@ -370,6 +370,7 @@
 					$("#corpTable").find("td").eq(0).text(researchDetail.researchName);
 					$("#corpTable").find("td").eq(1).text(researchDetail.researchPerpose);
 					$("#corpTable").find("td").eq(2).text(researchDetail.researchEngagementGoals + '명');
+					engagementGoals = researchDetail.researchEngagementGoals;
 					if(researchDetail.targetGender == 'A') {
 						gender = "전체";
 					}else if(researchDetail.targetGender == 'M') {
@@ -396,7 +397,7 @@
 						$("#corpTable").append($etcTr);
 					}
 					var questionList = data.researchDetail[0].questionList;
-					
+					qCount = questionList.length;
 					$("#research").find(".header").text(data.researchDetail[0].researchName);
 					for(var i = 0; i < questionList.length; i++){
 						var $question = $('<li class="ui-state-default">Q' + questionList[i].questionOrder + '. ' + questionList[i].rquestionContext + '</li>');
@@ -471,13 +472,20 @@
 				$.ajax({
 					url:"researchApproved.adminResearch",
 					type:"post",
-					data:{researchNoStr:researchNoStr},
+					data:{
+						researchNoStr:researchNoStr,
+						engagementGoalsStr:engagementGoals,
+						qCountStr:qCount
+						},
 					success:function(data){
 						Swal.fire(
 					      '승인!',
 					      '이 리서치는 승인되었습니다.',
 					      'success'
 					    )
+					    setTimeout(function(){
+						  	location.reload();
+						},1500)
 					},
 					error:function(status){
 						console.log(status);

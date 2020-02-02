@@ -12,6 +12,7 @@ import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
+import com.opera.survway.corporation.model.vo.Research;
 
 @Repository
 public class AdminDaoImpl implements AdminDao{
@@ -22,7 +23,7 @@ public class AdminDaoImpl implements AdminDao{
 		
 		listCount = sqlSession.selectOne("Admin.getListCountPanel", searchMember);
 		
-		return listCount;
+		return listCount; 
 	}
 	
 	@Override
@@ -141,8 +142,8 @@ public class AdminDaoImpl implements AdminDao{
 	}
 
 	@Override
-	public int researchApproved(SqlSessionTemplate sqlSession, int researchNo) {
-		return sqlSession.insert("Admin.researchApproved",  researchNo);
+	public int researchApproved(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.researchApproved",  researchState);
 	}
 
 	@Override
@@ -167,6 +168,40 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<Map<String, Object>> researchReferDetail(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.selectList("Admin.researchReferDetail", researchNo);
+	}
+
+	@Override
+	public int insertConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.insertConferenceHistory", researchState);
+	}
+
+	@Override
+	public int updateResearchPrice(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.update("Admin.updateResearchPrice", researchState);
+	}
+
+	@Override
+	public int getListResearchWaitingPayment(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListResearchWaitingPayment");
+	}
+
+	@Override
+	public List<Map<String, String>> researchWaitingPayment(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return sqlSession.selectList("Admin.researchWaitingPayment", null, rowBounds);
+	}
+
+	@Override
+	public List<Map<String, Object>> researchWaitPaymentDetail(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.researchWaitPaymentDetail", researchNo);
+	}
+
+	@Override
+	public int insertReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.insertReferConferenceHistory", researchState);
 	}
 
 }

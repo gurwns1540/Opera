@@ -14,6 +14,7 @@ import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
+import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
@@ -226,7 +227,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int getListCountArrovalList() throws SelectException {
 		int listCount = ad.getListCountArrovalList(sqlSession);
-		if(listCount == 0) {
+		if(listCount < 0) {
 			throw new SelectException("리서치 신청 수 조회 실패");
 		}
 		return listCount;
@@ -276,15 +277,18 @@ public class AdminServiceImpl implements AdminService{
 	/**
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 2. 1.
-	 * @ModifyDate  : 2020. 2. 1.
-	 * @Description : 리서치 신청 승인
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 신청 승인 & 가격 협상 승인
 	 */
 	@Override
-	public boolean researchApproved(int researchNo) {
+	public boolean researchApproved(ResearchState researchState) {
 		boolean isApproved = false;
-		int result = ad.researchApproved(sqlSession, researchNo);
+		int result1 = ad.researchApproved(sqlSession, researchState);
 		
-		if(result > 0) {
+		int result2 = ad.insertConferenceHistory(sqlSession, researchState);
+		
+		int result3 = ad.updateResearchPrice(sqlSession, researchState);
+		if(result1 > 0 && result2 > 0 && result3 > 0) {
 			isApproved = true;
 		}
 		return isApproved;
@@ -316,7 +320,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int getListCountReferList() throws SelectException {
 		int listCount = ad.getListCountReferList(sqlSession);
-		if(listCount == 0) {
+		if(listCount < 0) {
 			throw new SelectException("리서치 반려 수 조회 실패");
 		}
 		return listCount;
@@ -347,6 +351,68 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<Map<String, Object>> researchReferDetail(int researchNo) {
 		return ad.researchReferDetail(sqlSession, researchNo);
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 리스트 수
+	 */
+	@Override
+	public int getListResearchWaitingPayment() throws SelectException {
+		int listCount = ad.getListResearchWaitingPayment(sqlSession);
+		if(listCount < 0) {
+			throw new SelectException("리서치 납부 대기 및 가격 협상 리스트 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 리스트
+	 */
+	@Override
+	public List<Map<String, String>> researchWaitingPayment(PageInfo pi) throws SelectException {
+		List<Map<String, String>> researchWaitingPayment = ad.researchWaitingPayment(sqlSession, pi);
+		if(researchWaitingPayment == null) {
+			throw new SelectException("리서치 납부 대기 및 가격 협상 리스트 조회 실패");
+		}
+		return researchWaitingPayment;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 상세 보기
+	 */
+	@Override
+	public List<Map<String, Object>> researchWaitPaymentDetail(int researchNo) {
+		return ad.researchWaitPaymentDetail(sqlSession, researchNo);
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 가격 협상 반려
+	 */
+	@Override
+	public boolean researchPaymentRefer(ResearchState researchState) {
+		boolean isRefer = false;
+		int result1 = ad.researchApproved(sqlSession, researchState);
+		
+		int result2 = ad.insertReferConferenceHistory(sqlSession, researchState);
+		
+		if(result1 > 0 && result2 > 0) {
+			isRefer = true;
+		}
+		return isRefer;
 	}
 
 }

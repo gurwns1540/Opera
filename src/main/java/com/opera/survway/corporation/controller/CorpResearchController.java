@@ -2,6 +2,7 @@ package com.opera.survway.corporation.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -19,13 +20,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.corporation.model.vo.CorpMember;
+import com.opera.survway.corporation.model.vo.Payment;
 import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.common.model.vo.OperaFileNamePolicy;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.corporation.model.service.CorpService;
@@ -247,12 +251,18 @@ public class CorpResearchController {
 			return "redirect:errorPage.me";
 		}
 	}
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 이력 상세
+	 */
 	@RequestMapping("previousResearchDetail.corpResearch")
 	public String previousResearchDetail(Model model, String researchNo) {
 
 		try {
 			Research research = cs.previousResearchDetail(Integer.parseInt(researchNo));
-			System.out.println(research);
+			
 			
 			String[] beforPeriod = research.getResearchPeriod().split("~");
 			research.setResearchPeriod(beforPeriod[0].substring(0, 4) + "-" + beforPeriod[0].substring(4, 6) + "-" + beforPeriod[0].substring(6, 8) + " ~ " + beforPeriod[1].substring(0, 4) + "-" + beforPeriod[1].substring(4, 6) + "-" + beforPeriod[1].substring(6, 8));
@@ -270,5 +280,57 @@ public class CorpResearchController {
 			model.addAttribute("msg", e.getMessage());
 			return "redirect:errorPage.me";
 		}
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 가격 협의
+	 */
+	@PostMapping("priceConference.corpResearch")
+	public ModelAndView priceConference(ModelAndView mv, String researchNoStr, String priceStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		int price = Integer.parseInt(priceStr);
+		
+		ResearchState researchstate = new ResearchState();
+		researchstate.setResearchNo(researchNo);
+		researchstate.setPrice(price);
+		
+		boolean isConference = cs.priceConference(researchstate);
+		
+		mv.addObject("isConference", isConference);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 결제
+	 */
+	@PostMapping("researchPayment.corpResearch")
+	public ModelAndView researchPayment(ModelAndView mv, String paymentReason, String paymentAmountStr, String paymentDateStr, String mnoStr, String researchNoStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		int paymentAmount = Integer.parseInt(paymentAmountStr);
+		int mno = Integer.parseInt(mnoStr);
+		
+		Date paymentDate = Date.valueOf(paymentDateStr);
+		
+		Payment payment = new Payment();
+		payment.setMno(mno);
+		payment.setPaymentAmount(paymentAmount);
+		payment.setPaymentDate(paymentDate);
+		payment.setPaymentReason(paymentReason);
+		payment.setResearchNo(researchNo);
+		
+		System.out.println(payment);
+		
+		boolean isPayment = cs.researchPayment(payment);
+		
+		mv.addObject("isPayment", isPayment);
+		mv.setViewName("jsonView");
+		return mv;
 	}
 }
