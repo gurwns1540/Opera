@@ -179,7 +179,7 @@
         M.MNO,  M.USER_NAME, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
         FROM MEMBER M
         JOIN PANEL P ON (P.MNO = M.MNO)
-		WHERE CERTIFICATION = 'Y'
+		WHERE CERTIFICATION = 'Y'researchPaymentApproved
 		AND PANELLEVEL_NO = 1
 		<include refid="newPanelSearchInputName"/>
 		ORDER BY ENT_DATE DESC
@@ -358,6 +358,11 @@
 	<insert id="insertConferenceHistory" parameterType="ResearchState">
 		INSERT INTO CONFERENCEHISTORY VALUES
 		(SEQ_CONFERENCEHISTORY.NEXTVAL, NULL, #{researchHistoryNo}, #{price})
+	</insert>
+	
+	<insert id="insertReferConferenceHistory" parameterType="ResearchState">
+		INSERT INTO CONFERENCEHISTORY VALUES
+		(SEQ_CONFERENCEHISTORY.NEXTVAL, #{referReason}, #{researchHistoryNo}, #{price})
 	</insert>
 	
 	<update id="updateResearchPrice" parameterType="ResearchState">

@@ -290,7 +290,7 @@
 			$('#research').modal('show');
 		});
 		$(".detail").on("click", function(){
-			var researchNoStr = $(this).parent().siblings().eq(0).text();
+			researchNoStr = $(this).parent().siblings().eq(0).text();
 			var researchState = $(this).parent().siblings().eq(4).text();
 			var companyName = $(this).parent().siblings().eq(1).text();
 			
@@ -342,10 +342,13 @@
 					}
 					
 					$("#priceTable").find("td").eq(0).text(comma(researchDetail.researchPrice) + " 원");
+					console.log(researchDetail.researchPrice + " " + researchDetail.conferencePrice)
+					researchPrice = researchDetail.researchPrice;
 					if(researchDetail.researchPrice == researchDetail.conferencePrice){
 						$("#priceTable").find("td").eq(1).text('-');
 					}else {
 						$("#priceTable").find("td").eq(1).text(comma(researchDetail.conferencePrice) + " 원");
+						conferencePrice = researchDetail.conferencePrice;
 					} 
 					$('#corp').modal('show'); 
 				},
@@ -383,11 +386,29 @@
 			  confirmButtonText: 'Yes'
 			}).then((result) => {
 			  if (result.value) {
-			    Swal.fire(
-			      '승인!',
-			      '금액 협상이 완료되었습니다.',
-			      'success'
-			    )
+				  $.ajax({
+						url:"researchPaymentApproved.adminResearch",
+						type:"post",
+						data:{
+							researchNoStr:researchNoStr,
+							conferencePriceStr:conferencePrice
+						},
+						success:function(data){
+							console.log(data);
+							Swal.fire(
+								'승인!',
+								'금액 협상이 완료되었습니다.',
+								'success'
+						    )
+							setTimeout(function(){
+							    location.reload();
+							},1500)
+						},
+						error:function(data){
+							console.log(data);					
+						}
+					})
+			    
 			  }else {
 				  $('#research').modal('show');
 			  }
@@ -397,14 +418,14 @@
 			const start = async function() {
 				const { value: text } = await Swal.fire({
 					  input: 'textarea',
-					  inputPlaceholder: '협상 금액을 적어주세요..',
+					  inputPlaceholder: '반려 사유를 적어주세요..',
 					  inputAttributes: {
 					    'aria-label': 'Type your message here'
 					  },
 					  showCancelButton: true,
 					  inputValidator: (value) => {
 					    if (!value) {
-					      return '협상 금액을 적어주세요!'
+					      return '반려 사유를 적어주세요!'
 					    }
 					  }
 				})
@@ -420,11 +441,30 @@
 					  confirmButtonText: 'Yes'
 					}).then((result) => {
 					  if (result.value) {
-						  Swal.fire(
-				      		'재 협상 신청!',
-				      		'금액 재 협상을 신청하였습니다.',
-				      		'success'
-				    		)
+						  $.ajax({
+								url:"researchPaymentRefer.adminResearch",
+								type:"post",
+								data:{
+									researchNoStr:researchNoStr,
+									researchPriceStr:researchPrice,
+									referReason:text
+								},
+								success:function(data){
+									console.log(data);
+									Swal.fire(
+							      		'협상 반려!',
+							      		'가격 협상을 반려하였습니다.',
+							      		'success'
+						    		)	
+									setTimeout(function(){
+									    location.reload();
+									},1500)
+								},
+								error:function(data){
+									console.log(data);					
+								}
+							})
+						 
 					  }else {
 						  $('#research').modal('show');
 					  }

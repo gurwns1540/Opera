@@ -23,6 +23,7 @@
 		<typeAlias type="com.opera.survway.panel.model.vo.ResearchAnswer" alias="PanelResearchAnswer"/>
 		<typeAlias type="com.opera.survway.corporation.model.vo.SearchResearch" alias="SearchResearch"/>
 		<typeAlias type="com.opera.survway.common.model.vo.ResearchState" alias="ResearchState"/>
+		<typeAlias type="com.opera.survway.corporation.model.vo.Payment" alias="Payment"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>

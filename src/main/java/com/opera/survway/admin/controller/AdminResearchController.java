@@ -17,6 +17,7 @@ import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.Util;
+import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.exception.SelectException;
 
 @Controller
@@ -114,75 +115,75 @@ public class AdminResearchController {
 			}
 		}else if(qCount > 10 && qCount <= 30) {
 			switch(engagementGoals) {
-			case 100:
-				price = engagementGoals * 5100;
-				break;
-			case 200:
-				price = engagementGoals * 4500;
-				break;
-			case 300:
-				price = engagementGoals * 3800;
-				break;
-			case 400:
-				price = engagementGoals * 3400;
-				break;
-			case 500:
-				price = engagementGoals * 2800;
-				break;
+				case 100:
+					price = engagementGoals * 5100;
+					break;
+				case 200:
+					price = engagementGoals * 4500;
+					break;
+				case 300:
+					price = engagementGoals * 3800;
+					break;
+				case 400:
+					price = engagementGoals * 3400;
+					break;
+				case 500:
+					price = engagementGoals * 2800;
+					break;
 			}
 		}else if(qCount > 30 && qCount <= 50) {
 			switch(engagementGoals) {
-			case 100:
-				price = engagementGoals * 6700;
-				break;
-			case 200:
-				price = engagementGoals * 5500;
-				break;
-			case 300:
-				price = engagementGoals * 4700;
-				break;
-			case 400:
-				price = engagementGoals * 4200;
-				break;
-			case 500:
-				price = engagementGoals * 3700;
-				break;
+				case 100:
+					price = engagementGoals * 6700;
+					break;
+				case 200:
+					price = engagementGoals * 5500;
+					break;
+				case 300:
+					price = engagementGoals * 4700;
+					break;
+				case 400:
+					price = engagementGoals * 4200;
+					break;
+				case 500:
+					price = engagementGoals * 3700;
+					break;
 			}
 		}else if(qCount > 50 && qCount <= 70) {
 			switch(engagementGoals) {
-			case 100:
-				price = engagementGoals * 8400;
-				break;
-			case 200:
-				price = engagementGoals * 7000;
-				break;
-			case 300:
-				price = engagementGoals * 6300;
-				break;
-			case 400:
-				price = engagementGoals * 5800;
-				break;
-			case 500:
-				price = engagementGoals * 4500;
-				break;
+				case 100:
+					price = engagementGoals * 8400;
+					break;
+				case 200:
+					price = engagementGoals * 7000;
+					break;
+				case 300:
+					price = engagementGoals * 6300;
+					break;
+				case 400:
+					price = engagementGoals * 5800;
+					break;
+				case 500:
+					price = engagementGoals * 4500;
+					break;
 			}
 		}else if(qCount > 70) {
 			switch(engagementGoals) {
-			case 100:
-				price = engagementGoals * 9400;
-				break;
-			case 200:
-				price = engagementGoals * 8000;
-				break;
-			case 300:
-				price = engagementGoals * 7300;
-				break;
-			case 400:
-				price = engagementGoals * 6500;
-				break;
-			case 500:
-				price = engagementGoals * 5700;
-				break;
+				case 100:
+					price = engagementGoals * 9400;
+					break;
+				case 200:
+					price = engagementGoals * 8000;
+					break;
+				case 300:
+					price = engagementGoals * 7300;
+					break;
+				case 400:
+					price = engagementGoals * 6500;
+					break;
+				case 500:
+					price = engagementGoals * 5700;
+					break;
 			}
 		}
 		
@@ -196,6 +197,12 @@ public class AdminResearchController {
 		return mv;
 	}
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 반려
+	 */
 	@PostMapping("researchRefer.adminResearch")
 	public ModelAndView researchRefer(ModelAndView mv, String researchNoStr, String referReason) {
 		int researchNo = Integer.parseInt(researchNoStr);
@@ -318,6 +325,51 @@ public class AdminResearchController {
 		List<Map<String, Object>> researchDetail = as.researchWaitPaymentDetail(researchNo);
 
 		mv.addObject("researchDetail", researchDetail);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 가격 협상 승인
+	 */
+	@PostMapping("researchPaymentApproved.adminResearch")
+	public ModelAndView researchPaymentApproved(ModelAndView mv, String researchNoStr, String conferencePriceStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		int conferencePrice = Integer.parseInt(conferencePriceStr);
+		
+		ResearchState researchState = new ResearchState();
+		researchState.setResearchNo(researchNo);
+		researchState.setPrice(conferencePrice);
+		
+		boolean isApproved = as.researchApproved(researchState);
+
+		mv.addObject("isApproved", isApproved);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 가격 협상 승인
+	 */
+	@PostMapping("researchPaymentRefer.adminResearch")
+	public ModelAndView researchPaymentRefer(ModelAndView mv, String researchNoStr, String researchPriceStr, String referReason) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		int researchPrice = Integer.parseInt(researchPriceStr);
+
+		ResearchState researchState = new ResearchState();
+		researchState.setResearchNo(researchNo);
+		researchState.setPrice(researchPrice);
+		researchState.setReferReason(referReason);
+		
+		boolean isRefer = as.researchPaymentRefer(researchState);
+		
+		mv.addObject("isRefer", isRefer);
 		mv.setViewName("jsonView");
 		return mv;
 	}

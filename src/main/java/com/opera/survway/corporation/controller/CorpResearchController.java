@@ -2,6 +2,7 @@ package com.opera.survway.corporation.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.corporation.model.vo.CorpMember;
+import com.opera.survway.corporation.model.vo.Payment;
 import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.common.model.vo.OperaFileNamePolicy;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -298,6 +300,36 @@ public class CorpResearchController {
 		boolean isConference = cs.priceConference(researchstate);
 		
 		mv.addObject("isConference", isConference);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 결제
+	 */
+	@PostMapping("researchPayment.corpResearch")
+	public ModelAndView researchPayment(ModelAndView mv, String paymentReason, String paymentAmountStr, String paymentDateStr, String mnoStr, String researchNoStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		int paymentAmount = Integer.parseInt(paymentAmountStr);
+		int mno = Integer.parseInt(mnoStr);
+		
+		Date paymentDate = Date.valueOf(paymentDateStr);
+		
+		Payment payment = new Payment();
+		payment.setMno(mno);
+		payment.setPaymentAmount(paymentAmount);
+		payment.setPaymentDate(paymentDate);
+		payment.setPaymentReason(paymentReason);
+		payment.setResearchNo(researchNo);
+		
+		System.out.println(payment);
+		
+		boolean isPayment = cs.researchPayment(payment);
+		
+		mv.addObject("isPayment", isPayment);
 		mv.setViewName("jsonView");
 		return mv;
 	}

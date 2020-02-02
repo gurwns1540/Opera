@@ -10,6 +10,7 @@ import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.CorpMember;
+import com.opera.survway.corporation.model.vo.Payment;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.corporation.model.vo.SearchResearch;
@@ -117,5 +118,15 @@ public class CorpDaoImpl implements CorpDao {
 	@Override
 	public int insertConferenceState(SqlSessionTemplate sqlSession, ResearchState researchstate) {
 		return sqlSession.insert("Corp.insertConferenceState", researchstate);
+	}
+
+	@Override
+	public int insertPayment(SqlSessionTemplate sqlSession, Payment payment) {
+		return sqlSession.insert("Corp.insertPayment", payment);
+	}
+
+	@Override
+	public int insertPaymentState(SqlSessionTemplate sqlSession, Payment payment) {
+		return sqlSession.insert("Corp.insertPaymentState", payment);
 	}
 }

@@ -185,13 +185,14 @@
 		<result property="additionaltEtc" column="ADDITIONAL_ETC"/>
 		<result property="referReason" column="RESEARCH_REFERREASON"/>
 		<result property="conferencePrice" column="CONFERENCE_PRICE"/>
+		<result property="conferenceContext" column="CONFERENCE_CONTEXT"/>
 	</resultMap>
 	<select id="previousResearchDetail" parameterType="_int" resultMap="previousResearchDetailResult">
 		SELECT R.RESEARCH_NO, R.RESEARCH_NAME, R.RESEARCH_ENGAGEMENT_GOALS, R.RESEARCH_PERIOD, R.MNO, 
 			   R.RESEARCH_PERPOSE, R.RESEARCH_REWARD, NVL(R.RESEARCH_PRICE, 0) AS RESEARCH_PRICE, 
 			   RS.RESEARCH_STATE, NVL2(BH.PAYMENT_AMOUNT, '결제 완료', '미결제') AS ISBILL,
 			   RT.TARGET_NO, RT.TARGET_GENDER, RT.TARGET_AGERANGE, RT.TARGET_LOCATION,
-			   O.OCCUPATION_NAME, RT.ADDITIONAL_ETC, RH.RESEARCH_REFERREASON, CH.CONFERENCE_PRICE
+			   O.OCCUPATION_NAME, RT.ADDITIONAL_ETC, RH.RESEARCH_REFERREASON, CH.CONFERENCE_PRICE, CH.CONFERENCE_CONTEXT
 		FROM RESEARCH R
 		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
 		      FROM RSTATUSHISTORY 
@@ -222,6 +223,16 @@
 	<insert id="insertConferenceHistory" parameterType="ResearchState">
 		INSERT INTO CONFERENCEHISTORY VALUES
 		(SEQ_CONFERENCEHISTORY.NEXTVAL, NULL, #{researchHistoryNo}, #{price})
+	</insert>
+	
+	<insert id="insertPayment" parameterType="Payment">
+		INSERT INTO BILLINGHISTORY VALUES
+		(SEQ_BILLINGHISTORY.NEXTVAL, #{paymentReason}, #{paymentAmount}, #{paymentDate}, #{mno}, #{researchNo})
+	</insert>
+	
+	<insert id="insertPaymentState" parameterType="Payment">
+		INSERT INTO RSTATUSHISTORY VALUES 
+		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 3, SYSDATE, NULL)
 	</insert>
 </mapper>
 

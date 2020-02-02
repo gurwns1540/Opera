@@ -8,6 +8,8 @@
 <meta charset="UTF-8">
 <link rel="icon" href="resources/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <style>
 
 	#listArea {
@@ -103,7 +105,7 @@
 		color: #B4B4B4 !important;
 		border: 1px solid #B4B4B4 !important;
 	}
-	input[type=button]:focus {
+	input[type=button]:focus, textarea:focus {
 		outline: none;
 	}
 	.swal2-input[type=number] {
@@ -378,6 +380,12 @@
 							<th><div class="thDiv">현재 가격</div></th>
 							<td><fmt:formatNumber value="${ research.researchPrice }"/> 원</td>
 						</tr>
+						<c:if test="${ !empty research.conferenceContext }">
+							<tr>
+								<th><div class="thDiv">가격 협상 반려사유</div></th>
+								<td><textarea readonly style="width: 90%; height: 70px; background: none; border: 0; resize: none; margin-top: 15px; margin-bottom: 15px;">${research.conferenceContext}</textarea></td>
+							</tr>
+						</c:if>
 						<tr>
 							<th colspan="2">
 								<div style="width: 40%; margin: 0px auto;">
@@ -428,8 +436,7 @@
 		});
 		
 		$(document).on("click", "#payment", function(){
-			console.log("하하");
-			// 결제 api쓸 예정
+			payment();
 		});
 		researchNo = ${research.researchNo}
 		$(document).on("click", "#priceConference", function(){
@@ -488,7 +495,94 @@
 			}
 			start();
 		});
+		
 	</script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
+	
+	<c:if test="${ !empty sessionScope.loginUser }">
+		<script>
+		function payment(){
+			var address = '${sessionScope.loginUser.userAddress}';
+			var passphrase = "1234";
+	        var decrypted1 = CryptoJS.AES.decrypt(address, passphrase);
+	        var address1 = decrypted1.toString(CryptoJS.enc.Utf8);
+	        
+			var phone = '${sessionScope.loginUser.userPhone}';
+			var passphrase = "1234";
+	        var decrypted1 = CryptoJS.AES.decrypt(phone, passphrase);
+	        var phone1 = decrypted1.toString(CryptoJS.enc.Utf8);
+	        
+	        var IMP = window.IMP;
+	        IMP.init('imp67558772');
+	        var today = new Date();
+	        var todayStr = today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
+	        var month = 
+	        IMP.request_pay({
+	            pg : 'inicis', // version 1.1.0부터 지원.
+	            pay_method : 'card',
+	            merchant_uid : 'merchant_' + new Date().getTime(),
+	            name : '리서치 결제',
+	            amount : '100', //판매 가격
+	            buyer_email : '${sessionScope.loginUser.userEmail}',
+	            buyer_name : '${sessionScope.loginUser.companyName}',
+	            buyer_tel : phone1,
+	            app_scheme : '${contextPath}/previousResearchMain.corpResearch'
+	            /* buyer_addr : '서울특별시 강남구 삼성동', // 주소
+	            buyer_postcode : '123-456', //우편번호 */
+	        }, function(rsp) {
+	            if (rsp.success) { //결제 성고했을때의 로직
+					var msg = '결제가 완료되었습니다.\n';
+					msg += '고유ID : ' + rsp.imp_uid+"\n";
+					msg += '상점 거래ID : ' + rsp.merchant_uid+"\n";
+					msg += '결제 금액 : ' + rsp.paid_amount+"\n";
+					msg += '주문명 : ' + rsp.name+"\n";
+					msg += '결제상태 : ' + rsp.status+"\n";
+					msg += '카드 승인번호 : ' + rsp.apply_num+"\n"; // 승인번호 (신용카드결제 한에서)
+					msg += '주문자이름 : ' + rsp.buyer_name+"\n";
+					msg += '주문자email : ' + rsp.buyer_email+"\n";
+					msg += '주문자 연락처 : ' + rsp.buyer_tel+"\n";
+					msg += '결제승인시각  : ' + rsp.paid_at+"\n";
+					msg += '거래 매출전표 : ' + rsp.receipt_url+"\n";
+					
+					var result = { 
+					      paymentReason:rsp.name, //주문명
+					      paymentAmountStr:'${research.researchPrice}', // 주문 가격
+					      paymentDateStr:todayStr, // 주문 날짜
+					      mnoStr:'${ sessionScope.loginUser.mno }', //주문자 회원번호
+					      researchNoStr:researchNo
+	              	};
+	               
+	              	console.log(result);   
+	               
+					$.ajax({
+					    url:"researchPayment.corpResearch",
+						data :result,
+						type: "post",
+						success:function(data){
+				   			Swal.fire(
+					      		'결제 완료!',
+					      		'해당 리서치에 대한 결제가 완료되었습니다!',
+					      		'success'
+					    	)
+					    	setTimeout(function(){
+							    location.reload();
+							},1500)
+				         },
+				         error:function(data){
+				            console.log("실패!");
+				         }
+			      });
+			   } else { //결제 실패시 로직
+			      var msg = '결제에 실패하였습니다.';
+			      msg += '에러내용 : ' + rsp.error_msg;
+			      alert(msg);
+			   }
+			});
+      	}
+	</script>
+	</c:if>
 
 </body>
 </html>

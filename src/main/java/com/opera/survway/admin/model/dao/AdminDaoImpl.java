@@ -12,6 +12,7 @@ import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
+import com.opera.survway.corporation.model.vo.Research;
 
 @Repository
 public class AdminDaoImpl implements AdminDao{
@@ -22,7 +23,7 @@ public class AdminDaoImpl implements AdminDao{
 		
 		listCount = sqlSession.selectOne("Admin.getListCountPanel", searchMember);
 		
-		return listCount;
+		return listCount; 
 	}
 	
 	@Override
@@ -196,6 +197,11 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<Map<String, Object>> researchWaitPaymentDetail(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.selectList("Admin.researchWaitPaymentDetail", researchNo);
+	}
+
+	@Override
+	public int insertReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.insertReferConferenceHistory", researchState);
 	}
 
 }
