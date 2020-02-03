@@ -203,7 +203,8 @@
 						<c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
 						<c:forEach var="list" items="${ researchList }" varStatus="status">
 								<div class="column">
-									<div class="ui segment cards eachSurveyBox"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
+								
+									<div class="ui segment cards eachSurveyBox clickSurvey"> <!-- 설문조사 시작 페이지로 넘어갈때 이 div영역에 링크걸면됩니다. -->
 										<div class="eachBox" style="width: 100%;">
 											<div class="top">
 												<table style="width: 100%;">
@@ -261,7 +262,7 @@
 					<button class="ui blue button" style="float:right; margin-top:20px;" onclick="location.href='panelMain.panel'">메인으로</button>
 				</c:if>
 				
-				<c:if test="${ pi.maxPage ne 1 }">
+				<c:if test="${ pi.maxPage != 0 } or ${ pi.maxPage != 1 }">
 					<div id="pagingArea" align="center">
 					
 						<c:url var="surveyListFirst" value="surveyList.survey">
@@ -320,9 +321,9 @@
 								<c:if test="${ sessionScope.loginUser.panellevelNo eq 1 }">
 									<span style="font-size:35px; color:#00679A;">TS 조사 참여 가이드</span>
 								</c:if>
-								<%-- <c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
+								<c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
 									<span style="font-size:35px; color:#00679A;">조사 참여 가이드</span>
-								</c:if> --%>
+								</c:if>
 							</div>
 							<table style="margin:0 auto; width: 72%;">
 								<tr>
@@ -343,7 +344,7 @@
 							<div class="actions" style="text-align:center; margin-top:40px;">
 								<button class="ui blue button" id="goSurveyBtn" style="border-radius:2px; font-size:1.2vw;">조사  참여하기 <i class="right chevron icon"></i></button>
 							</div>
-							<div style="margin-top:60px; height:${ qCount }0px; background-color:#EAEAEA;">
+							<div style="margin-top:60px; height:140px; background-color:#EAEAEA;">
 								<table style="width:100%; height:100%;">
 									<tr>
 										<td colspan="2" style="width:100%; height:10%;"></td>
@@ -416,7 +417,7 @@
 							</c:if>
 							<c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
 								<span style="line-height:180%; font-size:1.1vw;">
-									<b>${ sessionScope.loginUser.userName }</b>님, 안녕하세요.<br><br>본 조사의 예상 소요시간은 n분이며, 조사 목적 또는 패널님의 응답 퀄리티에 따라 000~000P의 리워드를 받으실 수 있습니다.<br><br>설문 답변 소요시간이 (문항수*5초) 미만인 경우 또는 (n*2)분을 초과하는 경우,<br>답변의 질에 상관 없이 최저 리워드를 드리니 시간을 엄수하여 주시기 바랍니다.
+									<b>${ sessionScope.loginUser.userName }</b>님, 안녕하세요.<br><br>본 조사의 예상 소요시간은 ${ time }분이며, 조사 목적 또는 패널님의 응답 퀄리티에 따라${ reward }의 리워드를 받으실 수 있습니다.<br><br>설문 답변 소요시간이 ${ time/2 }분 미만인 경우 또는 ${ time*2 }분을 초과하는 경우,<br>답변에 상관 없이 최저 리워드를 드리니 시간을 엄수하여 주시기 바랍니다.
 								</span>
 							</c:if>
 							</div>
@@ -737,7 +738,7 @@
 							</c:if>
 							<c:if test="${ sessionScope.loginUser.panellevelNo ne 1 }">
 								<span style="line-height:180%; font-size:1.1vw;">
-									<b>${ sessionScope.loginUser.userName }</b>님, 안녕하세요.<br><br>본 조사의 예상 소요시간은 n분이며, 조사 목적 또는 패널님의 응답 퀄리티에 따라 000~000P의 리워드를 받으실 수 있습니다.<br><br>설문 답변 소요시간이 (문항수*5초) 미만인 경우 또는 (n*2)분을 초과하는 경우,<br>답변의 질에 상관 없이 최저 리워드를 드리니 시간을 엄수하여 주시기 바랍니다.
+									<b>${ sessionScope.loginUser.userName }</b>님, 안녕하세요.<br><br>본 조사의 예상 소요시간은 n분이며, 조사 목적 또는 패널님의 응답 퀄리티에 따라 000P의 리워드를 받으실 수 있습니다.<br><br>설문 답변 소요시간이 ${ time/2 }분 미만인 경우 또는 n분을 초과하는 경우,<br>답변의 질에 상관 없이 최저 리워드를 드리니 시간을 엄수하여 주시기 바랍니다.
 								</span>
 							</c:if>
 							</div>
@@ -760,18 +761,19 @@
 			
 			<script>
 				
-				/* 설문조사목록에서 TS조사 클릭하면 조사시작 모달창 띄우기 */
+				//설문조사목록에서 TS조사 클릭하면 조사시작 모달창 띄우기 
 				$(document).on('click', '#thanksSurvey',function(){
 					$('#surveyStart').modal('setting', 'closable', false).modal('show');
 				});
 				
-				/* 설문조사가이드 모달창에서 조사시작버튼누르면 설문조사설명모달창으로 넘기기 */
+				
+				//설문조사가이드 모달창에서 조사시작버튼누르면 설문조사설명모달창으로 넘기기 
 				$('#goSurveyBtn').on('click', function(){
 					$('#Q0').modal('setting', 'closable', false).modal('show');
 					$('#surveyStart').modal('hide');
 				});
 				
-				/* 설문조사 모달창 next누르면 현재창 숨기고 다음창 띄우기 */
+				//설문조사 모달창 next누르면 현재창 숨기고 다음창 띄우기 
 				$(".modal").find(".button").each(function(i, e){
 					
 					var btn = 'nextBtn'+i;
@@ -791,6 +793,68 @@
 					console.log(pct);
 					$(this).css('width', pct);
 				});
+				
+				var responses = [];
+				
+				//일반설문조사 목록 클릭 시 설문조사 모달창 시작
+				$(".clickSurvey").on("click", function(){
+					var researchNo = $(this).find(".top-left").children().eq(1).text();
+					var reward = $(this).find(".bottom-top").children().eq(0).text();
+					$.ajax({
+						url:"selectResearchQuestions.survey",
+						type:"post",
+						data:{
+								researchNo:researchNo,
+								reward:reward
+							 },
+						success:function(data){
+							
+							var rquestionList = data.researchQuestionList;
+							console.log(rquestionList);
+							
+							$('#surveyStart').modal('setting', 'closable', false).modal('show');
+						},
+						error:function(status){
+							console.log(status);
+						}
+					});
+				});
+				
+				
+				/* $(".detail").on("click", function(){
+					var mno = $(this).parent().siblings().eq(0).text();
+		
+					$.ajax({
+						url:"selectNewPanel.memberManagement",
+						type:"post",
+						data:{mno:mno},
+						success:function(data){
+							var encodedAddress = data.newPanel.userAddress;
+							var passphrase = "1234";
+					        var decrypted1 = CryptoJS.AES.decrypt(encodedAddress, passphrase);
+					        var decodedAddress = decrypted1.toString(CryptoJS.enc.Utf8);
+					        
+					        var encodedPhone = data.newPanel.userPhone;
+					        var decrypted1 = CryptoJS.AES.decrypt(encodedPhone, passphrase);
+					        var decodedPhone = decrypted1.toString(CryptoJS.enc.Utf8);
+					        
+					        $("#panel td").eq(0).text(data.newPanel.mno);
+							$("#panel td").eq(1).text(data.newPanel.userName);
+							$("#panel td").eq(2).text(data.newPanel.userId);
+							$("#panel td").eq(3).text(data.newPanel.panelBirthday);
+							$("#panel td").eq(4).text((data.newPanel.panelGender == 'M')? "남성" : "여성");
+							$("#panel td").eq(5).text(decodedPhone);
+							$("#panel td").eq(6).text(data.newPanel.userEmail);
+							$("#panel td").eq(7).html(decodedAddress.split("/")[0] + "   " + decodedAddress.split("/")[1] + "<br><br>" + decodedAddress.split("/")[2]);
+							$('#panel').modal('show');
+							
+						},
+						error:function(status){
+							console.log(status);
+						}
+					});
+					
+				}); */
 				
 			</script>
 		</div>

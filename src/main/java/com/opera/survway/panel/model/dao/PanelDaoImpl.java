@@ -266,5 +266,24 @@ public class PanelDaoImpl implements PanelDao{
 		return myResearchList;
 	}
 
+	@Override
+	public List<ResearchQuestion> getResearchQuestionList(SqlSessionTemplate sqlSession, String researchNo) throws SelectException {
+		List<ResearchQuestion> researchQuestions = null;
+		researchQuestions = sqlSession.selectList("Panel.selectResearchQuestionList", researchNo);
+		if(researchQuestions == null) {
+			throw new SelectException("설문조사 문항 리스트 불러오기 실패");
+		}
+		return researchQuestions;
+	}
+
+	@Override
+	public List<ResearchChoice> getResearchChoiceList(SqlSessionTemplate sqlSession, int rquestionNo) throws SelectException {
+		List<ResearchChoice> researchChoices = null;
+		researchChoices = sqlSession.selectList("Panel.selectResearchChoiceList", rquestionNo);
+		if(researchChoices == null) {
+			throw new SelectException("TS조사 문항별 보기 리스트 불러오기 실패");
+		}
+		return researchChoices;
+	}
 	
 }

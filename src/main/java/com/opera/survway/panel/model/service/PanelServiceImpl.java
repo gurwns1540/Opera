@@ -395,4 +395,28 @@ public class PanelServiceImpl implements PanelService {
 		myResearchList = pd.getMyResearchList(sqlSession, loginUser, pi);
 		return myResearchList;
 	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 3.
+	 * @ModifyDate  : 2020. 2. 3.
+	 * @Description : 설문조사 목록 중 선택한 설문조사에 대한 문제 및 보기 리스트 조회
+	 */
+	@Override
+	public List<ResearchQuestion> getResearchQuestionList(String researchNo) throws SelectException {
+		
+		//TS문제 정보들 받아와서 ResearchQuestion 리스트에 담기
+		List<ResearchQuestion> researchQuestions = null;
+		researchQuestions = pd.getResearchQuestionList(sqlSession, researchNo);
+		
+		//반복문으로 rquestionNo 하나씩 보내서 해당 choice들 조회해와서 ResearchChoice 어레이리스트에 담고 이걸 setter로 ResearchQuestion객체에 담기
+		List<ResearchChoice> researchChoices = null;
+		for(int i=0; i<researchQuestions.size(); i++) {
+			researchChoices = pd.getResearchChoiceList(sqlSession, researchQuestions.get(i).getRquestionNo());
+			researchQuestions.get(i).setChoiceList(researchChoices);
+		}
+		return researchQuestions;
+	}
 }
+
