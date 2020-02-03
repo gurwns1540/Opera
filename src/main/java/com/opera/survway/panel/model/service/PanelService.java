@@ -62,4 +62,6 @@ public interface PanelService {
 
 	List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi);
 
+	List<ResearchQuestion> getResearchQuestionList(String researchNo) throws SelectException;
+
 }
