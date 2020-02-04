@@ -2,6 +2,8 @@ package com.opera.survway.panel.model.service;
 
 import java.util.List;
 
+import org.springframework.web.servlet.ModelAndView;
+
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
@@ -63,5 +65,16 @@ public interface PanelService {
 	List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi);
 
 	List<ResearchQuestion> getResearchQuestionList(String researchNo) throws SelectException;
+
+	int writeNotice(Notice n);
+
+	int editNotice(Notice n);
+
+	Notice selectNotice(int parseInt);
+
+	int noticeDelete(int parseInt);
+
+
+
 
 }

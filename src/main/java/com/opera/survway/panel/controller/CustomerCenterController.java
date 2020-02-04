@@ -3,6 +3,7 @@ package com.opera.survway.panel.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.print.attribute.standard.PDLOverrideSupported;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
@@ -56,13 +59,11 @@ public class CustomerCenterController {
 				searchValue=queryMap.get("searchValue").get(0);
 				searchNotice.setSearchValue(searchValue);
 				
-				System.out.println(searchValue);
 			}
 		}
 		int listCount =0;
 		try {
 			listCount = ps.getNoticeListCount(searchNotice);
-			System.out.println(listCount);
 			
 			PageInfo pi =Pagination.getPageInfo(currentPage, listCount);
 			
@@ -70,7 +71,6 @@ public class CustomerCenterController {
 			
 			List<Notice> noticeList = ps.selectNoticeList(searchNotice);
 			
-			System.out.println(noticeList);
 			model.addAttribute("noticeList",noticeList);
 			model.addAttribute("pi",pi);
 			return "notice";
@@ -165,5 +165,53 @@ public class CustomerCenterController {
 
        return "panelInquiryList";
     }
+    
+    
+    
+    
+    /**
+     * @Author      : hjheo
+     * @CreateDate  : 2020. 2. 5.
+     * @ModifyDate  : 2020. 2. 5.
+     * @Description :  공지사항 작성
+     */
+    @PostMapping("noticeWrite.customerCenter")
+    public ModelAndView writeNotice(ModelAndView mv,Notice n) {
+    	int result =ps.writeNotice(n);
+    	//여기서 담아서 ajax한테 보냄
+    	mv.addObject("result",result);
+    	mv.setViewName("jsonView");
+    	return mv;
+    }
+    
+    
+    @PostMapping("noticeEdit.customerCenter")
+    public ModelAndView editNotice(ModelAndView mv, Notice n) {
+		
+		  int result =ps.editNotice(n);
+		  mv.addObject("result",result); mv.setViewName("jsonView");
+		 
+    	
+    	System.out.println(n);
+    	return mv;
+    }
 
+    @PostMapping("selectNotice.customerCenter")
+    public ModelAndView selectNotice(ModelAndView mv, String noticeNo) {
+    	
+    	Notice n = ps.selectNotice(Integer.parseInt(noticeNo));
+    	mv.addObject("n",n);
+    	mv.setViewName("jsonView");
+    	return mv;
+    }
+    
+    
+    @PostMapping("noticeDelete.customerCenter")
+    public ModelAndView noticeDelete(ModelAndView mv,String noticeNo) {
+    	int result=ps.noticeDelete(Integer.parseInt(noticeNo));
+    	
+    	mv.addObject("result",result);
+    	mv.setViewName("jsonView");
+    	return mv;
+    }
 }

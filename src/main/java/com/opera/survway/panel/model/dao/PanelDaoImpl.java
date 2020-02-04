@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
@@ -285,5 +286,30 @@ public class PanelDaoImpl implements PanelDao{
 		}
 		return researchChoices;
 	}
+
+	@Override
+	public int insert(String string, Notice n, SqlSessionTemplate session) {
+		
+		return session.insert("Panel.writeNotice",n);
+	}
+
+	@Override
+	public Notice selectNotice(int noticeNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Panel.selectNotice",noticeNo);
+	}
+
+	@Override
+	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
+		return sqlSession.update("Panel.updateNotice",n);
+	}
+
+	@Override
+	public int noticeDelete(int noticeNo, SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.update("Panel.noticeDelete",noticeNo);
+	}
+
+	
+	
 	
 }
