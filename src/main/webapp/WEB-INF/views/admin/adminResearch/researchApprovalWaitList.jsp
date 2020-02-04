@@ -194,6 +194,9 @@
 	.questionVideo {
 		margin-bottom: 65px;
 	}
+	input[type=text]:focus{
+		outline: none;
+	}
 </style>
 </head>
 <body>
@@ -431,7 +434,8 @@
 							$question.append($mediaExplain);
 						}else {
 							if(questionList[i].mediaExplain != null && questionList[i].mediaExplain != ""){
-								$questionVideo = $('<div class="questionVideo"><iframe style="width: 100%;" src="https://www.youtube.com/embed/bwWYkChr3Qg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
+								var video = questionList[i].questionVideoLink.substr(questionList[i].questionVideoLink.lastIndexOf("/", questionList[i].questionVideoLink.length), 12);
+								$questionVideo = $('<div class="questionVideo"><iframe style="width: 100%;" src="https://www.youtube.com/embed' + video + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
 								$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div>');
 								$question.append($questionVideo);
 								$question.append($mediaExplain);

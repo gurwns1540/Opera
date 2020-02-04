@@ -78,12 +78,14 @@
 	#pagingArea span {
 		margin-left: 5px;
 		margin-right: 5px;
+		color: black;
 		font-size: 10pt;
 	}
 	#pagingArea span:hover {
 		margin-left: 5px;
 		margin-right: 5px;
 		font-size: 10pt;
+		color: dodgerblue;
 		cursor: pointer;
 	}
 	.detail {
@@ -117,7 +119,7 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='researchApprovalWaitList.adminResearch'">미처리 목록</button>
+						<button onclick="location.href='researchReferList.adminResearch'">미처리 목록</button>
 						<button onclick="location.href='researchReferList.adminResearch'" id="clickBtn">반려 목록</button>
 					</div>
 				</td>
@@ -161,13 +163,48 @@
 			</c:forEach>
 		</table>
 		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
+			<c:url var="researchFirst" value="researchReferList.adminResearch">
+				<c:param name="currentPage" value="${1}"/>
+			</c:url>
+			<a href="${researchFirst}"><span>[처음]</span></a>&nbsp;
+			
+			<c:if test="${pi.currentPage <= 1}">
+				<span>[이전]</span> &nbsp;
+			</c:if>
+			<c:if test="${pi.currentPage > 1}">
+				<c:url var="researchBack" value="researchReferList.adminResearch">
+					<c:param name="currentPage" value="${pi.currentPage - 1}"/>
+				</c:url>
+				<a href="${researchBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+			
+			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+				<c:if test="${p eq pi.currentPage }">
+					<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+				</c:if>
+				<c:if test="${p ne pi.currentPage }">
+					<c:url var="researchCheck" value="researchReferList.adminResearch">
+						<c:param name="currentPage" value="${ p }"/>
+					</c:url>
+					<a href="${ researchCheck }"><span>${ p }</span></a>
+				</c:if>
+				
 			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
+			
+			<c:if test="${pi.currentPage < pi.maxPage}">
+				<c:url var="researchNext" value="researchReferList.adminResearch">
+					<c:param name="currentPage" value="${pi.currentPage + 1}"/>
+				</c:url>
+				&nbsp;<a href="${researchNext}"><span>[다음]</span></a>
+			</c:if>
+			<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+			</c:if>
+			
+			<c:url var="researchEnd" value="researchReferList.adminResearch">
+				<c:param name="currentPage" value="${pi.maxPage}"/>
+			</c:url>
+			<a href="${researchEnd}"><span>[마지막]</span></a>&nbsp;
 		</div>
 	</div>
 	<div class="ui modal">

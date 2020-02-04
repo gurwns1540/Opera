@@ -153,7 +153,7 @@ public class CorpResearchController {
 				}
 			}
 			if(Integer.parseInt(questionFormNo[i]) != 2 && Integer.parseInt(questionFormNo[i]) != 4){
-				System.out.println("Integer.parseInt(questionFormNo[i]) : " + Integer.parseInt(questionFormNo[i]));
+				
 				for(int j = choiceIndex; j < choiceNo.length; j++) {
 					ResearchChoice researchChoice = new ResearchChoice();
 					researchChoice.setChoiceOrder(Integer.parseInt(choiceNo[j]));

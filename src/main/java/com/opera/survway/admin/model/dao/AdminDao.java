@@ -11,6 +11,8 @@ import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.corporation.model.vo.ResearchChoice;
+import com.opera.survway.corporation.model.vo.ResearchQuestion;
 
 public interface AdminDao {
 
@@ -67,5 +69,31 @@ public interface AdminDao {
 	List<Map<String, Object>> researchWaitPaymentDetail(SqlSessionTemplate sqlSession, int researchNo);
 
 	int insertReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState);
+
+	int getListCountPaymentCompletedList(SqlSessionTemplate sqlSession);
+
+	List<Map<String, String>> paymentCompletedList(SqlSessionTemplate sqlSession, PageInfo pi);
+
+	List<Map<String, String>> billsDetail(SqlSessionTemplate sqlSession, int billingHistoryNo);
+
+	int getListCountSurveyReconstructionList(SqlSessionTemplate sqlSession);
+
+	List<Map<String, String>> surveyReconstructionList(SqlSessionTemplate sqlSession, PageInfo pi);
+
+	int deleteDiscriminationChoice(SqlSessionTemplate sqlSession, Research research);
+
+	int deleteDiscriminationQuestion(SqlSessionTemplate sqlSession, Research research);
+
+	int reconstruction(SqlSessionTemplate sqlSession, ResearchQuestion researchQuestion);
+
+	int insertDiscriminationQuestion(SqlSessionTemplate sqlSession, ResearchQuestion researchQuestion);
+
+	int insertDiscriminationChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice);
+
+	int researchReconstruction(SqlSessionTemplate sqlSession, ResearchState researchState);
+
+	int updateResearchNamePanel(SqlSessionTemplate sqlSession, Research research);
+
+	List<Map<String, Object>> discriminationDetail(SqlSessionTemplate sqlSession, int researchNo);
 
 }

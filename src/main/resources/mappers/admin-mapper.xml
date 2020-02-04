@@ -434,6 +434,145 @@
 		WHERE RESEARCH_STATE_NO IN (2, 10)
         AND R.RESEARCH_NO = #{researchNo}
 	</select>
+	
+	<select id="getListCountPaymentCompletedList" resultType="_int">
+		SELECT COUNT(*)
+		FROM BILLINGHISTORY
+	</select>
+	
+	<resultMap type="map" id="paymentCompletedMap">
+		<result property="billingHistoryNo" column="BILLINGHISTORY_NO"/>
+		<result property="paymentReason" column="PAYMENT_REASON"/>
+		<result property="paymentAmount" column="PAYMENT_AMOUNT"/>
+		<result property="paymentDate" column="PAYMENT_DATE"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+	</resultMap>
+	<select id="paymentCompletedList" resultMap="paymentCompletedMap">
+		SELECT BH.BILLINGHISTORY_NO, BH.PAYMENT_REASON, R.RESEARCH_NAME,PAYMENT_AMOUNT, TO_CHAR(PAYMENT_DATE, 'YYYY-MM-DD') PAYMENT_DATE, BH.RESEARCH_NO, C.COMPANY_NAME
+		FROM BILLINGHISTORY BH
+		JOIN CORP C ON(C.MNO = BH.MNO)
+		JOIN RESEARCH R ON(R.RESEARCH_NO = BH.RESEARCH_NO)
+		ORDER BY BILLINGHISTORY_NO DESC
+	</select>
+	
+	<resultMap type="map" id="billsDetailMap">
+		<result property="qCount" column="QCOUNT"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="paymentAmount" column="PAYMENT_AMOUNT"/>
+	</resultMap>
+	
+	<select id="billsDetail" parameterType="_int" resultMap="billsDetailMap">
+		SELECT COUNT(*) QCOUNT, R.RESEARCH_NO, R.RESEARCH_ENGAGEMENT_GOALS, BH.PAYMENT_AMOUNT
+		FROM RESEARCH R
+		JOIN BILLINGHISTORY BH ON(BH.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN RESEARCHQUESTION RQ ON(RQ.RESEARCH_NO = R.RESEARCH_NO)
+		WHERE BH.BILLINGHISTORY_NO = #{billingHistoryNo}
+		GROUP BY R.RESEARCH_NO, R.RESEARCH_ENGAGEMENT_GOALS, BH.PAYMENT_AMOUNT
+	</select>
+	
+	<select id="getListCountSurveyReconstructionList" resultType="_int"> 
+		SELECT COUNT(*)
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+        JOIN RESEARCHSTATE RS ON (RH.RESEARCH_STATE_NO = RS.RESEARCH_STATE_NO)
+		WHERE RS.RESEARCH_STATE_NO = 3
+	</select>
+	
+	<resultMap type="map" id="surveyReconstructionMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="changeDate" column="RESEARCH_CHANGEDATE"/>
+		<result property="researchState" column="RESEARCH_STATE"/>
+	</resultMap>
+	
+	<select id="surveyReconstructionList" resultMap="surveyReconstructionMap">
+		SELECT R.RESEARCH_NO, C.COMPANY_NAME, R.RESEARCH_NAME, TO_CHAR(RH.RESEARCH_CHANGEDATE, 'YYYY-MM-DD') RESEARCH_CHANGEDATE, RS.RESEARCH_STATE
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+        JOIN RESEARCHSTATE RS ON (RH.RESEARCH_STATE_NO = RS.RESEARCH_STATE_NO)
+		WHERE RS.RESEARCH_STATE_NO IN (3, 4)
+	</select>
+	
+	<delete id="deleteDiscriminationChoice" parameterType="CorpResearch">
+		DELETE FROM DISCRIMINATIONCHOICE
+		WHERE DISCRIMINATION_QUESTIONNO IN (SELECT DISCRIMINATION_QUESTIONNO FROM DISCRIMINATIONQUESTION WHERE RESEARCH_NO = #{researchNo})
+	</delete>
+	
+	<delete id="deleteDiscriminationQuestion" parameterType="CorpResearch">
+		DELETE FROM DISCRIMINATIONQUESTION
+		WHERE RESEARCH_NO = #{researchNo}
+	</delete>
+	
+	<update id="reconstruction" parameterType="ResearchQuestion">
+		UPDATE RESEARCHQUESTION SET
+		RQUESTION_CONTEXT = #{rquestionContext}
+		WHERE RESEARCH_NO = #{researchNo}
+		AND RESEARCH_ORDER = #{questionOrder}
+	</update>
+	
+	<insert id="insertDiscriminationQuestion" parameterType="ResearchQuestion">
+		INSERT INTO DISCRIMINATIONQUESTION VALUES
+		(SEQ_DISCRIMINATIONQUESTION.NEXTVAL, #{rquestionContext}, #{questionOrder}, #{researchNo}, #{questionFormNo})
+		<selectKey keyProperty="questionNo" resultType="_int" order="AFTER">
+			SELECT SEQ_DISCRIMINATIONQUESTION.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertDiscriminationChoice" parameterType="ResearchChoice">
+		INSERT INTO DISCRIMINATIONCHOICE VALUES
+		(SEQ_DISCRIMINATIONCHOICE.NEXTVAL, #{choiceContext}, #{choiceOrder}, #{rquestionNo})
+	</insert>
+	
+	<insert id="researchReconstruction" parameterType="ResearchState">
+		INSERT INTO RSTATUSHISTORY VALUES
+		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 4, SYSDATE, NULL)
+		<selectKey keyProperty="researchHistoryNo" resultType="_int" order="AFTER">
+			SELECT SEQ_RSTATUSHISTORY.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<update id="updateResearchNamePanel" parameterType="CorpResearch">
+		UPDATE RESEARCH SET
+		RESEARCH_NAME_PANEL = #{researchName}
+		WHERE RESEARCH_NO = #{researchNo}
+	</update>
+	
+		<resultMap type="map" id="discriminationDetailMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<collection property="questionList" column="RESEARCH_NO" ofType="ResearchQuestion" javaType="java.util.List">
+			<result property="questionNo" column="DISCRIMINATION_QUESTIONNO"/>
+			<result property="rquestionContext" column="DISCRIMINATION_QUESTIONTITLE"/>
+			<result property="questionOrder" column="DISCRIMINATION_QUESTIONORDER"/>
+			<result property="correctAnswer" column="CORRECT_ANSWER"/>
+			<collection property="requestChoiceList" column="DISCRIMINATION_QUESTIONNO" ofType="ResearchChoice" javaType="java.util.List">
+				<result property="choiceNo" column="DISCRIMINATION_CHOICENO"/>
+				<result property="choiceOrder" column="DISCRIMINATION_CHOICEORDER"/>
+				<result property="choiceContext" column="DISCRIMINATION_CHOICECONTEXT"/>
+			</collection>
+		</collection>
+	</resultMap>
+	
+	<select id="discriminationDetail" parameterType="_int" resultMap="discriminationDetailMap">
+		SELECT *
+		FROM RESEARCH R
+		JOIN DISCRIMINATIONQUESTION DQ ON (R.RESEARCH_NO = DQ.RESEARCH_NO)
+		JOIN DISCRIMINATIONCHOICE DC ON (DQ.DISCRIMINATION_QUESTIONNO = DC.DISCRIMINATION_QUESTIONNO)
+		WHERE R.RESEARCH_NO = #{researchNo}
+		ORDER BY DQ.DISCRIMINATION_QUESTIONNO ASC, DC.DISCRIMINATION_CHOICENO ASC 
+	</select>
 </mapper>
 
 

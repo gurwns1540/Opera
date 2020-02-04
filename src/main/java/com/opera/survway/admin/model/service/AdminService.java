@@ -1,5 +1,6 @@
 package com.opera.survway.admin.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
 
 @Service
@@ -60,5 +62,19 @@ public interface AdminService {
 	List<Map<String, Object>> researchWaitPaymentDetail(int researchNo);
 
 	boolean researchPaymentRefer(ResearchState researchState);
+
+	int getListCountPaymentCompletedList() throws SelectException;
+
+	List<Map<String, String>> paymentCompletedList(PageInfo pi) throws SelectException;
+
+	List<Map<String, String>> billsDetail(int billingHistoryNo);
+
+	int getListCountSurveyReconstructionList() throws SelectException;
+
+	List<Map<String, String>> surveyReconstructionList(PageInfo pi) throws SelectException;
+
+	boolean reconstruction(Research research, ArrayList<ResearchQuestion> questionList);
+
+	List<Map<String, Object>> discriminationDetail(int researchNo);
 
 }

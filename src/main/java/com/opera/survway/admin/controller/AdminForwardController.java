@@ -17,13 +17,7 @@ public class AdminForwardController {
 	public String forwardNewPanelManagement() {
 		return "memberManagement/newPanelManagement";
 	}
-	
-	//서베이 문항 재구성 대기문항
-	@RequestMapping("serveyReconstructionList.admin")
-	public String forwardSurveyReconstructionList() {
-		return "adminResearch/surveyReconstructionList";
-	}
-	
+
 	//단체 메일링 대기 목록
 	@RequestMapping("groupMailingWaitingList.admin")
 	public String forwardGroupMailingWaitingList() {
