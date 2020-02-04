@@ -96,4 +96,8 @@ public interface AdminDao {
 
 	List<Map<String, Object>> discriminationDetail(SqlSessionTemplate sqlSession, int researchNo);
 
+	int reconstructureRefer(SqlSessionTemplate sqlSession, ResearchState researchState);
+
+	int reconstructureReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState);
+
 }

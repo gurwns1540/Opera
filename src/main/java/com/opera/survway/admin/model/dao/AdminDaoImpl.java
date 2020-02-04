@@ -279,5 +279,15 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectList("Admin.discriminationDetail", researchNo);
 	}
 
+	@Override
+	public int reconstructureRefer(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.reconstructureRefer",  researchState);
+	}
+
+	@Override
+	public int reconstructureReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.reconstructureReferConferenceHistory",  researchState);
+	}
+
 
 }

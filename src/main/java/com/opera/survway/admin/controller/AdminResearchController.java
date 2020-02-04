@@ -535,6 +535,12 @@ public class AdminResearchController {
 		return mv;
 	}
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 4.
+	 * @ModifyDate  : 2020. 2. 4.
+	 * @Description : 리서치 문항 재구성 상세
+	 */
 	@PostMapping("researchWaitingReviewDetail.adminResearch")
 	public ModelAndView researchWaitingReviewDetail(ModelAndView mv, String researchNoStr) {
 		int researchNo = Integer.parseInt(researchNoStr);
@@ -547,6 +553,20 @@ public class AdminResearchController {
 		mv.addObject("researchDetail", researchDetail);
 		mv.setViewName("jsonView");
 		
+		return mv;
+	}
+	
+	@PostMapping("reconstructureRefer.adminResearch")
+	public ModelAndView reconstructureRefer(ModelAndView mv, String researchNoStr, String referReason) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		ResearchState researchState = new ResearchState();
+		researchState.setResearchNo(researchNo);
+		researchState.setReferReason(referReason);
+		
+		boolean isRefer = as.reconstructureRefer(researchState);
+		
+		mv.addObject("isRefer", isRefer);
+		mv.setViewName("jsonView");
 		return mv;
 	}
 }

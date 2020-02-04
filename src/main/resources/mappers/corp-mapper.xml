@@ -72,7 +72,7 @@
 	
 	<insert id="insertResearch" parameterType="CorpResearch">
 		INSERT INTO RESEARCH VALUES
-		(SEQ_RESEARCH.NEXTVAL, #{researchName}, #{researchEngagementGoals}, #{researchPeriod}, #{mno}, #{researchPerpose}, NULL, NULL)
+		(SEQ_RESEARCH.NEXTVAL, #{researchName}, #{researchEngagementGoals}, #{researchPeriod}, #{mno}, #{researchPerpose}, NULL, NULL, NULL)
 		<selectKey keyProperty="researchNo" resultType="_int" order="AFTER">
 			SELECT SEQ_RESEARCH.CURRVAL FROM DUAL
 		</selectKey>
@@ -233,6 +233,24 @@
 	<insert id="insertPaymentState" parameterType="Payment">
 		INSERT INTO RSTATUSHISTORY VALUES 
 		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 3, SYSDATE, NULL)
+	</insert>
+	
+	<insert id="insertRecontructionConferenceState" parameterType="ResearchState">
+		INSERT INTO RSTATUSHISTORY VALUES 
+		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 9, SYSDATE, NULL)
+		<selectKey keyProperty="researchHistoryNo" resultType="_int" order="AFTER">
+			SELECT SEQ_RSTATUSHISTORY.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertRecontructionConferenceHistory" parameterType="ResearchState">
+		INSERT INTO CONFERENCEHISTORY VALUES
+		(SEQ_CONFERENCEHISTORY.NEXTVAL, #{referReason}, #{researchHistoryNo}, NULL)
+	</insert>
+	
+	<insert id="recontructionApproved" parameterType="_int">
+		INSERT INTO RSTATUSHISTORY VALUES 
+		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 5, SYSDATE, NULL)
 	</insert>
 </mapper>
 

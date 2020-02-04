@@ -333,4 +333,35 @@ public class CorpResearchController {
 		mv.setViewName("jsonView");
 		return mv;
 	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : 리서치 재구성 협의
+	 */
+	@PostMapping("recontructionConference.corpResearch")
+	public ModelAndView recontructionConference(ModelAndView mv, String researchNoStr, String conferenceContext) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		
+		ResearchState researchState = new ResearchState();
+		researchState.setReferReason(conferenceContext);
+		researchState.setResearchNo(researchNo);
+		
+		boolean isConference = cs.recontructionConference(researchState);
+		
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	@PostMapping("recontructionApproved.corpResearch")
+	public ModelAndView recontructionApproved(ModelAndView mv, String researchNoStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		
+		boolean isApproved = cs.recontructionApproved(researchNo);
+		
+		mv.addObject(isApproved);
+		mv.setViewName("jsonView");
+		return mv;
+	}
 }

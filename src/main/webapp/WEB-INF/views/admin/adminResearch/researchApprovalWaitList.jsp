@@ -182,7 +182,7 @@
 	}
 	.questionImage, .questionVideo {
 		width: 80%;
-		height: 100px;
+		height: auto;
 		margin: 10px auto;
 	}
 	.mediaExplain {
@@ -426,9 +426,9 @@
 						}
 						var $questionFormDiv = $('<div class="questionForm"> ' + questionForm + '</div>');
 						$question.append($questionFormDiv);
-						
+						console.log(questionList)
 						if(questionList[i].image != null && questionList[i].image != ""){
-							$questionImage = $('<div class="questionImage"><img src="${contextPath}/resources/uploadFiles/' + questionList[i].image.changeName +'"></div>');
+							$questionImage = $('<div class="questionImage"><img style="width: 100%" src="${contextPath}/resources/uploadFiles/' + questionList[i].image.changeName +'"></div>');
 							$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div>');
 							$question.append($questionImage);
 							$question.append($mediaExplain);

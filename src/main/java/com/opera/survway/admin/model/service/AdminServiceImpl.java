@@ -553,4 +553,16 @@ public class AdminServiceImpl implements AdminService{
 		return ad.discriminationDetail(sqlSession, researchNo);
 	}
 
+	@Override
+	public boolean reconstructureRefer(ResearchState researchState) {
+		boolean isRefer = false;
+		int result1 = ad.reconstructureRefer(sqlSession, researchState);
+		
+		int result2 = ad.reconstructureReferConferenceHistory(sqlSession, researchState);
+		if(result1 > 0 && result2 > 0) {
+			isRefer = true;
+		}
+		return isRefer;
+	}
+
 }

@@ -162,7 +162,7 @@
   		background: #00679A;
   		color: white;
   	}
-  	#approvalBtn {
+  	#approvalBtn, #approvalBtn2 {
   		background: #00679A;
   		color: white;
   	}
@@ -229,6 +229,9 @@
 	.questionVideo {
 		margin-bottom: 65px;
 	}
+	input[name=questionOrder]:focus {
+		outline: none;
+	}
 </style>
 </head>
 <body>
@@ -281,7 +284,7 @@
 					<td>${research.changeDate }</td>
 					<td>${research.researchState }</td>
 					<td>
-						<c:if test="${research.researchState == '질문 재구성 대기'}">
+						<c:if test="${research.researchState == '질문 재구성 대기' || research.researchState == '질문 재구성 협의중'}">
 							<button class="detail">재구성하기</button>
 						</c:if>
 						<c:if test="${research.researchState == '검토 대기'}">
@@ -352,8 +355,8 @@
 			</div>
 		</div>
 		<div class="actions">
-		    <div class="ui approve button" id="nextBtn2">Next</div>
-		    <div class="ui approve button" id="nextBtn3">Next</div>
+			<div class="ui approve button" id="nextBtn2">Next</div>
+			<div class="ui approve button" id="nextBtn3">Next</div>
 		    <div class="ui cancel button">Cancel</div>
   		</div>
 	</div>
@@ -419,12 +422,12 @@
 							<div class="choiceArea">
 								<div class="choice">
 									<div class="ui input" style="width: 300px;">
-	 	 							<input type='text' placeholder='보기 작성' class='choiceInput'>
-	 	 							<input type='hidden' class='discriminationChoiceOrder' value='1'>
-								</div>
-								<span class="add">
-									<i class="plus circle icon"></i>
-								</span><span class="delete"><i class="minus circle icon"></i></span>
+		 	 							<input type='text' placeholder='보기 작성' class='choiceInput'>
+		 	 							<input type='hidden' class='discriminationChoiceOrder' value='1'>
+									</div>
+									<span class="add">
+										<i class="plus circle icon"></i>
+									</span><span class="delete"><i class="minus circle icon"></i></span>
 								</div>
 							</div>
 						</p>
@@ -453,6 +456,8 @@
 			</div>
 		</div>
 		<div class="actions">
+			<div class="ui approve button" id="approvalBtn2">Approve</div>
+			<div class="ui approve button" id="referBtn">Refer</div>
 		    <div class="ui cancel button">Cancel</div>
   		</div>
 	</div>
@@ -461,7 +466,15 @@
 		questionIndex = 2;
 		$("#addQuiz").on("click", function(){
 			var $quiz = $("<div class='title'> <i class='dropdown icon'></i>Q" + questionIndex + "<input type='hidden' class='discriminationQuestionOrder' value='" + questionIndex++ + "' readonly style='width: 10px; background: none; border: 0;'>. <input type='text' placeholder='질문 작성' class='surveyQuizTitle'> </div> <div class='content'> <div style='float: right; width: fit-content;'> 정답 보기 번호 : <div class='ui input' style='width: 80px;'> <input type='text' class='correctAnswer' maxlength='1'  onKeyup='this.value=this.value.replace(/[^0-9]/g,'');'> </div> 번 </div><p class='transition hidden'> <div class='choiceArea'> <div class='choice'><div class='ui input' style='width: 300px;'> <input type='text' placeholder='보기 작성' class='choiceInput'><input type='hidden' class='discriminationChoiceOrder'  value='1'> </div> <span class='add'> <i class='plus circle icon'></i> </span> <span class='delete'> <i class='minus circle icon'></i> </span> </div> </div> </p> </div>")
-			var $accordian = $("#surveyQuizAccordion");
+			var $accordian = $(this).parent().find("#surveyQuizAccordion");
+			$accordian.append($quiz);
+			
+			choiceIndex = 2;
+			
+		});
+		$("#addQuiz2").on("click", function(){
+			var $quiz = $("<div class='title'> <i class='dropdown icon'></i>Q" + questionIndex + "<input type='hidden' class='discriminationQuestionOrder' value='" + questionIndex++ + "' readonly style='width: 10px; background: none; border: 0;'>. <input type='text' placeholder='질문 작성' class='surveyQuizTitle'> </div> <div class='content'> <div style='float: right; width: fit-content;'> 정답 보기 번호 : <div class='ui input' style='width: 80px;'> <input type='text' class='correctAnswer' maxlength='1'  onKeyup='this.value=this.value.replace(/[^0-9]/g,'');'> </div> 번 </div><p class='transition hidden'> <div class='choiceArea'> <div class='choice'><div class='ui input' style='width: 300px;'> <input type='text' placeholder='보기 작성' class='choiceInput'><input type='hidden' class='discriminationChoiceOrder'  value='1'> </div> <span class='add'> <i class='plus circle icon'></i> </span> <span class='delete'> <i class='minus circle icon'></i> </span> </div> </div> </p> </div>")
+			var $accordian = $(this).parent().find("#surveyQuizAccordion");
 			$accordian.append($quiz);
 			
 			choiceIndex = 2;
@@ -502,14 +515,33 @@
 		});
 		$("#nextBtn3").on("click", function(){
 			$('#surveyQuiz2').modal('show');
+			researchNamePanel = $("#researchNamePanel").val();
+			$("input[name=questionOrder]").each(function(){
+				questionOrder.push($(this).val());
+			})
+			$("input[name=rquestionContext]").each(function(){
+				rquestionContext.push($(this).val());
+			})
 		});
 		
 		questionOrder = [];
 		rquestionContext = [];
 		
 		$(document).on("click", ".detail", function(){
-			$("#nextBtn3").hide();
-			$("#nextBtn2").show();
+			var researchState = $(this).parent().parent().find("td").eq(4).text();
+			$("#etc").remove();
+			$("#conference").remove();
+			$("#approvalBtn2").show();
+			$("#referBtn").show();
+			if(researchState == '질문 재구성 대기'){
+				$("#referBtn").hide();
+				$("#nextBtn2").show();
+				$("#nextBtn3").hide();
+			}else if(researchState == '질문 재구성 협의중'){
+				$("#referBtn").show();
+				$("#nextBtn2").hide();
+				$("#nextBtn3").show();
+			}
 			researchNoStr = $(this).parent().siblings().eq(0).text();
 			var companyName = $(this).parent().siblings().eq(1).text();
 			
@@ -518,109 +550,241 @@
 			choiceIndex = 2;
 			questionIndex = 2;
 			
-			$.ajax({
-				url:"researchApprovalDetail.adminResearch",
-				type:"post",
-				data:{researchNoStr:researchNoStr},
-				success:function(data){
-					console.log(data.researchDetail[0]);
-					$("#sortable").text("");
-					$("#research").find("input[type=text]").each(function(){
-						$(this).prop("readonly", false);
-					});
-					var researchDetail = data.researchDetail[0];
-					var gender = "";
-					var location = "";
-					
-					$("#corp").find(".header").text(companyName);
-					$("#corpTable").find("td").eq(0).text(researchDetail.researchName);
-					$("#corpTable").find("td").eq(1).text(researchDetail.researchPerpose);
-					$("#corpTable").find("td").eq(2).text(researchDetail.researchEngagementGoals + '명');
-					engagementGoals = researchDetail.researchEngagementGoals;
-					if(researchDetail.targetGender == 'A') {
-						gender = "전체";
-					}else if(researchDetail.targetGender == 'M') {
-						gender = "남성";
-					}else if(researchDetail.targetGender == 'F') {
-						gender = "여성";
-					}
-					$("#corpTable").find("td").eq(3).text(gender);
-					$("#corpTable").find("td").eq(4).text(researchDetail.targetAgeRange);
-					if(researchDetail.targetLocation == 'all'){
-						location = "전체";
-					}else if(researchDetail.targetLocation == 'metropolitan'){
-						location = "서울 및 수도권";
-					}else if(researchDetail.targetLocation == 'city'){
-						location = "서울, 경기 및 9대 광역시";
-					}
-					$("#corpTable").find("td").eq(5).text(location);
-					var startDate = researchDetail.researchPeriod.split("~")[0].substr(0, 4) + "-" + researchDetail.researchPeriod.split("~")[0].substr(4, 2) + "-" + researchDetail.researchPeriod.split("~")[0].substr(6, 2);
-					var endDate = researchDetail.researchPeriod.split("~")[1].substr(0, 4) + "-" + researchDetail.researchPeriod.split("~")[1].substr(4, 2) + "-" + researchDetail.researchPeriod.split("~")[1].substr(6, 2);
-					$("#corpTable").find("td").eq(6).text(startDate + " ~ " + endDate);
-
-					if(researchDetail.additionalEtc != null && researchDetail.additionalEtc != ""){
-						var $etcTr = $("<tr><th>추가 요구 사항</th><td>" + researchDetail.additionalEtc + "</td></tr>");
-						$("#corpTable").append($etcTr);
-					}
-					var questionList = data.researchDetail[0].questionList;
-					qCount = questionList.length;
-					$("#research").find(".header").text(data.researchDetail[0].researchName);
-					for(var i = 0; i < questionList.length; i++){
-						var $question = $('<li class="ui-state-default">Q<input type="text" readonly name="questionOrder" style="width:10px; border:0; background: none;" value="' + questionList[i].questionOrder + '">. <div class="ui input" style="width: 90%;"><input type="text" name="rquestionContext" value="' + questionList[i].rquestionContext + '"></div></li>');
-						var choiceList = questionList[i].requestChoiceList;
-						var questionForm = "";
+			
+			if(researchState == '질문 재구성 대기'){
+				$.ajax({
+					url:"researchApprovalDetail.adminResearch",
+					type:"post",
+					data:{researchNoStr:researchNoStr},
+					success:function(data){
+						$("#sortable").text("");
+						$("#research").find("input[type=text]").each(function(){
+							$(this).prop("readonly", false);
+						});
+						var researchDetail = data.researchDetail[0];
+						var gender = "";
+						var location = "";
 						
-						if(questionList[i].questionFormNo == 1){
-							questionForm = "객관식";
-						}else if(questionList[i].questionFormNo == 2){
-							questionForm = "주관식";
-						}else if(questionList[i].questionFormNo == 3){
-							questionForm = "객관식 & 이미지";
-						}else if(questionList[i].questionFormNo == 4){
-							questionForm = "리커트 척도";
-						}else if(questionList[i].questionFormNo == 5){
-							questionForm = "숫자 합계형";
-						}else if(questionList[i].questionFormNo == 6){
-							questionForm = "객관식(다중선택)";
-						}else if(questionList[i].questionFormNo == 7){
-							questionForm = "주관식(서술형)";
-						}else {
-							questionForm = "문항 형식 불러오기 오류";
+						$("#corp").find(".header").text(companyName);
+						$("#corpTable").find("td").eq(0).text(researchDetail.researchName);
+						$("#corpTable").find("td").eq(1).text(researchDetail.researchPerpose);
+						$("#corpTable").find("td").eq(2).text(researchDetail.researchEngagementGoals + '명');
+						engagementGoals = researchDetail.researchEngagementGoals;
+						if(researchDetail.targetGender == 'A') {
+							gender = "전체";
+						}else if(researchDetail.targetGender == 'M') {
+							gender = "남성";
+						}else if(researchDetail.targetGender == 'F') {
+							gender = "여성";
 						}
-						var $questionFormDiv = $('<input type="hidden" name="questionFormNo" value="' + questionList[i].questionFormNo + '"><div class="questionForm"> ' + questionForm + '</div>');
-						$question.append($questionFormDiv);
-						
-						if(questionList[i].image != null && questionList[i].image != ""){
-							$questionImage = $('<div class="questionImage"><img src="${contextPath}/resources/uploadFiles/' + questionList[i].image.changeName +'"></div>');
-							$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div><input type="hidden" name="mediaExplain" value="' + questionList[i].mediaExplain + '">');
-							$question.append($questionImage);
-							$question.append($mediaExplain);
-						}else {
-							if(questionList[i].mediaExplain != null && questionList[i].mediaExplain != ""){
-								var video = questionList[i].questionVideoLink.substr(questionList[i].questionVideoLink.lastIndexOf("/", questionList[i].questionVideoLink.length), 12);
-								$questionVideo = $('<div class="questionVideo"><iframe style="width: 100%;" src="https://www.youtube.com/embed' + video + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
-								$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div>');
-								$question.append($questionVideo);
+						$("#corpTable").find("td").eq(3).text(gender);
+						$("#corpTable").find("td").eq(4).text(researchDetail.targetAgeRange);
+						if(researchDetail.targetLocation == 'all'){
+							location = "전체";
+						}else if(researchDetail.targetLocation == 'metropolitan'){
+							location = "서울 및 수도권";
+						}else if(researchDetail.targetLocation == 'city'){
+							location = "서울, 경기 및 9대 광역시";
+						}
+						$("#corpTable").find("td").eq(5).text(location);
+						var startDate = researchDetail.researchPeriod.split("~")[0].substr(0, 4) + "-" + researchDetail.researchPeriod.split("~")[0].substr(4, 2) + "-" + researchDetail.researchPeriod.split("~")[0].substr(6, 2);
+						var endDate = researchDetail.researchPeriod.split("~")[1].substr(0, 4) + "-" + researchDetail.researchPeriod.split("~")[1].substr(4, 2) + "-" + researchDetail.researchPeriod.split("~")[1].substr(6, 2);
+						$("#corpTable").find("td").eq(6).text(startDate + " ~ " + endDate);
+	
+						if(researchDetail.additionalEtc != null && researchDetail.additionalEtc != ""){
+							var $etcTr = $("<tr id='etc'><th>추가 요구 사항</th><td>" + researchDetail.additionalEtc + "</td></tr>");
+							$("#corpTable").append($etcTr);
+						}
+						var questionList = data.researchDetail[0].questionList;
+						qCount = questionList.length;
+						$("#research").find(".header").text(data.researchDetail[0].researchName);
+						for(var i = 0; i < questionList.length; i++){
+							var $question = $('<li class="ui-state-default">Q<input type="text" readonly name="questionOrder" style="width:10px; border:0; background: none;" value="' + questionList[i].questionOrder + '">. <div class="ui input" style="width: 90%;"><input type="text" name="rquestionContext" value="' + questionList[i].rquestionContext + '"></div></li>');
+							var choiceList = questionList[i].requestChoiceList;
+							var questionForm = "";
+							
+							if(questionList[i].questionFormNo == 1){
+								questionForm = "객관식";
+							}else if(questionList[i].questionFormNo == 2){
+								questionForm = "주관식";
+							}else if(questionList[i].questionFormNo == 3){
+								questionForm = "객관식 & 이미지";
+							}else if(questionList[i].questionFormNo == 4){
+								questionForm = "리커트 척도";
+							}else if(questionList[i].questionFormNo == 5){
+								questionForm = "숫자 합계형";
+							}else if(questionList[i].questionFormNo == 6){
+								questionForm = "객관식(다중선택)";
+							}else if(questionList[i].questionFormNo == 7){
+								questionForm = "주관식(서술형)";
+							}else {
+								questionForm = "문항 형식 불러오기 오류";
+							}
+							var $questionFormDiv = $('<input type="hidden" name="questionFormNo" value="' + questionList[i].questionFormNo + '"><div class="questionForm"> ' + questionForm + '</div>');
+							$question.append($questionFormDiv);
+							
+							if(questionList[i].image != null && questionList[i].image != ""){
+								$questionImage = $('<div class="questionImage"><img src="${contextPath}/resources/uploadFiles/' + questionList[i].image.changeName +'"></div>');
+								$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div><input type="hidden" name="mediaExplain" value="' + questionList[i].mediaExplain + '">');
+								$question.append($questionImage);
 								$question.append($mediaExplain);
+							}else {
+								if(questionList[i].mediaExplain != null && questionList[i].mediaExplain != ""){
+									var video = questionList[i].questionVideoLink.substr(questionList[i].questionVideoLink.lastIndexOf("/", questionList[i].questionVideoLink.length), 12);
+									$questionVideo = $('<div class="questionVideo"><iframe style="width: 100%;" src="https://www.youtube.com/embed' + video + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
+									$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div>');
+									$question.append($questionVideo);
+									$question.append($mediaExplain);
+								}
 							}
-						}
-						for(var j = 0; j < choiceList.length; j++){
-							var $choice = $('<div class="choice">' + choiceList[j].choiceOrder + '. ' + choiceList[j].choiceContext + '</div></li>')
-							if(choiceList[j].choiceImage != null){
-								var $choiceimage = $('<br><img src="${contextPath}/resources/uploadFiles/' + choiceList[j].choiceImage.changeName +'" style="width: 200px; height: 90px;">')
-								$choice.append($choiceimage);
+							for(var j = 0; j < choiceList.length; j++){
+								var $choice = $('<div class="choice">' + choiceList[j].choiceOrder + '. ' + choiceList[j].choiceContext + '</div></li>')
+								if(choiceList[j].choiceImage != null){
+									var $choiceimage = $('<br><img src="${contextPath}/resources/uploadFiles/' + choiceList[j].choiceImage.changeName +'" style="width: 200px; height: 90px;">')
+									$choice.append($choiceimage);
+								}
+								$question.append($choice);
 							}
-							$question.append($choice);
+							$("#sortable").append($question);
 						}
-						$("#sortable").append($question);
+	
+						$('#corp').modal('show'); 
+					},
+					error:function(status){
+						console.log(status);
 					}
+				});
+			}else if(researchState == '질문 재구성 협의중'){
+				
+				$.ajax({
+					url:"researchWaitingReviewDetail.adminResearch",
+					type:"post",
+					data:{researchNoStr:researchNoStr},
+					success:function(data){
+						$("#sortable").text("");
+						var researchDetail = data.researchDetail[0];
+						var gender = "";
+						var location = "";
+						$("#researchNamePanel").val();
+						$("#corp").find(".header").text(companyName);
+						$("#corpTable").find("td").eq(0).text(researchDetail.researchName);
+						$("#corpTable").find("td").eq(1).text(researchDetail.researchPerpose);
+						$("#corpTable").find("td").eq(2).text(researchDetail.researchEngagementGoals + '명');
+						engagementGoals = researchDetail.researchEngagementGoals;
+						if(researchDetail.targetGender == 'A') {
+							gender = "전체";
+						}else if(researchDetail.targetGender == 'M') {
+							gender = "남성";
+						}else if(researchDetail.targetGender == 'F') {
+							gender = "여성";
+						}
+						$("#corpTable").find("td").eq(3).text(gender);
+						$("#corpTable").find("td").eq(4).text(researchDetail.targetAgeRange);
+						if(researchDetail.targetLocation == 'all'){
+							location = "전체";
+						}else if(researchDetail.targetLocation == 'metropolitan'){
+							location = "서울 및 수도권";
+						}else if(researchDetail.targetLocation == 'city'){
+							location = "서울, 경기 및 9대 광역시";
+						}
+						$("#corpTable").find("td").eq(5).text(location);
+						var startDate = researchDetail.researchPeriod.split("~")[0].substr(0, 4) + "-" + researchDetail.researchPeriod.split("~")[0].substr(4, 2) + "-" + researchDetail.researchPeriod.split("~")[0].substr(6, 2);
+						var endDate = researchDetail.researchPeriod.split("~")[1].substr(0, 4) + "-" + researchDetail.researchPeriod.split("~")[1].substr(4, 2) + "-" + researchDetail.researchPeriod.split("~")[1].substr(6, 2);
+						$("#corpTable").find("td").eq(6).text(startDate + " ~ " + endDate);
 
-					$('#corp').modal('show'); 
-				},
-				error:function(status){
-					console.log(status);
-				}
-			});
+						if(researchDetail.additionalEtc != null && researchDetail.additionalEtc != ""){
+							var $etcTr = $("<tr id='etc'><th>추가 요구 사항</th><td>" + researchDetail.additionalEtc + "</td></tr>");
+							$("#corpTable").append($etcTr);
+						}
+						
+						var questionList = data.researchDetail[0].questionList;
+						qCount = questionList.length;
+						$("#research").find(".header").text(data.researchDetail[0].researchName);
+						for(var i = 0; i < questionList.length; i++){
+							var $question = $('<li class="ui-state-default">Q<input type="text" name="questionOrder" style="width:10px; border: 0; background: none;" readonly value="' + questionList[i].questionOrder + '">. <div class="ui input" style="width: 90%;"><input type="text" name="rquestionContext" value="' + questionList[i].rquestionContext + '"></div></li>');
+							var choiceList = questionList[i].requestChoiceList;
+							var questionForm = "";
+							
+							if(questionList[i].questionFormNo == 1){
+								questionForm = "객관식";
+							}else if(questionList[i].questionFormNo == 2){
+								questionForm = "주관식";
+							}else if(questionList[i].questionFormNo == 3){
+								questionForm = "객관식 & 이미지";
+							}else if(questionList[i].questionFormNo == 4){
+								questionForm = "리커트 척도";
+							}else if(questionList[i].questionFormNo == 5){
+								questionForm = "숫자 합계형";
+							}else if(questionList[i].questionFormNo == 6){
+								questionForm = "객관식(다중선택)";
+							}else if(questionList[i].questionFormNo == 7){
+								questionForm = "주관식(서술형)";
+							}else {
+								questionForm = "문항 형식 불러오기 오류";
+							}
+							var $questionFormDiv = $('<input type="hidden" name="questionFormNo" value="' + questionList[i].questionFormNo + '"><div class="questionForm"> ' + questionForm + '</div>');
+							$question.append($questionFormDiv);
+							
+							if(questionList[i].image != null && questionList[i].image != ""){
+								$questionImage = $('<div class="questionImage"><img src="${contextPath}/resources/uploadFiles/' + questionList[i].image.changeName +'"></div>');
+								$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div><input type="hidden" name="mediaExplain" value="' + questionList[i].mediaExplain + '">');
+								$question.append($questionImage);
+								$question.append($mediaExplain);
+							}else {
+								if(questionList[i].mediaExplain != null && questionList[i].mediaExplain != ""){
+									var video = questionList[i].questionVideoLink.substr(questionList[i].questionVideoLink.lastIndexOf("/", questionList[i].questionVideoLink.length), 12);
+									$questionVideo = $('<div class="questionVideo"><iframe style="width: 100%;" src="https://www.youtube.com/embed' + video + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
+									$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div>');
+									$question.append($questionVideo);
+									$question.append($mediaExplain);
+								}
+							}
+							for(var j = 0; j < choiceList.length; j++){
+								var $choice = $('<div class="choice">' + choiceList[j].choiceOrder + '. ' + choiceList[j].choiceContext + '</div></li>')
+								if(choiceList[j].choiceImage != null){
+									var $choiceimage = $('<br><img src="${contextPath}/resources/uploadFiles/' + choiceList[j].choiceImage.changeName +'" style="width: 200px; height: 90px;">')
+									$choice.append($choiceimage);
+								}
+								$question.append($choice);
+							}
+							$("#sortable").append($question);
+						}
+
+						var DiscriminationDetail = data.DiscriminationDetail[0];
+						
+						if(DiscriminationDetail.conferenceContext){
+							var $discrim = $("<tr id='conference'><th>재구성 협의 내용</th><td>" + DiscriminationDetail.conferenceContext + "</td></tr>");
+							$("#corpTable").append($discrim);
+						}
+						$("#surveyQuiz2").find("#surveyQuizAccordion").html("");
+						$("#researchNamePanel").val(DiscriminationDetail.researchName);
+						var discrimQuizIndex = 1;
+						var discrimChoiceIndex = 1;
+						for(var i = 0; i < DiscriminationDetail.questionList.length; i++){
+							var $discrimQuizTitle = $('<div class="title"><i class="dropdown icon"></i>Q' + discrimQuizIndex + '.<input type="hidden" class="discriminationQuestionOrder" value="' + discrimQuizIndex++ + '" readonly style="width: 10px; background: none; border: 0;"><input type="text" placeholder="질문 작성" class="surveyQuizTitle" value="' + DiscriminationDetail.questionList[i].rquestionContext + '"></div>');
+							var $content = $('<div class="content"></div>');
+							var $correctAnswer = $('<div style="float: right; width: fit-content;">정답 보기 번호 : <div class="ui input" style="width: 80px;"><input type="text" class="correctAnswer" maxlength="1"  onKeyup="this.value=this.value.replace(/[^0-9]/g,"");" value="' + DiscriminationDetail.questionList[i].correctAnswer + '"></div> 번</div>');
+							
+							$content.append($correctAnswer);
+							var $p = $('<p class="transition hidden"></p>');
+							var $choiceArea = $('<div class="choiceArea"></div>');
+							for(var j = 0; j < DiscriminationDetail.questionList[i].requestChoiceList.length; j++){
+								var $discrimQuizChoice = $('<div class="choice"><div class="ui input" style="width: 300px;"><input type="text" placeholder="보기 작성" class="choiceInput" value="' + DiscriminationDetail.questionList[i].requestChoiceList[j].choiceContext + '"><input type="hidden" class="discriminationChoiceOrder" value="' + discrimChoiceIndex++ + '"></div><span class="add"> <i class="plus circle icon"></i> </span><span class="delete"><i class="minus circle icon"></i></span></div>');
+								$choiceArea.append($discrimQuizChoice);
+							}
+							$p.append($choiceArea);
+							$content.append($p);
+							$("#surveyQuiz2").find("#surveyQuizAccordion").append($discrimQuizTitle);
+							$("#surveyQuiz2").find("#surveyQuizAccordion").append($content);
+						}
+						
+						$('#corp').modal('show'); 
+					},
+					error:function(status){
+						console.log(status);
+					}
+				});
+			}
 		});
 		$("#approvalBtn").on("click", function(){
 			var discriminationQuestionOrder = [];
@@ -697,10 +861,87 @@
 			})
 		});
 		
+		$("#approvalBtn2").on("click", function(){
+			var discriminationQuestionOrder = [];
+			var surveyQuizTitle = [];
+			var discriminationChoiceOrder = [];
+			var choiceInput = [];
+			var correctAnswer = [];
+			$("#surveyQuiz2").find(".discriminationQuestionOrder").each(function(){
+				discriminationQuestionOrder.push($(this).val());
+			})
+			$("#surveyQuiz2").find(".surveyQuizTitle").each(function(){
+				surveyQuizTitle.push($(this).val());
+			})
+			$("#surveyQuiz2").find(".discriminationChoiceOrder").each(function(){
+				discriminationChoiceOrder.push($(this).val());
+			})
+			$("#surveyQuiz2").find(".choiceInput").each(function(){
+				choiceInput.push($(this).val());
+			})
+			$("#surveyQuiz2").find(".correctAnswer").each(function(){
+				correctAnswer.push($(this).val());
+			})
+			
+			$("#surveyQuizAccordion").html('<div class="title"> <i class="dropdown icon"></i> Q1<input type="hidden" class="discriminationQuestionOrder" value="1" readonly style="width: 10px; background: none; border: 0;">. <input type="text" placeholder="질문 작성" class="surveyQuizTitle"> </div> <div class="content"> <p class="transition hidden"> <div class="choiceArea"> <div class="choice"> <div class="ui input" style="width: 300px;"> <input type="text" placeholder="보기 작성" class="choiceInput"> <input type="hidden" class="discriminationChoiceOrder" value="1"> </div> <span class="add"> <i class="plus circle icon"></i> </span><span class="delete"><i class="minus circle icon"></i></span> </div> </div> </p> </div>')
+			
+			choiceIndex = 2;
+			questionIndex = 2;
+			
+			Swal.fire({
+			  title: '재구성을 완료하시겠습니까?',
+			  text: "이 구성내용은 기업에게 전달됩니다!",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes'
+			}).then((result) => {
+			  	if (result.value) {
+				  	$.ajax({
+						url:"researchReconstruction.adminResearch",
+						type:"post",
+						traditional : true,
+						data:{
+							discriminationQuestionOrder:discriminationQuestionOrder,
+							surveyQuizTitle:surveyQuizTitle,
+							discriminationChoiceOrder:discriminationChoiceOrder,
+							choiceInput:choiceInput,
+							correctAnswer:correctAnswer,
+							researchNoStr:researchNoStr,
+							questionOrder:questionOrder,
+							rquestionContext:rquestionContext,
+							researchNamePanel:researchNamePanel
+						},
+						success:function(data){
+							console.log(data);
+							Swal.fire(
+								'재구성 완료!',
+								'구성 내용이 기업에게 전달되었습니다.',
+								'success'
+						    )
+						    setTimeout(function(){
+						        location.reload();
+						    },1500)
+
+						},
+						error:function(data){
+						
+						}
+				  	});
+				    
+			  	}else {
+				  $('#research').modal('show');
+			  	}
+			})
+		});
 		$(document).on("click", ".detail2", function(){
 			$("#nextBtn3").show();
 			$("#nextBtn2").hide();
-			
+			$("#approvalBtn2").hide();
+			$("#referBtn").hide();
+			$("#etc").remove();
+			$("#conference").remove();
 			researchNoStr = $(this).parent().siblings().eq(0).text();
 			var companyName = $(this).parent().siblings().eq(1).text();
 			
@@ -770,6 +1011,7 @@
 						}else {
 							questionForm = "문항 형식 불러오기 오류";
 						}
+						
 						var $questionFormDiv = $('<input type="hidden" name="questionFormNo" value="' + questionList[i].questionFormNo + '"><div class="questionForm"> ' + questionForm + '</div>');
 						$question.append($questionFormDiv);
 						
@@ -835,6 +1077,60 @@
 					console.log(status);
 				}
 			});
+		});
+		
+		$("#referBtn").on("click", function(){
+			const start = async function() {
+				const { value: text } = await Swal.fire({
+					  input: 'textarea',
+					  inputPlaceholder: '반려 사유를 적어주세요..',
+					  inputAttributes: {
+					    'aria-label': 'Type your message here'
+					  },
+					  showCancelButton: true,
+					  inputValidator: (value) => {
+					    if (!value) {
+					      return '반려 사유를 꼭 적어주세요!'
+					    }
+					  }
+				});
+	
+				if (text) {
+					Swal.fire({
+					  title: '정말 반려하시겠습니까?',
+					  text: "이 결정은 되돌릴 수 없습니다!",
+					  icon: 'warning',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'Yes'
+					}).then((result) => {
+					  if (result.value) {
+						  $.ajax({
+								url:"reconstructureRefer.adminResearch",
+								type:"post",
+								data:{
+									researchNoStr:researchNoStr,
+									referReason : text
+								},
+								success:function(data){
+									Swal.fire(
+								      		'반려!',
+								      		'이 협의는 반려되었습니다.',
+								      		'success'
+								    		)
+								},
+								error:function(status){
+									console.log(status);
+								}
+							});
+					  }else {
+						  $('#research').modal('show');
+					  }
+					})
+				}
+			}
+			start();
 		});
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(3)").addClass("on");

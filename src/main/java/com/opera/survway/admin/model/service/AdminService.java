@@ -77,4 +77,6 @@ public interface AdminService {
 
 	List<Map<String, Object>> discriminationDetail(int researchNo);
 
+	boolean reconstructureRefer(ResearchState researchState);
+
 }
