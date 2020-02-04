@@ -36,4 +36,8 @@ public interface CorpService {
 	boolean priceConference(ResearchState researchstate);
 
 	boolean researchPayment(Payment payment);
+
+	boolean recontructionConference(ResearchState researchState);
+
+	boolean recontructionApproved(int researchNo);
 }

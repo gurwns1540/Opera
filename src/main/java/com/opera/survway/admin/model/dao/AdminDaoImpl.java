@@ -13,6 +13,8 @@ import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.corporation.model.vo.ResearchChoice;
+import com.opera.survway.corporation.model.vo.ResearchQuestion;
 
 @Repository
 public class AdminDaoImpl implements AdminDao{
@@ -203,5 +205,89 @@ public class AdminDaoImpl implements AdminDao{
 	public int insertReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState) {
 		return sqlSession.insert("Admin.insertReferConferenceHistory", researchState);
 	}
+
+	@Override
+	public int getListCountPaymentCompletedList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListCountPaymentCompletedList");
+	}
+
+	@Override
+	public List<Map<String, String>> paymentCompletedList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return sqlSession.selectList("Admin.paymentCompletedList", null, rowBounds);
+	}
+
+	@Override
+	public List<Map<String, String>> billsDetail(SqlSessionTemplate sqlSession, int billingHistoryNo) {
+		return sqlSession.selectList("Admin.billsDetail", billingHistoryNo);
+	}
+
+	@Override
+	public int getListCountSurveyReconstructionList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListCountSurveyReconstructionList");
+	}
+
+	@Override
+	public List<Map<String, String>> surveyReconstructionList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return sqlSession.selectList("Admin.surveyReconstructionList", null, rowBounds);
+	}
+
+	@Override
+	public int deleteDiscriminationChoice(SqlSessionTemplate sqlSession, Research research) {
+		return sqlSession.delete("Admin.deleteDiscriminationChoice", research);
+	}
+
+	@Override
+	public int deleteDiscriminationQuestion(SqlSessionTemplate sqlSession, Research research) {
+		return sqlSession.delete("Admin.deleteDiscriminationQuestion", research);
+	}
+
+	@Override
+	public int reconstruction(SqlSessionTemplate sqlSession, ResearchQuestion researchQuestion) {
+		return sqlSession.update("Admin.reconstruction", researchQuestion);
+	}
+
+	@Override
+	public int insertDiscriminationQuestion(SqlSessionTemplate sqlSession, ResearchQuestion researchQuestion) {
+		return sqlSession.insert("Admin.insertDiscriminationQuestion", researchQuestion);
+	}
+
+	@Override
+	public int insertDiscriminationChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice) {
+		return sqlSession.insert("Admin.insertDiscriminationChoice", researchChoice);
+	}
+
+	@Override
+	public int researchReconstruction(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.researchReconstruction", researchState);
+	}
+
+	@Override
+	public int updateResearchNamePanel(SqlSessionTemplate sqlSession, Research research) {
+		return sqlSession.update("Admin.updateResearchNamePanel", research);
+	}
+
+	@Override
+	public List<Map<String, Object>> discriminationDetail(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.discriminationDetail", researchNo);
+	}
+
+	@Override
+	public int reconstructureRefer(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.reconstructureRefer",  researchState);
+	}
+
+	@Override
+	public int reconstructureReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Admin.reconstructureReferConferenceHistory",  researchState);
+	}
+
 
 }

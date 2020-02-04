@@ -153,7 +153,7 @@ public class CorpResearchController {
 				}
 			}
 			if(Integer.parseInt(questionFormNo[i]) != 2 && Integer.parseInt(questionFormNo[i]) != 4){
-				System.out.println("Integer.parseInt(questionFormNo[i]) : " + Integer.parseInt(questionFormNo[i]));
+				
 				for(int j = choiceIndex; j < choiceNo.length; j++) {
 					ResearchChoice researchChoice = new ResearchChoice();
 					researchChoice.setChoiceOrder(Integer.parseInt(choiceNo[j]));
@@ -330,6 +330,37 @@ public class CorpResearchController {
 		boolean isPayment = cs.researchPayment(payment);
 		
 		mv.addObject("isPayment", isPayment);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : 리서치 재구성 협의
+	 */
+	@PostMapping("recontructionConference.corpResearch")
+	public ModelAndView recontructionConference(ModelAndView mv, String researchNoStr, String conferenceContext) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		
+		ResearchState researchState = new ResearchState();
+		researchState.setReferReason(conferenceContext);
+		researchState.setResearchNo(researchNo);
+		
+		boolean isConference = cs.recontructionConference(researchState);
+		
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	@PostMapping("recontructionApproved.corpResearch")
+	public ModelAndView recontructionApproved(ModelAndView mv, String researchNoStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		
+		boolean isApproved = cs.recontructionApproved(researchNo);
+		
+		mv.addObject(isApproved);
 		mv.setViewName("jsonView");
 		return mv;
 	}

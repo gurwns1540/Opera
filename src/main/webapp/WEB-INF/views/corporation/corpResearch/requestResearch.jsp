@@ -304,7 +304,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>조사 시작 기간</th>
+					<th>조사 시작 날짜</th>
 					<td>
 						<div class="ui calendar" id="standard_calendar">
 							<div class="ui input left icon">
@@ -315,7 +315,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>예상 완료 시간</th>
+					<th>예상 완료 날짜</th>
 					<td>
 						<div class="ui calendar" id="standard_calendar2">
 							<div class="ui input left icon">
@@ -390,7 +390,7 @@
 			        if(day < 10){
 			        	day = '0' + day;
 			        }
-			        var month = date.getMonth();
+			        var month = date.getMonth() + 1;
 			        if(month < 10){
 			        	month = '0' + month;
 			        }
@@ -409,7 +409,7 @@
 			        if(day < 10){
 			        	day = '0' + day;
 			        }
-			        var month = date.getMonth();
+			        var month = date.getMonth() + 1;
 			        if(month < 10){
 			        	month = '0' + month;
 			        }

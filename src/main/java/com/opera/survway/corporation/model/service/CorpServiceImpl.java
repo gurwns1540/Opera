@@ -120,7 +120,7 @@ public class CorpServiceImpl implements CorpService {
 					for(int i = 0; i < uploadFiles.size(); i++) {
 						for(int j = 0; j < questionList.size(); j++) {
 							if(uploadFiles.get(i).getRquestionNo() == questionList.get(j).getQuestionOrder()) {
-								uploadFiles.get(i).setResearchNo(questionList.get(j).getResearchNo());
+								uploadFiles.get(i).setRquestionNo(questionList.get(j).getQuestionNo());
 							}
 						}
 						for(int k = 0; k < questionList.size(); k++) {
@@ -250,6 +250,32 @@ public class CorpServiceImpl implements CorpService {
 			isPayment = true;
 		}
 		return isPayment;
+	}
+
+	@Override
+	public boolean recontructionConference(ResearchState researchState) {
+		boolean isConference = false;
+		
+		int result1 = cd.insertRecontructionConferenceState(sqlSession, researchState);
+		
+		int result2 = cd.insertRecontructionConferenceHistory(sqlSession, researchState);
+		
+		if(result1 > 0 && result2 > 0) {
+			isConference = true;
+		}
+		return isConference;
+	}
+
+	@Override
+	public boolean recontructionApproved(int researchNo) {
+		boolean isApproved = false;
+		
+		int result = cd.recontructionApproved(sqlSession, researchNo);
+		
+		if(result > 0) {
+			isApproved = true;
+		}
+		return isApproved;
 	}
 
 }

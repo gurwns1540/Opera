@@ -15,6 +15,7 @@ public class ResearchQuestion {
 	private String questionVideoLink;
 	private String mediaExplain;
 	private int questionOrder;
+	private int correctAnswer;
 	
 	private UploadFile image;
 	private ArrayList<ResearchChoice> requestChoiceList;
@@ -22,8 +23,8 @@ public class ResearchQuestion {
 	public ResearchQuestion() {}
 
 	public ResearchQuestion(int questionNo, int questionFormNo, String rquestionContext, int researchNo,
-			String mediaExist, String questionVideoLink, String mediaExplain, int questionOrder, UploadFile image,
-			ArrayList<ResearchChoice> requestChoiceList) {
+			String mediaExist, String questionVideoLink, String mediaExplain, int questionOrder, int correctAnswer,
+			UploadFile image, ArrayList<ResearchChoice> requestChoiceList) {
 		super();
 		this.questionNo = questionNo;
 		this.questionFormNo = questionFormNo;
@@ -33,6 +34,7 @@ public class ResearchQuestion {
 		this.questionVideoLink = questionVideoLink;
 		this.mediaExplain = mediaExplain;
 		this.questionOrder = questionOrder;
+		this.correctAnswer = correctAnswer;
 		this.image = image;
 		this.requestChoiceList = requestChoiceList;
 	}
@@ -101,6 +103,14 @@ public class ResearchQuestion {
 		this.questionOrder = questionOrder;
 	}
 
+	public int getCorrectAnswer() {
+		return correctAnswer;
+	}
+
+	public void setCorrectAnswer(int correctAnswer) {
+		this.correctAnswer = correctAnswer;
+	}
+
 	public UploadFile getImage() {
 		return image;
 	}
@@ -122,7 +132,8 @@ public class ResearchQuestion {
 		return "ResearchQuestion [questionNo=" + questionNo + ", questionFormNo=" + questionFormNo
 				+ ", rquestionContext=" + rquestionContext + ", researchNo=" + researchNo + ", mediaExist=" + mediaExist
 				+ ", questionVideoLink=" + questionVideoLink + ", mediaExplain=" + mediaExplain + ", questionOrder="
-				+ questionOrder + ", image=" + image + ", requestChoiceList=" + requestChoiceList + "]";
+				+ questionOrder + ", correctAnswer=" + correctAnswer + ", image=" + image + ", requestChoiceList="
+				+ requestChoiceList + "]";
 	}
 
 
