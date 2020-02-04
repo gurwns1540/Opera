@@ -7,19 +7,21 @@ public class Notice {
 	private String noticeTitle;
 	private String noticeContext;
 	private Date noticeDate;
+	private String noticeDateStr;
 	private int noticeViewCount;
 	private int mno;
 	private String noticeStatus;
 	
 	public Notice() {}
 
-	public Notice(int noticeNo, String noticeTitle, String noticeContext, Date noticeDate, int noticeViewCount, int mno,
-			String noticeStatus) {
+	public Notice(int noticeNo, String noticeTitle, String noticeContext, Date noticeDate, String noticeDateStr,
+			int noticeViewCount, int mno, String noticeStatus) {
 		super();
 		this.noticeNo = noticeNo;
 		this.noticeTitle = noticeTitle;
 		this.noticeContext = noticeContext;
 		this.noticeDate = noticeDate;
+		this.noticeDateStr = noticeDateStr;
 		this.noticeViewCount = noticeViewCount;
 		this.mno = mno;
 		this.noticeStatus = noticeStatus;
@@ -57,6 +59,14 @@ public class Notice {
 		this.noticeDate = noticeDate;
 	}
 
+	public String getNoticeDateStr() {
+		return noticeDateStr;
+	}
+
+	public void setNoticeDateStr(String noticeDateStr) {
+		this.noticeDateStr = noticeDateStr;
+	}
+
 	public int getNoticeViewCount() {
 		return noticeViewCount;
 	}
@@ -84,8 +94,8 @@ public class Notice {
 	@Override
 	public String toString() {
 		return "Notice [noticeNo=" + noticeNo + ", noticeTitle=" + noticeTitle + ", noticeContext=" + noticeContext
-				+ ", noticeDate=" + noticeDate + ", noticeViewCount=" + noticeViewCount + ", mno=" + mno
-				+ ", noticeStatus=" + noticeStatus + "]";
+				+ ", noticeDate=" + noticeDate + ", noticeDateStr=" + noticeDateStr + ", noticeViewCount="
+				+ noticeViewCount + ", mno=" + mno + ", noticeStatus=" + noticeStatus + "]";
 	}
-	 
+
 }

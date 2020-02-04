@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.InquiryException;
@@ -35,6 +36,10 @@ public class PanelServiceImpl implements PanelService {
 	private PanelDao pd;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	
+	
+	
 	
 	/**
 	 * @Author      : Oh
@@ -418,5 +423,50 @@ public class PanelServiceImpl implements PanelService {
 		}
 		return researchQuestions;
 	}
+
+	@Override
+	public int writeNotice(Notice n) {
+		int result =pd.insert("Panel.writeNotice",n,sqlSession);
+		return result;
+	}
+
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : 공지사항 수정
+	 */
+	
+	  @Override public int editNotice(Notice n) { 
+		  int result =pd.updateNotice(sqlSession,n);
+	  return result; 
+	  }
+
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : 공지사항 조회
+	 */
+	@Override
+	public Notice selectNotice(int noticeNo) {
+		
+		
+		return pd.selectNotice(noticeNo,sqlSession);
+	}
+
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : 공지사항 딜리트
+	 */
+	@Override
+	public int noticeDelete(int noticeNo) {
+		
+		return pd.noticeDelete(noticeNo,sqlSession);
+	}
+
+	
 }
 

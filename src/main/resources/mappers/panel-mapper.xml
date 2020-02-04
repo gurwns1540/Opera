@@ -215,8 +215,8 @@
 	   SELECT *
 	   FROM NOTICE
 	   WHERE NOTICE_STATUS='Y'
-	   ORDER BY NOTICE_NO DESC
 	   <include refid="searchNoticeValue"></include>
+	   ORDER BY NOTICE_NO DESC
 	 </select>
 	 
 	 <select id="selectMainNoticeList" resultMap="noticeListResultMap" parameterType="Notice">
@@ -449,4 +449,36 @@
 		FROM RESEARCHCHOICE
 		WHERE RQUESTION_NO = #{ rquestionNo }
 	</select>
+	
+	<insert id="writeNotice" parameterType="Notice">
+		INSERT INTO NOTICE VALUES(SEQ_NOTICE_NO.NEXTVAL,#{noticeTitle},#{noticeContext},SYSDATE,0,1,'Y')
+	</insert>
+	
+	<resultMap type="Notice" id="noticeListResultMap2">
+	   <id property="noticeNo" column="NOTICE_NO"/>
+	   <result property="noticeTitle" column="NOTICE_TITLE"/>
+	   <result property="noticeContext" column="NOTICE_CONTEXT"/>
+	   <result property="noticeDateStr" column="NOTICE_DATE"/>
+	   <result property="noticeViewCount" column="NOTICE_VIEWCOUNT"/>
+	   <result property="mno" column="MNO"/>
+	   <result property="noticeStatus" column="NOTICE_STATUS"/>
+	 </resultMap>
+	
+	<select id="selectNotice" parameterType="_int" resultMap="noticeListResultMap2">
+		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_CONTEXT, TO_CHAR(NOTICE_DATE, 'YYYY-MM-DD') NOTICE_DATE, NOTICE_VIEWCOUNT, MNO, NOTICE_STATUS
+		FROM NOTICE
+		WHERE NOTICE_NO=#{noticeNo}
+	</select>
+	
+	<update id="updateNotice" parameterType="Notice">
+		UPDATE NOTICE SET NOTICE_TITLE=#{noticeTitle},NOTICE_CONTEXT=#{noticeContext},NOTICE_DATE=SYSDATE
+		WHERE NOTICE_NO=#{noticeNo}
+	
+	</update>
+	
+	<update id="noticeDelete" parameterType="_int">
+		UPDATE NOTICE SET NOTICE_STATUS='N'
+		WHERE NOTICE_NO=#{noticeNo}
+		
+	</update>
 </mapper>
