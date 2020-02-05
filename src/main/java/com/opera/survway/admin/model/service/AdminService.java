@@ -79,4 +79,8 @@ public interface AdminService {
 
 	boolean reconstructureRefer(ResearchState researchState);
 
+	List<Object> tsQaManagement();
+
+	int tsQaManagementUpdate(ArrayList<ResearchQuestion> questionList);
+
 }
