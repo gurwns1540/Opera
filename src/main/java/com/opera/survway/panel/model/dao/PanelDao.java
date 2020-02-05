@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
@@ -77,6 +78,20 @@ public interface PanelDao {
 
 	List<ResearchChoice> getTsChoiceList(SqlSessionTemplate sqlSession, int rquestionNo) throws SelectException;
 
+	int insertFaq(SqlSessionTemplate sqlSession, Faq faq);
+
+	int getListCountFaq(SqlSessionTemplate sqlSession, Faq f);
+
+	List<Faq> selectAllFaq(SqlSessionTemplate sqlSession, Faq f);
+
+	int deleteFaq(SqlSessionTemplate sqlSession, Faq f);
+
+	int updateFaq(SqlSessionTemplate sqlSession, Faq f);
+
+	int answerInquiry(SqlSessionTemplate sqlSession, Inquiry i);
+
+	int deleteAnswerInquiry(SqlSessionTemplate sqlSession, Inquiry i);
+
 	int getCountMyResearch(SqlSessionTemplate sqlSession, PanelMember loginUser);
 
 	List<Research> getMyResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser, PageInfo pi);
@@ -92,8 +107,5 @@ public interface PanelDao {
 	int updateNotice(SqlSessionTemplate sqlSession, Notice n);
 
 	int noticeDelete(int noticeNo, SqlSessionTemplate sqlSession);
-	
-	
-
 
 }

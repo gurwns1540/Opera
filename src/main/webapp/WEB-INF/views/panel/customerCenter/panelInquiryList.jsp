@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="/WEB-INF/views/panel/common/head.jsp"%>
+<jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>
 <style>
@@ -154,7 +154,7 @@
 									<div id="searchInput">
 										<div class="ui action input">
 											<input type="text" name="inquiryTitle"
-												placeholder="패널/기업 명을 입력하세요"> <input type="hidden"
+												placeholder="제목을 입력하세요"> <input type="hidden"
 												value="${loginUser.mno}" name="mno">
 											<button class="ui icon button" type="submit">
 												<i class="search icon"></i>
@@ -233,6 +233,27 @@
 												<c:out value="${Inquiry.inquiryAnswer }" />
 											</div>
 										</c:if>
+										<c:if test="${sessionScope.loginUser.userType eq '관리자' }">
+										
+											<div class="ui form" style="width:100%; padding:50px;">
+											  <div class="field">
+											    <textarea id="answerArea"></textarea>
+											  </div>
+											  <c:if test="${Inquiry.inquiryAnswer == null}">
+											  <div>
+											  	<input type="hidden" value="${Inquiry.inquiryNo }" id="answerNo">
+											  	<button class="ui icon button answerBtn" >답변하기</button>
+											  </div>
+											  </c:if>
+											  <c:if test="${Inquiry.inquiryAnswer != null}">
+											  <div>
+											  	<input type="hidden" value="${Inquiry.inquiryNo }" id="answerNo">
+											  	<button class="ui icon button answerBtn">수정하기</button>
+											  	<button class="ui icon button deleteAnswerBtn" >답변 삭제하기</button>
+											  </div>
+											  </c:if>
+										</div>
+										</c:if>
 									</td>
 								</tr>
 							</c:forEach>
@@ -243,9 +264,11 @@
 					<!-- #inquiryTableArea end -->
 				</div>
 				<!-- .inquiryArea end -->
+				<c:if test="${sessionScope.loginUser.userType eq '패널' }">
 				<div class="inquiryBtnArea" align="right" style="margin-top: 15px;">
 					<button id="newInquiryBtn">1:1 문의하기</button>
 				</div>
+				</c:if>
 				<!-- inquiryBtnArea end -->
 				<div id="pagingArea" align="center">
 					<c:url var="inquiryListFirst"
@@ -336,7 +359,7 @@
 			<br />
 		</section>
 		<!-- container end -->
-		<%@ include file="/WEB-INF/views/panel/common/footer.jsp"%>
+		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 	<!-- wrap end -->
 
@@ -417,7 +440,11 @@
 		
 		 $("#question").click(function(){
 			 $("#inquery").submit();
-			
+			 Swal.fire(
+		               '완료!',
+		               '1:1 문의 등록이 완료 되었습니다',
+		               'success'
+		             )
 		}); 
 		var isActivated = "false";
 		$('.ui.dropdown').mouseenter(function(){
@@ -426,14 +453,63 @@
 			}
 			isActivated = "true";
 		})
-		<c:if test="${success > 0}">
-		Swal.fire(
-               '완료!',
-               '1:1 문의 등록이 완료 되었습니다',
-               'success'
-             )
-        </c:if>
-	</script>
+		
+		$(document).on("click",".answerBtn", function(){
+			var answerNo = $(this).parent().find("#answerNo").val();
+			var answer = $(this).parent().parent().find("#answerArea").val();
+			
+			$.ajax({
+				url:"answerInquiry.customerCenter",
+				type:"post",
+				data:{
+					answerNo:answerNo,
+					answer:answer
+				},
+				success:function(data){
+					
+					 Swal.fire(
+				               '완료!',
+				               '1:1 문의 답변이 완료 되었습니다',
+				               'success'
+				             )
+				               setTimeout(function(){
+    							location.reload();
+								},1500); 
+				},
+				error:function(){
+					console.log("에러");
+				}
+			});
+			
+		});
+		
+		$(document).on("click",".deleteAnswerBtn",function(){
+			var answerNo = $(this).parent().find("#answerNo").val();
+			console.log(answerNo);
+			$.ajax({
+				url:"deleteAnswerInquiry.customerCenter",
+				type:"post",
+				data:{
+					answerNo:answerNo
+				},
+				success:function(data){
+					console.log(data.num);
+					 Swal.fire(
+				               '완료!',
+				               '1:1 문의 답변이 삭제 되었습니다',
+				               'success'
+				             )
+				               setTimeout(function(){
+  							location.reload();
+								},1500); 
+				},error:function(){
+					console.log("에러");
+				}
+			});
+		});
+		</script>
+		
+	
 </body>
 </html>
 
