@@ -363,6 +363,7 @@
 		SELECT * 
 		FROM FAQ
 		WHERE FAQ_STATUS = 'Y'
+		ORDER BY FAQ_NO DESC
 		<include refid="searchCategoryFaq"/>
 		<include refid="faqTitleExist"/>
 	</select>

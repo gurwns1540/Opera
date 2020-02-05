@@ -457,8 +457,9 @@ public class PanelServiceImpl implements PanelService {
 		if(result <=0) {
 			throw new InquiryException("faq 수정 실패");
 		}
-  }
-  
+		return result;
+	}
+	 /*
 	 * @throws SurveyException 
 	 * @Author      : Sooo
 	 * @CreateDate  : 2020. 2. 1.
@@ -545,6 +546,7 @@ public class PanelServiceImpl implements PanelService {
 			throw new InquiryException("1:1문의 답변 지우기");
 		}
 		return num;
+	}
   /*
 	 * @Author      : hjheo
 	 * @CreateDate  : 2020. 2. 5.
