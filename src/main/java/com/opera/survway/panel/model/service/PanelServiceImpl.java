@@ -521,7 +521,6 @@ public class PanelServiceImpl implements PanelService {
 		researchInfo = pd.getResearchInfo(sqlSession, researchNo);
 		return researchInfo;
 	}
-}
 
 	@Override
 	public int writeNotice(Notice n) {
