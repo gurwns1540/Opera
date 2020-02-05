@@ -136,7 +136,7 @@
 							<div class="ui breadcrumb">
 								<a class="section" id="depth1" href="panelMain.panel">Home</a>
 								<i class="right angle icon divider"></i>
-								<a class="section" id="depth2" href="surveyList.panel">서베이</a>
+								<a class="section" id="depth2" href="surveyList.survey">서베이</a>
 								<i class="right angle icon divider"></i>
 								<div class="active section" id="depth3">참여한 설문조사</div>
 							</div>

@@ -179,7 +179,7 @@
         M.MNO,  M.USER_NAME, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
         FROM MEMBER M
         JOIN PANEL P ON (P.MNO = M.MNO)
-		WHERE CERTIFICATION = 'Y'
+		WHERE CERTIFICATION = 'Y'researchPaymentApproved
 		AND PANELLEVEL_NO = 1
 		<include refid="newPanelSearchInputName"/>
 		ORDER BY ENT_DATE DESC
@@ -195,7 +195,407 @@
 		AND PANELLEVEL_NO = 1
 		AND M.MNO = #{mno}
 	</select>
+	
+	<select id="getListCountArrovalList" resultType="_int">
+		SELECT COUNT(*)
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+		WHERE RESEARCH_STATE_NO = 1
+	</select>
+	
+	<resultMap type="map" id="approvalListMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="mno" column="MNO"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchReward" column="RESEARCH_REWARD"/>
+		<result property="researchPrice" column="RESEARCH_PRICE"/>
+		<result property="lastDate" column="LAST_DATE"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="researchReferReason" column="RESEARCH_REFERREASON"/>
+	</resultMap>
+	<select id="researchApprovalWaitList" resultMap="approvalListMap">
+		SELECT *
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+		WHERE RESEARCH_STATE_NO = 1
+	</select>
+	
+	<resultMap type="map" id="researchApprovalDetailMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="mno" column="MNO"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="targetNo" column="TARGET_NO"/>
+		<result property="targetGender" column="TARGET_GENDER"/>
+		<result property="targetAgeRange" column="TARGET_AGERANGE"/>
+		<result property="targetLocation" column="TARGET_LOCATION"/>
+		<result property="occupationNo" column="OCCUPATION_NAME"/>
+		<result property="additionaltEtc" column="ADDITIONAL_ETC"/>
+		<collection property="questionList" column="RESEARCH_NO" ofType="ResearchQuestion" javaType="java.util.List">
+			<result property="questionNo" column="RQUESTION_NO"/>
+			<result property="questionFormNo" column="QUESTION_FORM_NO"/>
+			<result property="rquestionContext" column="RQUESTION_CONTEXT"/>
+			<result property="questionVideoLink" column="RQUESTION_VIDEOLINK"/>
+			<result property="mediaExplain" column="MEDIA_EXPLAIN"/>
+			<result property="questionOrder" column="RESEARCH_ORDER"/>
+			<collection property="requestChoiceList" column="RQUESTION_NO" ofType="ResearchChoice" javaType="java.util.List">
+				<result property="choiceNo" column="RCHOICE_NO"/>
+				<result property="choiceOrder" column="RCHOICE_ORDER"/>
+				<result property="choiceContext" column="RCHOICE_CONTEXT"/>
+			</collection>
+		</collection>
+	</resultMap>
+	
+	<select id="researchApprovalDetail" parameterType="_int" resultMap="researchApprovalDetailMap">
+		SELECT *
+		FROM RESEARCH R
+        JOIN RESEARCHTARGET RT ON (R.RESEARCH_NO = RT.RESEARCH_NO)
+        JOIN RESEARCHQUESTION RQ ON (R.RESEARCH_NO = RQ.RESEARCH_NO)
+        JOIN OCCUPATION O ON (RT.OCCUPATION_NO = O.OCCUPATION_NO)
+        LEFT JOIN RESEARCHCHOICE RC ON (RC.RQUESTION_NO = RQ.RQUESTION_NO)
+		WHERE R.RESEARCH_NO = #{researchNo}
+		ORDER BY RQ.RQUESTION_NO ASC, RC.RCHOICE_NO ASC 
+	</select>
+	
+	<resultMap type="UploadFile" id="questionUploadFile">
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="fileType" column="FILE_TYPE"/>
+		<result property="originName" column="ORIGIN_NAME"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="rquestionNo" column="RQUESTION_NO"/>
+	</resultMap>
+	
+	<select id="questionUploadFiles" resultMap="questionUploadFile" parameterType="_int">
+		SELECT * FROM UPLOADFILE U
+		JOIN RESEARCHQUESTION RQ ON (RQ.RQUESTION_NO = U.RQUESTION_NO)
+		WHERE RQ.RQUESTION_NO = #{questionNo}
+	</select>
+	
+	<resultMap type="UploadFile" id="choiceUploadFile">
+		<id property="fileNo" column="FILE_NO"/>
+		<result property="fileType" column="FILE_TYPE"/>
+		<result property="originName" column="ORIGIN_NAME"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="rchoiceNo" column="RCHOICE_NO"/>
+	</resultMap>
+	
+	<select id="choiceUploadFiles" resultMap="choiceUploadFile" parameterType="_int">
+		SELECT * FROM UPLOADFILE U
+		JOIN RESEARCHCHOICE RC ON (RC.RCHOICE_NO = U.RCHOICE_NO)
+		WHERE RC.RCHOICE_NO = #{choiceNo}
+	</select>
+	
+	<insert id="researchApproved" parameterType="ResearchState">
+		INSERT INTO RSTATUSHISTORY VALUES
+		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 2, SYSDATE, NULL)
+		<selectKey keyProperty="researchHistoryNo" resultType="_int" order="AFTER">
+			SELECT SEQ_RSTATUSHISTORY.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="researchRefer" parameterType="ResearchState">
+		INSERT INTO RSTATUSHISTORY VALUES
+		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 8, SYSDATE, #{referReason})
+	</insert>
+	
+	<select id="getListCountReferList" resultType="_int">
+		SELECT COUNT(*)
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+		WHERE RESEARCH_STATE_NO = 8
+	</select>
+	
+	<select id="researchReferList" resultMap="approvalListMap">
+		SELECT *
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+		WHERE RESEARCH_STATE_NO = 8
+	</select>
 
+	<resultMap type="map" id="researchReferDetailMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchReferReason" column="RESEARCH_REFERREASON"/>
+	</resultMap>
+	
+	<select id="researchReferDetail" parameterType="_int" resultMap="researchReferDetailMap">
+		SELECT *
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+		WHERE RESEARCH_STATE_NO = 8
+        AND R.RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<insert id="insertConferenceHistory" parameterType="ResearchState">
+		INSERT INTO CONFERENCEHISTORY VALUES
+		(SEQ_CONFERENCEHISTORY.NEXTVAL, NULL, #{researchHistoryNo}, #{price})
+	</insert>
+	
+	<insert id="insertReferConferenceHistory" parameterType="ResearchState">
+		INSERT INTO CONFERENCEHISTORY VALUES
+		(SEQ_CONFERENCEHISTORY.NEXTVAL, #{referReason}, #{researchHistoryNo}, #{price})
+	</insert>
+	
+	<update id="updateResearchPrice" parameterType="ResearchState">
+		UPDATE RESEARCH SET
+		RESEARCH_PRICE = #{price}
+		WHERE RESEARCH_NO = #{researchNo}
+	</update>
+	
+	<select id="getListResearchWaitingPayment" resultType="_int">
+		SELECT COUNT(*)
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+		WHERE RESEARCH_STATE_NO IN (2, 10)
+	</select>
+	
+	<resultMap type="map" id="waitingPaymentListMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="mno" column="MNO"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchReward" column="RESEARCH_REWARD"/>
+		<result property="researchPrice" column="RESEARCH_PRICE"/>
+		<result property="lastDate" column="LAST_DATE"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="researchReferReason" column="RESEARCH_REFERREASON"/>
+		<result property="researchState" column="RESEARCH_STATE"/>
+	</resultMap>
+	<select id="researchWaitingPayment" resultMap="waitingPaymentListMap">
+		SELECT *
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+        JOIN RESEARCHSTATE RS ON (RH.RESEARCH_STATE_NO = RS.RESEARCH_STATE_NO)
+		WHERE RS.RESEARCH_STATE_NO IN (2, 10)
+	</select>
+	
+	<resultMap type="map" id="researchWaitPaymentDetailMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="targetGender" column="TARGET_GENDER"/>
+		<result property="targetAgeRange" column="TARGET_AGERANGE"/>
+		<result property="targetLocation" column="TARGET_LOCATION"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="researchPrice" column="RESEARCH_PRICE"/>
+		<result property="conferencePrice" column="CONFERENCE_PRICE"/>
+	</resultMap>
+	
+	<select id="researchWaitPaymentDetail" parameterType="_int" resultMap="researchWaitPaymentDetailMap">
+		SELECT *
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+        JOIN RESEARCHTARGET RT ON (RT.RESEARCH_NO = R.RESEARCH_NO)
+        LEFT JOIN CONFERENCEHISTORY CH ON (CH.RESEARCH_STATE_HISTORY_NO = RH.RESEARCH_STATE_HISTORY_NO)
+		WHERE RESEARCH_STATE_NO IN (2, 10)
+        AND R.RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<select id="getListCountPaymentCompletedList" resultType="_int">
+		SELECT COUNT(*)
+		FROM BILLINGHISTORY
+	</select>
+	
+	<resultMap type="map" id="paymentCompletedMap">
+		<result property="billingHistoryNo" column="BILLINGHISTORY_NO"/>
+		<result property="paymentReason" column="PAYMENT_REASON"/>
+		<result property="paymentAmount" column="PAYMENT_AMOUNT"/>
+		<result property="paymentDate" column="PAYMENT_DATE"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+	</resultMap>
+	<select id="paymentCompletedList" resultMap="paymentCompletedMap">
+		SELECT BH.BILLINGHISTORY_NO, BH.PAYMENT_REASON, R.RESEARCH_NAME,PAYMENT_AMOUNT, TO_CHAR(PAYMENT_DATE, 'YYYY-MM-DD') PAYMENT_DATE, BH.RESEARCH_NO, C.COMPANY_NAME
+		FROM BILLINGHISTORY BH
+		JOIN CORP C ON(C.MNO = BH.MNO)
+		JOIN RESEARCH R ON(R.RESEARCH_NO = BH.RESEARCH_NO)
+		ORDER BY BILLINGHISTORY_NO DESC
+	</select>
+	
+	<resultMap type="map" id="billsDetailMap">
+		<result property="qCount" column="QCOUNT"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="paymentAmount" column="PAYMENT_AMOUNT"/>
+	</resultMap>
+	
+	<select id="billsDetail" parameterType="_int" resultMap="billsDetailMap">
+		SELECT COUNT(*) QCOUNT, R.RESEARCH_NO, R.RESEARCH_ENGAGEMENT_GOALS, BH.PAYMENT_AMOUNT
+		FROM RESEARCH R
+		JOIN BILLINGHISTORY BH ON(BH.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN RESEARCHQUESTION RQ ON(RQ.RESEARCH_NO = R.RESEARCH_NO)
+		WHERE BH.BILLINGHISTORY_NO = #{billingHistoryNo}
+		GROUP BY R.RESEARCH_NO, R.RESEARCH_ENGAGEMENT_GOALS, BH.PAYMENT_AMOUNT
+	</select>
+	
+	<select id="getListCountSurveyReconstructionList" resultType="_int"> 
+		SELECT COUNT(*)
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+        JOIN RESEARCHSTATE RS ON (RH.RESEARCH_STATE_NO = RS.RESEARCH_STATE_NO)
+		WHERE RS.RESEARCH_STATE_NO = 3
+	</select>
+	
+	<resultMap type="map" id="surveyReconstructionMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="changeDate" column="RESEARCH_CHANGEDATE"/>
+		<result property="researchState" column="RESEARCH_STATE"/>
+	</resultMap>
+	
+	<select id="surveyReconstructionList" resultMap="surveyReconstructionMap">
+		SELECT R.RESEARCH_NO, C.COMPANY_NAME, R.RESEARCH_NAME, TO_CHAR(RH.RESEARCH_CHANGEDATE, 'YYYY-MM-DD') RESEARCH_CHANGEDATE, RS.RESEARCH_STATE
+		FROM RESEARCH R
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+		JOIN CORP C ON (C.MNO = R.MNO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+        JOIN RESEARCHSTATE RS ON (RH.RESEARCH_STATE_NO = RS.RESEARCH_STATE_NO)
+		WHERE RS.RESEARCH_STATE_NO IN (3, 4, 9)
+	</select>
+	
+	<delete id="deleteDiscriminationChoice" parameterType="CorpResearch">
+		DELETE FROM DISCRIMINATIONCHOICE
+		WHERE DISCRIMINATION_QUESTIONNO IN (SELECT DISCRIMINATION_QUESTIONNO FROM DISCRIMINATIONQUESTION WHERE RESEARCH_NO = #{researchNo})
+	</delete>
+	
+	<delete id="deleteDiscriminationQuestion" parameterType="CorpResearch">
+		DELETE FROM DISCRIMINATIONQUESTION
+		WHERE RESEARCH_NO = #{researchNo}
+	</delete>
+	
+	<update id="reconstruction" parameterType="ResearchQuestion">
+		UPDATE RESEARCHQUESTION SET
+		RQUESTION_CONTEXT = #{rquestionContext}
+		WHERE RESEARCH_NO = #{researchNo}
+		AND RESEARCH_ORDER = #{questionOrder}
+	</update>
+	
+	<insert id="insertDiscriminationQuestion" parameterType="ResearchQuestion">
+		INSERT INTO DISCRIMINATIONQUESTION VALUES
+		(SEQ_DISCRIMINATIONQUESTION.NEXTVAL, #{rquestionContext}, #{questionOrder}, #{researchNo}, #{questionFormNo})
+		<selectKey keyProperty="questionNo" resultType="_int" order="AFTER">
+			SELECT SEQ_DISCRIMINATIONQUESTION.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertDiscriminationChoice" parameterType="ResearchChoice">
+		INSERT INTO DISCRIMINATIONCHOICE VALUES
+		(SEQ_DISCRIMINATIONCHOICE.NEXTVAL, #{choiceContext}, #{choiceOrder}, #{rquestionNo})
+	</insert>
+	
+	<insert id="researchReconstruction" parameterType="ResearchState">
+		INSERT INTO RSTATUSHISTORY VALUES
+		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 4, SYSDATE, NULL)
+		<selectKey keyProperty="researchHistoryNo" resultType="_int" order="AFTER">
+			SELECT SEQ_RSTATUSHISTORY.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<update id="updateResearchNamePanel" parameterType="CorpResearch">
+		UPDATE RESEARCH SET
+		RESEARCH_NAME_PANEL = #{researchName}
+		WHERE RESEARCH_NO = #{researchNo}
+	</update>
+	
+		<resultMap type="map" id="discriminationDetailMap">
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME_PANEL"/>
+		<result property="conferenceContext" column="CONFERENCE_CONTEXT"/>
+		<collection property="questionList" column="RESEARCH_NO" ofType="ResearchQuestion" javaType="java.util.List">
+			<result property="questionNo" column="DISCRIMINATION_QUESTIONNO"/>
+			<result property="rquestionContext" column="DISCRIMINATION_QUESTIONTITLE"/>
+			<result property="questionOrder" column="DISCRIMINATION_QUESTIONORDER"/>
+			<result property="correctAnswer" column="CORRECT_ANSWER"/>
+			<collection property="requestChoiceList" column="DISCRIMINATION_QUESTIONNO" ofType="ResearchChoice" javaType="java.util.List">
+				<result property="choiceNo" column="DISCRIMINATION_CHOICENO"/>
+				<result property="choiceOrder" column="DISCRIMINATION_CHOICEORDER"/>
+				<result property="choiceContext" column="DISCRIMINATION_CHOICECONTEXT"/>
+			</collection>
+		</collection>
+	</resultMap>
+	
+	<select id="discriminationDetail" parameterType="_int" resultMap="discriminationDetailMap">
+		SELECT *
+		FROM RESEARCH R
+		JOIN DISCRIMINATIONQUESTION DQ ON (R.RESEARCH_NO = DQ.RESEARCH_NO)
+		JOIN DISCRIMINATIONCHOICE DC ON (DQ.DISCRIMINATION_QUESTIONNO = DC.DISCRIMINATION_QUESTIONNO)
+		JOIN (SELECT RESEARCH_NO , MAX(RESEARCH_CHANGEDATE) AS LAST_DATE 
+		      FROM RSTATUSHISTORY 
+		      GROUP BY RESEARCH_NO) LATELY_HISTORY ON(LATELY_HISTORY.RESEARCH_NO = R.RESEARCH_NO)
+        JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
+		JOIN RESEARCHSTATE RS ON (RS.RESEARCH_STATE_NO = RH.RESEARCH_STATE_NO)
+		LEFT JOIN BILLINGHISTORY BH ON (BH.RESEARCH_NO = R.RESEARCH_NO)
+        JOIN RESEARCHTARGET RT ON (RT.RESEARCH_NO = R.RESEARCH_NO)
+        JOIN OCCUPATION O ON (O.OCCUPATION_NO = RT.OCCUPATION_NO)
+        LEFT JOIN CONFERENCEHISTORY CH ON (CH.RESEARCH_STATE_HISTORY_NO = RH.RESEARCH_STATE_HISTORY_NO)
+		WHERE R.RESEARCH_NO = #{researchNo}
+		ORDER BY DQ.DISCRIMINATION_QUESTIONNO ASC, DC.DISCRIMINATION_CHOICENO ASC
+	</select>
+	
+	<insert id="reconstructureRefer" parameterType="ResearchState">
+		INSERT INTO RSTATUSHISTORY VALUES
+		(SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 4, SYSDATE, NUll)
+		<selectKey keyProperty="researchHistoryNo" resultType="_int" order="AFTER">
+			SELECT SEQ_RSTATUSHISTORY.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="reconstructureReferConferenceHistory" parameterType="ResearchState">
+		INSERT INTO CONFERENCEHISTORY VALUES
+		(SEQ_CONFERENCEHISTORY.NEXTVAL, #{referReason}, #{researchHistoryNo}, null)
+	</insert>
 </mapper>
 
 

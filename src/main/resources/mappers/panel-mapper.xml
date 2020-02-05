@@ -34,6 +34,16 @@
 		<result property="researchReward" column="RESEARCH_REWARD"/>
 	</resultMap>
 	
+	<resultMap type="PanelResearch" id="MyResearchResultSet">
+		<id property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchReward" column="RESEARCH_REWARD"/>
+		<result property="researchReward" column="RESEARCH_REWARD"/>
+		<result property="rquestionVideolink" column="RQUESTION_VIDEOLINK"/>
+	</resultMap>
+	
 	<resultMap type="Notice" id="noticeListResultMap">
 	   <id property="noticeNo" column="NOTICE_NO"/>
 	   <result property="noticeTitle" column="NOTICE_TITLE"/>
@@ -205,8 +215,8 @@
 	   SELECT *
 	   FROM NOTICE
 	   WHERE NOTICE_STATUS='Y'
-	   ORDER BY NOTICE_NO DESC
 	   <include refid="searchNoticeValue"></include>
+	   ORDER BY NOTICE_NO DESC
 	 </select>
 	 
 	 <select id="selectMainNoticeList" resultMap="noticeListResultMap" parameterType="Notice">
@@ -303,6 +313,7 @@
 		<include refid="searchCategoryInquiry"/>
 		
 	</select>
+  
 	<select id="adminGetListCountInquiry" resultType="_int" parameterType="Inquiry">
 		SELECT COUNT(*) FROM INQUIRYHISTORY
 		<include refid="searchCategoryInquiryAdmin"/>
@@ -386,5 +397,180 @@
 	<update id="updateFaq" parameterType="Faq">
 		UPDATE FAQ SET FAQ_TITLE = #{faqTitle}, FAQ_CONTEXT = #{faqContext}, FAQCATEGORY_NO = #{faqCategoryNo}
 		WHERE FAQ_NO = #{faqNo}
+  </update>
+
+	<resultMap type="PanelResearchQuestion" id="researchQuestionResultSet">
+		<id property="rquestionNo" column="RQUESTION_NO" />
+		<result property="questionFormNo" column="QUESTION_FORM_NO" />
+		<result property="researchOrder" column="RESEARCH_ORDER" />
+		<result property="rquestionContext" column="RQUESTION_CONTEXT" />
+		<result property="rquestionVideolink" column="RQUESTION_VIDEOLINK" />
+		<result property="mediaExplain" column="MEDIA_EXPLAIN" />
+	</resultMap>
+	
+	<select id="selectTsQuestionList" resultMap="researchQuestionResultSet">
+		SELECT *
+		FROM RESEARCHQUESTION
+		WHERE RESEARCH_NO = 1
+	</select>
+
+
+	<resultMap type="PanelResearchChoice" id="researchChoiceResultSet">
+		<id property="rchoiceNo" column="RCHOICE_NO" />
+		<result property="rchoiceOrder" column="RCHOICE_ORDER" />
+		<result property="rchoiceContext" column="RCHOICE_CONTEXT" />
+	</resultMap>
+
+	<select id="selectTsChoiceList" resultMap="researchChoiceResultSet" parameterType="_int">
+		SELECT *
+		FROM RESEARCHCHOICE
+		WHERE RQUESTION_NO = #{ rquestionNo }
+	</select>
+	
+	<select id="selectCountMyResearch" resultType="_int" parameterType="PanelMember">
+		<![CDATA[
+		SELECT COUNT(*)
+		FROM RESEARCH R
+		LEFT JOIN RESEARCHTARGET RT USING (RESEARCH_NO)
+		LEFT JOIN ATTEMPTPARTICIPANT AP USING (RESEARCH_NO)
+		JOIN (SELECT RESEARCH_NO, RESEARCH_STATE_NO, RESEARCH_CHANGEDATE
+		      FROM RSTATUSHISTORY
+		      JOIN (SELECT RESEARCH_NO AS RNO, MAX(RESEARCH_CHANGEDATE) AS CDATE
+		            FROM RSTATUSHISTORY
+		            GROUP BY RESEARCH_NO)
+		      ON (RNO = RESEARCH_NO)
+		      WHERE RESEARCH_CHANGEDATE = CDATE
+		      AND RESEARCH_STATE_NO = 8)
+		USING (RESEARCH_NO)
+		JOIN (SELECT RESEARCH_NO, LISTAGG(RQUESTION_VIDEOLINK || '') WITHIN GROUP (ORDER BY RQUESTION_VIDEOLINK) RQUESTION_VIDEOLINK
+		      FROM RESEARCHQUESTION
+		      GROUP BY RESEARCH_NO)
+		USING (RESEARCH_NO)
+		WHERE RESEARCH_NO <> 1
+		AND RESEARCH_NO <> 2
+		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO
+		                        FROM ATTEMPTPARTICIPANT
+		                        WHERE MNO = #{ mno })
+		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO FROM RESEARCHTARGET)
+		OR ((TARGET_GENDER = 'A' OR TARGET_GENDER = (SELECT P.PANEL_GENDER
+		                                             FROM MEMBER M
+		                                             JOIN PANEL P USING (MNO)
+		                                             WHERE MNO = #{ mno }))
+		    AND (TARGET_AGERANGE = 'all' OR ( SUBSTR(TARGET_AGERANGE, 1, 2) <= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+		                                                                        FROM MEMBER M
+		                                                                        JOIN PANEL P USING (MNO)
+		                                                                        WHERE MNO = #{ mno })
+		                                      AND SUBSTR(TARGET_AGERANGE, 4, 2) >= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+		                                                                            FROM MEMBER M
+		                                                                            JOIN PANEL P USING (MNO)
+		                                                                            WHERE MNO = #{ mno })))
+		    AND (TARGET_LOCATION = 'all' OR ( TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'metropolitan', 2, 'metropolitan', 8, 'metropolitan', '')
+		                                                         FROM MEMBER M
+		                                                         LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+		                                                         WHERE MNO = #{ mno }
+		                                                         AND RH.RESEARCH_NO = 1
+		                                                         AND RH.RQUESTION_NO = 8)
+		                                      OR TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'city', 2, 'city', 3, 'city', 4, 'city', 5, 'city', 6, 'city', 7, 'city', '')
+		                                                            FROM MEMBER M
+		                                                            LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+		                                                            WHERE MNO = #{ mno }
+		                                                            AND RH.RESEARCH_NO = 1
+		                                                            AND RH.RQUESTION_NO = 8))))
+		]]>
+	</select>
+	
+	<select id="selectMyResearchList" resultMap="MyResearchResultSet" parameterType="PanelMember">
+		<![CDATA[
+		SELECT RESEARCH_NO, RESEARCH_NAME, RESEARCH_PERIOD, RESEARCH_PERPOSE, RESEARCH_REWARD, RQUESTION_VIDEOLINK
+		FROM RESEARCH R
+		LEFT JOIN RESEARCHTARGET RT USING (RESEARCH_NO)
+		LEFT JOIN ATTEMPTPARTICIPANT AP USING (RESEARCH_NO)
+		JOIN (SELECT RESEARCH_NO, RESEARCH_STATE_NO, RESEARCH_CHANGEDATE
+		      FROM RSTATUSHISTORY
+		      JOIN (SELECT RESEARCH_NO AS RNO, MAX(RESEARCH_CHANGEDATE) AS CDATE
+		            FROM RSTATUSHISTORY
+		            GROUP BY RESEARCH_NO)
+		      ON (RNO = RESEARCH_NO)
+		      WHERE RESEARCH_CHANGEDATE = CDATE
+		      AND RESEARCH_STATE_NO = 8)
+		USING (RESEARCH_NO)
+		JOIN (SELECT RESEARCH_NO, LISTAGG(RQUESTION_VIDEOLINK || '') WITHIN GROUP (ORDER BY RQUESTION_VIDEOLINK) RQUESTION_VIDEOLINK
+		      FROM RESEARCHQUESTION
+		      GROUP BY RESEARCH_NO)
+		USING (RESEARCH_NO)
+		WHERE RESEARCH_NO <> 1
+		AND RESEARCH_NO <> 2
+		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO
+		                        FROM ATTEMPTPARTICIPANT
+		                        WHERE MNO = #{ mno })
+		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO FROM RESEARCHTARGET)
+		OR ((TARGET_GENDER = 'A' OR TARGET_GENDER = (SELECT P.PANEL_GENDER
+		                                             FROM MEMBER M
+		                                             JOIN PANEL P USING (MNO)
+		                                             WHERE MNO = #{ mno }))
+		    AND (TARGET_AGERANGE = 'all' OR ( SUBSTR(TARGET_AGERANGE, 1, 2) <= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+		                                                                        FROM MEMBER M
+		                                                                        JOIN PANEL P USING (MNO)
+		                                                                        WHERE MNO = #{ mno })
+		                                      AND SUBSTR(TARGET_AGERANGE, 4, 2) >= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+		                                                                            FROM MEMBER M
+		                                                                            JOIN PANEL P USING (MNO)
+		                                                                            WHERE MNO = #{ mno })))
+		    AND (TARGET_LOCATION = 'all' OR ( TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'metropolitan', 2, 'metropolitan', 8, 'metropolitan', '')
+		                                                         FROM MEMBER M
+		                                                         LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+		                                                         WHERE MNO = #{ mno }
+		                                                         AND RH.RESEARCH_NO = 1
+		                                                         AND RH.RQUESTION_NO = 8)
+		                                      OR TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'city', 2, 'city', 3, 'city', 4, 'city', 5, 'city', 6, 'city', 7, 'city', '')
+		                                                            FROM MEMBER M
+		                                                            LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+		                                                            WHERE MNO = #{ mno }
+		                                                            AND RH.RESEARCH_NO = 1
+		                                                            AND RH.RQUESTION_NO = 8))))
+		 ]]>
+	</select>
+	
+	<select id="selectResearchQuestionList" resultMap="researchQuestionResultSet" parameterType="java.lang.String">
+		SELECT *
+		FROM RESEARCHQUESTION
+		WHERE RESEARCH_NO = #{ researchNo }
+	</select>
+	
+	<select id="selectResearchChoiceList" resultMap="researchChoiceResultSet" parameterType="_int">
+		SELECT *
+		FROM RESEARCHCHOICE
+		WHERE RQUESTION_NO = #{ rquestionNo }
+	</select>
+	
+	<insert id="writeNotice" parameterType="Notice">
+		INSERT INTO NOTICE VALUES(SEQ_NOTICE_NO.NEXTVAL,#{noticeTitle},#{noticeContext},SYSDATE,0,1,'Y')
+	</insert>
+	
+	<resultMap type="Notice" id="noticeListResultMap2">
+	   <id property="noticeNo" column="NOTICE_NO"/>
+	   <result property="noticeTitle" column="NOTICE_TITLE"/>
+	   <result property="noticeContext" column="NOTICE_CONTEXT"/>
+	   <result property="noticeDateStr" column="NOTICE_DATE"/>
+	   <result property="noticeViewCount" column="NOTICE_VIEWCOUNT"/>
+	   <result property="mno" column="MNO"/>
+	   <result property="noticeStatus" column="NOTICE_STATUS"/>
+	 </resultMap>
+	
+	<select id="selectNotice" parameterType="_int" resultMap="noticeListResultMap2">
+		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_CONTEXT, TO_CHAR(NOTICE_DATE, 'YYYY-MM-DD') NOTICE_DATE, NOTICE_VIEWCOUNT, MNO, NOTICE_STATUS
+		FROM NOTICE
+		WHERE NOTICE_NO=#{noticeNo}
+	</select>
+	
+	<update id="updateNotice" parameterType="Notice">
+		UPDATE NOTICE SET NOTICE_TITLE=#{noticeTitle},NOTICE_CONTEXT=#{noticeContext},NOTICE_DATE=SYSDATE
+		WHERE NOTICE_NO=#{noticeNo}
+	
+	</update>
+	
+	<update id="noticeDelete" parameterType="_int">
+		UPDATE NOTICE SET NOTICE_STATUS='N'
+		WHERE NOTICE_NO=#{noticeNo}
 	</update>
 </mapper>

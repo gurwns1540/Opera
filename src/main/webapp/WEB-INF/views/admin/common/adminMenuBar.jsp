@@ -276,9 +276,9 @@
 			<li class="topMenu">
 				<h3><span class="icon-tasks"></span>리서치 관리</h3>
 				<ul>
-					<li class="innerMenu"><a href="researchApprovalWaitList.admin">리서치 승인 대기 관리</a></li>
-					<li class="innerMenu"><a href="researchWaitingPayment.admin" >리서치 결제 대기 관리</a></li>
-					<li class="innerMenu"><a href="serveyReconstructionList.admin">서베이 문항 재구성 대기 관리</a></li>
+					<li class="innerMenu"><a href="researchApprovalWaitList.adminResearch">리서치 승인 대기 관리</a></li>
+					<li class="innerMenu"><a href="researchWaitingPayment.adminResearch" >리서치 결제 대기 관리</a></li>
+					<li class="innerMenu"><a href="surveyReconstructionList.adminResearch">서베이 문항 재구성 대기 관리</a></li>
 					<li class="innerMenu"><a href="groupMailingWaitingList.admin">단체 메일링 대기 관리</a></li>
 					<li class="innerMenu"><a href="disposalResponseManagement.admin">폐기 응답 목록</a></li>
 					<li class="innerMenu"><a href="applicationForDefectiveResponse.admin">불량 응답 이의신청 관리</a></li>

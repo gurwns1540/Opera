@@ -168,7 +168,16 @@
 					<td><c:if test="${ research.researchState == '승인 대기'}">
 							-
 						</c:if>
-						<c:if test="${ research.researchState != '승인 대기'}">
+						<c:if test="${ research.researchState == '가격 협의중'}">
+							-
+						</c:if>
+						<c:if test="${ research.researchState == '납부 대기'}">
+							-
+						</c:if>
+						<c:if test="${ research.researchState == '질문 재구성 대기'}">
+							-
+						</c:if>
+						<c:if test="${ research.researchState != '승인 대기' && research.researchState != '가격 협의중' && research.researchState != '납부 대기' && research.researchState != '질문 재구성 대기'}">
 							<input type="button" value="미리 보기">
 						</c:if> 
 					</td>

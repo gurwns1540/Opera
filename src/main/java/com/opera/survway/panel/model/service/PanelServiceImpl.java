@@ -2,18 +2,20 @@ package com.opera.survway.panel.model.service;
 
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.dao.PanelDao;
 import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.panel.model.vo.Inquiry;
@@ -35,6 +37,10 @@ public class PanelServiceImpl implements PanelService {
 	private PanelDao pd;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	
+	
+	
 	
 	/**
 	 * @Author      : Oh
@@ -451,10 +457,63 @@ public class PanelServiceImpl implements PanelService {
 		if(result <=0) {
 			throw new InquiryException("faq 수정 실패");
 		}
-		return result;
+  }
+  
+	 * @throws SurveyException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 로그인된 패널이 참여할 수 있는 설문조사 갯수 조회
+	 */
+	@Override
+	public int getCountMyResearch(PanelMember loginUser) {
+		return pd.getCountMyResearch(sqlSession, loginUser);
 	}
 
 	/**
+	 * @throws SurveyException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 로그인된 패널이 참여할 수 있는 설문조사 목록 조회
+	 */
+	@Override
+	public List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi) {
+		List<Research> myResearchList = null;
+		myResearchList = pd.getMyResearchList(sqlSession, loginUser, pi);
+		return myResearchList;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 3.
+	 * @ModifyDate  : 2020. 2. 3.
+	 * @Description : 설문조사 목록 중 선택한 설문조사에 대한 문제 및 보기 리스트 조회
+	 */
+	@Override
+	public List<ResearchQuestion> getResearchQuestionList(String researchNo) throws SelectException {
+		
+		//TS문제 정보들 받아와서 ResearchQuestion 리스트에 담기
+		List<ResearchQuestion> researchQuestions = null;
+		researchQuestions = pd.getResearchQuestionList(sqlSession, researchNo);
+		
+		//반복문으로 rquestionNo 하나씩 보내서 해당 choice들 조회해와서 ResearchChoice 어레이리스트에 담고 이걸 setter로 ResearchQuestion객체에 담기
+		List<ResearchChoice> researchChoices = null;
+		for(int i=0; i<researchQuestions.size(); i++) {
+			researchChoices = pd.getResearchChoiceList(sqlSession, researchQuestions.get(i).getRquestionNo());
+			researchQuestions.get(i).setChoiceList(researchChoices);
+		}
+		return researchQuestions;
+	}
+
+	@Override
+	public int writeNotice(Notice n) {
+		int result =pd.insert("Panel.writeNotice",n,sqlSession);
+		return result;
+	}
+
+  /*
 	 * @Author	:hansol
 	 * @CreateDate	:2020. 2. 5.
 	 * @ModifyDate	:2020. 2. 5.
@@ -486,12 +545,38 @@ public class PanelServiceImpl implements PanelService {
 			throw new InquiryException("1:1문의 답변 지우기");
 		}
 		return num;
+  /*
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : 공지사항 수정
+	 */
+	
+	  @Override public int editNotice(Notice n) { 
+		  int result =pd.updateNotice(sqlSession,n);
+	    return result; 
+	  }
+
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : 공지사항 조회
+	 */
+	@Override
+	public Notice selectNotice(int noticeNo) {
+		return pd.selectNotice(noticeNo,sqlSession);
 	}
 
-	
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : 공지사항 딜리트
+	 */
+	@Override
+	public int noticeDelete(int noticeNo) {
+		return pd.noticeDelete(noticeNo,sqlSession);
+	}
+
 }
-
-
-
-
-

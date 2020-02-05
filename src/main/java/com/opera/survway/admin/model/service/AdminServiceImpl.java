@@ -1,6 +1,9 @@
 package com.opera.survway.admin.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +12,14 @@ import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.ResearchState;
+import com.opera.survway.common.model.vo.UploadFile;
+import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.corporation.model.vo.ResearchChoice;
+import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
+
+import oracle.net.aso.a;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -31,7 +41,7 @@ public class AdminServiceImpl implements AdminService{
 		
 		int listCount = ad.getListCountPanel(sqlSession, searchMember);
 		
-		if(listCount <= 0) {
+		if(listCount < 0) {
 			throw new SelectException("회원 수 조회 실패");
 		}
 		return listCount;
@@ -83,7 +93,7 @@ public class AdminServiceImpl implements AdminService{
 		
 		int listCount = ad.getListCountPanelCashoutApplicant(sqlSession);
 		
-		if(listCount <= 0) {
+		if(listCount < 0) {
 			throw new SelectException("캐시아웃 신청 이력 수 조회 실패");
 		}
 		return listCount;
@@ -114,7 +124,7 @@ public class AdminServiceImpl implements AdminService{
 	 */
 	@Override
 	public boolean cashoutPeople(List<String> cnoArr) {
-		System.out.println(cnoArr);
+		
 		int result = ad.cashoutPeople(sqlSession, cnoArr);
 		
 		if(result > 0) {
@@ -135,7 +145,7 @@ public class AdminServiceImpl implements AdminService{
 	public int getListCountManageCashoutComplete() throws SelectException {
 		int listCount = ad.getListCountManageCashoutComplete(sqlSession);
 		
-		if(listCount <= 0) {
+		if(listCount < 0) {
 			throw new SelectException("캐시아웃 완료 이력 수 조회 실패");
 		}
 		return listCount;
@@ -168,7 +178,7 @@ public class AdminServiceImpl implements AdminService{
 	public int getListCountNewPanel(SearchMember searchMember) throws SelectException {
 		int listCount = ad.getListCountNewPanel(sqlSession, searchMember);
 
-		if(listCount <= 0) {
+		if(listCount < 0) {
 			throw new SelectException("신규회원 수 조회 실패");
 		}
 		
@@ -207,6 +217,352 @@ public class AdminServiceImpl implements AdminService{
 			throw new SelectException("신규회원 상세보기 조회 실패");
 		}
 		return newPanelDetail;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 신청 수 
+	 */
+	@Override
+	public int getListCountArrovalList() throws SelectException {
+		int listCount = ad.getListCountArrovalList(sqlSession);
+		if(listCount < 0) {
+			throw new SelectException("리서치 신청 수 조회 실패");
+		}
+		return listCount;
+	}
+	
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 신청 리스트
+	 */
+	@Override
+	public List<Map<String, String>> researchApprovalWaitList(PageInfo pi) throws SelectException {
+		List<Map<String, String>> researchApprovalWaitList = ad.researchApprovalWaitList(sqlSession, pi);
+		if(researchApprovalWaitList == null) {
+			throw new SelectException("리서치 신청 리스트 조회 실패");
+		}
+		return researchApprovalWaitList;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 1. 31.
+	 * @ModifyDate  : 2020. 1. 31.
+	 * @Description : 리서치 신청 상세 보기
+	 */
+	@Override
+	public List<Map<String, Object>> researchApprovalDetail(int researchNo) {
+		List<Map<String, Object>> researchApprovalDetail = ad.researchApprovalDetail(sqlSession, researchNo);
+		ArrayList<ResearchQuestion> questionList = ((ArrayList<ResearchQuestion>)researchApprovalDetail.get(0).get("questionList"));
+		for(int i = 0; i < questionList.size(); i++) {
+			UploadFile questionImage = ad.questionImage(sqlSession, questionList.get(i).getQuestionNo());
+			
+			((ArrayList<ResearchQuestion>)researchApprovalDetail.get(0).get("questionList")).get(i).setImage(questionImage);
+			
+			ArrayList<ResearchChoice> choiceList = questionList.get(i).getRequestChoiceList();
+			for(int j = 0; j < choiceList.size(); j++) {
+				UploadFile choiceImage = ad.choiceImage(sqlSession, choiceList.get(j).getChoiceNo());
+				
+				((ArrayList<ResearchQuestion>)researchApprovalDetail.get(0).get("questionList")).get(i).getRequestChoiceList().get(j).setChoiceImage(choiceImage);
+			}
+		}
+		return researchApprovalDetail;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 신청 승인 & 가격 협상 승인
+	 */
+	@Override
+	public boolean researchApproved(ResearchState researchState) {
+		boolean isApproved = false;
+		int result1 = ad.researchApproved(sqlSession, researchState);
+		
+		int result2 = ad.insertConferenceHistory(sqlSession, researchState);
+		
+		int result3 = ad.updateResearchPrice(sqlSession, researchState);
+		if(result1 > 0 && result2 > 0 && result3 > 0) {
+			isApproved = true;
+		}
+		return isApproved;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 반려
+	 */
+	@Override
+	public boolean researchRefer(ResearchState researchState) {
+		boolean isRefer = false;
+		int result = ad.researchRefer(sqlSession, researchState);
+		if(result > 0) {
+			isRefer = true;
+		}
+		return isRefer;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 반려 목록 수
+	 */
+	@Override
+	public int getListCountReferList() throws SelectException {
+		int listCount = ad.getListCountReferList(sqlSession);
+		if(listCount < 0) {
+			throw new SelectException("리서치 반려 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 반려 목록 조회
+	 */
+	@Override
+	public List<Map<String, String>> researchReferList(PageInfo pi) throws SelectException {
+		List<Map<String, String>> researchReferList = ad.researchReferList(sqlSession, pi);
+		if(researchReferList == null) {
+			throw new SelectException("리서치 신청 리스트 조회 실패");
+		}
+		return researchReferList;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 1.
+	 * @ModifyDate  : 2020. 2. 1.
+	 * @Description : 리서치 반려 상세 조회 
+	 */
+	@Override
+	public List<Map<String, Object>> researchReferDetail(int researchNo) {
+		return ad.researchReferDetail(sqlSession, researchNo);
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 리스트 수
+	 */
+	@Override
+	public int getListResearchWaitingPayment() throws SelectException {
+		int listCount = ad.getListResearchWaitingPayment(sqlSession);
+		if(listCount < 0) {
+			throw new SelectException("리서치 납부 대기 및 가격 협상 리스트 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 리스트
+	 */
+	@Override
+	public List<Map<String, String>> researchWaitingPayment(PageInfo pi) throws SelectException {
+		List<Map<String, String>> researchWaitingPayment = ad.researchWaitingPayment(sqlSession, pi);
+		if(researchWaitingPayment == null) {
+			throw new SelectException("리서치 납부 대기 및 가격 협상 리스트 조회 실패");
+		}
+		return researchWaitingPayment;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 납부 대기 및 가격 협상 상세 보기
+	 */
+	@Override
+	public List<Map<String, Object>> researchWaitPaymentDetail(int researchNo) {
+		return ad.researchWaitPaymentDetail(sqlSession, researchNo);
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 가격 협상 반려
+	 */
+	@Override
+	public boolean researchPaymentRefer(ResearchState researchState) {
+		boolean isRefer = false;
+		int result1 = ad.researchApproved(sqlSession, researchState);
+		
+		int result2 = ad.insertReferConferenceHistory(sqlSession, researchState);
+		
+		if(result1 > 0 && result2 > 0) {
+			isRefer = true;
+		}
+		return isRefer;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 3.
+	 * @ModifyDate  : 2020. 2. 3.
+	 * @Description : 결제 이력 수 조회
+	 */
+	@Override
+	public int getListCountPaymentCompletedList() throws SelectException {
+		int listCount = ad.getListCountPaymentCompletedList(sqlSession);
+		if(listCount < 0) {
+			throw new SelectException("결제 이력 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 3.
+	 * @ModifyDate  : 2020. 2. 3.
+	 * @Description : 결제 이력 조회
+	 */
+	@Override
+	public List<Map<String, String>> paymentCompletedList(PageInfo pi) throws SelectException {
+		List<Map<String, String>> paymentList = ad.paymentCompletedList(sqlSession, pi);
+		if(paymentList == null) {
+			throw new SelectException("결제 이력 조회 실패");
+		}
+		return paymentList;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 3.
+	 * @ModifyDate  : 2020. 2. 3.
+	 * @Description : 결제 이력 상세보기
+	 */
+	@Override
+	public List<Map<String, String>> billsDetail(int billingHistoryNo) {
+		return ad.billsDetail(sqlSession, billingHistoryNo);
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 3.
+	 * @ModifyDate  : 2020. 2. 3.
+	 * @Description : 리서치 재구성 대기 목록 수
+	 */
+	@Override
+	public int getListCountSurveyReconstructionList() throws SelectException {
+		int listCount = ad.getListCountSurveyReconstructionList(sqlSession);
+		if(listCount < 0) {
+			throw new SelectException("리서치 재구성 대기 목록 수 조회 실패");
+		}
+		return listCount;
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 3.
+	 * @ModifyDate  : 2020. 2. 3.
+	 * @Description : 리서치 재구성 대기 목록
+	 */
+	@Override
+	public List<Map<String, String>> surveyReconstructionList(PageInfo pi) throws SelectException {
+		List<Map<String, String>> paymentList = ad.surveyReconstructionList(sqlSession, pi);
+		if(paymentList == null) {
+			throw new SelectException("리서치 재구성 대기 목록 조회 실패");
+		}
+		return paymentList;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 4.
+	 * @ModifyDate  : 2020. 2. 4.
+	 * @Description : 리서치 재구성
+	 */
+	@Override
+	public boolean reconstruction(Research research, ArrayList<ResearchQuestion> questionList) {
+		boolean isReconstruction = false;
+		
+		int result1 = ad.deleteDiscriminationChoice(sqlSession, research);
+		int result2 = ad.deleteDiscriminationQuestion(sqlSession, research);
+		ArrayList<ResearchQuestion> discriminationQuestionList = research.getQuestionList();
+		
+		int result3 = 0;
+		for(int i = 0; i < questionList.size(); i++) {
+			result3 += ad.reconstruction(sqlSession, questionList.get(i));
+		}
+		
+		int result4 = 0;
+		for(int i = 0; i < discriminationQuestionList.size(); i++) {
+			result4 += ad.insertDiscriminationQuestion(sqlSession, discriminationQuestionList.get(i));
+		}
+		
+		if(result4 == discriminationQuestionList.size()) {
+			for(int i = 0; i < discriminationQuestionList.size(); i++) {
+				for(int j = 0; j < discriminationQuestionList.get(i).getRequestChoiceList().size(); j++) {
+					discriminationQuestionList.get(i).getRequestChoiceList().get(j).setRquestionNo(discriminationQuestionList.get(i).getQuestionNo());
+				}
+			}
+			ArrayList<ResearchChoice> choiceList = new ArrayList<>();
+			for(int i = 0; i < discriminationQuestionList.size(); i++) {
+				for(int j = 0; j < discriminationQuestionList.get(i).getRequestChoiceList().size(); j++) {
+					choiceList.add(discriminationQuestionList.get(i).getRequestChoiceList().get(j));
+				}
+			}
+			int result5 = 0;
+			for(int i = 0; i < choiceList.size(); i++) {
+				result5 += ad.insertDiscriminationChoice(sqlSession, choiceList.get(i));
+			}
+			
+			if(result5 == choiceList.size()) {
+				ResearchState researchState = new ResearchState();
+				researchState.setResearchNo(research.getResearchNo());
+				int result6 = ad.researchReconstruction(sqlSession, researchState);
+				int result7 = ad.updateResearchNamePanel(sqlSession, research);
+			}
+		}
+		return isReconstruction;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 4.
+	 * @ModifyDate  : 2020. 2. 4.
+	 * @Description : 조사 대상자 판별퀴즈 불러오기
+	 */
+	@Override
+	public List<Map<String, Object>> discriminationDetail(int researchNo) {
+		return ad.discriminationDetail(sqlSession, researchNo);
+	}
+
+	@Override
+	public boolean reconstructureRefer(ResearchState researchState) {
+		boolean isRefer = false;
+		int result1 = ad.reconstructureRefer(sqlSession, researchState);
+		
+		int result2 = ad.reconstructureReferConferenceHistory(sqlSession, researchState);
+		if(result1 > 0 && result2 > 0) {
+			isRefer = true;
+		}
+		return isRefer;
 	}
 
 }

@@ -6,10 +6,13 @@ import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.Faq;
+import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
@@ -290,5 +293,59 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.update("Panel.deleteAnswerInquiry",i);
 	}
 
+	public int getCountMyResearch(SqlSessionTemplate sqlSession, PanelMember loginUser) {
+		return sqlSession.selectOne("Panel.selectCountMyResearch", loginUser);
+	}
+
+	@Override
+	public List<Research> getMyResearchList(SqlSessionTemplate sqlSession, PanelMember loginUser, PageInfo pi) {
+		List<Research> myResearchList = null;
+		int offset = (pi.getCurrentPage()-1)*pi.getLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		myResearchList = sqlSession.selectList("Panel.selectMyResearchList", loginUser, rowBounds);
+		return myResearchList;
+	}
+
+	@Override
+	public List<ResearchQuestion> getResearchQuestionList(SqlSessionTemplate sqlSession, String researchNo) throws SelectException {
+		List<ResearchQuestion> researchQuestions = null;
+		researchQuestions = sqlSession.selectList("Panel.selectResearchQuestionList", researchNo);
+		if(researchQuestions == null) {
+			throw new SelectException("설문조사 문항 리스트 불러오기 실패");
+		}
+		return researchQuestions;
+	}
+
+	@Override
+	public List<ResearchChoice> getResearchChoiceList(SqlSessionTemplate sqlSession, int rquestionNo) throws SelectException {
+		List<ResearchChoice> researchChoices = null;
+		researchChoices = sqlSession.selectList("Panel.selectResearchChoiceList", rquestionNo);
+		if(researchChoices == null) {
+			throw new SelectException("TS조사 문항별 보기 리스트 불러오기 실패");
+		}
+		return researchChoices;
+	}
+
+	@Override
+	public int insert(String string, Notice n, SqlSessionTemplate session) {
+		
+		return session.insert("Panel.writeNotice",n);
+	}
+
+	@Override
+	public Notice selectNotice(int noticeNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Panel.selectNotice",noticeNo);
+	}
+
+	@Override
+	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
+		return sqlSession.update("Panel.updateNotice",n);
+	}
+
+	@Override
+	public int noticeDelete(int noticeNo, SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.update("Panel.noticeDelete",noticeNo);
+	}
 	
 }

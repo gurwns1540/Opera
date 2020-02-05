@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,12 +78,14 @@
 	#pagingArea span {
 		margin-left: 5px;
 		margin-right: 5px;
+		color: black;
 		font-size: 10pt;
 	}
 	#pagingArea span:hover {
 		margin-left: 5px;
 		margin-right: 5px;
 		font-size: 10pt;
+		color: dodgerblue;
 		cursor: pointer;
 	}
 	.detail {
@@ -116,8 +119,8 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='researchApprovalWaitList.admin'">미처리 목록</button>
-						<button onclick="location.href='researchReferList.admin'" id="clickBtn">반려 목록</button>
+						<button onclick="location.href='researchReferList.adminResearch'">미처리 목록</button>
+						<button onclick="location.href='researchReferList.adminResearch'" id="clickBtn">반려 목록</button>
 					</div>
 				</td>
 			</tr>
@@ -145,32 +148,63 @@
 			<tr id="tableTitle">
 				<th style="width: 10%;">리서치 번호</th>
 				<th style="width: 20%;">기업명</th>
-				<th style="width: 30%;">리서치 제목</th>
-				<th style="width: 10%;">신청일</th>
-				<th style="width: 10%;">처리일</th>
-				<th style="width: 10%;">결과</th>
+				<th style="width: 40%;">리서치 제목</th>
+				<th style="width: 20%;">처리일</th>
 				<th style="width: 10%;">상세보기</th>
 			</tr>
-			<c:forEach var="i" begin="0" end="9">
+			<c:forEach var="research" items="${ researchReferList }">
 				<tr class="tableContext">
-					<td>리서치 번호</td>
-					<td>기업명</td>
-					<td>리서치 제목</td>
-					<td>신청일</td>
-					<td>처리일</td>
-					<td>결과</td>
+					<td>${ research.researchNo }</td>
+					<td>${ research.companyName }</td>
+					<td>${ research.researchName }</td>
+					<td><fmt:formatDate value="${ research.lastDate }"/></td>
 					<td><button class="detail">상세 보기</button></td>
 				</tr>
 			</c:forEach>
 		</table>
 		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
+			<c:url var="researchFirst" value="researchReferList.adminResearch">
+				<c:param name="currentPage" value="${1}"/>
+			</c:url>
+			<a href="${researchFirst}"><span>[처음]</span></a>&nbsp;
+			
+			<c:if test="${pi.currentPage <= 1}">
+				<span>[이전]</span> &nbsp;
+			</c:if>
+			<c:if test="${pi.currentPage > 1}">
+				<c:url var="researchBack" value="researchReferList.adminResearch">
+					<c:param name="currentPage" value="${pi.currentPage - 1}"/>
+				</c:url>
+				<a href="${researchBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+			
+			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+				<c:if test="${p eq pi.currentPage }">
+					<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+				</c:if>
+				<c:if test="${p ne pi.currentPage }">
+					<c:url var="researchCheck" value="researchReferList.adminResearch">
+						<c:param name="currentPage" value="${ p }"/>
+					</c:url>
+					<a href="${ researchCheck }"><span>${ p }</span></a>
+				</c:if>
+				
 			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
+			
+			<c:if test="${pi.currentPage < pi.maxPage}">
+				<c:url var="researchNext" value="researchReferList.adminResearch">
+					<c:param name="currentPage" value="${pi.currentPage + 1}"/>
+				</c:url>
+				&nbsp;<a href="${researchNext}"><span>[다음]</span></a>
+			</c:if>
+			<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+			</c:if>
+			
+			<c:url var="researchEnd" value="researchReferList.adminResearch">
+				<c:param name="currentPage" value="${pi.maxPage}"/>
+			</c:url>
+			<a href="${researchEnd}"><span>[마지막]</span></a>&nbsp;
 		</div>
 	</div>
 	<div class="ui modal">
@@ -179,19 +213,19 @@
   			<table class="reason">
 					<tr>
 						<th>프로젝트 명</th>
-						<td>피자 선호도 조사</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>목적</th>
-						<td>우리 브랜드 피자 선호도는 얼마나 되는가 궁금한 점과 앞으로 나아갈 피자의 방향</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>목표 인원</th>
-						<td>200명</td>
+						<td></td>
 					</tr>
 					<tr>
 						<th>반려 사유</th>
-						<td>외설된 질문 포함</td>
+						<td></td>
 					</tr>
 				</table>
   		</div>
@@ -202,8 +236,28 @@
 		
 	
 	<script>
-		$(".detail").on("click", function(){
-			$('.ui.modal').modal('show');
+		$(document).on("click", ".detail", function(){
+			researchNoStr = $(this).parent().siblings().eq(0).text();
+			$.ajax({
+				url:"researchReferDetail.adminResearch",
+				type:"post",
+				data:{researchNoStr:researchNoStr},
+				success:function(data){
+					console.log(data);
+					
+					var researchDetail = data.researchDetail[0];
+					$(".reason").find("td").eq(0).text(researchDetail.researchName);
+					$(".reason").find("td").eq(1).text(researchDetail.researchPerpose);
+					$(".reason").find("td").eq(2).text(researchDetail.researchEngagementGoals + "명");
+					$(".reason").find("td").eq(3).text(researchDetail.researchReferReason);
+					
+					$('.ui.modal').modal('show');
+				},
+				error:function(data){
+					console.log(data);
+				}
+			});
+			
 		});
 		$(".topMenu:nth-child(2)").addClass("active");
 		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(1)").addClass("on");

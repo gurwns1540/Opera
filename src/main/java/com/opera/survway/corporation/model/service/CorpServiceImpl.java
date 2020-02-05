@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.dao.CorpDao;
 import com.opera.survway.corporation.model.vo.CorpMember;
+import com.opera.survway.corporation.model.vo.Payment;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.corporation.model.vo.SearchResearch;
@@ -118,12 +120,16 @@ public class CorpServiceImpl implements CorpService {
 					for(int i = 0; i < uploadFiles.size(); i++) {
 						for(int j = 0; j < questionList.size(); j++) {
 							if(uploadFiles.get(i).getRquestionNo() == questionList.get(j).getQuestionOrder()) {
-								uploadFiles.get(i).setResearchNo(questionList.get(j).getResearchNo());
+								uploadFiles.get(i).setRquestionNo(questionList.get(j).getQuestionNo());
 							}
 						}
-						for(int j = 0; j < choiceList.size(); j++) {
-							if(uploadFiles.get(i).getRchoiceNo() == choiceList.get(j).getChoiceOrder()) {
-								uploadFiles.get(i).setRchoiceNo(choiceList.get(j).getChoiceNo());
+						for(int k = 0; k < questionList.size(); k++) {
+							for(int j = 0; j < questionList.get(k).getRequestChoiceList().size(); j++) {
+								if(questionList.get(k).getQuestionFormNo() == 3) {
+									if(uploadFiles.get(i).getRchoiceNo() == questionList.get(k).getRequestChoiceList().get(j).getChoiceOrder()) {
+										uploadFiles.get(i).setRchoiceNo(questionList.get(k).getRequestChoiceList().get(j).getChoiceNo());
+									}
+								}
 							}
 						}
 					}
@@ -204,6 +210,72 @@ public class CorpServiceImpl implements CorpService {
 	@Override
 	public int getQuestionCount(int researchNo) {
 		return cd.getQuestionCount(sqlSession, researchNo);
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 가격 협상
+	 */
+	@Override
+	public boolean priceConference(ResearchState researchstate) {
+		boolean isConference = false;
+		
+		int result1 = cd.insertConferenceState(sqlSession, researchstate);
+		
+		int result2 = cd.insertConferenceHistory(sqlSession, researchstate);
+		
+		if(result1 > 0 && result2 > 0) {
+			isConference = true;
+		}
+		return isConference;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 2.
+	 * @ModifyDate  : 2020. 2. 2.
+	 * @Description : 리서치 결제
+	 */
+	@Override
+	public boolean researchPayment(Payment payment) {
+		boolean isPayment = false;
+		
+		int result1 = cd.insertPayment(sqlSession, payment);
+		
+		int result2 = cd.insertPaymentState(sqlSession, payment);
+		
+		if(result1 > 0 && result2 > 0) {
+			isPayment = true;
+		}
+		return isPayment;
+	}
+
+	@Override
+	public boolean recontructionConference(ResearchState researchState) {
+		boolean isConference = false;
+		
+		int result1 = cd.insertRecontructionConferenceState(sqlSession, researchState);
+		
+		int result2 = cd.insertRecontructionConferenceHistory(sqlSession, researchState);
+		
+		if(result1 > 0 && result2 > 0) {
+			isConference = true;
+		}
+		return isConference;
+	}
+
+	@Override
+	public boolean recontructionApproved(int researchNo) {
+		boolean isApproved = false;
+		
+		int result = cd.recontructionApproved(sqlSession, researchNo);
+		
+		if(result > 0) {
+			isApproved = true;
+		}
+		return isApproved;
 	}
 
 }

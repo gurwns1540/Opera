@@ -7,8 +7,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.CorpMember;
+import com.opera.survway.corporation.model.vo.Payment;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.corporation.model.vo.SearchResearch;
@@ -106,5 +108,40 @@ public class CorpDaoImpl implements CorpDao {
 	@Override
 	public int getQuestionCount(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.selectOne("Corp.getQuestionCount", researchNo);
+	}
+
+	@Override
+	public int insertConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchstate) {
+		return sqlSession.insert("Corp.insertConferenceHistory", researchstate);
+	}
+
+	@Override
+	public int insertConferenceState(SqlSessionTemplate sqlSession, ResearchState researchstate) {
+		return sqlSession.insert("Corp.insertConferenceState", researchstate);
+	}
+
+	@Override
+	public int insertPayment(SqlSessionTemplate sqlSession, Payment payment) {
+		return sqlSession.insert("Corp.insertPayment", payment);
+	}
+
+	@Override
+	public int insertPaymentState(SqlSessionTemplate sqlSession, Payment payment) {
+		return sqlSession.insert("Corp.insertPaymentState", payment);
+	}
+
+	@Override
+	public int insertRecontructionConferenceState(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Corp.insertRecontructionConferenceState", researchState);
+	}
+
+	@Override
+	public int insertRecontructionConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Corp.insertRecontructionConferenceHistory", researchState);
+	}
+
+	@Override
+	public int recontructionApproved(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.insert("Corp.recontructionApproved", researchNo);
 	}
 }
