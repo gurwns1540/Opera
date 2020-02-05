@@ -6,6 +6,7 @@ import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
@@ -55,5 +56,21 @@ public interface PanelService {
 	int insertCashOutHistory(Reward r) throws RewardException;
   
 	List<ResearchQuestion> getTsQuestionList() throws SelectException;
+
+	int insertFaq(Faq faq) throws InquiryException;
+
+	int getListCountFaq(Faq f) throws InquiryException;
+
+	List<Faq> selectAllFaq(Faq f) throws InquiryException;
+
+	int deleteFaq(Faq f) throws InquiryException;
+
+	int updateFaq(Faq f) throws InquiryException;
+
+	int answerInquiry(Inquiry i) throws InquiryException;
+
+	int deleteAnswerInquiry(Inquiry i) throws InquiryException;
+
+	
 
 }

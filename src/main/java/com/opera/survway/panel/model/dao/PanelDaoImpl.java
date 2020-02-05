@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
@@ -73,16 +74,24 @@ public class PanelDaoImpl implements PanelDao{
 		
 		RowBounds rowBounds = new RowBounds(offset, i.getPi().getLimit());
 		
-		list = sqlSession.selectList("Panel.selectAllMyInquiry", i,rowBounds);
-		
+		if(i.getMno() != 1) {
+			list = sqlSession.selectList("Panel.selectAllMyInquiry", i,rowBounds);
+		}else if(i.getMno() ==1) {
+			list = sqlSession.selectList("Panel.adminSelectAllMyInquiry",i,rowBounds);
+		}
+			
 		return list;
 	}
 
 	@Override
 	public int getListCountInquiry(SqlSessionTemplate sqlSession, Inquiry iq) {
 		int listCount =0;
+		if(iq.getMno() != 1) {
+			listCount = sqlSession.selectOne("Panel.getListCountInquiry",iq);
+		}else if(iq.getMno() == 1) {
+			listCount = sqlSession.selectOne("Panel.adminGetListCountInquiry", iq);
+		}
 		
-		listCount = sqlSession.selectOne("Panel.getListCountInquiry",iq);
 		return listCount;
 	}
 
@@ -195,24 +204,13 @@ public class PanelDaoImpl implements PanelDao{
 		return researchList;
 	}
 
-	/**
-	 * @Author	:hansol
-	 * @CreateDate	:2020. 1. 30.
-	 * @ModifyDate	:2020. 1. 30.
-	 * @Description	:패널 보유 리워드 조회
-	 */
+	
 	@Override
 	public Reward getPanelReward(SqlSessionTemplate sqlSession, int mno) {
 		
 		return sqlSession.selectOne("Panel.getPanelReward",mno);
 	}
 
-	/**
-	 * @Author	:hansol
-	 * @CreateDate	:2020. 1. 30.
-	 * @ModifyDate	:2020. 1. 30.
-	 * @Description	:insert cashoutHistory
-	 */
 	@Override
 	public int insertCashOutHistory(SqlSessionTemplate sqlSession, Reward r) {
 		
@@ -248,6 +246,48 @@ public class PanelDaoImpl implements PanelDao{
 			throw new SelectException("TS조사 문항별 보기 리스트 불러오기 실패");
 		}
 		return tsChoices;
+	}
+
+	@Override
+	public int insertFaq(SqlSessionTemplate sqlSession, Faq faq) {
+		
+		return sqlSession.insert("Panel.insertFaq", faq);
+	}
+
+	@Override
+	public int getListCountFaq(SqlSessionTemplate sqlSession, Faq f) {
+		
+		return sqlSession.selectOne("Panel.getListCountFaq",f);
+	}
+
+	@Override
+	public List<Faq> selectAllFaq(SqlSessionTemplate sqlSession, Faq f) {
+		
+		return sqlSession.selectList("Panel.selectAllFaq",f);
+	}
+
+	@Override
+	public int deleteFaq(SqlSessionTemplate sqlSession, Faq f) {
+		
+		return sqlSession.update("Panel.deleteFaq",f);
+	}
+
+	@Override
+	public int updateFaq(SqlSessionTemplate sqlSession, Faq f) {
+		
+		return sqlSession.update("Panel.updateFaq",f);
+	}
+
+	@Override
+	public int answerInquiry(SqlSessionTemplate sqlSession, Inquiry i) {
+		
+		return sqlSession.update("Panel.answerInquiry",i);
+	}
+
+	@Override
+	public int deleteAnswerInquiry(SqlSessionTemplate sqlSession, Inquiry i) {
+		
+		return sqlSession.update("Panel.deleteAnswerInquiry",i);
 	}
 
 	

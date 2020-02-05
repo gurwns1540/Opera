@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
@@ -73,6 +74,22 @@ public interface PanelDao {
 	List<ResearchQuestion> getTsQuestionList(SqlSessionTemplate sqlSession) throws SelectException;
 
 	List<ResearchChoice> getTsChoiceList(SqlSessionTemplate sqlSession, int rquestionNo) throws SelectException;
+
+	int insertFaq(SqlSessionTemplate sqlSession, Faq faq);
+
+	int getListCountFaq(SqlSessionTemplate sqlSession, Faq f);
+
+	List<Faq> selectAllFaq(SqlSessionTemplate sqlSession, Faq f);
+
+	int deleteFaq(SqlSessionTemplate sqlSession, Faq f);
+
+	int updateFaq(SqlSessionTemplate sqlSession, Faq f);
+
+	int answerInquiry(SqlSessionTemplate sqlSession, Inquiry i);
+
+	int deleteAnswerInquiry(SqlSessionTemplate sqlSession, Inquiry i);
+
+	
 
 
 
