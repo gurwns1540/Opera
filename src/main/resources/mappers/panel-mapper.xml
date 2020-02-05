@@ -407,6 +407,7 @@
 		<result property="rquestionContext" column="RQUESTION_CONTEXT" />
 		<result property="rquestionVideolink" column="RQUESTION_VIDEOLINK" />
 		<result property="mediaExplain" column="MEDIA_EXPLAIN" />
+		<result property="qchangeName" column="CHANGE_NAME" />
 	</resultMap>
 	
 	<select id="selectTsQuestionList" resultMap="researchQuestionResultSet">
@@ -418,8 +419,10 @@
 
 	<resultMap type="PanelResearchChoice" id="researchChoiceResultSet">
 		<id property="rchoiceNo" column="RCHOICE_NO" />
+		<result property="rquestionNo" column="RQUESTION_NO" />
 		<result property="rchoiceOrder" column="RCHOICE_ORDER" />
 		<result property="rchoiceContext" column="RCHOICE_CONTEXT" />
+		<result property="cchangeName" column="CHANGE_NAME" />
 	</resultMap>
 
 	<select id="selectTsChoiceList" resultMap="researchChoiceResultSet" parameterType="_int">
@@ -529,19 +532,30 @@
 		                                                            WHERE MNO = #{ mno }
 		                                                            AND RH.RESEARCH_NO = 1
 		                                                            AND RH.RQUESTION_NO = 8))))
+		 ORDER BY RESEARCH_NO ASC
 		 ]]>
 	</select>
 	
 	<select id="selectResearchQuestionList" resultMap="researchQuestionResultSet" parameterType="java.lang.String">
 		SELECT *
 		FROM RESEARCHQUESTION
+		LEFT JOIN UPLOADFILE USING (RESEARCH_NO)
 		WHERE RESEARCH_NO = #{ researchNo }
+		ORDER BY RESEARCH_ORDER ASC
 	</select>
 	
 	<select id="selectResearchChoiceList" resultMap="researchChoiceResultSet" parameterType="_int">
 		SELECT *
-		FROM RESEARCHCHOICE
-		WHERE RQUESTION_NO = #{ rquestionNo }
+		FROM RESEARCHCHOICE RC
+		LEFT JOIN UPLOADFILE USING (RCHOICE_NO)
+		WHERE RC.RQUESTION_NO = #{ rquestionNo }
+		ORDER BY RCHOICE_ORDER ASC
+	</select>
+	
+	<select id="selectResearchInfo" resultMap="MainResearchResultSet" parameterType="java.lang.String">
+		SELECT *
+		FROM RESEARCH
+		WHERE RESEARCH_NO = #{ researchNo }
 	</select>
 	
 	<insert id="writeNotice" parameterType="Notice">

@@ -262,8 +262,8 @@
 					</div>
 				</div>
 				
-				<!-- 서베이 응답들어가기 전 설명 -->
-				<div class="ui overlay fullscreen modal" id="Q0">
+				<!-- 서베이 응답들어가기 전 설명 TS -->
+				<!-- '<div class="ui overlay fullscreen modal" id="Q0">
 					<div class="header" style="height:61px; padding:5px;">
 						<table style="width:100%;">
 							<tr>
@@ -272,11 +272,11 @@
 								</td>
 								<td style="width:70%; height:inherit; padding-right:20px;">
 								<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
-									0 of ${ qCount } done
+									0 of ' + qCount + ' done
 								</div>
-								<div class="ui indicating progress active" data-value="0" data-total="${ qCount }" id="progress0" data-percent="0%" style="margin-top:10px; width:40%; float:right;">
+								<div class="ui indicating progress active" data-value="0" data-total="' + qCount + '" id="progress0" data-percent="0%" style="margin-top:10px; width:40%; float:right;">
 									<input type="text" value="0" style="display:none;">
-									<div class="bar" style="transition-duration: 200ms; display: block;">
+									<div class="bar" style="transition-duration: 200ms; display: block; width:0%;">
 										<div class="progress">0%</div>
 									</div>
 								</div>
@@ -288,7 +288,7 @@
 						<div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
 							<div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;">
 								<span style="line-height:180%; font-size:1.1vw;">
-									<b>${ sessionScope.loginUser.userName }</b>님, 안녕하세요.<br>서브웨이 패널회원으로 가입해주셔서 감사합니다.<br><br>지금부터 몇 가지 기본 정보를 여쭙고자 합니다.<br><br><u>본 조사에 참여하셔야 앞으로 ${ sessionScope.loginUser.userName }님께 맞는 조사를 제공</u>해드릴 수 있으니,<br>성실한 답변을 부탁드립니다.
+									<b>' + userName + '</b>님, 안녕하세요.<br>서브웨이 패널회원으로 가입해주셔서 감사합니다.<br><br>지금부터 몇 가지 기본 정보를 여쭙고자 합니다.<br><br><u>본 조사에 참여하셔야 앞으로 ' + userName + '님께 맞는 조사를 제공</u>해드릴 수 있으니,<br>성실한 답변을 부탁드립니다.
 								</span>
 							</div>
 							<div class="actions" style="text-align:center; margin-top:70px;">
@@ -301,13 +301,54 @@
 							돌아가기 
 						</div>
 					</div>
-				</div>
+				</div>' -->
+				
+				<!-- 서베이 응답들어가기 전 설명 일반 -->
+				<!-- '<div class="ui overlay fullscreen modal" id="Q0">
+					<div class="header" style="height:61px; padding:5px;">
+						<table style="width:100%;">
+							<tr>
+								<td style="width:30%; height:inherit;transform:translateY(-4px);">
+									<img src="resources/images/footerLogo.png" alt="" id="footerImg">
+								</td>
+								<td style="width:70%; height:inherit; padding-right:20px;">
+								<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
+									0 of ' + qCount + ' done
+								</div>
+								<div class="ui indicating progress active" data-value="0" data-total="' + qCount + '" id="progress0" data-percent="0%" style="margin-top:10px; width:40%; float:right;">
+									<input type="text" value="0" style="display:none;">
+									<div class="bar" style="transition-duration: 200ms; display: block; width:0%;">
+										<div class="progress">0%</div>
+									</div>
+								</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="content insetBox">
+						<div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
+							<div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;">
+								<span style="line-height:180%; font-size:1.1vw;">
+									<b>' + userName + '</b>님, 안녕하세요.<br><br>본 조사의 예상 소요시간은 ' + time + '분이며, 조사 목적 또는 패널님의 응답 퀄리티에 따라 ' + researchReward + 'P의 리워드를 받으실 수 있습니다.<br><br>설문 답변 소요시간이 ' + (time/2) + '분 미만인 경우 또는 ' + (time*2) + '분을 초과하는 경우,<br>답변의 질에 상관 없이 최저 리워드를 드리니 시간을 엄수하여 주시기 바랍니다.
+								</span>
+							</div>
+							<div class="actions" style="text-align:center; margin-top:70px;">
+								<button class="ui blue button" id="nextBtn0" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="actions">
+						<div class="ui primary approve button" style="background-color:#6A6A6A;">
+							돌아가기 
+						</div>
+					</div>
+				</div>' -->
 				
 				<c:forEach var="q" items="${ researchQuestionList }">
 					<!-- 객관식 하나선택 디자인 -->
-					<c:if test="${ q.questionFormNo eq 10 }">
-						<div class="ui overlay fullscreen modal" id="Q${ q.researchOrder }">
-							<div class="header" style="height:61px; padding:5px;">
+					<%-- <c:if test="${ q.questionFormNo eq 10 }">
+						'<div class="ui overlay fullscreen modal" id="Q' + researchOrder + '">'
+							'<div class="header" style="height:61px; padding:5px;">
 								<table style="width:100%; height:100%;">
 									<tr>
 										<td style="width:30%; height:inherit;">
@@ -315,68 +356,66 @@
 										</td>
 										<td style="width:70%; height:inherit; padding-right:20px;">
 											<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
-												${ q.researchOrder -1 } of ${ qCount } done
+												' + (researchOrder-1) + ' of ' + qCount + ' done
 											</div>
-											<div class="ui indicating progress active" data-value="${ q.researchOrder }" data-total="${ qCount }" id="progress${ q.researchOrder }" data-percent="${ q.progressDataPercent }%" style="margin-top:10px; width:40%; float:right;">
-												<input type="text" value="${ q.progressDataPercent }" style="display:none;">
+											<div class="ui indicating progress active" data-value="' + researchOrder + '" data-total="' + qCount + '" id="progress' + researchOrder + '" data-percent="' + progressDataPercent + '%" style="margin-top:10px; width:40%; float:right;">
+												<input type="text" value="' + progressDataPercent + '" style="display:none;">
 												<div class="bar" style="transition-duration: 200ms; display: block;">
-													<div class="progress">${ q.progressDataPercent }%</div>
+													<div class="progress">' + q.progressDataPercent + '%</div>
 												</div>
 											</div>
 										</td>
 									</tr>
 								</table>
-							</div>
+							</div>'
 							<div class="content insetBox">
 								<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);">
 									<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
-										<div class="questionArea" style="width:100%;">
+										'<div class="questionArea" style="width:100%;">
 											<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
 												<tr>
 													<th style="width: 3%;">
 														<div class="iconDiv">
-															<span style="font-size:1vw;"><b>Q${ q.researchOrder }.</b></span>
+															<span style="font-size:1vw;"><b>Q' + researchOrder + '.</b></span>
 														</div>
 													</th>
 													<td style="width:97%; padding-right:20px;">
 														<span style="font-size:1vw;">
-															${ q.rquestionContext }
+															' + rquestionContext + '
 														</span>
 													</td>
 												</tr>
 											</table>
-										</div>
+										</div>'
 									</div>
 									<div class="choiceArea" style="height:320px; overflow-y:auto; width:90%; margin:0 auto; margin-top:30px;">
-										<div class="ui two column grid" id="surveyListArea" style="width: inherit; margin: 0 auto; margin-top:10px;">
-											<c:forEach var="c" items="${ q.choiceList }">
-												<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
-													<div class="eachSurveyBox" style="height:auto;">
-														<div class="eachBox" style="min-height:20px;">
-															<div class="choiceNameArea" style="padding-top:5px;">
-																<div class="ui radio checkbox" style="margin-bottom: 5px;">
-																	<input type="radio" name="${ q.researchOrder }" class="choiceBox" id="${ q.researchOrder }choice${ c.rchoiceOrder }" value="${ c.rchoiceOrder }">
-																	<label for="${ q.researchOrder }choice${ c.rchoiceOrder }" style="cursor: pointer;"> ${ c.rchoiceContext }</label>
-																</div>
+										'<div class="ui two column grid" id="surveyListArea" style="width: inherit; margin: 0 auto; margin-top:10px;">
+											<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
+												<div class="eachSurveyBox" style="height:auto;">
+													<div class="eachBox" style="min-height:20px;">
+														<div class="choiceNameArea" style="padding-top:5px;">
+															<div class="ui radio checkbox" style="margin-bottom: 5px;">
+																<input type="radio" name="' + researchOrder + '" class="choiceBox" id="' + q.researchOrder + 'choice' + rchoiceOrder + '" value="'+ rchoiceOrder + '">
+																<label for="' + researchOrder + 'choice' + rchoiceOrder + '" style="cursor: pointer;"> ' + rchoiceContext + '</label>
 															</div>
 														</div>
 													</div>
 												</div>
-											</c:forEach>
-										</div>
+											</div>
+										</div>'
 									</div>
-									<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
-										<button class="ui blue button" id="nextBtn${ q.researchOrder }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
-									</div>
+									'<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
+										<button class="ui blue button" id="nextBtn' + q.researchOrder + '" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
+									</div>'
 								</div>
 							</div>
-							<div class="actions">
+							'<div class="actions">
 								<div class="ui primary approve button" style="background-color:#6A6A6A;">
 									돌아가기 
 								</div>
-							</div>
+							</div>'
 						</div>
-					</c:if>
+					</c:if> --%>
 				
 					<!-- 객관식 다중선택 디자인 -->
 					<c:if test="${ q.questionFormNo eq 6 }">
@@ -496,7 +535,7 @@
 										</div>
 									</div>
 									<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px; text-align:center;">
-										<div class="ui input" style="width:30%; margin-top:100px;"><input type="text" name="${ q.researchOrder }"></div>
+										<!-- '<div class="ui input" style="width:30%; margin-top:100px;"><input type="text" name="' + researchOrder + '"></div>' -->
 									</div>
 									<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
 										<button class="ui blue button" id="nextBtn${ q.researchOrder }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
@@ -555,7 +594,7 @@
 										</div>
 									</div>
 									<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px; text-align:center;">
-										<div class="ui form" style="width:100%; margin-top:0px; text-align:center;"><textarea style="margin:0 auto; margin-top:20px; resize:none;" placeholder="300자 이내" name="${ q.rquestionOrder }"></textarea></div>
+										<%-- <div class="ui form" style="width:100%; margin-top:0px; text-align:center;"><textarea style="margin:0 auto; margin-top:20px; resize:none;" placeholder="300자 이내" name="${ q.rquestionOrder }"></textarea></div>' --%>
 									</div>
 									<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
 										<button class="ui blue button" id="nextBtn${ q.researchOrder }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
@@ -694,40 +733,41 @@
 									
 									</div>
 									<div class="choiceArea" style="height:320px; overflow-y:auto; width:90%; margin:0 auto; margin-top:30px;">
-										<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;">
+										<!-- '<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;">
 											<div class="media" style="margin:0 auto;">
-												<!-- 이거대신 사진또는 영상  -->
-												<div style="height:320px; border:1px solid red; margin:0 auto;"></div>
+												<iframe style="height:320px; margin:0 auto;" src="https://www.youtube.com/embed' + video + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 											</div>
 											<div class="mediaExplain ui stacked segment" style="margin:0 auto; margin-top: 20px; width:90%; height:auto; padding:15px;">
-												<span>영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.영상 및 사진 설명입니다.</span>
+												<span>' + mediaExplain + '</span>
 											</div>
 										</div>
-										<table style="width:90%; margin:0 auto; margin-top:50px;">
+										'<table style="width:90%; margin:0 auto; margin-top:50px;">
 											<tr>
 												<td style="width:46%;"><hr></td>
 												<td style="width:8%; text-align:center;">보 기</td>
 												<td style="width:46%;"><hr></td>
 											</tr>
-										</table>
+										</table>' -->
+										
+										<img src="resources/uploadFiles/' + changeName + '" style="height:320px; margin:0 auto;">
+										
 										<div class="ui three column grid" id="surveyListArea" style="width: inherit; margin: 0 auto; margin-top:10px;">
 											<c:forEach var="c" items="${ q.choiceList }">
-												<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
+												<!-- '<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
 													<div class="ui segment eachSurveyBox" style="margin:10px;">
 														<div class="eachSurveyBox" style="height:200px;">
 															<div class="imgArea" style="height:73%; width:100%; margin:0 auto;">
-																<%-- <img src="resources/images/img${ no }.png" style="height:100%; width:100%;"> --%>
-																<div style="height:100%; width:100%; border:1px solid red;"></div>
+																<img src="resources/uploadFiles/' + cchangeName + '" style="height:100%; width:100%;">
 															</div>
 															<div class="choiceNameArea" style="padding-top:10px; padding-left:5px;">
 																<div class="ui checked checkbox" style="margin-bottom: 9px;">
-																	<input type="checkBox" name="${ q.researchOrder }" class="choiceBox" id="${ q.researchOrder }choice${ c.rchoiceOrder }" value="${ c.rchoiceOrder }">
-																	<label for="${ q.researchOrder }choice${ c.rchoiceOrder }" style="cursor: pointer; line-height:150%;">  ${ c.rchoiceContext }</label>
+																	<input type="checkBox" name="' + researchOrder + '" class="choiceBox" id="' + researchOrder + 'choice' + rchoiceOrder + '" value="' + rchoiceOrder + '">
+																	<label for="' + researchOrder + 'choice' + rchoiceOrder + '" style="cursor: pointer; line-height:150%;">  ' + rchoiceContext + '</label>
 																</div>
 															</div>
 														</div>
 													</div>
-												</div>
+												</div>' -->
 											</c:forEach>
 										</div>
 									</div>
@@ -789,9 +829,9 @@
 									
 									</div>
 									<div class="choiceArea" style="height:320px; overflow-y:auto; width:90%; margin:0 auto; margin-top:30px;">
-										<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;">
+										<!-- <div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;">
 											<div class="media" style="margin:0 auto;">
-												<!-- 이거대신 사진또는 영상  -->
+												이거대신 사진또는 영상 
 												<div style="height:320px; border:1px solid red; margin:0 auto;"></div>
 											</div>
 											<div class="mediaExplain ui stacked segment" style="margin:0 auto; margin-top: 20px; width:90%; height:auto; padding:15px;">
@@ -804,10 +844,10 @@
 												<td style="width:8%; text-align:center;">보 기</td>
 												<td style="width:46%;"><hr></td>
 											</tr>
-										</table>
+										</table> -->
 										<div class="ui two column grid" id="surveyListArea" style="width: inherit; margin: 0 auto; margin-top:10px;">
 											<c:forEach var="c" items="${ q.choiceList }">
-												<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
+												<%-- <div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;">
 													<div class="eachSurveyBox" style="height:auto;">
 														<div class="eachBox" style="min-height:20px;">
 															<div class="choiceNameArea" style="padding-top:5px;">
@@ -818,7 +858,7 @@
 															</div>
 														</div>
 													</div>
-												</div>
+												</div> --%>
 											</c:forEach>
 										</div>
 									</div>

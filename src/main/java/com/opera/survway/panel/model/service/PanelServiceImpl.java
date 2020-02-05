@@ -508,6 +508,21 @@ public class PanelServiceImpl implements PanelService {
 		return researchQuestions;
 	}
 
+	/**
+	 * @throws SelectException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : 진행중인 설문조사 목록에서 특정 리서치 선택 시에 가져올 리서치 정보
+	 */
+	@Override
+	public Research getResearchInfo(String researchNo) throws SelectException {
+		Research researchInfo = null;
+		researchInfo = pd.getResearchInfo(sqlSession, researchNo);
+		return researchInfo;
+	}
+}
+
 	@Override
 	public int writeNotice(Notice n) {
 		int result =pd.insert("Panel.writeNotice",n,sqlSession);

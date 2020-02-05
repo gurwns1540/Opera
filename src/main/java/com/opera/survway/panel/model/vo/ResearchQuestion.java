@@ -26,7 +26,7 @@ public class ResearchQuestion {
 	private int fileNo;
 	private String fileType;
 	private String originName;
-	private String changeName;
+	private String qchangeName;
 	private String filePath;
 	
 	public ResearchQuestion() {}
@@ -34,7 +34,7 @@ public class ResearchQuestion {
 	public ResearchQuestion(int questionFormNo, int rquestionNo, int researchNo, int researchOrder,
 			String rquestionContext, List<ResearchChoice> choiceList, int progressDataPercent,
 			String rquestionVideolink, String mediaExplain, int fileNo, String fileType, String originName,
-			String changeName, String filePath) {
+			String qchangeName, String filePath) {
 		super();
 		this.questionFormNo = questionFormNo;
 		this.rquestionNo = rquestionNo;
@@ -48,7 +48,7 @@ public class ResearchQuestion {
 		this.fileNo = fileNo;
 		this.fileType = fileType;
 		this.originName = originName;
-		this.changeName = changeName;
+		this.qchangeName = qchangeName;
 		this.filePath = filePath;
 	}
 
@@ -148,12 +148,12 @@ public class ResearchQuestion {
 		this.originName = originName;
 	}
 
-	public String getChangeName() {
-		return changeName;
+	public String getQchangeName() {
+		return qchangeName;
 	}
 
-	public void setChangeName(String changeName) {
-		this.changeName = changeName;
+	public void setQchangeName(String qchangeName) {
+		this.qchangeName = qchangeName;
 	}
 
 	public String getFilePath() {
@@ -170,8 +170,8 @@ public class ResearchQuestion {
 				+ researchNo + ", researchOrder=" + researchOrder + ", rquestionContext=" + rquestionContext
 				+ ", choiceList=" + choiceList + ", progressDataPercent=" + progressDataPercent
 				+ ", rquestionVideolink=" + rquestionVideolink + ", mediaExplain=" + mediaExplain + ", fileNo=" + fileNo
-				+ ", fileType=" + fileType + ", originName=" + originName + ", changeName=" + changeName + ", filePath="
-				+ filePath + "]";
+				+ ", fileType=" + fileType + ", originName=" + originName + ", qchangeName=" + qchangeName
+				+ ", filePath=" + filePath + "]";
 	}
 	
 }

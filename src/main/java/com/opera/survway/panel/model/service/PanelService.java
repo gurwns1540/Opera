@@ -81,7 +81,9 @@ public interface PanelService {
 
 	List<ResearchQuestion> getResearchQuestionList(String researchNo) throws SelectException;
 
-	int writeNotice(Notice n);
+	Research getResearchInfo(String researchNo) throws SelectException;
+
+  int writeNotice(Notice n);
 
 	int editNotice(Notice n);
 
