@@ -285,5 +285,15 @@ public class PanelDaoImpl implements PanelDao{
 		}
 		return researchChoices;
 	}
+
+	@Override
+	public Research getResearchInfo(SqlSessionTemplate sqlSession, String researchNo) throws SelectException {
+		Research researchInfo = null;
+		researchInfo = sqlSession.selectOne("Panel.selectResearchInfo", researchNo);
+		if(researchInfo == null) {
+			throw new SelectException("선택된 설문조사 정보 불러오기 실패");
+		}
+		return researchInfo;
+	}
 	
 }

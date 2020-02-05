@@ -64,4 +64,6 @@ public interface PanelService {
 
 	List<ResearchQuestion> getResearchQuestionList(String researchNo) throws SelectException;
 
+	Research getResearchInfo(String researchNo) throws SelectException;
+
 }

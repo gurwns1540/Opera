@@ -84,5 +84,7 @@ public interface PanelDao {
 
 	List<ResearchChoice> getResearchChoiceList(SqlSessionTemplate sqlSession, int rquestionNo) throws SelectException;
 
+	Research getResearchInfo(SqlSessionTemplate sqlSession, String researchNo) throws SelectException;
+
 
 }
