@@ -6,10 +6,12 @@ import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
@@ -75,16 +77,24 @@ public class PanelDaoImpl implements PanelDao{
 		
 		RowBounds rowBounds = new RowBounds(offset, i.getPi().getLimit());
 		
-		list = sqlSession.selectList("Panel.selectAllMyInquiry", i,rowBounds);
-		
+		if(i.getMno() != 1) {
+			list = sqlSession.selectList("Panel.selectAllMyInquiry", i,rowBounds);
+		}else if(i.getMno() ==1) {
+			list = sqlSession.selectList("Panel.adminSelectAllMyInquiry",i,rowBounds);
+		}
+			
 		return list;
 	}
 
 	@Override
 	public int getListCountInquiry(SqlSessionTemplate sqlSession, Inquiry iq) {
 		int listCount =0;
+		if(iq.getMno() != 1) {
+			listCount = sqlSession.selectOne("Panel.getListCountInquiry",iq);
+		}else if(iq.getMno() == 1) {
+			listCount = sqlSession.selectOne("Panel.adminGetListCountInquiry", iq);
+		}
 		
-		listCount = sqlSession.selectOne("Panel.getListCountInquiry",iq);
 		return listCount;
 	}
 
@@ -197,24 +207,13 @@ public class PanelDaoImpl implements PanelDao{
 		return researchList;
 	}
 
-	/**
-	 * @Author	:hansol
-	 * @CreateDate	:2020. 1. 30.
-	 * @ModifyDate	:2020. 1. 30.
-	 * @Description	:패널 보유 리워드 조회
-	 */
+	
 	@Override
 	public Reward getPanelReward(SqlSessionTemplate sqlSession, int mno) {
 		
 		return sqlSession.selectOne("Panel.getPanelReward",mno);
 	}
 
-	/**
-	 * @Author	:hansol
-	 * @CreateDate	:2020. 1. 30.
-	 * @ModifyDate	:2020. 1. 30.
-	 * @Description	:insert cashoutHistory
-	 */
 	@Override
 	public int insertCashOutHistory(SqlSessionTemplate sqlSession, Reward r) {
 		
@@ -253,6 +252,47 @@ public class PanelDaoImpl implements PanelDao{
 	}
 
 	@Override
+	public int insertFaq(SqlSessionTemplate sqlSession, Faq faq) {
+		
+		return sqlSession.insert("Panel.insertFaq", faq);
+	}
+
+	@Override
+	public int getListCountFaq(SqlSessionTemplate sqlSession, Faq f) {
+		
+		return sqlSession.selectOne("Panel.getListCountFaq",f);
+	}
+
+	@Override
+	public List<Faq> selectAllFaq(SqlSessionTemplate sqlSession, Faq f) {
+		
+		return sqlSession.selectList("Panel.selectAllFaq",f);
+	}
+
+	@Override
+	public int deleteFaq(SqlSessionTemplate sqlSession, Faq f) {
+		
+		return sqlSession.update("Panel.deleteFaq",f);
+	}
+
+	@Override
+	public int updateFaq(SqlSessionTemplate sqlSession, Faq f) {
+		
+		return sqlSession.update("Panel.updateFaq",f);
+	}
+
+	@Override
+	public int answerInquiry(SqlSessionTemplate sqlSession, Inquiry i) {
+		
+		return sqlSession.update("Panel.answerInquiry",i);
+	}
+
+	@Override
+	public int deleteAnswerInquiry(SqlSessionTemplate sqlSession, Inquiry i) {
+		
+		return sqlSession.update("Panel.deleteAnswerInquiry",i);
+	}
+
 	public int getCountMyResearch(SqlSessionTemplate sqlSession, PanelMember loginUser) {
 		return sqlSession.selectOne("Panel.selectCountMyResearch", loginUser);
 	}
@@ -294,6 +334,25 @@ public class PanelDaoImpl implements PanelDao{
 			throw new SelectException("선택된 설문조사 정보 불러오기 실패");
 		}
 		return researchInfo;
+  }
+  
+	public int insert(String string, Notice n, SqlSessionTemplate session) {
+		return session.insert("Panel.writeNotice",n);
+	}
+
+	@Override
+	public Notice selectNotice(int noticeNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Panel.selectNotice",noticeNo);
+	}
+
+	@Override
+	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
+		return sqlSession.update("Panel.updateNotice",n);
+	}
+
+	@Override
+	public int noticeDelete(int noticeNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("Panel.noticeDelete",noticeNo);
 	}
 	
 }

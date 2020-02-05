@@ -54,4 +54,10 @@ public interface CorpDao {
 
 	int insertPaymentState(SqlSessionTemplate sqlSession, Payment payment);
 
+	int insertRecontructionConferenceState(SqlSessionTemplate sqlSession, ResearchState researchState);
+
+	int insertRecontructionConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState);
+
+	int recontructionApproved(SqlSessionTemplate sqlSession, int researchNo);
+
 }

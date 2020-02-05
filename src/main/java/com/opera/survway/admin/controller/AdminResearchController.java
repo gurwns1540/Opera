@@ -1,5 +1,6 @@
 package com.opera.survway.admin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,6 +20,8 @@ import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.ResearchState;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.corporation.model.vo.Research;
+import com.opera.survway.corporation.model.vo.ResearchChoice;
+import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
 
 @Controller
@@ -373,10 +377,196 @@ public class AdminResearchController {
 		mv.setViewName("jsonView");
 		return mv;
 	}
-	//협의완료
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 3.
+	 * @ModifyDate  : 2020. 2. 3.
+	 * @Description : 결제 완료 이력
+	 */
 	@RequestMapping("researchConsultationCompleted.adminResearch")
-	public String forwardResearchConsultationCompleted() {
-		return"researchConsultationCompleted";
+	public String rResearchConsultationCompleted(Model model, HttpServletRequest request) {
+		String queryString = request.getQueryString();
+		
+		Map<String, List<String>> queryMap =  null;
+		
+		int currentPage = 1; 
+		
+		if(queryString != null) { 
+			queryMap = Util.splitQuery(queryString);
+			if(queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+		}
+	  
+		int listCount = 0;
+		try {
+			listCount = as.getListCountPaymentCompletedList();
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			List<Map<String, String>> paymentList = as.paymentCompletedList(pi);
+			
+			model.addAttribute("paymentList", paymentList);
+			model.addAttribute("pi", pi);
+			return"researchConsultationCompleted";
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
+		
 	}
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 3.
+	 * @ModifyDate  : 2020. 2. 3.
+	 * @Description : 결제 이력 상세보기
+	 */
+	@PostMapping("billsDetail.adminResearch")
+	public ModelAndView billsDetail(ModelAndView mv, String billingHistoryNoStr) {
+		int billingHistoryNo = Integer.parseInt(billingHistoryNoStr);
+		
+		List<Map<String, String>> billsDetail = as.billsDetail(billingHistoryNo);
+		
+		mv.addObject("billsDetail", billsDetail);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 3.
+	 * @ModifyDate  : 2020. 2. 3.
+	 * @Description : 리서치 재구성 대기 목록
+	 */
+	@RequestMapping("surveyReconstructionList.adminResearch")
+	public String surveyReconstructionList(Model model, HttpServletRequest request) {
+		String queryString = request.getQueryString();
+		
+		Map<String, List<String>> queryMap =  null;
+		
+		int currentPage = 1; 
+		
+		if(queryString != null) { 
+			queryMap = Util.splitQuery(queryString);
+			if(queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+		}
+	  
+		int listCount = 0;
+		try {
+			listCount = as.getListCountSurveyReconstructionList();
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			List<Map<String, String>> surveyReconstructionList = as.surveyReconstructionList(pi);
+			
+			model.addAttribute("surveyReconstructionList", surveyReconstructionList);
+			model.addAttribute("pi", pi);
+			return "surveyReconstructionList";
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
+		
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 4.
+	 * @ModifyDate  : 2020. 2. 4.
+	 * @Description : 리서치 문항 재구성
+	 */
+	@PostMapping("researchReconstruction.adminResearch")
+	public ModelAndView researchReconstruction(ModelAndView mv, String[] discriminationQuestionOrder, String[] surveyQuizTitle, 
+			String[] discriminationChoiceOrder, String[] choiceInput, String[] correctAnswer, 
+			String researchNoStr, String[] questionOrder, String[] rquestionContext, String researchNamePanel) {
+		Research research = new Research();
+		research.setResearchName(researchNamePanel); // 패널에게 보여질 제목
+		research.setResearchNo(Integer.parseInt(researchNoStr));
+		// 기존 문항 내용 업데이트를 위한 ArrayList
+		ArrayList<ResearchQuestion> questionList = new ArrayList<>();
+		for(int i = 0; i < questionOrder.length; i++) {
+			ResearchQuestion researchQuestion = new ResearchQuestion();
+			researchQuestion.setQuestionOrder(Integer.parseInt(questionOrder[i]));
+			researchQuestion.setRquestionContext(rquestionContext[i]);
+			researchQuestion.setResearchNo(Integer.parseInt(researchNoStr));
+			questionList.add(researchQuestion);
+		}
+		
+		// 조사 대상자 판별 퀴즈를 위한 ArrayList
+		ArrayList<ResearchQuestion> discriminationQuestionList = new ArrayList<>();
+		int choiceIndex = 0;
+		
+		for(int i = 0; i < discriminationQuestionOrder.length; i++) {
+			ArrayList<ResearchChoice> discriminationChoiceList = new ArrayList<>();
+			ResearchQuestion researchQuestion = new ResearchQuestion();
+			researchQuestion.setQuestionOrder(Integer.parseInt(discriminationQuestionOrder[i]));
+			researchQuestion.setRquestionContext(surveyQuizTitle[i]);
+			researchQuestion.setQuestionFormNo(Integer.parseInt(correctAnswer[i])); // 정답 보기를 넣기 위해 임의로..
+			researchQuestion.setResearchNo(Integer.parseInt(researchNoStr));
+			
+			for(int j = choiceIndex; j < discriminationChoiceOrder.length; j++) {
+				ResearchChoice researchChoice = new ResearchChoice();
+				researchChoice.setChoiceOrder(Integer.parseInt(discriminationChoiceOrder[j]));
+				researchChoice.setChoiceContext(choiceInput[j]);
+				
+				discriminationChoiceList.add(researchChoice);
+				if(j != discriminationChoiceOrder.length - 1) {
+					if(Integer.parseInt(discriminationChoiceOrder[j + 1]) == 1) {
+						choiceIndex = j + 1;
+						break;
+					}
+				}
+			}
+			researchQuestion.setRequestChoiceList(discriminationChoiceList);
+			discriminationQuestionList.add(researchQuestion);
+		}
+		research.setQuestionList(discriminationQuestionList);
+		
+		boolean isReconstruction = as.reconstruction(research, questionList);
+		
+		mv.addObject("isReconstruction", isReconstruction);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 4.
+	 * @ModifyDate  : 2020. 2. 4.
+	 * @Description : 리서치 문항 재구성 상세
+	 */
+	@PostMapping("researchWaitingReviewDetail.adminResearch")
+	public ModelAndView researchWaitingReviewDetail(ModelAndView mv, String researchNoStr) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		
+		List<Map<String, Object>> researchDetail = as.researchApprovalDetail(researchNo);
+		
+		List<Map<String, Object>> DiscriminationDetail = as.discriminationDetail(researchNo);
+		
+		mv.addObject("DiscriminationDetail", DiscriminationDetail);
+		mv.addObject("researchDetail", researchDetail);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
+	@PostMapping("reconstructureRefer.adminResearch")
+	public ModelAndView reconstructureRefer(ModelAndView mv, String researchNoStr, String referReason) {
+		int researchNo = Integer.parseInt(researchNoStr);
+		ResearchState researchState = new ResearchState();
+		researchState.setResearchNo(researchNo);
+		researchState.setReferReason(referReason);
+		
+		boolean isRefer = as.reconstructureRefer(researchState);
+		
+		mv.addObject("isRefer", isRefer);
+		mv.setViewName("jsonView");
+		return mv;
+	}
 }

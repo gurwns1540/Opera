@@ -129,4 +129,19 @@ public class CorpDaoImpl implements CorpDao {
 	public int insertPaymentState(SqlSessionTemplate sqlSession, Payment payment) {
 		return sqlSession.insert("Corp.insertPaymentState", payment);
 	}
+
+	@Override
+	public int insertRecontructionConferenceState(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Corp.insertRecontructionConferenceState", researchState);
+	}
+
+	@Override
+	public int insertRecontructionConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState) {
+		return sqlSession.insert("Corp.insertRecontructionConferenceHistory", researchState);
+	}
+
+	@Override
+	public int recontructionApproved(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.insert("Corp.recontructionApproved", researchNo);
+	}
 }

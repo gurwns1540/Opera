@@ -39,18 +39,18 @@
 	.menu.transition.visible {
 		height: 150px;
 	}
-	#corpTable, #priceConferenceTable, #referTable {
+	#corpTable, #priceConferenceTable, #referTable, #questionTable {
   		width: 70%;
   		margin: 0 auto;
   		border-spacing: 0;
 		border-collapse: collapse;
   	}
-  	#corpTable th, #priceConferenceTable th, #referTable th {
+  	#corpTable th, #priceConferenceTable th, #referTable th, #questionTable th {
   		width: 20%;
   		height: 70px;
   		border-bottom: 1px solid #C5C5C5;
   	}
-  	#corpTable td, #priceConferenceTable td, #referTable td {
+  	#corpTable td, #priceConferenceTable td, #referTable td, #questionTable td {
   		width: 80%;
   		border-bottom: 1px solid #C5C5C5;
   	}
@@ -111,6 +111,85 @@
 	.swal2-input[type=number] {
    		max-width: 16em !important;
 	}	
+	#surveyQuizAccordion {
+  		margin: 50px auto;
+  		font-size: 13pt;
+  		width: 60%;
+  		margin-top: 0;
+  	}
+  	.surveyQuizTitle, .surveyQuizContext {
+  		background: none;
+  		border: none;
+  		width: 80%;
+  		
+  	}
+  	.surveyQuizTitle:focus, .surveyQuizContext:focus {
+		outline: none;  		
+  	}
+	.questionForm {
+		width: 100%;
+		height: 20px;
+		text-align: right;
+		font-size: 11pt;
+	}
+	.questionImage, .questionVideo {
+		width: 80%;
+		height: auto;
+		margin: 10px auto;
+	}
+	.questionVideo {
+		height: 220px;
+	}
+	.mediaExplain {
+		width: fit-content;
+		text-align: left;
+		margin: 0 auto;
+		margin-top: 10px;
+	}
+	.questionVideo {
+		margin-bottom: 20px;
+	}
+	input[type=text]:focus{
+		outline: none;
+	}
+	#sortable { 
+  		list-style-type: none; 
+  		margin: 0; 
+  		padding: 0; 
+  		width: 60%;
+  		margin: 0 auto; 
+  		margin-bottom: 30px;
+  	}
+  	#sortable li { 
+  		margin: 0 5px 12px 5px;
+  		padding: 10px; 
+  		font-size: 1.2em; 
+  		height: fit-content;
+  		border-radius: 7px;
+  	}
+ 	html>body #sortable li { 
+	  	height: fit-content;
+	  	line-height: 1.2em; 
+	}
+  	.ui-state-highlight { 
+  		height: 3.5em; 
+  		line-height: 1.2em; 
+  	}
+  	.ui-sortable-placeholder {
+  		background: white !important;
+  		border-color: white !important;
+  	}
+  	#researchName {
+  		width: 60%;
+    	margin: 20px auto;
+    	display: block;
+  	}
+  	#choice, .choice {
+  		margin-left: 10%;
+  		margin-top: 20px;
+  		width: fit-content;
+  	}
+  	
 </style>
 </head>
 <body>
@@ -367,8 +446,37 @@
 				<c:if test="${ research.researchState == '리서치 완료' }">
 					데이터들 들어갈거임
 				</c:if>
-				<c:if test="${ research.researchState == '질문 재구성 협의중' }">
-					질문 재구성 협의 시 질문들 나올거임
+				<c:if test="${ research.researchState == '질문 재구성 협의중' || research.researchState == '검토 대기' }">
+					<table id="questionTable">
+						<tr>
+							<td colspan="2">
+								<div id="surveyQuiz2" style="width: 100%;">
+									<div style="width: fit-content; margin: 50px auto; margin-bottom: 20px;"><h1>조사 대상자 퀴즈</h1></div>
+									<div class="ui styled accordion" id="surveyQuizAccordion">
+									
+									</div>
+									
+									<div style="width: fit-content; margin: 0 auto;"><h1>패널용 리서치 명</h1></div>
+									<div class="ui input" id="researchName">
+										<input type="text" id="researchNamePanel" name="researchNamePanel" placeholder="패널용 리서치 명" style="width: 100%">
+									</div>
+									<ul id="sortable">
+										
+									</ul>
+								</div>
+								<div style="width: fit-content; margin: 20px auto;">
+									<input type="button" id="reconsturctionBtn" value="질문 재구성 협의" style="border: 0; background:#BDBDBD; color: white; width: 270px; height: 50px;">
+									<input type="button" id="reconsturctionAcceptBtn" value="승  인" style="margin-left: 20px;border: 0; background:#BDBDBD; color:white; width: 270px; height: 50px;">
+								</div>
+							</td>
+						</tr>
+						<c:if test="${ !empty research.conferenceContext }">
+							<tr>
+								<th><div class="thDiv">질문 재구성 협의 내용</div></th>
+								<td><textarea readonly style="width: 90%; height: 70px; background: none; border: 0; resize: none; margin-top: 15px; margin-bottom: 15px;">${research.conferenceContext}</textarea></td>
+							</tr>
+						</c:if>
+					</table>
 				</c:if>
 				<c:if test="${ research.researchState == '가격 협의중' || research.researchState == '납부 대기' }">
 					<table id="priceConferenceTable">
@@ -389,7 +497,7 @@
 						<tr>
 							<th colspan="2">
 								<div style="width: 40%; margin: 0px auto;">
-									<input type="hidden" id="priceConference" value="가격  협의" disabled style="border: 0; width: 100%; height: 50px;">
+									<input type="hidden" id="priceConference" value="가격  협의" style="border: 0; width: 100%; height: 50px;">
 								</div>
 							</th>
 						</tr>
@@ -432,6 +540,14 @@
 			}else {
 				$("#payment").css({"background":"#EFEFEF", "color":"#808080"});
 				$("#payment").val("결제  완료");
+			}
+			
+			if(researchState == '질문 재구성 협의중'){
+				$("#reconsturctionBtn").prop("disabled", true);
+				$("#reconsturctionAcceptBtn").prop("disabled", true);
+				$("#reconsturctionBtn").val("질문 재구성 협의중");
+				$("#reconsturctionBtn").css({"background":"#EFEFEF", "color":"#808080", "margin":"auto;"});
+				$("#reconsturctionAcceptBtn").css({"background":"#EFEFEF", "color":"#808080", "margin":"auto;"});
 			}
 		});
 		
@@ -496,8 +612,202 @@
 			start();
 		});
 		
-	</script>
+		$(document).on("click", "#reconsturctionBtn", function(){
+			
+			const start = async function() {
+				const { value: text } = await Swal.fire({
+					  input: 'textarea',
+					  inputPlaceholder: '질문 재구성 협의 내용을 적어주세요',
+					  inputAttributes: {
+					    'aria-label': 'Type your message here'
+					  },
+					  showCancelButton: true,
+					  inputValidator: (value) => {
+					    if (!value) {
+					      return '질문 재구성 협의 내용을 적어주세요!'
+					    }
+					  }
+				});
 	
+				if (text) {
+					Swal.fire({
+					  title: '재구성 협의를 진행하시겠습니까?',
+					  text: "질문 재구성 협의를 통해 질문을 재구성 하실 수 있으십니다.",
+					  icon: 'question',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'Yes'
+					}).then((result) => {
+					  	if (result.value) {
+					  		
+						  	$.ajax({
+								url:"recontructionConference.corpResearch",
+								type:"post",
+								data:{
+									researchNoStr:researchNo,
+									conferenceContext : text
+								},
+								success:function(data){
+									Swal.fire(
+							      		'질문 재구성 협상!!',
+							      		'입력하신 내용으로 질문 재구성 협상을 신청하셨습니다!',
+							      		'success'
+						    		)
+								  	setTimeout(function(){
+									  location.reload();
+									},1500)
+								},
+								error:function(status){
+									console.log(status);
+								}
+							});
+					  }
+					})
+				}
+			}
+			start();
+		});
+		
+		$(document).on("click", "#reconsturctionAcceptBtn", function(){
+			Swal.fire({
+				  title: '리서치를 진행하시겠습니까?',
+				  text: "질문이 배포된 이후엔 구성 변경이 불가합니다.",
+				  icon: 'question',
+				  showCancelButton: true,
+				  confirmButtonColor: '#3085d6',
+				  cancelButtonColor: '#d33',
+				  confirmButtonText: 'Yes'
+				}).then((result) => {
+				  	if (result.value) {
+				  		
+					  	$.ajax({
+							url:"recontructionApproved.corpResearch",
+							type:"post",
+							data:{
+								researchNoStr:researchNo,
+							},
+							success:function(data){
+								Swal.fire(
+						      		'검토 확인!!',
+						      		'관리자가 확인후 배포를 시작하겠습니다!',
+						      		'success'
+					    		)
+							  	setTimeout(function(){
+								  location.reload();
+								},1500)
+							},
+							error:function(status){
+								console.log(status);
+							}
+						});
+				  }
+				})
+		});
+	</script>
+	<c:if test="${ research.researchState == '질문 재구성 협의중' || research.researchState == '검토 대기' }">
+	<script>
+		$(function(){
+			$('.ui.accordion').accordion();
+			
+			$.ajax({
+				url:"researchWaitingReviewDetail.adminResearch",
+				type:"post",
+				data:{researchNoStr:${ research.researchNo }},
+				success:function(data){
+					console.log(data);
+					$("#sortable").text("");
+					
+					var questionList = data.researchDetail[0].questionList;
+					qCount = questionList.length;
+					$("#research").find(".header").text(data.researchDetail[0].researchName);
+					for(var i = 0; i < questionList.length; i++){
+						var $question = $('<li class="ui-state-default">Q<input type="text" readonly name="questionOrder" style="width:10px; border:0; background: none;" value="' + questionList[i].questionOrder + '">. <div class="ui input" style="width: 90%;"><input type="text" name="rquestionContext" value="' + questionList[i].rquestionContext + '"></div></li>');
+						var choiceList = questionList[i].requestChoiceList;
+						var questionForm = "";
+						
+						if(questionList[i].questionFormNo == 1){
+							questionForm = "객관식";
+						}else if(questionList[i].questionFormNo == 2){
+							questionForm = "주관식";
+						}else if(questionList[i].questionFormNo == 3){
+							questionForm = "객관식 & 이미지";
+						}else if(questionList[i].questionFormNo == 4){
+							questionForm = "리커트 척도";
+						}else if(questionList[i].questionFormNo == 5){
+							questionForm = "숫자 합계형";
+						}else if(questionList[i].questionFormNo == 6){
+							questionForm = "객관식(다중선택)";
+						}else if(questionList[i].questionFormNo == 7){
+							questionForm = "주관식(서술형)";
+						}else {
+							questionForm = "문항 형식 불러오기 오류";
+						}
+						var $questionFormDiv = $('<input type="hidden" name="questionFormNo" value="' + questionList[i].questionFormNo + '"><div class="questionForm"> ' + questionForm + '</div>');
+						$question.append($questionFormDiv);
+						
+						if(questionList[i].image != null && questionList[i].image != ""){
+							$questionImage = $('<div class="questionImage"><img style="width: 100%;" src="${contextPath}/resources/uploadFiles/' + questionList[i].image.changeName +'"></div>');
+							$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div><input type="hidden" name="mediaExplain" value="' + questionList[i].mediaExplain + '">');
+							$question.append($questionImage);
+							$question.append($mediaExplain);
+						}else {
+							if(questionList[i].mediaExplain != null && questionList[i].mediaExplain != ""){
+								var video = questionList[i].questionVideoLink.substr(questionList[i].questionVideoLink.lastIndexOf("/", questionList[i].questionVideoLink.length), 12);
+								$questionVideo = $('<div class="questionVideo"><iframe style="width: 100%; height: 100%" src="https://www.youtube.com/embed' + video + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
+								$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div>');
+								$question.append($questionVideo);
+								$question.append($mediaExplain);
+							}
+						}
+						for(var j = 0; j < choiceList.length; j++){
+							var $choice = $('<div class="choice">' + choiceList[j].choiceOrder + '. ' + choiceList[j].choiceContext + '</div></li>')
+							if(choiceList[j].choiceImage != null){
+								var $choiceimage = $('<br><img src="${contextPath}/resources/uploadFiles/' + choiceList[j].choiceImage.changeName +'" style="width: 200px; height: 90px;">')
+								$choice.append($choiceimage);
+							}
+							$question.append($choice);
+						}
+						$("#sortable").append($question);
+					}
+
+					var DiscriminationDetail = data.DiscriminationDetail[0];
+					console.log(DiscriminationDetail.questionList.length)
+					$("#surveyQuizAccordion").html("");
+					$("#researchNamePanel").val(DiscriminationDetail.researchName);
+					var discrimQuizIndex = 1;
+					for(var i = 0; i < DiscriminationDetail.questionList.length; i++){
+						var $discrimQuizTitle = $('<div class="title"><i class="dropdown icon"></i>Q' + discrimQuizIndex++ + '.' + DiscriminationDetail.questionList[i].rquestionContext + '</div>');
+						var $content = $('<div class="content"></div>');
+						var $correctAnswer = $('<div style="float: right; width: fit-content;">정답 보기 번호 : ' + DiscriminationDetail.questionList[i].correctAnswer + ' 번</div>');
+						
+						$content.append($correctAnswer);
+						var $p = $('<p class="transition hidden"></p>');
+						var $choiceArea = $('<div class="choiceArea"></div>');
+						for(var j = 0; j < DiscriminationDetail.questionList[i].requestChoiceList.length; j++){
+							var $discrimQuizChoice = $('<div class="choice"><div class="ui input" style="width: 100%; height: 100%;"><input type="text" placeholder="보기 작성" class="choiceInput" readonly value="' + DiscriminationDetail.questionList[i].requestChoiceList[j].choiceContext + '"><input type="hidden" class="discriminationChoiceOrder" value="1"></div></div>');
+							$choiceArea.append($discrimQuizChoice);
+						}
+						$p.append($choiceArea);
+						$content.append($p);
+						$("#surveyQuizAccordion").append($discrimQuizTitle);
+						$("#surveyQuizAccordion").append($content);
+					}
+					
+					$("#surveyQuiz2").find("input[type=text]").each(function(){
+						$(this).prop("readonly", true);
+						$(this).css({"background":"none", "border":"0"});
+					});
+					
+					$('#corp').modal('show'); 
+				},
+				error:function(status){
+					console.log(status);
+				}
+			});
+		});
+	</script>
+	</c:if>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 	

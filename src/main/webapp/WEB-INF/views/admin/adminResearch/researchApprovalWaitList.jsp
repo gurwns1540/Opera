@@ -182,7 +182,7 @@
 	}
 	.questionImage, .questionVideo {
 		width: 80%;
-		height: 100px;
+		height: auto;
 		margin: 10px auto;
 	}
 	.mediaExplain {
@@ -193,6 +193,9 @@
 	}
 	.questionVideo {
 		margin-bottom: 65px;
+	}
+	input[type=text]:focus{
+		outline: none;
 	}
 </style>
 </head>
@@ -423,15 +426,16 @@
 						}
 						var $questionFormDiv = $('<div class="questionForm"> ' + questionForm + '</div>');
 						$question.append($questionFormDiv);
-						
+						console.log(questionList)
 						if(questionList[i].image != null && questionList[i].image != ""){
-							$questionImage = $('<div class="questionImage"><img src="${contextPath}/resources/uploadFiles/' + questionList[i].image.changeName +'"></div>');
+							$questionImage = $('<div class="questionImage"><img style="width: 100%" src="${contextPath}/resources/uploadFiles/' + questionList[i].image.changeName +'"></div>');
 							$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div>');
 							$question.append($questionImage);
 							$question.append($mediaExplain);
 						}else {
 							if(questionList[i].mediaExplain != null && questionList[i].mediaExplain != ""){
-								$questionVideo = $('<div class="questionVideo"><iframe style="width: 100%;" src="https://www.youtube.com/embed/bwWYkChr3Qg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
+								var video = questionList[i].questionVideoLink.substr(questionList[i].questionVideoLink.lastIndexOf("/", questionList[i].questionVideoLink.length), 12);
+								$questionVideo = $('<div class="questionVideo"><iframe style="width: 100%;" src="https://www.youtube.com/embed' + video + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
 								$mediaExplain = $('<div class="mediaExplain">' + questionList[i].mediaExplain + '</div>');
 								$question.append($questionVideo);
 								$question.append($mediaExplain);
