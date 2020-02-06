@@ -15,14 +15,68 @@
 .ui.selection.dropdown {
 	min-width: 80px;
 }
-.tdLabelArea {
-	width: 50%;
-	height: 40px;
-	text-align: right;
-}
-.inputArea {
-	padding-left: 5% !important;
-}
+	#joinform { 
+  		width: 60% !important;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#joinform th {
+  		width: 35%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  		text-align: left;
+  		padding-left: 6%;
+  	}
+  	#joinform td {
+  		width: 65%;
+  		border-bottom: 1px solid #C5C5C5;
+  		padding-left: 5% !important;
+  	}
+  	#accountTable { 
+  		width: 60% !important;
+  		margin: 0 auto;
+  		border-spacing: 0;
+		border-collapse: collapse;
+  	}
+  	#accountTable th {
+  		width: 25%;
+  		height: 70px;
+  		border-bottom: 1px solid #C5C5C5;
+  		text-align: left;
+  		padding-left: 6%;
+  	}
+  	#accountTable td {
+  		width: 75%;
+  		border-bottom: 1px solid #C5C5C5;
+  		padding-left: 5% !important;
+  	}
+  	.ui.dropdown.selection {
+  		min-width: 150px;
+  	}
+  	#bankCode {
+  		cursor: pointer;
+	    word-wrap: break-word;
+	    line-height: 1em;
+	    white-space: normal;
+	    outline: 0;
+	    -webkit-transform: rotateZ(0);
+	    transform: rotateZ(0);
+	    min-width: 14em;
+	    min-height: 2.71428571em;
+	    background: #fff;
+	    display: inline-block;
+	    padding: .78571429em 3.2em .78571429em 1em;
+	    color: rgba(0,0,0,.87);
+	    -webkit-box-shadow: none;
+	    box-shadow: none;
+	    border: 1px solid rgba(34,36,38,.15);
+	    border-radius: .28571429rem;
+	    -webkit-transition: width .1s ease,-webkit-box-shadow .1s ease;
+	    transition: width .1s ease,-webkit-box-shadow .1s ease;
+	    transition: box-shadow .1s ease,width .1s ease;
+	    transition: box-shadow .1s ease,width .1s ease,-webkit-box-shadow .1s ease;
+  	}
 </style>
 <body>
 	<c:if test="${ loginUser != null }">
@@ -53,9 +107,9 @@
 					<form id="updateForm" action="updateMemberInfo.me" method="post" style="width: inherit;">
 						<table align="center" id="joinform" style="width: inherit;">
 							<tr>
-								<td colspan="3" class="tdLabelArea">
-									<h4>아이디</h4>
-								</td>
+								<th class="tdLabelArea">
+									아이디
+								</th>
 								<td colspan="3" class="inputArea">
 									<div class="ui">
 										<h4>${ loginUser.userId }</h4>
@@ -64,9 +118,9 @@
 							</tr>
 							
 							<tr>
-								<td colspan="3" class="tdLabelArea">
+								<th class="tdLabelArea">
 									<h4>비밀번호</h4>
-								</td>
+								</th>
 								<td colspan="3" class="inputArea">
 									<div class="ui input">
 										<button class="ui blue button" type="button" id="changePwdBtn">비밀번호 변경</button>
@@ -76,9 +130,9 @@
 							
 							
 							<tr>
-								<td colspan="3" class="tdLabelArea">
+								<th class="tdLabelArea">
 									<h4>이름</h4>
-								</td>
+								</th>
 								<td colspan="3" class="inputArea">
 									<div class="ui">
 										<h4>${ loginUser.userName }</h4>
@@ -87,9 +141,9 @@
 							</tr>
 							
 							<tr>
-								<td colspan="3" class="tdLabelArea">
+								<th class="tdLabelArea">
 									<h4>생년월일</h4>
-								</td>
+								</th>
 								<td colspan="3" class="inputArea">
 									<div class="ui">
 										<h4>${ loginUser.panelBirthday }</h4>
@@ -98,38 +152,36 @@
 							</tr>
 							
 							<tr>
-								<td colspan="3" class="tdLabelArea">
+								<th class="tdLabelArea">
 									<h4>성별</h4>
-								</td>
+								</th>
 								<td colspan="3" class="inputArea">
 									<h4 id="gender"></h4>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="3" class="tdLabelArea"><h4>휴대전화</h4></td>
-								<td colspan="2" class="inputArea">
+								<th class="tdLabelArea"><h4>휴대전화</h4></th>
+								<td colspan="3" class="inputArea">
 									<h4 id="phone"></h4>
 								</td>
-								<td></td>
 							</tr>
 							
 							<tr>
-								<td colspan="3" class="tdLabelArea"><h4>주소</h4></td>
-								<td colspan="2" class="inputArea">
-									<div class="ui input">
+								<th class="tdLabelArea"><h4>주소</h4></th>
+								<td colspan="3" class="inputArea">
+									<div class="ui input" >
 										<input type="hidden" id="userAddress" name="userAddress" readonly/>
 										<input type="text" name="post" id="post" size="7px;" readonly>
 									</div>
-									<div class="ui input">
-										<input type="text" name="address" id="address" size="22px;">
+									<div class="ui input" style="margin-left: 15px; margin-right: 15px;" >
+										<input type="text" name="address" id="address" size="25px;" readonly>
 									</div>
 									<button id="findAddress" class="ui blue button" type="button">찾기</button>
 								</td>
-								<td></td>
 							</tr>
 							
 							<tr>
-								<td colspan="3"></td>
+								<th></th>
 								<td colspan="3" class="inputArea">
 									<div class="ui input">
 										<input type="text" name="detailAddress" id="detailAddress" size="35px;">
@@ -138,9 +190,9 @@
 							</tr>
 							
 							<tr>
-								<td colspan="3" class="tdLabelArea">
+								<th class="tdLabelArea">
 									<h4>이메일</h4>
-								</td>
+								</th>
 								<td colspan="2" class="inputArea">
 									<div class="ui input">
 										<h4>${ loginUser.userEmail }</h4>
@@ -150,33 +202,81 @@
 							</tr>
 							
 							<tr>
-								<td colspan="3" class="tdLabelArea">
-									<h4>추천인</h4>
-								</td>
+								<th class="tdLabelArea">
+									<h4>추천인 코드</h4>
+								</th>
 								<td colspan="3" class="inputArea">
-									<div class="ui input">
-										<input type="text" name="nominee">
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td><br>
-								<br></td>
-							</tr>
-							<tr>
-								<td colspan="6"><hr></td>
-							</tr>
-							<tr>
-								<td colspan="6" align="right" style="height:100px;">
-									<button type="button" class="ui blue button" id="updateBtn">정보수정</button>
-									<button type="reset" class="ui blue button" onclick="location.href='panelMain.panel'">메인으로</button>
+									${ loginUser.referPanelCode }
 								</td>
 							</tr>
 						</table>  <!-- #joinForm end -->
+						
+						<div style="margin: 20px auto; width: fit-content">
+							<button type="button" class="ui blue button" id="updateBtn">정보수정</button>
+							<button type="reset" style="margin-left: 10px;" class="ui blue button" onclick="location.href='panelMain.panel'">메인으로</button>
+						</div>
 					</form>
 				</div>  <!-- infoConfirm end -->
 				
 				<br />
+				
+				<h4 class="ui horizontal divider header" style="font-size: 13pt;">
+					<i class="won sign icon"></i>
+					<span style="font-size: 18pt;">계좌 정보</span> <span style="color: #BEBEBE; font-weight: normal; font-size: 9pt;">※ 현금이체를 신청하실 경우에만 등록하세요</span>
+				</h4>
+				
+				<table id="accountTable">
+					<tr>
+						<th>은행 명</th>
+						<td colspan="2">
+							<select id="bankCode">
+								<option value=""> 은행 명 </option>
+								<option value="002">KDB산업은행</option>
+								<option value="003">IBK기업은행</option>
+								<option value="004">KB국민은행</option>
+								<option value="007">수협중앙회</option>
+								<option value="011">NH농협은행</option>
+								<option value="020">우리은행</option>
+								<option value="023">SC제일은행</option>
+								<option value="027">한국씨티은행</option>
+								<option value="031">대구은행</option>
+								<option value="032">부산은행</option>
+								<option value="034">광주은행</option>
+								<option value="035">제주은행</option>
+								<option value="037">전북은행</option>
+								<option value="039">경남은행</option>
+								<option value="045">새마을금고</option>
+								<option value="050">상호저축은행</option>
+								<option value="081">KEB하나은행</option>
+								<option value="088">신한은행</option>
+								<option value="089">케이뱅크</option>
+								<option value="090">카카오은행</option>
+							</select>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<th>예금주</th>
+						<td>${ loginUser.userName }</td>
+					</tr>
+					<tr>
+						<th>계좌번호</th>
+						<td style="padding-top: 15px; padding-bottom: 15px;">
+							<div class="ui input" style="width: 300px;">
+								<input type="text" id="bankAccount" placeholder="숫자만 기입해 주세요">
+							</div>
+							<p style="font-size: 11px; color: #3e729a; margin-top: 20px;">
+								※계좌번호 입력 실수, 계좌주 오류 등으로 인한 사고는 Survway가 책임지지 않습니다.<br>
+								※보통예금계좌만 등록해주세요. (CMA, 가상계좌, 적금 등은 이체 불가)<br>
+								※농협의 경우 단위농협과 농협중앙회를 확인하시고 입력해주세요. (농협고객센터 1588-2100)<br>
+							</p>						
+						</td>
+					</tr>
+				</table>
+				<div style="margin: 20px auto; width: fit-content">
+					<button type="button" class="ui blue button" id="updateAccount">계좌 저장</button>
+				</div>
+				
 				
 				<c:if test="${ !empty param.message }">
 					<c:if test="${ param.message eq 'success' }">
@@ -273,6 +373,17 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 	<script>
+		$(function(){
+			var bankAccount = "${ loginUser.withdrawAccount }";
+			
+			var bankCode = bankAccount.split("/")[0];
+			var account = bankAccount.split("/")[1];
+			
+			console.log(bankCode);
+			$("#bankCode").val(bankCode).prop("selected", "selected");
+			$("#bankAccount").val(account)
+		});
+		
 // 		드롭다운
 		$('.ui.dropdown').dropdown();
 		
@@ -399,6 +510,49 @@
 					});
 				}
 			}
+		});
+		
+		// 계좌번호 저장
+		$(document).on("click", "#updateAccount",function(){
+			var bankCode = $("#bankCode").val();
+			var bankAccount = $("#bankAccount").val();
+			var mno = "${ loginUser.mno }";
+				Swal.fire({
+					title: '계좌번호를 저장하시겠습니까?',
+					text: "신중하세요! 캐시아웃시 입금될 계좌입니다.",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes'
+				}).then((result) => {
+				  	if (result.value) {
+				  		$.ajax({
+							url:"updateAccount.me",
+							type:"post",
+							data: {
+								bankCode:bankCode,
+								bankAccount:bankAccount,
+								mno:mno
+							},
+							success:function(data){
+								console.log(data);
+								Swal.fire(
+									'저장 완료!',
+									'계좌번호가 저장되었습니다.',
+									'success'
+							    )
+							    setTimeout(function(){
+							        location.href = "panelResult.panel?message=updateAccount"
+							    },1500)
+							},
+							error:function(data){
+								
+							}
+						});
+				  	}
+				})
+			
 		});
 	</script>
 </body>

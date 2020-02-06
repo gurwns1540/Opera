@@ -18,8 +18,8 @@
 		<result property="entDate" column="ENT_DATE"/>
 		<result property="modifyDate" column="MODIFY_DATE"/>
 		<result property="panelBirthday" column="PANEL_BIRTHDAY"/>
-		<result property="panelGender" column="PANEL_GENDER"/>
-		<result property="referPanelCode" column="REFER_PANEL_CODE"/>
+		<result property="panelGender" column="PANEL_GENDER"/> 
+		<result property="referPanelCode" column="REFER_PANELCODE"/>
 		<result property="nominee" column="NOMINEE"/>
 		<result property="panellevelNo" column="PANELLEVEL_NO"/>
 		<result property="occupationNo" column="OCCUPATION_NO"/>
@@ -479,6 +479,11 @@
 	<update id="noticeDelete" parameterType="_int">
 		UPDATE NOTICE SET NOTICE_STATUS='N'
 		WHERE NOTICE_NO=#{noticeNo}
-		
+	</update>
+	
+	<update id="updateAccount" parameterType="PanelMember">
+		UPDATE PANEL SET 
+		WITHDRAW_ACCOUNT = #{withdrawAccount}
+		WHERE MNO = #{mno}
 	</update>
 </mapper>
