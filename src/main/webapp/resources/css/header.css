@@ -32,11 +32,13 @@
 .navArea {
 	height: 43px;
 	background-color: #008499;
+	padding-top: 4px;
+    padding-bottom: 4px;
 }
 .navContainer {
 	margin-left: auto;
 	margin-right: auto;
-	height: inherit;
+	height: 35px;
 	width: 60%;
 	vertical-align:center;
 }
@@ -68,4 +70,3 @@
 .surveyMenu {
 	size:inherit;
 }
-  

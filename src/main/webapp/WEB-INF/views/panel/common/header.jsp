@@ -13,6 +13,10 @@
 	body, html {
 		font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif !important;
 	}
+	
+	.ui.simple.dropdown:hover>.menu {
+		top: 109% !important;
+	}
 </style>
 <header class="headerArea">
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
