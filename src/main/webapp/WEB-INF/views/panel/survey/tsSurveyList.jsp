@@ -131,6 +131,9 @@
 	.choiceNameArea {
 		font-size:0.9vw;
 	}
+	.ui.table td.collapsing, .ui.table th.collapsing {
+    	white-space: normal !important;
+    }
 </style>
 <body>
 	<c:if test="${ loginUser != null }">
@@ -497,6 +500,210 @@
 									</div>
 									<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px; text-align:center;">
 										<div class="ui input" style="width:30%; margin-top:100px;"><input type="text" name="${ q.researchOrder }"></div>
+									</div>
+									<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
+										<button class="ui blue button" id="nextBtn${ q.researchOrder }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="actions">
+								<div class="ui primary approve button" style="background-color:#6A6A6A;">
+									돌아가기 
+								</div>
+							</div>
+						</div>
+					</c:if>
+					
+					<!-- 숫자 합계형 디자인 -->
+					<c:if test="${ q.questionFormNo eq 1 }">
+						<div class="ui overlay fullscreen modal" id="Q${ q.researchOrder }">
+							<div class="header" style="height:61px; padding:5px;">
+								<table style="width:100%; height:100%;">
+									<tr>
+										<td style="width:30%; height:inherit;">
+											<img src="resources/images/footerLogo.png" alt="" id="footerImg">
+										</td>
+										<td style="width:70%; height:inherit; padding-right:20px;">
+											<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
+												${ q.researchOrder -1 } of ${ qCount } done
+											</div>
+											<div class="ui indicating progress active" data-value="${ q.researchOrder }" data-total="${ qCount }" id="progress${ q.researchOrder }" data-percent="${ q.progressDataPercent }%" style="margin-top:10px; width:40%; float:right;">
+												<input type="text" value="${ q.progressDataPercent }" style="display:none;">
+												<div class="bar" style="transition-duration: 200ms; display: block;">
+													<div class="progress">${ q.progressDataPercent }%</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="content insetBox">
+								<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:45%; left:50%; transform: translate(-50%, -50%);">
+									<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
+										<div class="questionArea" style="width:100%;">
+											<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
+												<tr>
+													<th style="width: 3%;">
+														<div class="iconDiv">
+															<span style="font-size:1vw;"><b>Q${ q.researchOrder }.</b></span>
+														</div>
+													</th>
+													<td style="width:97%; padding-right:20px;">
+														<span style="font-size:1vw;">
+															${ q.rquestionContext }
+														</span>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<div class="choiceArea" style="min-height:320px; width:90%; margin:0 auto; margin-top:30px; text-align:center;">
+										<!-- <table class="ui celled striped table" style="width:80%; margin:0 auto; margin-top:40px;"> -->
+											<!-- <thead>
+												<tr>
+													<th colspan="2" style="text-align:center; color:#00679A;">※ 답변의 총합이 100이 되도록 점수를 분배해주세요.</th>
+												</tr>
+											</thead> -->
+											<!-- <tbody> -->
+												<!-- '<tr>
+													<td class="collapsing" style="width:90%; font-size:12pt; padding-left:20px;">
+														' + rchoiceContext + '
+													</td>
+													<td class="center aligned collapsing" style="width:10%">
+														<div class="ui input" style="width:40%; margin:0 auto;"><input type="text" name="' + researchOrder + 'answer' + rchoiceOrder + '"></div>
+													</td>
+												</tr>' -->
+												<!-- '<tr>
+													<td class="collapsing" style="font-size:12pt; padding-left:20px;">
+														총 합
+													</td>
+													<td class="center aligned collapsing">
+														<div class="ui input" style="width:30%; margin:0 auto;"><input type="text" value="100" readonly></div> / 100
+													</td>
+												</tr>' -->
+											<!-- </tbody> -->
+										<!-- </table> -->
+											<%-- <div class="ui input" style="width:30%;
+												margin-top:100px;"><input type="text" name="${
+												q.researchOrder }"></div> --%>
+									</div>
+									<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
+										<button class="ui blue button" id="nextBtn${ q.researchOrder }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
+									</div>
+								</div>
+							</div>
+							<div class="actions">
+								<div class="ui primary approve button" style="background-color:#6A6A6A;">
+									돌아가기 
+								</div>
+							</div>
+						</div>
+					</c:if>
+					
+					<!-- 리커트 척도 디자인 -->
+					<c:if test="${ q.questionFormNo eq 10 }">
+						<div class="ui overlay fullscreen modal" id="Q${ q.researchOrder }">
+							<div class="header" style="height:61px; padding:5px;">
+								<table style="width:100%; height:100%;">
+									<tr>
+										<td style="width:30%; height:inherit;">
+											<img src="resources/images/footerLogo.png" alt="" id="footerImg">
+										</td>
+										<td style="width:70%; height:inherit; padding-right:20px;">
+											<div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;">
+												${ q.researchOrder -1 } of ${ qCount } done
+											</div>
+											<div class="ui indicating progress active" data-value="${ q.researchOrder }" data-total="${ qCount }" id="progress${ q.researchOrder }" data-percent="${ q.progressDataPercent }%" style="margin-top:10px; width:40%; float:right;">
+												<input type="text" value="${ q.progressDataPercent }" style="display:none;">
+												<div class="bar" style="transition-duration: 200ms; display: block;">
+													<div class="progress">${ q.progressDataPercent }%</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="content insetBox">
+								<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:45%; left:50%; transform: translate(-50%, -50%);">
+									<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;">
+										<div class="questionArea" style="width:100%;">
+											<table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;">
+												<tr>
+													<th style="width: 3%;">
+														<div class="iconDiv">
+															<span style="font-size:1vw;"><b>Q${ q.researchOrder }.</b></span>
+														</div>
+													</th>
+													<td style="width:97%; padding-right:20px;">
+														<span style="font-size:1vw;">
+															${ q.rquestionContext }
+														</span>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<div class="choiceArea" style="height:320px; width:90%; margin:0 auto; margin-top:30px; text-align:center;">
+										'<div style="height:100%; width:100%; padding-top:130px; ">
+											<table style="width:100%; height:70px; margin:0 auto; margin-bottom:0; text-align:center;">
+												<tr>
+													<td style="width:9%;"></td>
+													<td style="width:2%;">
+														<div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;">
+															<input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'one" value="1">
+															<label for="' + researchOrder + 'one"></label>
+														</div>
+													</td>
+													<td colspan="2" style="width:18%;"><hr></td>
+													<td style="width:2%;">
+														<div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;">
+															<input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'two" value="2">
+															<label for="' + researchOrder + 'two"></label>
+														</div>
+													</td>
+													<td colspan="2" style="width:18%;"><hr></td>
+													<td style="width:2%;">
+														<div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;">
+															<input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'three" value="3">
+															<label for="' + researchOrder + 'three"></label>
+														</div>
+													</td>
+													<td colspan="2" style="width:18%;"><hr></td>
+													<td style="width:2%;">
+														<div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;">
+															<input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'four" value="4">
+															<label for="' + researchOrder + 'four"></label>
+														</div>
+													</td>
+													<td colspan="2" style="width:18%;"><hr></td>
+													<td style="width:2%;">
+														<div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;">
+															<input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'five" value="5">
+															<label for="' + researchOrder + 'five"></label>
+														</div>
+													</td>
+													<td style="width:9%;"></td>
+												</tr>
+												<tr style="font-size:17px;">
+													<td colspan="3">
+														<label for="' + researchOrder + 'one" style="cursor: pointer;">매우 부정</label>
+													</td>
+													<td colspan="3">
+														<label for="' + researchOrder + 'two" style="cursor: pointer;">부 정</label>
+													</td>
+													<td colspan="3">
+														<label for="' + researchOrder + 'three" style="cursor: pointer;">보 통</label>
+													</td>
+													<td colspan="3">
+														<label for="' + researchOrder + 'four" style="cursor: pointer;">긍 정</label>
+													</td>
+													<td colspan="3">
+														<label for="' + researchOrder + 'five" style="cursor: pointer;">매우 부정</label>
+													</td>
+												</tr>
+											</table>
+										</div>'
+									
 									</div>
 									<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;">
 										<button class="ui blue button" id="nextBtn${ q.researchOrder }" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button>
