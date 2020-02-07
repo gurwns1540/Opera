@@ -82,4 +82,8 @@ public interface AdminService {
 
 	boolean researchTargetMailing(int researchNo);
 
+	List<Object> tsQaManagement();
+
+	int tsQaManagementUpdate(ArrayList<ResearchQuestion> questionList);
+
 }

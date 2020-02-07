@@ -299,6 +299,34 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<PanelMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target) {
 		return sqlSession.selectList("Admin.selectTargetList", target);
+
+  @Override
+	public List<Object> tsQaManagement(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectList("Admin.researchSelect");
+	}
+
+	@Override
+	public int tsDeleteChoice(SqlSessionTemplate sqlSession) {
+		System.out.println("dao");
+		return sqlSession.delete("Admin.tsDeleteChoice");
+	}
+
+	@Override
+	public int tsDeleteQuestion(SqlSessionTemplate sqlSession) {
+		System.out.println("dao");
+		return sqlSession.delete("Admin.tsDeleteQuestion");
+	}
+
+	@Override
+	public int insertQuestion(SqlSessionTemplate sqlSession, ResearchQuestion question) {
+		System.out.println("dao");
+		return sqlSession.insert("Admin.tsInsertQuestion", question);
+	}
+
+	@Override
+	public int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice) {
+		System.out.println("dao");
+		return sqlSession.insert("Admin.insertChoice", researchChoice);
 	}
 
 

@@ -666,6 +666,52 @@
 				</otherwise>
 			</choose>
 	</select>
+
+	<!--여기서 담아준다--> 
+	<resultMap type="ResearchQuestion" id="tsResearchDetail">
+		<result property="questionNo" column="RQUESTION_NO"/>
+		<result property="rquestionContext" column="RQUESTION_CONTEXT"/>
+		<result property="questionOrder" column="RESEARCH_ORDER"/>
+		<result property="questionFormNo" column="QUESTION_FORM_NO"/>
+		<collection property="requestChoiceList" column="RQUESTION_NO" ofType="ResearchChoice" javaType="java.util.List">
+			<result property="choiceNo" column="RCHOICE_NO"/>
+			<result property="choiceOrder" column="RCHOICE_ORDER"/>
+			<result property="choiceContext" column="RCHOICE_CONTEXT"/>
+		</collection>
+	</resultMap>
+	
+	<!-- 여기서는 조회만 할뿐 -->
+	<select id="researchSelect" resultMap="tsResearchDetail">
+		SELECT *
+		FROM RESEARCH R
+		JOIN RESEARCHQUESTION Q ON(R.RESEARCH_NO=Q.RESEARCH_NO)
+		LEFT JOIN RESEARCHCHOICE C ON(Q.RQUESTION_NO=C.RQUESTION_NO)
+		WHERE R.RESEARCH_NO=1
+        ORDER BY Q.RQUESTION_NO ASC, C.RCHOICE_NO ASC
+	</select>
+	
+	<delete id="tsDeleteChoice">
+		DELETE FROM RESEARCHCHOICE
+		WHERE RQUESTION_NO IN (SELECT RQUESTION_NO FROM RESEARCHQUESTION WHERE RESEARCH_NO = 1)
+	</delete>
+	
+	<delete id="tsDeleteQuestion">
+		DELETE FROM RESEARCHQUESTION
+		WHERE RESEARCH_NO = 1
+	</delete>
+	
+	<insert id="tsInsertQuestion" parameterType="ResearchQuestion">
+		INSERT INTO RESEARCHQUESTION VALUES
+		(#{questionFormNo}, SEQ_QUESTION.NEXTVAL, 1, NULL, NULL, #{questionOrder}, #{rquestionContext})
+		<selectKey keyProperty="questionNo" resultType="_int" order="AFTER">
+			SELECT SEQ_QUESTION.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertChoice" parameterType="ResearchChoice">
+		INSERT INTO RESEARCHCHOICE VALUES
+		(SEQ_CHOICE.NEXTVAL, #{choiceContext}, #{rquestionNo}, #{choiceOrder})
+	</insert>
 </mapper>
 
 

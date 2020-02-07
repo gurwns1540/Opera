@@ -17,7 +17,7 @@
 		<c:if test="${ param.message eq 'pwdSuccess' }">
 			<script>
 				Swal.fire('수정완료', '비밀번호 수정이 완료되었습니다<br>다시 로그인 해주세요', 'success').then(function(){
-					location.href="panelMain.panel";
+					location.href="panelLogin.panel";
 				});
 			</script>
 		</c:if>
@@ -32,6 +32,13 @@
 			<script>
 				Swal.fire('탈퇴실패', '탈퇴에 실패했습니다.<br>관리자에게 문의 바랍니다.', 'warning').then(function(){
 					location.href="panelDrop.panel";
+				});
+			</script>
+		</c:if>
+		<c:if test="${ param.message eq 'updateAccount' }">
+			<script>
+				Swal.fire('계좌 저장완료', '계좌저장이 완료되었습니다.<br>올바른 정보 저장을 위해<br>다시 로그인 해주세요.', 'success').then(function(){
+					location.href="panelLogin.panel";
 				});
 			</script>
 		</c:if>

@@ -106,4 +106,14 @@ public interface AdminDao {
 
 	List<PanelMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target);
 
+	List<Object> tsQaManagement(SqlSessionTemplate sqlSession);
+
+	int tsDeleteChoice(SqlSessionTemplate sqlSession);
+
+	int tsDeleteQuestion(SqlSessionTemplate sqlSession);
+
+	int insertQuestion(SqlSessionTemplate sqlSession, ResearchQuestion question);
+
+	int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice);
+
 }

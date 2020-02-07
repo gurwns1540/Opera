@@ -9,17 +9,29 @@ package com.opera.survway.panel.model.vo;
  */
 public class ResearchChoice {
 	
+	private int rquestionNo;
 	private int rchoiceNo;
 	private int rchoiceOrder;
 	private String rchoiceContext;
+	private String cchangeName;
 	
 	public ResearchChoice() {}
 
-	public ResearchChoice(int rchoiceNo, int rchoiceOrder, String rchoiceContext) {
+	public ResearchChoice(int rquestionNo, int rchoiceNo, int rchoiceOrder, String rchoiceContext, String cchangeName) {
 		super();
+		this.rquestionNo = rquestionNo;
 		this.rchoiceNo = rchoiceNo;
 		this.rchoiceOrder = rchoiceOrder;
 		this.rchoiceContext = rchoiceContext;
+		this.cchangeName = cchangeName;
+	}
+
+	public int getRquestionNo() {
+		return rquestionNo;
+	}
+
+	public void setRquestionNo(int rquestionNo) {
+		this.rquestionNo = rquestionNo;
 	}
 
 	public int getRchoiceNo() {
@@ -46,10 +58,18 @@ public class ResearchChoice {
 		this.rchoiceContext = rchoiceContext;
 	}
 
+	public String getCchangeName() {
+		return cchangeName;
+	}
+
+	public void setCchangeName(String cchangeName) {
+		this.cchangeName = cchangeName;
+	}
+
 	@Override
 	public String toString() {
-		return "ResearchChoice [rchoiceNo=" + rchoiceNo + ", rchoiceOrder=" + rchoiceOrder + ", rchoiceContext="
-				+ rchoiceContext + "]";
+		return "ResearchChoice [rquestionNo=" + rquestionNo + ", rchoiceNo=" + rchoiceNo + ", rchoiceOrder="
+				+ rchoiceOrder + ", rchoiceContext=" + rchoiceContext + ", cchangeName=" + cchangeName + "]";
 	}
 	
 }
