@@ -299,7 +299,8 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<PanelMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target) {
 		return sqlSession.selectList("Admin.selectTargetList", target);
-
+	}
+	
   @Override
 	public List<Object> tsQaManagement(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectList("Admin.researchSelect");
