@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.admin.model.service.AdminService;
+import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.ResearchState;
@@ -571,6 +571,15 @@ public class AdminResearchController {
 		return mv;
 	}
 	
+	@PostMapping("researchTargetMailing.adminResearch")
+	public ModelAndView researchTargetMailing(ModelAndView mv, int researchNo) {
+		Boolean result = as.researchTargetMailing(researchNo);
+		System.out.println(result);
+		mv.addObject("result", result);
+	  mv.setViewName("jsonView");
+		return mv;
+	}		
+  
 	//타입안정해서
 	@RequestMapping("tsQaManagement.adminResearch")
 	public String tsQaManagement(Model model) {

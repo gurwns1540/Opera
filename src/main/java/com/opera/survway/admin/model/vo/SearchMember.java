@@ -1,7 +1,5 @@
 package com.opera.survway.admin.model.vo;
 
-import org.springframework.stereotype.Component;
-
 import com.opera.survway.common.model.vo.PageInfo;
 
 public class SearchMember {

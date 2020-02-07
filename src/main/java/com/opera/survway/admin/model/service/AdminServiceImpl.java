@@ -7,8 +7,10 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.opera.survway.admin.model.dao.AdminDao;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -18,8 +20,7 @@ import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
-
-import oracle.net.aso.a;
+import com.opera.survway.panel.model.vo.PanelMember;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -566,6 +567,40 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 6.
+	 * @Description : 리서치타겟정보 가져오기
+	 */
+	@Override
+	public boolean researchTargetMailing(int researchNo) {
+		ResearchTarget target = ad.researchTargetMailing(sqlSession, researchNo);
+		if(!target.getTargetAgeRange().equals("all")) {
+			String[] targetAgeRange = target.getTargetAgeRange().split("-");
+			target.setMinAge(Integer.parseInt(targetAgeRange[0]));
+			target.setMaxAge(Integer.parseInt(targetAgeRange[1]));
+		} else {
+			target.setMinAge(0);
+			target.setMaxAge(100);
+		}
+		System.out.println("=====");
+		System.out.println(target);
+		System.out.println("=====");
+		
+//		metropolitan이면 1, 2, 8
+//		city면 1, 2, 3, 4, 5, 6, 7
+//		occupationNo가 13이면 all
+//		먼저 나이가 all인지 아닌지 확인하고 -> location이 어딘지 확인하고 -> occupation을 확인하면 되는듯
+//		ex) 나이대가 20~30이고 location이 metropolitan이고 occupation이 13일 경우
+		
+		List<PanelMember> targetList = ad.getTargetList(sqlSession, target);
+		System.out.println("=================================");
+		System.out.println(targetList);
+		System.out.println("=================================");
+		return true;
+	}
+	
+  /**
 	 * @Author      : hjheo
 	 * @CreateDate  : 2020. 2. 5.
 	 * @ModifyDate  : 2020. 2. 5.
@@ -610,5 +645,4 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return result;
 	}
-
 }

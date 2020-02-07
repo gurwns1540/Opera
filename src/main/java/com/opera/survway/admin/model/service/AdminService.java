@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -78,6 +79,8 @@ public interface AdminService {
 	List<Map<String, Object>> discriminationDetail(int researchNo);
 
 	boolean reconstructureRefer(ResearchState researchState);
+
+	boolean researchTargetMailing(int researchNo);
 
 	List<Object> tsQaManagement();
 

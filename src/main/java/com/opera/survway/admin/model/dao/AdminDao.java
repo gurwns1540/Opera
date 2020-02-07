@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -13,6 +14,7 @@ import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
+import com.opera.survway.panel.model.vo.PanelMember;
 
 public interface AdminDao {
 
@@ -99,6 +101,10 @@ public interface AdminDao {
 	int reconstructureRefer(SqlSessionTemplate sqlSession, ResearchState researchState);
 
 	int reconstructureReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState);
+
+	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<PanelMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target);
 
 	List<Object> tsQaManagement(SqlSessionTemplate sqlSession);
 
