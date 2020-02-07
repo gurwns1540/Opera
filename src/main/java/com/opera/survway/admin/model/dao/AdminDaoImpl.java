@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -15,6 +16,7 @@ import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
+import com.opera.survway.panel.model.vo.PanelMember;
 
 @Repository
 public class AdminDaoImpl implements AdminDao{
@@ -287,6 +289,16 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int reconstructureReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState) {
 		return sqlSession.insert("Admin.reconstructureReferConferenceHistory",  researchState);
+	}
+
+	@Override
+	public ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.researchTargetMailing", researchNo);
+	}
+
+	@Override
+	public List<PanelMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target) {
+		return sqlSession.selectList("Admin.selectTargetList", target);
 	}
 
 

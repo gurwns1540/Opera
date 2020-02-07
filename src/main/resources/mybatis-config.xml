@@ -24,6 +24,8 @@
 		<typeAlias type="com.opera.survway.corporation.model.vo.SearchResearch" alias="SearchResearch"/>
 		<typeAlias type="com.opera.survway.common.model.vo.ResearchState" alias="ResearchState"/>
 		<typeAlias type="com.opera.survway.corporation.model.vo.Payment" alias="Payment"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.ResearchTarget" alias="ResearchTarget"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.TargetMember" alias="TargetMember"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>

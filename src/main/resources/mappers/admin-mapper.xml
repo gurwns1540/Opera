@@ -52,6 +52,25 @@
 		<result property="applicantDate" column="CASHOUT_APPLICANT_DATE"/>
 		<result property="confrimDate" column="CASHOUT_CONFIRM_DATE"/>
 	</resultMap>
+	
+	<resultMap type="ResearchTarget" id="researchTargetResultMap">
+		<id property="targetNo" column="TARGET_NO"/>
+		<result property="targetGender" column="TARGET_GENDER"/>
+		<result property="targetAgeRange" column="TARGET_AGERANGE"/>
+		<result property="targetLocation" column="TARGET_LOCATION"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="occupationNo" column="OCCUPATION_NO"/>
+	</resultMap>
+	
+	<resultMap type="TargetMember" id="targetMemberResultMap">
+		<id property="mno" column="MNO"/>
+		<result property="targetEmail" column="USER_EMAIL"/>
+		<result property="age" column="AGE"/>
+		<result property="targetGender" column="PANEL_GENDER"/>
+		<result property="occupationNo" column="OCCUPATION_NO"/>
+		<result property="locationNo" column="LOCATION_NO"/>
+	</resultMap>
+	
 	<sql id="searchUserType">
 		<if test="userType != null">
 			AND USER_TYPE = #{userType}
@@ -596,6 +615,57 @@
 		INSERT INTO CONFERENCEHISTORY VALUES
 		(SEQ_CONFERENCEHISTORY.NEXTVAL, #{referReason}, #{researchHistoryNo}, null)
 	</insert>
+	
+	<select id="researchTargetMailing" parameterType="_int" resultMap="researchTargetResultMap">
+		SELECT *
+		FROM RESEARCHTARGET
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<select id="selectTargetList" parameterType="TargetMember" resultMap="targetMemberResultMap">
+		
+			SELECT P.MNO, M.USER_EMAIL, EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM TO_DATE(P.PANEL_BIRTHDAY)) AS "AGE", P.PANEL_GENDER, P.OCCUPATION_NO,
+	        RH.RQUESTION_RESPONSE AS "LOCATION_NO"
+			FROM MEMBER M
+			JOIN PANEL P ON(M.MNO = P.MNO)
+			JOIN RESEARCHHISTORY RH ON(M.MNO = RH.MNO)
+			JOIN RESEARCHQUESTION RQ ON(RH.RQUESTION_NO = RQ.RQUESTION_NO)
+			<![CDATA[
+			WHERE MNO < 5000
+			]]>
+			AND EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM TO_DATE(P.PANEL_BIRTHDAY)) BETWEEN #{minAge} AND #{maxAge}
+			AND RQ.RESEARCH_NO = 1
+			<choose>
+				<when test='targetGender == "M"'>
+					AND P.PANEL_GENDER = 'M'
+				</when>
+				<when test='targetGender == "F"'>
+					AND P.PANEL_GENDER = 'F'
+				</when>
+				<otherwise>
+					AND 1=1
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="targetLocation == 'city'">
+					AND ((RQ.RESEARCH_ORDER = 8 AND (RH.RQUESTION_RESPONSE = 1 OR RH.RQUESTION_RESPONSE = 2 OR RH.RQUESTION_RESPONSE = 3 OR RH.RQUESTION_RESPONSE = 4 OR RH.RQUESTION_RESPONSE = 5 OR RH.RQUESTION_RESPONSE = 6 OR RH.RQUESTION_RESPONSE = 7)))
+				</when>
+				<when test="targetLocation == 'metropolitan'">
+					AND ((RQ.RESEARCH_ORDER = 8 AND (RH.RQUESTION_RESPONSE = 1 OR RH.RQUESTION_RESPONSE = 2 OR RH.RQUESTION_RESPONSE = 8)))
+				</when>
+				<otherwise>
+					AND RQ.RESEARCH_ORDER = 8
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="occupationNo != 13">
+					AND P.OCCUPATION_NO = #{occupationNo}
+				</when>
+				<otherwise>
+					AND 1=1
+				</otherwise>
+			</choose>
+	</select>
 </mapper>
 
 
