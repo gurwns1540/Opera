@@ -367,6 +367,7 @@
 				type:"post",
 				data:{mno:mno},
 				success:function(data){
+					
 					var encodedAddress = data.newPanel.userAddress;
 					var passphrase = "1234";
 			        var decrypted1 = CryptoJS.AES.decrypt(encodedAddress, passphrase);

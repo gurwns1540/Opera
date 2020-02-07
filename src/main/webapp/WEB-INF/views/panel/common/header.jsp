@@ -77,7 +77,7 @@
 		   		 고객센터
 		    	<div class="menu">
 			    	<a href="notice.customerCenter" class="item">공지사항</a>
-			    	<a href="faq.panel" class="item">자주묻는 질문</a>
+			    	<a href="faq.customerCenter" class="item">자주묻는 질문</a>
 			    	<a href="panelInquiryList.customerCenter"class="item">내 1:1 문의</a>
 		    	</div>
 		  	</div>

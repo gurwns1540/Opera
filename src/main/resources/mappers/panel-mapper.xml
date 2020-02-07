@@ -278,6 +278,14 @@
 		ORDER BY INQUIRY_DATE DESC
 	</select>
 	
+	<select id="adminSelectAllMyInquiry" resultMap="InquiryResultSet" parameterType="Inquiry">
+		SELECT INQUIRY_NO, INQUIRY_TITLE, INQUIRY_CONTEXT, INQUIRY_ANSWER, MNO, INQUIRYCATEGORY_NO, INQUIRY_DATE, INQUIRY_ANSWERDATE 
+		FROM INQUIRYHISTORY 
+		<include refid="searchCategoryInquiryAdmin"/>
+		<include refid="InquiryTitleExist"/>
+		ORDER BY INQUIRY_DATE DESC
+	</select>
+	
 	<sql id="searchCategoryInquiry">
 		<if test="inquiryCategoryNo == 1">
 			AND INQUIRYCATEGORY_NO = 1
@@ -301,10 +309,96 @@
 	
 	<select id="getListCountInquiry" resultType="_int" parameterType="Inquiry">
 		SELECT COUNT(*) FROM INQUIRYHISTORY
-		WHERE MNO = #{mno}
+		WHERE MNO = #{mno} 
 		<include refid="searchCategoryInquiry"/>
 		
 	</select>
+  
+	<select id="adminGetListCountInquiry" resultType="_int" parameterType="Inquiry">
+		SELECT COUNT(*) FROM INQUIRYHISTORY
+		<include refid="searchCategoryInquiryAdmin"/>
+	</select>
+	<sql id="searchCategoryInquiryAdmin">
+		<if test="inquiryCategoryNo == 1">
+			WHERE INQUIRYCATEGORY_NO = 1
+		</if>
+		<if test="inquiryCategoryNo == 2">
+			WHERE INQUIRYCATEGORY_NO = 2
+		</if>
+		<if test="inquiryCategoryNo == 3">
+			WHERE INQUIRYCATEGORY_NO = 3
+		</if>
+		<if test="inquiryCategoryNo == 4">
+			WHERE INQUIRYCATEGORY_NO = 4
+		</if>
+	</sql>
+	
+	<update id="answerInquiry">
+		UPDATE INQUIRYHISTORY SET INQUIRY_ANSWER =#{inquiryAnswer},INQUIRY_ANSWERDATE = SYSDATE WHERE INQUIRY_NO =#{inquiryNo}
+	</update>
+	
+	<update id="deleteAnswerInquiry">
+		UPDATE INQUIRYHISTORY SET INQUIRY_ANSWER = NULL,INQUIRY_ANSWERDATE = NULL WHERE INQUIRY_NO =#{inquiryNo}
+	</update>
+	
+	<resultMap type="Faq" id="FaqResultSet">
+		<id property="faqNo" column="FAQ_NO"/>
+		<result property="faqTitle" column="FAQ_TITLE"/>
+		<result property="faqContext" column="FAQ_CONTEXT"/>
+		<result property="faqStatus" column="FAQ_STATUS"/>
+		<result property="faqCategoryNo" column="FAQCATEGORY_NO"/>
+	</resultMap>
+	
+	<insert id="insertFaq" parameterType="Faq">
+		INSERT INTO FAQ VALUES(SEQ_FAQ.NEXTVAL,#{faqTitle},#{faqContext},'Y',#{faqCategoryNo})
+	</insert>
+	
+	<select id="getListCountFaq" resultType="_int" parameterType="Faq">
+	   SELECT COUNT(*) 
+	   FROM FAQ
+	   WHERE FAQ_STATUS='Y'
+	</select>
+	
+	<select id="selectAllFaq" parameterType="Faq" resultMap="FaqResultSet">
+		SELECT * 
+		FROM FAQ
+		WHERE FAQ_STATUS = 'Y'
+		ORDER BY FAQ_NO DESC
+		<include refid="searchCategoryFaq"/>
+		<include refid="faqTitleExist"/>
+	</select>
+	
+	<sql id="searchCategoryFaq">
+		<if test="faqCategoryNo == 1">
+			AND FAQCATEGORY_NO = 1
+		</if>
+		<if test="faqCategoryNo == 2">
+			AND FAQCATEGORY_NO = 2
+		</if>
+		<if test="faqCategoryNo == 3">
+			AND FAQCATEGORY_NO = 3
+		</if>
+		<if test="faqCategoryNo == 4">
+			AND FAQCATEGORY_NO = 4
+		</if>
+		<if test="faqCategoryNo == 5">
+			AND FAQCATEGORY_NO = 5
+		</if>
+	</sql>
+	
+	<sql id="faqTitleExist">
+		<if test="faqTitle != null">
+			AND FAQ_TITLE LIKE '%' || #{faqTitle} || '%'
+		</if>
+	</sql>
+	
+	<update id="deleteFaq" parameterType="Faq">
+		UPDATE FAQ SET FAQ_STATUS ='N' WHERE FAQ_NO = ${faqNo}
+	</update>
+	<update id="updateFaq" parameterType="Faq">
+		UPDATE FAQ SET FAQ_TITLE = #{faqTitle}, FAQ_CONTEXT = #{faqContext}, FAQCATEGORY_NO = #{faqCategoryNo}
+		WHERE FAQ_NO = #{faqNo}
+  </update>
 
 	<resultMap type="PanelResearchQuestion" id="researchQuestionResultSet">
 		<id property="rquestionNo" column="RQUESTION_NO" />
@@ -313,6 +407,7 @@
 		<result property="rquestionContext" column="RQUESTION_CONTEXT" />
 		<result property="rquestionVideolink" column="RQUESTION_VIDEOLINK" />
 		<result property="mediaExplain" column="MEDIA_EXPLAIN" />
+		<result property="qchangeName" column="CHANGE_NAME" />
 	</resultMap>
 	
 	<select id="selectTsQuestionList" resultMap="researchQuestionResultSet">
@@ -324,8 +419,10 @@
 
 	<resultMap type="PanelResearchChoice" id="researchChoiceResultSet">
 		<id property="rchoiceNo" column="RCHOICE_NO" />
+		<result property="rquestionNo" column="RQUESTION_NO" />
 		<result property="rchoiceOrder" column="RCHOICE_ORDER" />
 		<result property="rchoiceContext" column="RCHOICE_CONTEXT" />
+		<result property="cchangeName" column="CHANGE_NAME" />
 	</resultMap>
 
 	<select id="selectTsChoiceList" resultMap="researchChoiceResultSet" parameterType="_int">
@@ -435,19 +532,30 @@
 		                                                            WHERE MNO = #{ mno }
 		                                                            AND RH.RESEARCH_NO = 1
 		                                                            AND RH.RQUESTION_NO = 8))))
+		 ORDER BY RESEARCH_NO ASC
 		 ]]>
 	</select>
 	
 	<select id="selectResearchQuestionList" resultMap="researchQuestionResultSet" parameterType="java.lang.String">
 		SELECT *
 		FROM RESEARCHQUESTION
+		LEFT JOIN UPLOADFILE USING (RESEARCH_NO)
 		WHERE RESEARCH_NO = #{ researchNo }
+		ORDER BY RESEARCH_ORDER ASC
 	</select>
 	
 	<select id="selectResearchChoiceList" resultMap="researchChoiceResultSet" parameterType="_int">
 		SELECT *
-		FROM RESEARCHCHOICE
-		WHERE RQUESTION_NO = #{ rquestionNo }
+		FROM RESEARCHCHOICE RC
+		LEFT JOIN UPLOADFILE USING (RCHOICE_NO)
+		WHERE RC.RQUESTION_NO = #{ rquestionNo }
+		ORDER BY RCHOICE_ORDER ASC
+	</select>
+	
+	<select id="selectResearchInfo" resultMap="MainResearchResultSet" parameterType="java.lang.String">
+		SELECT *
+		FROM RESEARCH
+		WHERE RESEARCH_NO = #{ researchNo }
 	</select>
 	
 	<insert id="writeNotice" parameterType="Notice">
@@ -486,4 +594,5 @@
 		WITHDRAW_ACCOUNT = #{withdrawAccount}
 		WHERE MNO = #{mno}
 	</update>
+  
 </mapper>

@@ -18,10 +18,10 @@ public class PanelForwardController {
 	
 	// 고객센터 메뉴 페이지들
 	//1. 자주 묻는 질문
-	@GetMapping("faq.panel")
-	public String showFaq() {
-		return "customerCenter/faq";
-	}
+//	@GetMapping("faq.panel")
+//	public String showFaq() {
+//		return "customerCenter/faq";
+//	}
 	
 
 	//3. 1:1 문의하기
