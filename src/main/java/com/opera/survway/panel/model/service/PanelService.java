@@ -91,4 +91,8 @@ public interface PanelService {
 
 	int noticeDelete(int parseInt);
 
+	int useRewardList(Reward r) ;
+
+	int nowMyReward(Reward r);
+
 }

@@ -2,17 +2,20 @@ package com.opera.survway.panel.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
+import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.RewardException;
 import com.opera.survway.panel.model.service.PanelService;
 import com.opera.survway.panel.model.vo.PanelMember;
@@ -148,6 +151,22 @@ public class RewardController {
 		
 		
 		return mv;
+	}
+	
+	@RequestMapping("myRewardMain.myPage")
+	public String showMyRewardMain(HttpSession session, Reward r, Model model) {
+		PanelMember panelMember = (PanelMember) session.getAttribute("loginUser");
+		int mno = panelMember.getMno();
+		r.setMno(mno);
+			int useReward = ps.useRewardList(r);
+			int nowMyReward = ps.nowMyReward(r);
+			
+			int totalReward = useReward+nowMyReward;
+			model.addAttribute("useReward",useReward);
+			model.addAttribute("nowMyReward",nowMyReward);
+			model.addAttribute("totalReward",totalReward);
+			
+		return "myRewardMain";
 	}
 }
 

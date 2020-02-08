@@ -95,10 +95,10 @@ public class PanelForwardController {
 		return "myPage/myNewInquiry";
 	}
 	//3. 내 리워드 관리
-	@GetMapping("myRewardMain.panel")
-	public String showMyRewardMain() {
-		return "myPage/myRewardMain";
-	}
+//	@GetMapping("myRewardMain.panel")
+//	public String showMyRewardMain() {
+//		return "myPage/myRewardMain";
+//	}
 	//3-1. 내 리워드 적립내역
 //	@GetMapping("myRewardDetail_saved.panel")
 //	public String showMyRewardDetail_saved() {

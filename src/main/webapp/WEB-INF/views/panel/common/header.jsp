@@ -65,7 +65,7 @@
 		   		 마이페이지
 		    	<div class="menu">
 			    	<a href="myInfo.panel" class="item">내 정보 관리</a>
-			    	<a href="myRewardMain.panel" class="item">내 리워드 관리</a>
+			    	<a href="myRewardMain.myPage" class="item">내 리워드 관리</a>
 			    	<a href="panelDrop.panel" class="item">패널 탈퇴</a>
 		    	</div>
 		  	</div>
