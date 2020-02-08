@@ -595,4 +595,31 @@ public class PanelServiceImpl implements PanelService {
 		return pd.noticeDelete(noticeNo,sqlSession);
 	}
 
+	/**
+	 * @throws InquiryException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 6.
+	 * @ModifyDate	:2020. 2. 6.
+	 * @Description	:총 사용한 리워드
+	 */
+	@Override
+	public int useRewardList(Reward r)  {
+		int num = pd.useRewardList(sqlSession,r);
+		return num;
+	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 7.
+	 * @ModifyDate	:2020. 2. 7.
+	 * @Description	:현재 나의 리워드
+	 */
+	@Override
+	public int nowMyReward(Reward r) {
+		
+		int num = pd.nowMyReward(sqlSession,r);
+		
+		return num;
+	}
+
 }

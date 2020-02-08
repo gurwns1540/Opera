@@ -354,5 +354,23 @@ public class PanelDaoImpl implements PanelDao{
 	public int noticeDelete(int noticeNo, SqlSessionTemplate sqlSession) {
 		return sqlSession.update("Panel.noticeDelete",noticeNo);
 	}
+
+	@Override
+	public int useRewardList(SqlSessionTemplate sqlSession, Reward r) {
+		int survey = sqlSession.selectOne("Panel.surveyOutReward",r);
+		int cashout = sqlSession.selectOne("Panel.cashOutReward",r);
+		int num = survey+cashout;
+		return num;
+	}
+
+	@Override
+	public int nowMyReward(SqlSessionTemplate sqlSession, Reward r) {
+		
+		return sqlSession.selectOne("Panel.nowMyReward",r);
+	}
+
+	
+
+	
 	
 }

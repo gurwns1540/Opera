@@ -110,4 +110,12 @@ public interface PanelDao {
 
 	int noticeDelete(int noticeNo, SqlSessionTemplate sqlSession);
 
+	int useRewardList(SqlSessionTemplate sqlSession, Reward r);
+
+	int nowMyReward(SqlSessionTemplate sqlSession, Reward r);
+
+	
+
+	
+
 }

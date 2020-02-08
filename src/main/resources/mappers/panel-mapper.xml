@@ -189,8 +189,27 @@
 		WHERE ROWNUM =1
 	</select>
 
-
-
+	<select id="surveyOutReward" parameterType="Reward" resultType="_int">
+		SELECT COUNT(*)*25
+		FROM REWARDHISTORY
+		WHERE MNO =#{mno}
+		AND SURVEY_NO IS NOT NULL
+	</select>
+	
+	<select id="cashOutReward" parameterType="Reward" resultType="_int">
+		SELECT SUM(CASHOUT_NO) * 10000
+		FROM CASHOUTHISTORY 
+		WHERE CASHOUTHISTORY_NO IN
+		(SELECT CASHOUTHISTORY_NO 
+		FROM REWARDHISTORY 
+		WHERE MNO = #{mno} AND CASHOUTHISTORY_NO IS NOT NULL) 
+	</select>
+	
+	<select id="nowMyReward" parameterType="Reward" resultType="_int">
+		SELECT REWARD_POINT
+		FROM PANELREWARD
+		WHERE MNO =#{mno}
+	</select>
 	 	
 	 <update id="updateLeaveMember" parameterType="PanelMember">
 	   UPDATE MEMBER SET LEAVE_DATE = SYSDATE, MODIFY_DATE = SYSDATE, CERTIFICATION = 'N', LEAVE_REASON = #{leaveReason}
