@@ -557,6 +557,12 @@ public class AdminResearchController {
 		return mv;
 	}
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 9.
+	 * @ModifyDate  : 2020. 2. 9.
+	 * @Description : 리서치 문항 재구성 반려
+	 */
 	@PostMapping("reconstructureRefer.adminResearch")
 	public ModelAndView reconstructureRefer(ModelAndView mv, String researchNoStr, String referReason) {
 		int researchNo = Integer.parseInt(researchNoStr);

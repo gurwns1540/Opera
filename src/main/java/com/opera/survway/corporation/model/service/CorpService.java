@@ -21,7 +21,7 @@ public interface CorpService {
 
 	CorpMember loginMember(CorpMember cm) throws LoginException;
 
-	int insertCorp(CorpMember cm) throws LoginException;
+	int insertCorp(CorpMember cm, UploadFile uploadfile) throws LoginException;
 
 	void insertResearch(Research research, ArrayList<ResearchQuestion> questionList, ArrayList<UploadFile> uploadFiles) throws ResearchException;
 

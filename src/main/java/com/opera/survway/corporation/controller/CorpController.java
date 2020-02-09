@@ -1,8 +1,10 @@
 package com.opera.survway.corporation.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +17,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.opera.survway.common.model.vo.AllMember;
+import com.opera.survway.common.model.vo.OperaFileNamePolicy;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.service.CorpService;
 import com.opera.survway.corporation.model.vo.CorpMember;
 import com.opera.survway.exception.LoginException;
@@ -30,7 +37,7 @@ public class CorpController {
 	private JavaMailSender mailSender; // Mail Sender
 	
 	@PostMapping("corpSignup.me")
-	public String corpSignup(Model model, CorpMember cm, HttpServletRequest request) {
+	public String corpSignup(Model model, CorpMember cm, MultipartFile corpPicture, HttpServletRequest request) {
 		InetAddress inet;
 		String svrIp = "";
 		try {
@@ -39,11 +46,28 @@ public class CorpController {
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\uploadFiles";
+		
+		String originFileName = corpPicture.getOriginalFilename();
+		String ext = originFileName.substring(originFileName.lastIndexOf("."));
+		String saveFile = OperaFileNamePolicy.getRandomString() + ext;
+		
+		UploadFile uploadFile = new UploadFile();
+		uploadFile.setOriginName(cm.getCompanyName() + "_사업자등록증" + ext);
+		uploadFile.setChangeName(saveFile);
+		uploadFile.setFilePath(savePath);
+		try {
+			corpPicture.transferTo(new File(savePath + "\\" + saveFile));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
 		String encPassword =passwordEncoder.encode(cm.getUserPwd());
 	    cm.setUserPwd(encPassword);
 		
 		try {
-			cs.insertCorp(cm);
+			cs.insertCorp(cm, uploadFile);
 			
 			/*메일 전송 부분 시작*/
 			String setfrom = "yychani94@gmail.com";         
@@ -68,15 +92,14 @@ public class CorpController {
 
 				mailSender.send(message);
 		    } catch(Exception e){
-		      System.out.println(e);
+		    	e.printStackTrace();
 		    }
 			/*메일 전송 부분 끝*/
 			
-			return "redirect:corpSignup3.corp";
-		} catch (LoginException e) {
-			request.setAttribute("msg", e.getMessage());
-			
-			return "panelLogin.panel";
-		}
+				return "redirect:corpSignup3.corp";
+		
+	  	} catch (LoginException e) { request.setAttribute("msg", e.getMessage());
+	  		return "panelLogin.panel"; 
+	  	}
 	}
 }

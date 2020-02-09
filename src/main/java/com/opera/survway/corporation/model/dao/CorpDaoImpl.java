@@ -144,4 +144,9 @@ public class CorpDaoImpl implements CorpDao {
 	public int recontructionApproved(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.insert("Corp.recontructionApproved", researchNo);
 	}
+
+	@Override
+	public int insertCorpImage(SqlSessionTemplate sqlSession, UploadFile uploadfile) {
+		return sqlSession.insert("Corp.insertCorpImage", uploadfile);
+	}
 }
