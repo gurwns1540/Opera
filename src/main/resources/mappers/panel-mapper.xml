@@ -76,7 +76,7 @@
 	
 	<insert id="insertMemberTable" parameterType="PanelMember">
 		INSERT INTO MEMBER VALUES
-		(SEQ_MNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{userAddress}, #{userPhone}, #{userEmail}, '패널', NULL, SYSDATE, SYSDATE, 'N')
+		(SEQ_MNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{userAddress}, #{userPhone}, #{userEmail}, '패널', NULL, SYSDATE, SYSDATE, 'N', NULL)
 	</insert>
 	<insert id="insertPanelTable" parameterType="PanelMember">
 		INSERT INTO PANEL VALUES

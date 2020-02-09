@@ -60,4 +60,6 @@ public interface CorpDao {
 
 	int recontructionApproved(SqlSessionTemplate sqlSession, int researchNo);
 
+	int insertCorpImage(SqlSessionTemplate sqlSession, UploadFile uploadfile);
+
 }

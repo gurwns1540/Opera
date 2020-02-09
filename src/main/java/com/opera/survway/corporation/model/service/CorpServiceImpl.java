@@ -62,16 +62,20 @@ public class CorpServiceImpl implements CorpService {
 	 * @Description : 기업 회원가입
 	 */
 	@Override
-	public int insertCorp(CorpMember cm) throws LoginException {
+	public int insertCorp(CorpMember cm, UploadFile uploadfile) throws LoginException {
 
 		int resultMemberTable = cd.insertMemberTable(sqlSession, cm);
 		int resultCorpTable = 0;
+		int resultCorpImage = 0;
 		if(resultMemberTable > 0) {
 			resultCorpTable = cd.insertCorpTable(sqlSession, cm);
-			cd.insertTermsCorp(sqlSession, cm);
+			if(resultCorpTable > 0) {
+				uploadfile.setMno(cm.getMno());
+				resultCorpImage = cd.insertCorpImage(sqlSession, uploadfile);
+			}
 		}
 		
-		if(!(resultMemberTable > 0 && resultCorpTable > 0)) {
+		if(!(resultMemberTable > 0 && resultCorpTable > 0 && resultCorpImage > 0)) {
 			throw new LoginException("회원가입 실패!");
 		}else {
 			return 0;
