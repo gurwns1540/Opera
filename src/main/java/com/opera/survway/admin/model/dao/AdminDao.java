@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
+
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
-import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
+import com.opera.survway.admin.model.vo.TargetMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
@@ -105,9 +107,11 @@ public interface AdminDao {
 
 	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
 
-	List<PanelMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target);
+	List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals) throws ResearchException;
 
-	List<Object> tsQaManagement(SqlSessionTemplate sqlSession);
+	int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo);
+
+  List<Object> tsQaManagement(SqlSessionTemplate sqlSession);
 
 	int tsDeleteChoice(SqlSessionTemplate sqlSession);
 
@@ -118,7 +122,5 @@ public interface AdminDao {
 	int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice);
 
 	List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps);
-
-	
-
 }
+

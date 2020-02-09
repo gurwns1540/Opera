@@ -82,7 +82,7 @@ public interface AdminService {
 
 	boolean reconstructureRefer(ResearchState researchState);
 
-	boolean researchTargetMailing(int researchNo);
+	boolean researchTargetMailing(int researchNo) throws ResearchException;
 
 	List<Object> tsQaManagement();
 
