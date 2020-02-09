@@ -77,7 +77,14 @@
 
 
 </style>
+
 <body>
+<script>
+	$(function(){
+		var list = '${list}';
+		console.log(list);
+	})
+</script>
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/panel/common/header.jsp" />
 		<section class="container">
@@ -117,8 +124,9 @@
 						<thead id="usedTheadArea">
 							<tr>
 								<th style="width: 10%;">리워드번호</th>
-								<th style="width: 40%;">신청내역</th>
-								<th style="width: 20%;">신청일</th>
+								<th style="width: 20%;">신청내역</th>
+								<th style="width: 20%;">신청날짜</th>
+								<th style="width: 20%;">캐시아웃 상태</th>
 								<th style="width: 15%;">신청 리워드</th>
 								<th style="width: 15%;">잔여 리워드</th>
 							</tr>
@@ -136,6 +144,18 @@
 								
 								
 								<td>${reward.rewardChangeDate }</td>
+								<td><c:if test="${reward.cashoutHistoryNo !=0 }">
+										<c:if test="${reward.cashConfirmDate != null and reward.cashConfirmDate != ''}">
+											완료
+										</c:if>
+										<c:if test="${reward.cashConfirmDate == null}">
+											확인 중
+										</c:if>
+									</c:if>
+									<c:if test="${reward.cashoutHistoryNo ==0 }">
+									<c:if test="${reward.surveyNo !=0 }">-</c:if> 
+									</c:if>
+								</td>
 								<td>${reward.changeAmount }</td>
 								<td>${reward.afterChangePoint }</td>
 							</tr>
