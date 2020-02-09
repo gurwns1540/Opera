@@ -73,7 +73,7 @@
 					<span style="font-size: 1vw; padding-left: 40px;"><b>회원님의
 							현재 리워드 현황입니다.</b></span>
 				</div>
-				<table>
+				<table style="margin: 0 auto;">
 					<tr>
 						<td>
 							<div class="ui teal segment">

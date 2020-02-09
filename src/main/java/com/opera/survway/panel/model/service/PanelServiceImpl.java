@@ -87,6 +87,18 @@ public class PanelServiceImpl implements PanelService {
 				pd.insertRewardPanel(sqlSession, pm);
 				pd.insertTernaryPanel(sqlSession, pm);
 			}
+			int result = pd.updateNomineeReward(sqlSession, pm.getNominee());
+			if(result > 0) {
+				//해당 추천인이 존재하면 피추천인의 리워드 100포인트 증가
+				int result2 = pd.updateUserReward(sqlSession, pm);
+				if(result2 > 0) {
+					// 추천자의 리워드도 500포인트 증가
+					int result3 = pd.insertRewardNomineeHistory(sqlSession, pm.getNominee());
+					int result4 = pd.insertRewardUserHistory(sqlSession, pm);
+					
+				}
+			} 
+			
 		}
 		
 		if(!(resultMemberTable>0 && resultPanelTable>0)) {

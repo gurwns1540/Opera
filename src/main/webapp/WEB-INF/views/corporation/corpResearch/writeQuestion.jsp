@@ -472,7 +472,17 @@
 					text: '문항은 최소 1개 이상이어야 합니다.',
 				})
 			}else {
+				var nodeData = $(this).parent().parent().find(".nodeData").val();
+				
 				$(this).parent().parent().remove();
+				
+				$("#editingMain").find(".nodeData").each(function(){
+					console.log("val : " + $(this).val());
+					console.log("nodeData : " + nodeData);
+					if($(this).val() == nodeData){
+						$(this).parent().parent().parent().parent().remove();
+					}
+				});
 				index--;
 			}
 			orderQuizAmount();

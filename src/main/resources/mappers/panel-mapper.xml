@@ -197,7 +197,7 @@
 	</select>
 	
 	<select id="cashOutReward" parameterType="Reward" resultType="_int">
-		SELECT SUM(CASHOUT_NO) * 10000
+		SELECT NVL(SUM(CASHOUT_NO) * 10000, 0)
 		FROM CASHOUTHISTORY 
 		WHERE CASHOUTHISTORY_NO IN
 		(SELECT CASHOUTHISTORY_NO 
@@ -617,4 +617,39 @@
   	<insert id="insertAttemptParticipant" parameterType="AttemptInsert">
   		INSERT INTO ATTEMPTPARTICIPANT VALUES(SEQ_ATTEMPTPARTICIPANT, SYSDATE, #{ mno }, #{ researchNo })
   	</insert>
+  
+  	<update id="updateNomineeReward" parameterType="java.lang.String">
+  		UPDATE PANELREWARD 
+  		SET REWARD_POINT = (SELECT REWARD_POINT FROM PANELREWARD 
+							WHERE MNO = (SELECT MNO
+										FROM PANEL P 
+										WHERE P.REFER_PANELCODE = #{nominee})) + 100
+		WHERE MNO = (SELECT MNO
+					FROM PANEL P 
+					WHERE P.REFER_PANELCODE = #{nominee})
+  	</update>
+  	
+  	<update id="updateUserReward" parameterType="PanelMember">
+  		UPDATE PANELREWARD 
+  		SET REWARD_POINT = (SELECT REWARD_POINT FROM PANELREWARD 
+							WHERE MNO = #{mno}) + 500
+		WHERE MNO = #{mno}
+	</update>
+	
+	<insert id="insertRewardNomineeHistory" parameterType="java.lang.String">
+		INSERT INTO REWARDHISTORY VALUES
+		(SEQ_REWARDHISTORY.NEXTVAL, (SELECT REWARD_POINT FROM PANELREWARD 
+									WHERE MNO = (SELECT MNO
+												FROM PANEL P 
+												WHERE P.REFER_PANELCODE = #{nominee})), '피추천인', '+100', (SELECT MNO
+																										FROM PANEL P 
+																										WHERE P.REFER_PANELCODE = #{nominee}), 
+		SYSDATE, NULL, NULL, NULL, NULL)
+	</insert>
+	
+	<insert id="insertRewardUserHistory" parameterType="PanelMember">
+		INSERT INTO REWARDHISTORY VALUES
+		(SEQ_REWARDHISTORY.NEXTVAL, (SELECT REWARD_POINT FROM PANELREWARD 
+									WHERE MNO = #{mno}), '추천인', '+500', #{mno}, SYSDATE, NULL, NULL, NULL, NULL)
+	</insert>
 </mapper>
