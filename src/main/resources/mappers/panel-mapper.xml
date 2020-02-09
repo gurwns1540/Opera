@@ -126,6 +126,7 @@
 		<result property="surveyNo" column="SURVEY_NO"/>
 		<result property="researchName" column="RESEARCH_NAME"/>
 		<result property="surveyTitle" column="SURVEY_TITLE"/>
+		<result property="cashConfirmDate" column="CASHOUT_CONFIRM_DATE"/>
 	</resultMap>
 	
 	<select id="getListCountRewardSaved" resultType="_int" parameterType="Reward">
@@ -164,23 +165,13 @@
 	
 	<select id="showMyRewardDetailUsed" resultMap="RewardResultSet" parameterType="Reward">
 		
-		SELECT RH.REWARDHISTORY_NO, RH.AFTERCHANGE_POINT,RH.CHANGE_REASON,RH.CHANGE_AMOUNT, RH.REWARD_CHANGEDATE,RH.SURVEY_NO, PS.SURVEY_TITLE
+		SELECT *
 		FROM REWARDHISTORY RH
-		LEFT JOIN PANELSURVEY PS ON(RH.SURVEY_NO = PS.SURVEY_NO)
-		WHERE RH.MNO= #{mno}
-        AND RH.CHANGE_AMOUNT LIKE '%' || '-' || '%'
-		AND RH.SURVEY_NO IS NOT NULL
-		
-		UNION 
-		
-		SELECT R.REWARDHISTORY_NO,R.AFTERCHANGE_POINT, R.CHANGE_REASON, R.CHANGE_AMOUNT, R.REWARD_CHANGEDATE, R.CASHOUTHISTORY_NO,'캐시 아웃'
-		FROM REWARDHISTORY R
-		WHERE R.MNO =#{mno}
-		AND R.CHANGE_AMOUNT LIKE '%' || '-' || '%'
-		AND R.CASHOUTHISTORY_NO IS NOT NULL
+		LEFT JOIN CASHOUTHISTORY CH ON(CH.CASHOUTHISTORY_NO = RH.CASHOUTHISTORY_NO)
+        LEFT JOIN PANELSURVEY PS ON(RH.SURVEY_NO = PS.SURVEY_NO)
+		WHERE RH.MNO = #{mno}
+		AND RH.CHANGE_AMOUNT LIKE '%' || '-' || '%'
 		ORDER BY REWARD_CHANGEDATE DESC
-
-
 	</select>
 	
 	<select id="getPanelReward" resultMap="RewardResultSet" parameterType="_int">

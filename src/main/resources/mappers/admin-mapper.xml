@@ -731,14 +731,21 @@
 		<result property="rquestionResponse" column="RQUESTION_RESPONSE"/>
 		<result property="researchOrder" column="RESEARCH_ORDER"/>
 		<result property="rquestionContext" column="RQUESTION_CONTEXT"/>
-		<result property="rchoiceNo" column="RCHOICE_NO"/>
-		<result property="rchoiceContext" column="RCHOICE_CONTEXT"/>
-		<result property="rchoiceOrder" column="RCHOICE_ORDER"/>
+		<collection property="choiceList" column="RQUESTION_NO" ofType="ResearchChoice" javaType="java.util.List">
+			<result property="choiceNo" column="RCHOICE_NO"/>
+			<result property="choiceContext" column="RCHOICE_CONTEXT"/>
+			<result property="choiceOrder" column="RCHOICE_ORDER"/>
+		</collection>
 	</resultMap>
 	
-	<!-- <select id="selectPanelTs" resultMap="PanelThanksSurvey">
-	
-	</select> -->
+	<select id="selectPanelTs" resultMap="PanelThanksSurvey">
+		SELECT RQ.RQUESTION_NO, RQ.RESEARCH_ORDER, RH.RQUESTION_RESPONSE,RQ.RQUESTION_CONTEXT, RC.RCHOICE_ORDER, RC.RCHOICE_CONTEXT, RQ.QUESTION_FORM_NO
+		FROM RESEARCHHISTORY RH
+		JOIN RESEARCHQUESTION RQ ON (RH.RQUESTION_NO = RQ.RQUESTION_NO)
+		LEFT JOIN RESEARCHCHOICE RC ON (RH.RQUESTION_NO = RC.RQUESTION_NO)
+		WHERE RH.MNO=#{mno} AND RH.RESEARCH_NO =1
+		ORDER BY RQ.RESEARCH_ORDER ASC, RC.RCHOICE_ORDER ASC
+	</select> 
 </mapper>
 
 
