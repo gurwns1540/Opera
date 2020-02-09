@@ -17,6 +17,8 @@ import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.service.PanelService;
+import com.opera.survway.panel.model.vo.AttemptInsert;
+import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
@@ -167,6 +169,29 @@ public class SurveyController {
 		return mv;
 	}
 	
+	
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 9.
+	 * @ModifyDate  : 2020. 2. 9.
+	 * @Description : 설문조사 시도 테이블 인서트
+	 */
+	@PostMapping("insertResearchTry.survey")
+	public ModelAndView insertResearchTry(String mno, String researchNo, ModelAndView mv) {
+		
+		System.out.println("조사시도 mno : " + mno);
+		System.out.println("조사시도 researchNo : " + researchNo);
+		
+		AttemptInsert attempt = new AttemptInsert();
+		attempt.setMno(mno);
+		attempt.setResearchNo(researchNo);
+		
+//		int insertResult = ps.insertResearchTry(attempt);
+		
+		return mv;
+	}
+	
+	
 	/**
 	 * @Author      : Sooo
 	 * @CreateDate  : 2020. 2. 8.
@@ -174,7 +199,7 @@ public class SurveyController {
 	 * @Description : 설문조사 응답 값 인서트
 	 */
 	@PostMapping("insertResearchAnswers.survey")
-	public ModelAndView insertResearchAnswerList(String panellevelNo, String researchNo, String totalAnswer, String surveyTime, String minTime, String maxTime, String reward, String answerCheck, ModelAndView mv) {
+	public ModelAndView insertResearchAnswerList(String mno, String researchNo, String totalAnswer, String surveyTime, String minTime, String maxTime, String reward, String answerCheck, ModelAndView mv) {
 		
 		double surveyT = Double.parseDouble(surveyTime);
 		int minT = Integer.parseInt(minTime);
@@ -195,11 +220,19 @@ public class SurveyController {
 			finalReward = minReward;
 		}
 		
-//		int insertResult = ps.insertAnswer(panellevelNo, researchNo, totalAnswer, surveyTime, finalReward);
+		InsertAnswer answer = new InsertAnswer();
+		answer.setMno(mno);
+		answer.setResearchNo(researchNo);
+		answer.setTotalAnswer(totalAnswer);
+		answer.setSurveyTime(surveyTime);
+		answer.setFinalReward(finalReward);
+		
+//		int insertResult = ps.insertAnswer(answer);
 		
 		mv.setViewName("jsonView");
 		return mv;
 	}
+	
 	
 }
 

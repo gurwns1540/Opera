@@ -613,5 +613,8 @@
 		WITHDRAW_ACCOUNT = #{withdrawAccount}
 		WHERE MNO = #{mno}
 	</update>
-  
+  	
+  	<insert id="insertAttemptParticipant" parameterType="AttemptInsert">
+  		INSERT INTO ATTEMPTPARTICIPANT VALUES(SEQ_ATTEMPTPARTICIPANT, SYSDATE, #{ mno }, #{ researchNo })
+  	</insert>
 </mapper>
