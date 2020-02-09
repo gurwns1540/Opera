@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.service.AdminService;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -573,11 +574,16 @@ public class AdminResearchController {
 	@PostMapping("researchTargetMailing.adminResearch")
 	public ModelAndView researchTargetMailing(ModelAndView mv, int researchNo) {
 //		ResearchTarget target = as.researchTargetMailing(researchNo);
-		Boolean result = as.researchTargetMailing(researchNo);
+		Boolean result;
+		try {
+			result = as.researchTargetMailing(researchNo);
+			System.out.println(result);
+			mv.addObject("result", result);
+		} catch (ResearchException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 //		System.out.println(target);
-		System.out.println(result);
-		mv.addObject("result", result);
-		
 		mv.setViewName("jsonView");
 		return mv;
 	}

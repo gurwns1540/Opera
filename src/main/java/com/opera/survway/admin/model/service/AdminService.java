@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
@@ -80,6 +81,6 @@ public interface AdminService {
 
 	boolean reconstructureRefer(ResearchState researchState);
 
-	boolean researchTargetMailing(int researchNo);
+	boolean researchTargetMailing(int researchNo) throws ResearchException;
 
 }

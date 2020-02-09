@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
+
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
+import com.opera.survway.admin.model.vo.TargetMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
@@ -14,7 +17,6 @@ import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
-import com.opera.survway.panel.model.vo.PanelMember;
 
 public interface AdminDao {
 
@@ -104,6 +106,8 @@ public interface AdminDao {
 
 	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
 
-	List<PanelMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target);
+	List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals) throws ResearchException;
+
+	int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo);
 
 }

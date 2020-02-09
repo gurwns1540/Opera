@@ -6,12 +6,15 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.dao.AdminDao;
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
+import com.opera.survway.admin.model.vo.TargetMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
@@ -20,7 +23,6 @@ import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
-import com.opera.survway.panel.model.vo.PanelMember;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -29,6 +31,8 @@ public class AdminServiceImpl implements AdminService{
 	private AdminDao ad;
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	@Autowired
+	private JavaMailSender mailSender; // Mail Sender
 	
 	/**
 	 * @throws SelectException 
@@ -567,13 +571,14 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	/**
+	 * @throws ResearchException 
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 2. 5.
 	 * @ModifyDate  : 2020. 2. 6.
 	 * @Description : 리서치타겟정보 가져오기
 	 */
 	@Override
-	public boolean researchTargetMailing(int researchNo) {
+	public boolean researchTargetMailing(int researchNo) throws ResearchException {
 		ResearchTarget target = ad.researchTargetMailing(sqlSession, researchNo);
 		if(!target.getTargetAgeRange().equals("all")) {
 			String[] targetAgeRange = target.getTargetAgeRange().split("-");
@@ -592,11 +597,43 @@ public class AdminServiceImpl implements AdminService{
 //		occupationNo가 13이면 all
 //		먼저 나이가 all인지 아닌지 확인하고 -> location이 어딘지 확인하고 -> occupation을 확인하면 되는듯
 //		ex) 나이대가 20~30이고 location이 metropolitan이고 occupation이 13일 경우
-		
-		List<PanelMember> targetList = ad.getTargetList(sqlSession, target);
+		int researchEngagementGoals = ad.selectResearchEngagementGoals(sqlSession, target.getResearchNo());
+		System.out.println(researchEngagementGoals);
+		List<TargetMember> targetList = ad.getTargetList(sqlSession, target, researchEngagementGoals);
 		System.out.println("=================================");
 		System.out.println(targetList);
 		System.out.println("=================================");
+		
+		/*
+		for(int i = 0; i < targetList.size(); i++) {
+			//메일 전송 부분 시작
+			String setfrom = "yychani94@gmail.com";         
+		    String tomail  = targetList.get(i).getTargetEmail();     // 받는 사람 이메일
+		    String title   = "리서치 안내메일입니다.";      // 제목
+		    String content = "test이메일입니다.";
+		   
+		    try {
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+				 
+				messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
+				messageHelper.setTo(tomail);     // 받는사람 이메일
+				messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+				messageHelper.setText(content);  // 메일 내용
+ 
+				String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + content; 
+				messageHelper.setText(contents, true); 
+				
+//				FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
+//				messageHelper.addInline("logo", file);
+
+				mailSender.send(message);
+		    } catch(Exception e){
+		      System.out.println(e);
+		    }
+			//메일 전송 부분 끝
+		}
+	*/
 		return true;
 	}
 	
