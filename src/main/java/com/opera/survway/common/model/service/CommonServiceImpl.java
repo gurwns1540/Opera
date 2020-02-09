@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.common.model.dao.CommonDao;
+import com.opera.survway.panel.model.vo.PanelMember;
 
 @Service
 public class CommonServiceImpl implements CommonService{
@@ -73,6 +74,24 @@ public class CommonServiceImpl implements CommonService{
 			System.out.println("service단 : 불일치");
 			return false;
 		}
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 6.
+	 * @ModifyDate  : 2020. 2. 6.
+	 * @Description : 계좌 번호 업데이트
+	 */
+	@Override
+	public boolean updateAccount(PanelMember loginUser) {
+		boolean isUpdate = false;
+		
+		int result = cd.updateAccount(sqlSession, loginUser);
+		
+		if(result > 0) {
+			isUpdate = true;
+		}
+		return isUpdate;
 	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.admin.model.exception.ResearchException;
@@ -360,7 +361,7 @@ public class AdminResearchController {
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 2. 2.
 	 * @ModifyDate  : 2020. 2. 2.
-	 * @Description : 가격 협상 승인
+	 * @Description : 가격 협상 
 	 */
 	@PostMapping("researchPaymentRefer.adminResearch")
 	public ModelAndView researchPaymentRefer(ModelAndView mv, String researchNoStr, String researchPriceStr, String referReason) {
@@ -556,7 +557,12 @@ public class AdminResearchController {
 		
 		return mv;
 	}
-	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 9.
+	 * @ModifyDate  : 2020. 2. 9.
+	 * @Description : 리서치 문항 재구성 반려
+	 */
 	@PostMapping("reconstructureRefer.adminResearch")
 	public ModelAndView reconstructureRefer(ModelAndView mv, String researchNoStr, String referReason) {
 		int researchNo = Integer.parseInt(researchNoStr);
@@ -584,6 +590,56 @@ public class AdminResearchController {
 			e.printStackTrace();
 		}
 //		System.out.println(target);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+  
+  //타입안정해서
+	@RequestMapping("tsQaManagement.adminResearch")
+	public String tsQaManagement(Model model) {
+		List<Object> r = as.tsQaManagement();
+		model.addAttribute("research", r);		
+		System.out.println(r);
+		return "tsQaManagement";
+	}
+	
+	@PostMapping("tsQaManagementUpdate.adminResearch")
+	public ModelAndView tsQaManagementUpdate(ModelAndView mv, @RequestParam(value="questionOrderArr") String[] questionOrderArr, @RequestParam(value="choiceOrderArr") String[] choiceOrderArr, @RequestParam(value="questionTitleArr") String[] questionTitleArr, @RequestParam(value="choiceTitleArr") String[] choiceTitleArr, @RequestParam(value="questionFormArr") String[] questionFormArr) {
+		
+		int choiceIndex = 0;
+		ArrayList<ResearchQuestion> questionList = new ArrayList<>();
+		
+		for(int i = 0; i < questionOrderArr.length; i++) {
+			ResearchQuestion researchQuestion = new ResearchQuestion();
+			researchQuestion.setQuestionOrder(Integer.parseInt(questionOrderArr[i]));
+			researchQuestion.setRquestionContext(questionTitleArr[i]);
+			researchQuestion.setQuestionFormNo(Integer.parseInt(questionFormArr[i]));
+			
+			if(Integer.parseInt(questionFormArr[i]) == 1) {
+				ArrayList<ResearchChoice> choiceList = new ArrayList<>();
+				
+				for(int j = choiceIndex; j < choiceOrderArr.length; j++) {
+					ResearchChoice researchChoice = new ResearchChoice();
+					researchChoice.setChoiceOrder(Integer.parseInt(choiceOrderArr[j]));
+					researchChoice.setChoiceContext(choiceTitleArr[j]);
+					
+					choiceList.add(researchChoice);
+					if(j != choiceOrderArr.length - 1) {
+						if(Integer.parseInt(choiceOrderArr[j + 1]) == 1) {
+							choiceIndex = j + 1;
+							break;
+						}
+					}
+				}
+				researchQuestion.setRequestChoiceList(choiceList);	
+			}
+			questionList.add(researchQuestion);
+		}
+		
+		System.out.println("controller");
+		
+		int result =as.tsQaManagementUpdate(questionList);
+		mv.addObject("result",result);
 		mv.setViewName("jsonView");
 		return mv;
 	}

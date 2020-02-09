@@ -17,7 +17,10 @@ import com.opera.survway.exception.RewardException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.dao.PanelDao;
+import com.opera.survway.panel.model.vo.AttemptInsert;
+import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
@@ -376,6 +379,89 @@ public class PanelServiceImpl implements PanelService {
 	}
 
 	/**
+	 * @throws InquiryException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 3.
+	 * @ModifyDate	:2020. 2. 3.
+	 * @Description	:자주묻는 질문 등록
+	 */
+	@Override
+	public int insertFaq(Faq faq) throws InquiryException {
+		
+		int result = pd.insertFaq(sqlSession, faq);
+		
+		if(result <0) {
+			throw new InquiryException("자주묻는 질문 등록 실퍄");
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int getListCountFaq(Faq f) throws InquiryException {
+
+		int listCount = pd.getListCountFaq(sqlSession, f);
+		
+		if(listCount <=0) {
+			throw new InquiryException("자주묻는 질문수 조회 실패");
+		}
+		return listCount;
+		
+	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 3.
+	 * @ModifyDate	:2020. 2. 3.
+	 * @Description	:자주묻는 질문 리스트 가져오기
+	 */
+	@Override
+	public List<Faq> selectAllFaq(Faq f) throws InquiryException {
+		
+		List<Faq> list = pd.selectAllFaq(sqlSession,f);
+		
+		if(list == null) {
+			throw new InquiryException("자주묻는 질문 리스트 가져오기 실패");
+		}
+		
+		return list;
+	}
+
+	/**
+	 * @throws InquiryException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 3.
+	 * @ModifyDate	:2020. 2. 3.
+	 * @Description	:자주묻는 질문 삭제
+	 */
+	@Override
+	public int deleteFaq(Faq f) throws InquiryException {
+		
+		int num = pd.deleteFaq(sqlSession, f);
+		
+		if(num <=0) {
+			throw new InquiryException("자주묻는 질문 삭제 실패");
+		}
+		return num;
+	}
+
+	/**
+	 * @throws InquiryException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 3.
+	 * @ModifyDate	:2020. 2. 3.
+	 * @Description	:자주 묻는 질문 수정
+	 */
+	@Override
+	public int updateFaq(Faq f) throws InquiryException {
+		int result = pd.updateFaq(sqlSession,f);
+		
+		if(result <=0) {
+			throw new InquiryException("faq 수정 실패");
+		}
+		return result;
+	}
+	 /*
 	 * @throws SurveyException 
 	 * @Author      : Sooo
 	 * @CreateDate  : 2020. 2. 1.
@@ -424,13 +510,60 @@ public class PanelServiceImpl implements PanelService {
 		return researchQuestions;
 	}
 
+	/**
+	 * @throws SelectException 
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : 진행중인 설문조사 목록에서 특정 리서치 선택 시에 가져올 리서치 정보
+	 */
+	@Override
+	public Research getResearchInfo(String researchNo) throws SelectException {
+		Research researchInfo = null;
+		researchInfo = pd.getResearchInfo(sqlSession, researchNo);
+		return researchInfo;
+	}
+
 	@Override
 	public int writeNotice(Notice n) {
 		int result =pd.insert("Panel.writeNotice",n,sqlSession);
 		return result;
 	}
 
+  /*
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 5.
+	 * @ModifyDate	:2020. 2. 5.
+	 * @Description	:1:1문의 답변 등록
+	 */
+	@Override
+	public int answerInquiry(Inquiry i) throws InquiryException {
+		int num = pd.answerInquiry(sqlSession,i);
+		
+		if(num <0) {
+			throw new InquiryException("1:1문의 답변 실패!");
+		}
+		
+		return num;
+	}
+
 	/**
+	 * @throws InquiryException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 5.
+	 * @ModifyDate	:2020. 2. 5.
+	 * @Description	:1:1문의 답변 지우기
+	 */
+	@Override
+	public int deleteAnswerInquiry(Inquiry i) throws InquiryException {
+		int num = pd.deleteAnswerInquiry(sqlSession, i);
+		
+		if(num <0) {
+			throw new InquiryException("1:1문의 답변 지우기");
+		}
+		return num;
+	}
+  /*
 	 * @Author      : hjheo
 	 * @CreateDate  : 2020. 2. 5.
 	 * @ModifyDate  : 2020. 2. 5.
@@ -439,7 +572,7 @@ public class PanelServiceImpl implements PanelService {
 	
 	  @Override public int editNotice(Notice n) { 
 		  int result =pd.updateNotice(sqlSession,n);
-	  return result; 
+	    return result; 
 	  }
 
 	/**
@@ -450,8 +583,6 @@ public class PanelServiceImpl implements PanelService {
 	 */
 	@Override
 	public Notice selectNotice(int noticeNo) {
-		
-		
 		return pd.selectNotice(noticeNo,sqlSession);
 	}
 
@@ -463,10 +594,60 @@ public class PanelServiceImpl implements PanelService {
 	 */
 	@Override
 	public int noticeDelete(int noticeNo) {
-		
 		return pd.noticeDelete(noticeNo,sqlSession);
 	}
 
-	
-}
+	/**
+	 * @throws InquiryException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 6.
+	 * @ModifyDate	:2020. 2. 6.
+	 * @Description	:총 사용한 리워드
+	 */
+	@Override
+	public int useRewardList(Reward r)  {
+		int num = pd.useRewardList(sqlSession,r);
+		return num;
+	}
 
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 7.
+	 * @ModifyDate	:2020. 2. 7.
+	 * @Description	:현재 나의 리워드
+	 */
+	@Override
+	public int nowMyReward(Reward r) {
+		
+		int num = pd.nowMyReward(sqlSession,r);
+		
+		return num;
+	}
+
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 9.
+	 * @ModifyDate  : 2020. 2. 9.
+	 * @Description : 설문조사 시도 테이블에 인서트
+	 */
+	@Override
+	public int insertResearchTry(AttemptInsert attempt) {
+		int result = pd.insertAttemptParticipant(sqlSession, attempt);
+		return result;
+	}
+
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 9.
+	 * @ModifyDate  : 2020. 2. 9.
+	 * @Description : 설문조사 응답 내용 인서트
+	 */
+	@Override
+	public int insertAnswer(InsertAnswer answer) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+}

@@ -46,14 +46,16 @@
 					<div class="ui vertical divider">Or</div>
 					<div class="middle aligned row">
 						<div class="column">
-							<span style="font-size:16pt;">~~~ 서비스를 이용하고자 하시나요?</span>
+							<img src="${contextPath}/resources/images/panelImage.png" style="width: 30%; margin-bottom: 10px;"><br>
+							<span style="font-size:12pt;">설문참여 서비스를 이용하고자 하시나요?</span>
 							<br>
-							<button id="goPanelSignup" onclick="location.href='panelSignup1.panel'">패널 회원가입하기</button>
+							<button class="ui button"  id="goPanelSignup" onclick="location.href='panelSignup1.panel'" style="margin-top: 15px;">패널 회원가입하기</button>
 						</div>
 						<div class="column">
-							<span style="font-size:16pt;">~~~ 서비스를 이용하고자 하시나요?</span>
+							<img src="${contextPath}/resources/images/branch.png" style="width: 30%; margin-bottom: 10px;"><br>
+							<span style="font-size:12pt;">리서치 작성 서비스를 이용하고자 하시나요?</span>
 							<br>
-							<button id="goPanelSignup" onclick="location.href='corpSignup1.corp'">기업 회원가입하기</button>
+							<button class="ui button" id="goPanelSignup" onclick="location.href='corpSignup1.corp'" style="margin-top: 15px;">기업 회원가입하기</button>
 						</div>
 					</div>
 				</div>

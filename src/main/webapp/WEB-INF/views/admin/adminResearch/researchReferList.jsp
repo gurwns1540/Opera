@@ -119,7 +119,7 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='researchReferList.adminResearch'">미처리 목록</button>
+						<button onclick="location.href='researchApprovalWaitList.adminResearch'">미처리 목록</button>
 						<button onclick="location.href='researchReferList.adminResearch'" id="clickBtn">반려 목록</button>
 					</div>
 				</td>

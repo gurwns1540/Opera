@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -27,10 +30,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.service.CommonService;
 import com.opera.survway.panel.controller.PanelController;
+import com.opera.survway.panel.model.vo.PanelMember;
 
 @Controller
 public class CommonController {
@@ -185,6 +190,26 @@ public class CommonController {
 		mv.addObject("isEqual", isEqual);
 		mv.setViewName("jsonView");
 		
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 6.
+	 * @ModifyDate  : 2020. 2. 6.
+	 * @Description : 계좌번호 업데이트
+	 */
+	@PostMapping("updateAccount.me")
+	public ModelAndView updateAccount(ModelAndView mv, String bankCode, String bankAccount, String mno, HttpSession session) {
+		
+		PanelMember loginUser = new PanelMember();
+		loginUser.setMno(Integer.parseInt(mno));
+		loginUser.setWithdrawAccount(bankCode + "/" + bankAccount);
+		
+		boolean isUpdate = cs.updateAccount(loginUser);
+		session.removeAttribute("loginUser");
+		mv.addObject("isUpdate", isUpdate);
+		mv.setViewName("jsonView");
 		return mv;
 	}
 }

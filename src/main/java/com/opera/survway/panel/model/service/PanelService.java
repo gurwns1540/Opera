@@ -9,8 +9,11 @@ import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.panel.model.vo.AttemptInsert;
+import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
@@ -60,13 +63,29 @@ public interface PanelService {
   
 	List<ResearchQuestion> getTsQuestionList() throws SelectException;
 
+	int insertFaq(Faq faq) throws InquiryException;
+
+	int getListCountFaq(Faq f) throws InquiryException;
+
+	List<Faq> selectAllFaq(Faq f) throws InquiryException;
+
+	int deleteFaq(Faq f) throws InquiryException;
+
+	int updateFaq(Faq f) throws InquiryException;
+
+	int answerInquiry(Inquiry i) throws InquiryException;
+
+	int deleteAnswerInquiry(Inquiry i) throws InquiryException;
+  
 	int getCountMyResearch(PanelMember loginUser);
 
 	List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi);
 
 	List<ResearchQuestion> getResearchQuestionList(String researchNo) throws SelectException;
 
-	int writeNotice(Notice n);
+	Research getResearchInfo(String researchNo) throws SelectException;
+
+  int writeNotice(Notice n);
 
 	int editNotice(Notice n);
 
@@ -74,6 +93,13 @@ public interface PanelService {
 
 	int noticeDelete(int parseInt);
 
+	int useRewardList(Reward r) ;
+
+	int nowMyReward(Reward r);
+
+	int insertResearchTry(AttemptInsert attempt);
+
+	int insertAnswer(InsertAnswer answer);
 
 
 

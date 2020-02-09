@@ -30,6 +30,7 @@
 		<result property="researchResponseDate" column="RESEARCH_RESPONSE_DATE"/>
 		<result property="cashoutAmount" column="CASHOUT_AMOUNT"/>
 		<result property="ternaryCount" column="TERNARY_COUNT"/>
+		<result property="changeName" column="CHANGE_NAME"/>
 	</resultMap>
 	
 	<resultMap type="AllMember" id="newPanelResultSet">
@@ -134,7 +135,7 @@
 		SELECT NVL2((SELECT MAX(RESEARCH_RESPONSE_DATE) FROM RESEARCHHISTORY WHERE MNO = #{mno}), TO_CHAR((SELECT MAX(RESEARCH_RESPONSE_DATE) FROM RESEARCHHISTORY WHERE MNO = #{mno}), 'YYYY-MM-DD'), '참여 기록 없음') AS RESEARCH_RESPONSE_DATE, 
         NVL2((SELECT SUM(CO.CASHOUT_AMOUNT) FROM CASHOUTHISTORY CH LEFT JOIN CASHOUT CO ON(CH.CASHOUT_NO = CO.CASHOUT_NO) WHERE MNO = #{mno}), (SELECT SUM(CO.CASHOUT_AMOUNT) FROM CASHOUTHISTORY CH LEFT JOIN CASHOUT CO ON(CH.CASHOUT_NO = CO.CASHOUT_NO) WHERE MNO = #{mno}), 0) AS CASHOUT_AMOUNT, 
         PT.TERNARY_COUNT,
-        M.MNO, M.USER_ID, M.USER_PWD, M.USER_NAME, M.USER_ADDRESS, M.USER_PHONE, M.USER_EMAIL, M.USER_TYPE, TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD') AS LEAVE_DATE, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE, TO_CHAR(M.MODIFY_DATE, 'YYYY-MM-DD') AS MODIFY_DATE, P.PANEL_BIRTHDAY, P.PANEL_GENDER, P.REFER_PANELCODE, P.NOMINEE, O.OCCUPATION_NAME, P.WITHDRAW_ACCOUNT, L.PANELLEVEL_NAME, C.COMPANY_NAME, C.C_REGISTRATION_NUMBER, PR.REWARD_POINT FROM MEMBER M
+        M.MNO, M.USER_ID, M.USER_PWD, M.USER_NAME, M.USER_ADDRESS, M.USER_PHONE, M.USER_EMAIL, M.USER_TYPE, TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD') AS LEAVE_DATE, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE, TO_CHAR(M.MODIFY_DATE, 'YYYY-MM-DD') AS MODIFY_DATE, P.PANEL_BIRTHDAY, P.PANEL_GENDER, P.REFER_PANELCODE, P.NOMINEE, O.OCCUPATION_NAME, P.WITHDRAW_ACCOUNT, L.PANELLEVEL_NAME, C.COMPANY_NAME, C.C_REGISTRATION_NUMBER, PR.REWARD_POINT, UF.CHANGE_NAME FROM MEMBER M
         LEFT JOIN PANEL P ON (P.MNO = M.MNO)
         LEFT JOIN PANELLEVEL L ON (P.PANELLEVEL_NO = L.PANELLEVEL_NO)
         LEFT JOIN OCCUPATION O ON (P.OCCUPATION_NO = O.OCCUPATION_NO)
@@ -142,6 +143,7 @@
         LEFT JOIN PANELREWARD PR ON (PR.MNO = M.MNO)
         LEFT JOIN RESEARCHHISTORY RH ON (RH.MNO = M.MNO)
         LEFT JOIN PANELTERNARY PT ON(PT.MNO = M.MNO)
+        LEFT JOIN UPLOADFILE UF ON (UF.MNO = C.MNO)
 		WHERE CERTIFICATION = 'Y'
 		AND M.MNO = #{mno}
 	</select>
@@ -199,7 +201,7 @@
         M.MNO,  M.USER_NAME, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
         FROM MEMBER M
         JOIN PANEL P ON (P.MNO = M.MNO)
-		WHERE CERTIFICATION = 'Y'researchPaymentApproved
+		WHERE CERTIFICATION = 'Y'
 		AND PANELLEVEL_NO = 1
 		<include refid="newPanelSearchInputName"/>
 		ORDER BY ENT_DATE DESC
@@ -674,6 +676,69 @@
 		SELECT RESEARCH_ENGAGEMENT_GOALS FROM RESEARCH
 		WHERE RESEARCH_NO = #{researchNo}
 	</select>
+
+	<!--여기서 담아준다--> 
+	<resultMap type="ResearchQuestion" id="tsResearchDetail">
+		<result property="questionNo" column="RQUESTION_NO"/>
+		<result property="rquestionContext" column="RQUESTION_CONTEXT"/>
+		<result property="questionOrder" column="RESEARCH_ORDER"/>
+		<result property="questionFormNo" column="QUESTION_FORM_NO"/>
+		<collection property="requestChoiceList" column="RQUESTION_NO" ofType="ResearchChoice" javaType="java.util.List">
+			<result property="choiceNo" column="RCHOICE_NO"/>
+			<result property="choiceOrder" column="RCHOICE_ORDER"/>
+			<result property="choiceContext" column="RCHOICE_CONTEXT"/>
+		</collection>
+	</resultMap>
+	
+	<!-- 여기서는 조회만 할뿐 -->
+	<select id="researchSelect" resultMap="tsResearchDetail">
+		SELECT *
+		FROM RESEARCH R
+		JOIN RESEARCHQUESTION Q ON(R.RESEARCH_NO=Q.RESEARCH_NO)
+		LEFT JOIN RESEARCHCHOICE C ON(Q.RQUESTION_NO=C.RQUESTION_NO)
+		WHERE R.RESEARCH_NO=1
+        ORDER BY Q.RQUESTION_NO ASC, C.RCHOICE_NO ASC
+	</select>
+	
+	<delete id="tsDeleteChoice">
+		DELETE FROM RESEARCHCHOICE
+		WHERE RQUESTION_NO IN (SELECT RQUESTION_NO FROM RESEARCHQUESTION WHERE RESEARCH_NO = 1)
+	</delete>
+	
+	<delete id="tsDeleteQuestion">
+		DELETE FROM RESEARCHQUESTION
+		WHERE RESEARCH_NO = 1
+	</delete>
+	
+	<insert id="tsInsertQuestion" parameterType="ResearchQuestion">
+		INSERT INTO RESEARCHQUESTION VALUES
+		(#{questionFormNo}, SEQ_QUESTION.NEXTVAL, 1, NULL, NULL, #{questionOrder}, #{rquestionContext})
+		<selectKey keyProperty="questionNo" resultType="_int" order="AFTER">
+			SELECT SEQ_QUESTION.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertChoice" parameterType="ResearchChoice">
+		INSERT INTO RESEARCHCHOICE VALUES
+		(SEQ_CHOICE.NEXTVAL, #{choiceContext}, #{rquestionNo}, #{choiceOrder})
+	</insert>
+	
+	
+	<resultMap type="PanelThanksSurvey" id="PanelThanksSurvey">
+		<result property="mno" column="MNO"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="rquestionNo" column="RQUESTION_NO"/>
+		<result property="rquestionResponse" column="RQUESTION_RESPONSE"/>
+		<result property="researchOrder" column="RESEARCH_ORDER"/>
+		<result property="rquestionContext" column="RQUESTION_CONTEXT"/>
+		<result property="rchoiceNo" column="RCHOICE_NO"/>
+		<result property="rchoiceContext" column="RCHOICE_CONTEXT"/>
+		<result property="rchoiceOrder" column="RCHOICE_ORDER"/>
+	</resultMap>
+	
+	<!-- <select id="selectPanelTs" resultMap="PanelThanksSurvey">
+	
+	</select> -->
 </mapper>
 
 

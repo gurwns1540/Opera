@@ -357,7 +357,23 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 	<script>
 		$("#nextBtn").on("click", function(){
-			$('#research').modal('show');
+			
+			var mno = $(document).find("#mno").val();
+			$.ajax({
+				url:"selectPanelTs.memberManagement",
+				type:"post",
+				data:{
+					mno:mno
+				},success:function(data){
+					console.log(data);
+					$('#research').modal('show');
+				},error:function(){
+					console.log("실패");
+				}
+			});
+			
+			
+		
 		});
 		$(".detail").on("click", function(){
 			var mno = $(this).parent().siblings().eq(0).text();
@@ -367,10 +383,14 @@
 				type:"post",
 				data:{mno:mno},
 				success:function(data){
+					
 					var encodedAddress = data.newPanel.userAddress;
 					var passphrase = "1234";
 			        var decrypted1 = CryptoJS.AES.decrypt(encodedAddress, passphrase);
 			        var decodedAddress = decrypted1.toString(CryptoJS.enc.Utf8);
+					var mno = data.mno;
+					var $mnoInput = $('<input type="text" id="mno" value="' + mno + '" style="display:none;">');
+                    $("#adminBox").append($mnoInput);
 			        
 			        var encodedPhone = data.newPanel.userPhone;
 			        var decrypted1 = CryptoJS.AES.decrypt(encodedPhone, passphrase);

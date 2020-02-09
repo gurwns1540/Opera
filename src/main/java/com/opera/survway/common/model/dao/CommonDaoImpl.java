@@ -3,6 +3,8 @@ package com.opera.survway.common.model.dao;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.opera.survway.panel.model.vo.PanelMember;
+
 @Repository
 public class CommonDaoImpl implements CommonDao{
 	
@@ -36,5 +38,10 @@ public class CommonDaoImpl implements CommonDao{
 	@Override
 	public String selectEncPassword(SqlSessionTemplate sqlSession, String userId) {
 		return sqlSession.selectOne("Panel.selectPwd", userId);
+	}
+
+	@Override
+	public int updateAccount(SqlSessionTemplate sqlSession, PanelMember loginUser) {
+		return sqlSession.update("Panel.updateAccount", loginUser);
 	}
 }

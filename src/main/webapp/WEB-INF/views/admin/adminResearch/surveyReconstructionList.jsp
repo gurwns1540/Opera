@@ -564,7 +564,7 @@
 						var researchDetail = data.researchDetail[0];
 						var gender = "";
 						var location = "";
-						
+						console.log(researchDetail)
 						$("#corp").find(".header").text(companyName);
 						$("#corpTable").find("td").eq(0).text(researchDetail.researchName);
 						$("#corpTable").find("td").eq(1).text(researchDetail.researchPerpose);

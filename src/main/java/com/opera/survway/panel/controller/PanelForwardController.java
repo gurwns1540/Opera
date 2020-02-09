@@ -18,10 +18,10 @@ public class PanelForwardController {
 	
 	// 고객센터 메뉴 페이지들
 	//1. 자주 묻는 질문
-	@GetMapping("faq.panel")
-	public String showFaq() {
-		return "customerCenter/faq";
-	}
+//	@GetMapping("faq.panel")
+//	public String showFaq() {
+//		return "customerCenter/faq";
+//	}
 	
 
 	//3. 1:1 문의하기
@@ -95,10 +95,10 @@ public class PanelForwardController {
 		return "myPage/myNewInquiry";
 	}
 	//3. 내 리워드 관리
-	@GetMapping("myRewardMain.panel")
-	public String showMyRewardMain() {
-		return "myPage/myRewardMain";
-	}
+//	@GetMapping("myRewardMain.panel")
+//	public String showMyRewardMain() {
+//		return "myPage/myRewardMain";
+//	}
 	//3-1. 내 리워드 적립내역
 //	@GetMapping("myRewardDetail_saved.panel")
 //	public String showMyRewardDetail_saved() {

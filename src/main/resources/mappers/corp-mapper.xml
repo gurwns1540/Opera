@@ -42,7 +42,7 @@
 	
 	<insert id="insertMember" parameterType="CorpMember">
 		INSERT INTO MEMBER VALUES
-		(SEQ_MNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{userAddress}, #{userPhone}, #{userEmail}, '기업', NULL, SYSDATE, SYSDATE, 'N')
+		(SEQ_MNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{userAddress}, #{userPhone}, #{userEmail}, '기업', NULL, SYSDATE, SYSDATE, 'N', NULL)
 		
 		<selectKey keyProperty="mno" resultType="_int" order="AFTER">
 			SELECT SEQ_MNO.CURRVAL FROM DUAL
@@ -54,6 +54,10 @@
 		(#{mno}, #{companyName}, #{cRegistrationNumber})
 	</insert>
 	
+	<insert id="insertCorpImage" parameterType="UploadFile">
+		INSERT INTO UPLOADFILE VALUES
+		(SEQ_UPLOADFILE.NEXTVAL, '사업자 등록증', #{originName}, #{changeName}, #{filePath}, SYSDATE, 'Y', #{mno}, NULL, NULL, NULL, NULL, NULL)
+	</insert>
 	<select id="selectPwd" parameterType="string" resultType="string">
 		SELECT USER_PWD
 		FROM MEMBER

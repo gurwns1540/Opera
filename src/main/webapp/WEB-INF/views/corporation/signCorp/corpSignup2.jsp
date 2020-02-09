@@ -93,7 +93,7 @@
 			</div>
 		</div>
 		<div id="mainBox">
-			<form action="corpSignup.me" method="post" onsubmit="return validate();">
+			<form action="corpSignup.me" method="post" id="corpSignUp" onsubmit="return validate();" enctype="multipart/form-data">
 				<table id="corpSignTable">
 					<tr>
 						<th style="border: 0;">아이디</th>
@@ -164,6 +164,7 @@
 							</div>
 							<input type="button" class="ui blue button" id="uploadCorpPicture" style="margin-left: 10px;" value="사진 업로드">
 							<input type="hidden" name="cRegistrationNumber" id="cRegistrationNumber">
+							<input type="file" id="corpPicture" name="corpPicture" style="display: none;">
 						</td>
 					</tr>
 					<tr>
@@ -245,16 +246,19 @@
 					</tr>
 				</table>
 				<div style="width: fit-content; margin: 30px auto;">
-					<input type="submit" class="ui blue button" value="회원가입">
+					<input type="button" id="signUp" class="ui blue button" value="회원가입">
 				</div>
-			</form>
-			<form id="fileUpload" method="post" enctype="multipart/form-data" action="">
-				<input type="file" id="corpPicture" style="display: none;">
+				
 			</form>
 		</div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 		<script>
+			$(document).on("click", "#signUp", function(){
+				var corpSignUp = $("#corpSignUp");
+				corpSignUp.submit();
+			})
+			
 			$('.ui.dropdown').dropdown();
 			$("#uploadCorpPicture").on("click", function(){
 				$("#corpPicture").click();
@@ -496,7 +500,12 @@
 				if(validAll){ // 유효성 모두 통과
 					return true;
 				} else{
-					alert(msg);
+					
+					Swal.fire({
+					  icon: 'error',
+					  text: msg,
+					})
+						
 					return false;
 				}
 				console.log(inval_Arr);

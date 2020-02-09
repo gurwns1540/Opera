@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.admin.model.vo.TargetMember;
@@ -312,6 +313,43 @@ public class AdminDaoImpl implements AdminDao{
 	public int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.selectOne("Admin.selectResearchEngagementGoals", researchNo);
 	}
+	
+  @Override
+	public List<Object> tsQaManagement(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectList("Admin.researchSelect");
+	}
+
+	@Override
+	public int tsDeleteChoice(SqlSessionTemplate sqlSession) {
+		System.out.println("dao");
+		return sqlSession.delete("Admin.tsDeleteChoice");
+	}
+
+	@Override
+	public int tsDeleteQuestion(SqlSessionTemplate sqlSession) {
+		System.out.println("dao");
+		return sqlSession.delete("Admin.tsDeleteQuestion");
+	}
+
+	@Override
+	public int insertQuestion(SqlSessionTemplate sqlSession, ResearchQuestion question) {
+		System.out.println("dao");
+		return sqlSession.insert("Admin.tsInsertQuestion", question);
+	}
+
+	@Override
+	public int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice) {
+		System.out.println("dao");
+		return sqlSession.insert("Admin.insertChoice", researchChoice);
+	}
+
+	@Override
+	public List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps) {
+		
+		return sqlSession.selectList("Admin.selectPanelTs",ps);
+	}
+
+	
 
 
 }

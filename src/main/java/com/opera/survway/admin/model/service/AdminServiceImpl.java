@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.opera.survway.admin.model.dao.AdminDao;
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.admin.model.vo.TargetMember;
@@ -23,6 +24,7 @@ import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.panel.model.vo.PanelMember;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -635,6 +637,64 @@ public class AdminServiceImpl implements AdminService{
 		}
 	*/
 		return true;
+	}
+  /**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 5.
+	 * @ModifyDate  : 2020. 2. 5.
+	 * @Description : ts리서치 불러오기
+	 */
+	@Override
+	public List<Object> tsQaManagement() {
+		List<Object> r = ad.tsQaManagement(sqlSession);
+		return r;
+	}
+
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 6.
+	 * @ModifyDate  : 2020. 2. 6.
+	 * @Description : ts리서치 업데이트 딜리트후에 다시넣어야함
+	 */
+	@Override
+	public int tsQaManagementUpdate(ArrayList<ResearchQuestion> questionList) {
+		System.out.println("service");
+		int result = 0;
+		ad.tsDeleteChoice(sqlSession);
+		System.out.println("deleteChoice함");
+		ad.tsDeleteQuestion(sqlSession);
+		int result1 = 0;
+		for(int i = 0; i < questionList.size(); i++) {
+			ResearchQuestion question = questionList.get(i);
+			result1 += ad.insertQuestion(sqlSession, questionList.get(i));
+			
+			int result2 = 0;
+			if(question.getQuestionFormNo() == 1) {
+				for(int j = 0; j < question.getRequestChoiceList().size(); j++) {
+					int questionNo = questionList.get(i).getQuestionNo();
+					questionList.get(i).getRequestChoiceList().get(j).setRquestionNo(questionNo);
+				}
+				
+				for(int j = 0; j < question.getRequestChoiceList().size(); j++) {
+					result2 += ad.insertChoice(sqlSession, questionList.get(i).getRequestChoiceList().get(j));
+				}
+			}
+			
+		}
+		return result;
+	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 9.
+	 * @ModifyDate	:2020. 2. 9.
+	 * @Description	:패널의 thanksSurvey정보 가지고오기
+	 */
+	@Override
+	public List<PanelThanksSurvey> selectPanelTs(PanelThanksSurvey ps) {
+		
+		List<PanelThanksSurvey> list = ad.selectPanelTs(sqlSession, ps);
+		return list;
 	}
 	
 }

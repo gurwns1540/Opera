@@ -13,6 +13,7 @@
 	body, html {
 		font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif !important;
 	}
+	
 </style>
 <header class="headerArea">
 	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
@@ -46,14 +47,14 @@
 <nav class="navArea">
 	<div class="navContainer">
 		<div class="ui four inverted item menu" id="nav">
-			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px; letter-spacing: 10px; font-size:0.8vw;">
+			<div class="ui simple dropdown item" style="height: 100%; letter-spacing: 10px; font-size:0.8vw;">
 				안내
 				<div class="menu" style="letter-spacing: 0">
 					<a href="benefitInfo.panel" class="item">혜택 안내</a>
 			    	<a href="surveyGuide.panel" class="item">조사참여 가이드</a>
 				</div>
 			</div>
-			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px; font-size:0.8vw;">
+			<div class="ui simple dropdown item" style="height: 100%; font-size:0.8vw;">
 		   		 서베이
 		   		 <div class="menu">
 			    	<a href="surveyList.survey" class="item">진행중인 설문조사</a>
@@ -61,19 +62,19 @@
 			    	<a href="panelSurveyList.panel" class="item">패널서베이</a>
 		    	</div>
 		  	</div>
-			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; height: 35px; font-size:0.8vw;">
+			<div class="ui simple dropdown item" style="height: 100%; font-size:0.8vw;">
 		   		 마이페이지
 		    	<div class="menu">
 			    	<a href="myInfo.panel" class="item">내 정보 관리</a>
-			    	<a href="myRewardMain.panel" class="item">내 리워드 관리</a>
+			    	<a href="myRewardMain.myPage" class="item">내 리워드 관리</a>
 			    	<a href="panelDrop.panel" class="item">패널 탈퇴</a>
 		    	</div>
 		  	</div>
-			<div class="ui simple dropdown item" style="border-left: 1px solid #b4b4b4; border-right: 1px solid #b4b4b4; height: 35px; font-size:0.8vw;">
+			<div class="ui simple dropdown item" style="height: 100%; font-size:0.8vw;">
 		   		 고객센터
 		    	<div class="menu">
 			    	<a href="notice.customerCenter" class="item">공지사항</a>
-			    	<a href="faq.panel" class="item">자주묻는 질문</a>
+			    	<a href="faq.customerCenter" class="item">자주묻는 질문</a>
 			    	<a href="panelInquiryList.customerCenter"class="item">내 1:1 문의</a>
 		    	</div>
 		  	</div>
