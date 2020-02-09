@@ -408,18 +408,78 @@
 				});
 				
 				
+				//nextBtn0을 누르면 설문조사 시작 시간 기록
+				var startTime = "";
+				$(document).on("click", "#nextBtn0", function(){
+					startTime = new Date();
+					console.log("startTime : " + startTime);
+				});
+				
+				//마지막 nextBtn을 누르면 설문조사 끝난 시간 기록
+				var endTime = "";
+				$(document).on("click", ".button[id*=nextBtn]", function(){
+					
+					var qCountNo = $(document).find("#qCount").val();
+					console.log("qCountNo : " + qCountNo);
+					var lastNextBtn = 'nextBtn' + qCountNo;
+					console.log("lastNextBtn : " + lastNextBtn);
+					
+					if($(this).attr('id') == lastNextBtn) {
+						endTime = new Date();
+						console.log("endTime : " + endTime);
+					}
+				});
+				
+				
+				//설문조사 끝나고 마지막버튼 눌렀을 때
 				$(document).on("click", "#lastBtn",function(){
 					
-					totalAnswer = totalAnswer + "";
+					totalAnswer = totalAnswer + ",";
 					console.log(totalAnswer);
+					
+					var surveyTime = (endTime.getTime())-(startTime.getTime());
+					surveyTime = surveyTime/1000/60;
+					
+					var minTime = $(document).find("#minTime").val();
+					var maxTime = $(document).find("#maxTime").val();
+					var reward = $(document).find("#reward").val();
+					var researchNo = $(document).find("#researchNo").val();
+					var panellevelNo = $(document).find("#panellevelNo").val();
+					if(panellevelNo == 1) {
+						reward = '1000~1000P';
+						researchNo = '1';
+					}
+					//1이면 정규식에 어긋난거, 일단 1로 set
+					var answerCheck = 1;
+					
+					//한글체크(자음모음 안됨)
+					var check1 = /[가-힣]/;
+					//특수문자체크
+					var check2 = /[~!@#$%^&*()_+|<>?:{}]/;
+					
+					
+					if(check1.test(totalAnswer) && check1.test(totalAnswer)) {
+						answerCheck = 0;
+					}
+					
+					console.log("answerCheck : " + answerCheck);
 					
 					$.ajax({
 						url:"insertResearchAnswers.survey",
 						type:"post",
-						data:{totalAnswer:totalAnswer},
+						data:{
+							totalAnswer:totalAnswer,
+							surveyTime:surveyTime,
+							minTime:minTime,
+							maxTime:maxTime,
+							reward:reward,
+							panellevelNo:panellevelNo,
+							researchNo:researchNo,
+							answerCheck:answerCheck
+							},
 						success:function(data){
 							Swal.fire('안내', '인서트 성공', 'warning');
-							location.href="surveyList.survey";
+							/* location.href="surveyList.survey"; */
 						},
 						error:function(status){
 							console.log(status);
@@ -470,6 +530,19 @@
 							var maxTime = data.maxTime;
 							var userName = data.userName;
 							var panellevelNo = data.panellevelNo;
+							
+							//나중에 쓸 변수들 input으로 박아놓기
+							var $qCountInput = $('<input type="text" id="qCount" value="' + qCount + '" style="display:none;">');
+							$("#modalAppendArea").append($qCountInput);
+							var $minTimeInput = $('<input type="text" id="minTime" value="' + minTime + '" style="display:none;">');
+							$("#modalAppendArea").append($minTimeInput);
+							var $maxTimeInput = $('<input type="text" id="maxTime" value="' + maxTime + '" style="display:none;">');
+							$("#modalAppendArea").append($maxTimeInput);
+							var $rewardInput = $('<input type="text" id="reward" value="' + reward + '" style="display:none;">');
+							$("#modalAppendArea").append($rewardInput);
+							var $panellevelNoInput = $('<input type="text" id="panellevelNo" value="' + panellevelNo + '" style="display:none;">');
+							$("#modalAppendArea").append($panellevelNoInput);
+							var $researchNoInput = $('<input type="text" id="researchNo" value="' + researchNo + '" style="display:none;">');
 							
 							var $tsQ0 = $('<div class="ui overlay fullscreen modal" id="Q0"> <div class="header" style="height:61px; padding:5px;"> <table style="width:100%;"> <tr> <td style="width:30%; height:inherit;transform:translateY(-4px);"> <img src="resources/images/footerLogo.png" alt="" id="footerImg"> </td> <td style="width:70%; height:inherit; padding-right:20px;"> <div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;"> 0 of ' + qCount + ' done </div> <div class="ui indicating progress active" data-value="0" data-total="' + qCount + '" id="progress0" data-percent="0%" style="margin-top:10px; width:40%; float:right;"> <input type="text" value="0" style="display:none;"> <div class="bar" style="transition-duration: 200ms; display: block; width:0%;"> <div class="progress">0%</div> </div> </div> </td> </tr> </table> </div> <div class="content insetBox"> <div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);"> <div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;"> <span style="line-height:180%; font-size:1.1vw;"> <b>' + userName + '</b>님, 안녕하세요.<br>서브웨이 패널회원으로 가입해주셔서 감사합니다.<br><br>지금부터 몇 가지 기본 정보를 여쭙고자 합니다.<br><br><u>본 조사에 참여하셔야 앞으로 ' + userName + '님께 맞는 조사를 제공</u>해드릴 수 있으니,<br>성실한 답변을 부탁드립니다. </span> </div> <div class="actions" style="text-align:center; margin-top:70px;"> <button class="ui blue button" id="nextBtn0" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button> </div> </div> </div> <div class="actions"> <div class="ui primary approve button" style="background-color:#6A6A6A;"> 돌아가기 </div> </div> </div>');
 							var $otherQ0 = $('<div class="ui overlay fullscreen modal" id="Q0"> <div class="header" style="height:61px; padding:5px;"> <table style="width:100%;"> <tr> <td style="width:30%; height:inherit;transform:translateY(-4px);"> <img src="resources/images/footerLogo.png" alt="" id="footerImg"> </td> <td style="width:70%; height:inherit; padding-right:20px;"> <div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;"> 0 of ' + qCount + ' done </div> <div class="ui indicating progress active" data-value="0" data-total="' + qCount + '" id="progress0" data-percent="0%" style="margin-top:10px; width:40%; float:right;"> <input type="text" value="0" style="display:none;"> <div class="bar" style="transition-duration: 200ms; display: block; width:0%;"> <div class="progress">0%</div> </div> </div> </td> </tr> </table> </div> <div class="content insetBox"> <div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);"> <div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;"> <span style="line-height:180%; font-size:1.1vw;"> <b>' + userName + '</b>님, 안녕하세요.<br><br>본 조사의 예상 소요시간은 ' + time + '분이며, 조사 목적 또는 패널님의 응답 퀄리티에 따라 ' + researchReward + 'P의 리워드를 받으실 수 있습니다.<br><br>설문 답변 소요시간이 ' + minTime + '분 미만인 경우 또는 ' + maxTime + '분을 초과하는 경우,<br>답변에 상관 없이 최저 리워드를 드리니 시간을 엄수하여 주시기 바랍니다. </span> </div> <div class="actions" style="text-align:center; margin-top:70px;"> <button class="ui blue button" id="nextBtn0" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button> </div> </div> </div> <div class="actions"> <div class="ui primary approve button" style="background-color:#6A6A6A;"> 돌아가기 </div> </div> </div>');
@@ -607,7 +680,7 @@
 								
 								//2-6. 리커트 척도형
 								if(questionFormNo == 4) {
-									$scaleDiv = $('<div style="height:100%; width:100%; padding-top:130px; "> <table style="width:100%; height:70px; margin:0 auto; margin-bottom:0; text-align:center;"> <tr> <td style="width:9%;"></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'one" value="1"> <label for="' + researchOrder + 'one"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'two" value="2"> <label for="' + researchOrder + 'two"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'three" value="3"> <label for="' + researchOrder + 'three"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'four" value="4"> <label for="' + researchOrder + 'four"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'five" value="5"> <label for="' + researchOrder + 'five"></label> </div> </td> <td style="width:9%;"></td> </tr> <tr style="font-size:17px;"> <td colspan="3"> <label for="' + researchOrder + 'one" style="cursor: pointer;">매우 부정</label> </td> <td colspan="3"> <label for="' + researchOrder + 'two" style="cursor: pointer;">부 정</label> </td> <td colspan="3"> <label for="' + researchOrder + 'three" style="cursor: pointer;">보 통</label> </td> <td colspan="3"> <label for="' + researchOrder + 'four" style="cursor: pointer;">긍 정</label> </td> <td colspan="3"> <label for="' + researchOrder + 'five" style="cursor: pointer;">매우 부정</label> </td> </tr> </table> </div>');
+									$scaleDiv = $('<div style="height:100%; width:100%; padding-top:130px; "> <table style="width:100%; height:70px; margin:0 auto; margin-bottom:0; text-align:center;"> <tr> <td style="width:9%;"></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'one" value="1"> <label for="' + researchOrder + 'one"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'two" value="2"> <label for="' + researchOrder + 'two"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'three" value="3"> <label for="' + researchOrder + 'three"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'four" value="4"> <label for="' + researchOrder + 'four"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'five" value="5"> <label for="' + researchOrder + 'five"></label> </div> </td> <td style="width:9%;"></td> </tr> <tr style="font-size:17px;"> <td colspan="3"> <label for="' + researchOrder + 'one" style="cursor: pointer;">매우 부정</label> </td> <td colspan="3"> <label for="' + researchOrder + 'two" style="cursor: pointer;">부 정</label> </td> <td colspan="3"> <label for="' + researchOrder + 'three" style="cursor: pointer;">보 통</label> </td> <td colspan="3"> <label for="' + researchOrder + 'four" style="cursor: pointer;">긍 정</label> </td> <td colspan="3"> <label for="' + researchOrder + 'five" style="cursor: pointer;">매우 긍정</label> </td> </tr> </table> </div>');
 									$choiceArea.append($scaleDiv);
 								}
 								
@@ -616,7 +689,7 @@
 									$table = $('<table class="ui celled striped table" style="width:80%; margin:0 auto; margin-top:20px; margin-bottom:30px;"></table>');
 									$thead = $('<thead> <tr> <th colspan="2" style="text-align:center; color:#00679A; background-color:#EDEDED;">※ 답변의 총합이 100이 되도록 점수를 분배해주세요.</th> </tr> </thead>');
 									$tbody = $('<tbody></tbody>');
-									$lastTr = $('<tr style="background-color:#EDEDED;"> <td class="collapsing" style="font-size:12pt; padding-left:20px;"> 총 합 </td> <td class="center aligned collapsing"> <div class="ui input" style="width:30%; margin:0 auto;"><input type="text" value="100" readonly></div> / 100 </td> </tr>');
+									$lastTr = $('<tr style="background-color:#EDEDED;"> <td class="collapsing" style="font-size:12pt; padding-left:20px;"> 총 합 </td> <td class="center aligned collapsing"> <div class="ui input" style="width:30%; margin:0 auto;"><input type="text" id="sumInput" value="" readonly></div> / 100 </td> </tr>');
 									
 									for(var j=0; j<rquestionList[i].choiceList.length; j++) {
 										var rchoiceOrder = rquestionList[i].choiceList[j].rchoiceOrder;
@@ -670,7 +743,6 @@
 									
 									console.log("각 응답 : " + eachAnswer);
 									
-									
 									if($(this).attr('id')=='nextBtn0') {
 										$(document).find('#'+next).modal('setting', 'closable', false).modal('show');
 										$(document).find('#'+current).modal('hide');
@@ -678,6 +750,7 @@
 										if(eachAnswer=="") {
 											Swal.fire('안내', '답변을 입력해주세요.', 'warning');
 										}else{
+											
 											$(document).find('#'+next).modal('setting', 'closable', false).modal('show');
 											$(document).find('#'+current).modal('hide');
 											
@@ -687,12 +760,8 @@
 											eachAnswer = [];
 										}
 									}
-									
-									
-									
 								});
 							});
-							
 						},
 						error:function(status){
 							console.log(status);
