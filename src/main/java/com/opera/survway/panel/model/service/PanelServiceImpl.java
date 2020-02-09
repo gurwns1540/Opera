@@ -17,8 +17,10 @@ import com.opera.survway.exception.RewardException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.dao.PanelDao;
+import com.opera.survway.panel.model.vo.AttemptInsert;
 import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
@@ -621,5 +623,31 @@ public class PanelServiceImpl implements PanelService {
 		
 		return num;
 	}
+
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 9.
+	 * @ModifyDate  : 2020. 2. 9.
+	 * @Description : 설문조사 시도 테이블에 인서트
+	 */
+	@Override
+	public int insertResearchTry(AttemptInsert attempt) {
+		int result = pd.insertAttemptParticipant(sqlSession, attempt);
+		return result;
+	}
+
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 9.
+	 * @ModifyDate  : 2020. 2. 9.
+	 * @Description : 설문조사 응답 내용 인서트
+	 */
+	@Override
+	public int insertAnswer(InsertAnswer answer) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 
 }

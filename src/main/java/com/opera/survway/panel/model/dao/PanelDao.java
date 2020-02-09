@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.panel.model.vo.AttemptInsert;
 import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
@@ -114,8 +115,6 @@ public interface PanelDao {
 
 	int nowMyReward(SqlSessionTemplate sqlSession, Reward r);
 
-	
-
-	
+	int insertAttemptParticipant(SqlSessionTemplate sqlSession, AttemptInsert attempt);
 
 }
