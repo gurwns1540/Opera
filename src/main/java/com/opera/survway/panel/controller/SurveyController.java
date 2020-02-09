@@ -167,20 +167,70 @@ public class SurveyController {
 		return mv;
 	}
 	
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 8.
+	 * @ModifyDate  : 2020. 2. 8.
+	 * @Description : 설문조사 응답 값 인서트
+	 */
 	@PostMapping("insertResearchAnswers.survey")
-	public ModelAndView insertResearchAnswerList(String totalAnswer, ModelAndView mv) {
+	public ModelAndView insertResearchAnswerList(String panellevelNo, String researchNo, String totalAnswer, String surveyTime, String minTime, String maxTime, String reward, String answerCheck, ModelAndView mv) {
 		
-		System.out.println("totalAnswer : " + totalAnswer);
+		double surveyT = Double.parseDouble(surveyTime);
+		int minT = Integer.parseInt(minTime);
+		int maxT = Integer.parseInt(maxTime);
+		String[] splitReward = (reward.split("P")[0]).split("~");
+		String minReward = splitReward[0];
+		String maxReward = splitReward[1];
+		int check = Integer.parseInt(answerCheck);
 		
+		//일단 최고reward로 초기화한 후 아래 조건들에 걸리면 최저로 변경
+		String finalReward = maxReward;
+		//시간제한
+		if(surveyT<minT || surveyT>maxT) {
+			finalReward = minReward;
+		}
+		//정규식거른결과 1이면 자모음 또는 특수문자 입력
+		if(check==1) {
+			finalReward = minReward;
+		}
 		
+//		int insertResult = ps.insertAnswer(panellevelNo, researchNo, totalAnswer, surveyTime, finalReward);
 		
 		mv.setViewName("jsonView");
 		return mv;
 	}
 	
-	
-	
-	
-	
-	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
