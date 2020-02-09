@@ -198,7 +198,7 @@
         M.MNO,  M.USER_NAME, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
         FROM MEMBER M
         JOIN PANEL P ON (P.MNO = M.MNO)
-		WHERE CERTIFICATION = 'Y'researchPaymentApproved
+		WHERE CERTIFICATION = 'Y'
 		AND PANELLEVEL_NO = 1
 		<include refid="newPanelSearchInputName"/>
 		ORDER BY ENT_DATE DESC
@@ -712,6 +712,23 @@
 		INSERT INTO RESEARCHCHOICE VALUES
 		(SEQ_CHOICE.NEXTVAL, #{choiceContext}, #{rquestionNo}, #{choiceOrder})
 	</insert>
+	
+	
+	<resultMap type="PanelThanksSurvey" id="PanelThanksSurvey">
+		<result property="mno" column="MNO"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="rquestionNo" column="RQUESTION_NO"/>
+		<result property="rquestionResponse" column="RQUESTION_RESPONSE"/>
+		<result property="researchOrder" column="RESEARCH_ORDER"/>
+		<result property="rquestionContext" column="RQUESTION_CONTEXT"/>
+		<result property="rchoiceNo" column="RCHOICE_NO"/>
+		<result property="rchoiceContext" column="RCHOICE_CONTEXT"/>
+		<result property="rchoiceOrder" column="RCHOICE_ORDER"/>
+	</resultMap>
+	
+	<!-- <select id="selectPanelTs" resultMap="PanelThanksSurvey">
+	
+	</select> -->
 </mapper>
 
 

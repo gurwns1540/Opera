@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.dao.AdminDao;
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
@@ -645,4 +647,19 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return result;
 	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 9.
+	 * @ModifyDate	:2020. 2. 9.
+	 * @Description	:패널의 thanksSurvey정보 가지고오기
+	 */
+	@Override
+	public List<PanelThanksSurvey> selectPanelTs(PanelThanksSurvey ps) {
+		
+		List<PanelThanksSurvey> list = ad.selectPanelTs(sqlSession, ps);
+		return list;
+	}
+
+	
 }

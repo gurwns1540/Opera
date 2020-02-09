@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
@@ -115,5 +116,9 @@ public interface AdminDao {
 	int insertQuestion(SqlSessionTemplate sqlSession, ResearchQuestion question);
 
 	int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice);
+
+	List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps);
+
+	
 
 }

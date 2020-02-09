@@ -29,6 +29,7 @@
 		<typeAlias type="com.opera.survway.admin.model.vo.TargetMember" alias="TargetMember"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.AttemptInsert" alias="AttemptInsert"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.InsertAnswer" alias="InsertAnswer"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.PanelThanksSurvey" alias="PanelThanksSurvey"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>

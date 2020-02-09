@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
@@ -329,6 +330,14 @@ public class AdminDaoImpl implements AdminDao{
 		System.out.println("dao");
 		return sqlSession.insert("Admin.insertChoice", researchChoice);
 	}
+
+	@Override
+	public List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps) {
+		
+		return sqlSession.selectList("Admin.selectPanelTs",ps);
+	}
+
+	
 
 
 }
