@@ -117,4 +117,12 @@ public interface PanelDao {
 
 	int insertAttemptParticipant(SqlSessionTemplate sqlSession, AttemptInsert attempt);
 
+	int updateNomineeReward(SqlSessionTemplate sqlSession, String nominee);
+
+	int updateUserReward(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int insertRewardNomineeHistory(SqlSessionTemplate sqlSession, String nominee);
+
+	int insertRewardUserHistory(SqlSessionTemplate sqlSession, PanelMember pm);
+
 }

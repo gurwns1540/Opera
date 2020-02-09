@@ -374,5 +374,25 @@ public class PanelDaoImpl implements PanelDao{
 	public int insertAttemptParticipant(SqlSessionTemplate sqlSession, AttemptInsert attempt) {
 		return sqlSession.insert("Panel.insertAttemptParticipant", attempt);
 	}
+
+	@Override
+	public int updateNomineeReward(SqlSessionTemplate sqlSession, String nominee) {
+		return sqlSession.update("Panel.updateNomineeReward", nominee);
+	}
+
+	@Override
+	public int updateUserReward(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.update("Panel.updateUserReward", pm);
+	}
+
+	@Override
+	public int insertRewardNomineeHistory(SqlSessionTemplate sqlSession, String nominee) {
+		return sqlSession.update("Panel.insertRewardNomineeHistory", nominee);
+	}
+
+	@Override
+	public int insertRewardUserHistory(SqlSessionTemplate sqlSession, PanelMember pm) {
+		return sqlSession.update("Panel.insertRewardUserHistory", pm);
+	}
 	
 }
