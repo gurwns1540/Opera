@@ -269,46 +269,11 @@
 			  		<li class="ui-state-default">Q8.
 				  		<div class="choice">보기</div></li>
 				</ul>
-				<hr>
-				<div id="outbreak">
-					<big style="font-weight: bold">돌발퀴즈</big>
-					<div id="outbreakQuestion">
-						문제
-					</div>
-					<div id="choice">
-						보기
-					</div>
-				</div>
 			</div>
 			<hr style="margin: 30 auto;">
-			<div>
-				<div style="width: fit-content; margin: 0 auto;"><h1>통계에 사용할 컬럼</h1></div>
-				<div class="ui styled accordion" id="surveyQuizAccordion">
-					<div class="title">
-						<i class="dropdown icon"></i>
-						<input type="text" placeholder="통계자료명" class="surveyQuizTitle">
-					</div>
-					<div class="content">
-						<p class="transition hidden">
-							<div class="choiceArea">
-								<div class="choice">
-									<div class="ui input">
-	 	 							<input type="text" placeholder="컬럼 내용" class="choiceInput">
-								</div>
-								<span class="add">
-									<i class="plus circle icon"></i>
-								</span><span class="delete"><i class="minus circle icon"></i></span>
-								</div>
-							</div>
-						</p>
-					</div>
-				</div>
-				<div>
-					<div id="addQuiz">
-						<i class="primary large plus circle icon"></i>통계자료 추가
-					</div>
-				</div>
-			</div>
+<!-- 			여기에 통계자료 넣기 -->
+			<hr style="margin: 30 auto;">
+<!-- 			여기에 통계자료 넣기 -->
 		</div>
 		<div class="actions">
 		    <div class="ui approve button" id="approvalBtn">Approve</div>
@@ -365,6 +330,19 @@
 			
 		});
 		$("#nextBtn").on("click", function(){
+			$.ajax({
+				url: "selectResearchGraph.adminResearch",
+				type: "post",
+				data: {
+					researchNo: researchNo
+				},
+				success: function(data) {
+					console.log(data.result);
+				},
+				error: function(data) {
+					
+				}
+			});
 			$('#research').modal('show');
 		});
 		$(".detail").on("click", function(){
@@ -383,11 +361,11 @@
 			  confirmButtonText: 'Yes'
 			}).then((result) => {
 			  if (result.value) {
-			    Swal.fire(
-			      '반영!',
-			      '이 통계는 반영되었습니다.',
-			      'success'
-			    )
+				  Swal.fire(
+	 			      '반영!',
+	 			      '이 통계는 반영되었습니다.',
+	 			      'success'
+	 			    )
 			  }else {
 				  $('#research').modal('show');
 			  }
