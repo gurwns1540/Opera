@@ -202,20 +202,24 @@
 	</select>
 
 	<select id="getListCountNewPanel" resultType="_int">
-		SELECT COUNT(*)
+		SELECT COUNT(DISTINCT(USER_ID))
 		FROM MEMBER M
 		JOIN PANEL P ON (P.MNO = M.MNO)
-		WHERE CERTIFICATION = 'Y'
-		AND PANELLEVEL_NO = 1
+        LEFT JOIN RESEARCHHISTORY RH ON  (P.MNO = RH.MNO)
+		WHERE M.CERTIFICATION = 'Y'
+		AND P.PANELLEVEL_NO = 1
+        AND RH.RESEARCH_NO =1
 		<include refid="newPanelSearchInputName"/>
 	</select>
 	
 	<select id="selectNewPanelList" resultMap="newPanelResultSet">
 		SELECT
-        M.MNO,  M.USER_NAME, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
+        DISTINCT(M.MNO),  M.USER_NAME, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
         FROM MEMBER M
         JOIN PANEL P ON (P.MNO = M.MNO)
+        LEFT JOIN RESEARCHHISTORY RH ON (RH.MNO = M.MNO)
 		WHERE CERTIFICATION = 'Y'
+        AND RESEARCH_NO =1
 		AND PANELLEVEL_NO = 1
 		<include refid="newPanelSearchInputName"/>
 		ORDER BY ENT_DATE DESC

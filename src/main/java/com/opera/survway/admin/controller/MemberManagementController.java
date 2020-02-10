@@ -144,7 +144,8 @@ public class MemberManagementController {
 		try {
 			listCount = as.getListCountNewPanel(searchMember);
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-			
+			System.out.println(listCount);
+			System.out.println(pi);
 			searchMember.setPi(pi);
 			
 			List<AllMember> newPanelList = as.getListNewPanel(searchMember); 
@@ -188,11 +189,11 @@ public class MemberManagementController {
 	 */
 	@RequestMapping("selectPanelTs.memberManagement")
 	public ModelAndView selectPanelTs(ModelAndView mv, String mno, PanelThanksSurvey ps) {
-		System.out.println(Integer.parseInt(mno));
+		
 		ps.setMno(Integer.parseInt(mno));
 		ps.setResearchNo(1);
 		List<PanelThanksSurvey> list = as.selectPanelTs(ps);
-		System.out.println(list);
+		
 		
 		mv.addObject("list",list);
 		mv.setViewName("jsonView");
