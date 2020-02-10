@@ -18,7 +18,6 @@ import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
-import com.opera.survway.panel.model.vo.PanelMember;
 
 public interface AdminDao {
 
