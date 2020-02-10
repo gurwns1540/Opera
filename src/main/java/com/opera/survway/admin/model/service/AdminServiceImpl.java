@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.MimeMessage;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.dao.AdminDao;
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.admin.model.vo.MailingList;
+import com.opera.survway.admin.model.vo.MailingReceiver;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.ResearchTarget;
@@ -24,7 +29,6 @@ import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
-import com.opera.survway.panel.model.vo.PanelMember;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -605,37 +609,60 @@ public class AdminServiceImpl implements AdminService{
 		System.out.println("=================================");
 		System.out.println(targetList);
 		System.out.println("=================================");
-		
-		/*
-		for(int i = 0; i < targetList.size(); i++) {
-			//메일 전송 부분 시작
-			String setfrom = "yychani94@gmail.com";         
-		    String tomail  = targetList.get(i).getTargetEmail();     // 받는 사람 이메일
-		    String title   = "리서치 안내메일입니다.";      // 제목
-		    String content = "test이메일입니다.";
-		   
-		    try {
-				MimeMessage message = mailSender.createMimeMessage();
-				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-				 
-				messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
-				messageHelper.setTo(tomail);     // 받는사람 이메일
-				messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
-				messageHelper.setText(content);  // 메일 내용
- 
-				String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + content; 
-				messageHelper.setText(contents, true); 
-				
-//				FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
-//				messageHelper.addInline("logo", file);
+		    
+		    //메일링 히스토리
+			if(target.getResearchStateNo() == 5) {
+				int insertMailingHistory = ad.insertMailingHistory(sqlSession, target.getResearchNo());
+				if(insertMailingHistory == 0) {
+					throw new ResearchException("메일링 히스토리 insert 실패");
+				} else {
+					int insertRStatusHistory = ad.insertRStatusHistory(sqlSession, target.getResearchNo());
+					if(insertRStatusHistory == 0) {
+						throw new ResearchException("리서치상태이력 insert 실패");
+					} else {
+						int mailingHistoryNo = ad.selectMailingHistoryNo(sqlSession, target.getResearchNo());
+						for(int i = 0; i < targetList.size(); i++) {
+							MailingReceiver mr = new MailingReceiver();
+							mr.setMailingHistoryNo(mailingHistoryNo);
+							mr.setMno(targetList.get(i).getMno());
+							int insesrtMailingReceiver = ad.insertMailingReceiver(sqlSession, mr);
+							if(insesrtMailingReceiver == 0) {
+								throw new ResearchException("메일링 리시버 insert 실패");
+							} else {
+								//메일 전송 부분 시작
+								String setfrom = "yychani94@gmail.com";         
+							    String tomail  = targetList.get(i).getTargetEmail();     // 받는 사람 이메일
+							    String title   = "리서치 안내메일입니다.";      // 제목
+							    String content = "test이메일입니다. 리서치 하세요";
+							   
+							    try {
+									MimeMessage message = mailSender.createMimeMessage();
+									MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+									 
+									messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
+									messageHelper.setTo(tomail);     // 받는사람 이메일
+									messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+									messageHelper.setText(content);  // 메일 내용
+					 
+									String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + content; 
+									messageHelper.setText(contents, true); 
+									
+//									FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
+//									messageHelper.addInline("logo", file);
 
-				mailSender.send(message);
-		    } catch(Exception e){
-		      System.out.println(e);
-		    }
-			//메일 전송 부분 끝
+									mailSender.send(message);
+							    } catch(Exception e){
+							      System.out.println(e);
+							    }
+								//메일 전송 부분 끝
+							}
+					}
+				}
+			}
+		} else {
+			/* 리서치상태가 6번일때 작성 */
+			
 		}
-	*/
 		return true;
 	}
   /**
@@ -696,5 +723,38 @@ public class AdminServiceImpl implements AdminService{
 		List<PanelThanksSurvey> list = ad.selectPanelTs(sqlSession, ps);
 		return list;
 	}
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 10.
+	 * @ModifyDate  : 2020. 2. 10.
+	 * @Description : 메일링 카운트
+	 */
+	@Override
+	public int getListCountMailingList(MailingList list) {
+		return ad.getListCountMailingList(sqlSession, list);
+	}
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 10.
+	 * @ModifyDate  : 2020. 2. 10.
+	 * @Description : 메일링 리스트 불러오기
+	 */
+	@Override
+	public List<MailingList> selectMailingList(MailingList list) {
+		List<MailingList> mailingList = ad.selectMailingList(sqlSession, list);
+		System.out.println("=========serviceImpl=========");
+		for(int i = 0; i < mailingList.size(); i++) {
+			System.out.println(mailingList.get(i));
+//			if(mailingList.get(i).getResearchStateNo() == 5) {
+//				mailingList.get(i).set`
+//			}
+		}
+		System.out.println("=============================");
+		
+		return mailingList;
+	}
+
 	
 }

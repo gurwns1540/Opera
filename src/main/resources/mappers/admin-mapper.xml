@@ -61,6 +61,7 @@
 		<result property="targetLocation" column="TARGET_LOCATION"/>
 		<result property="researchNo" column="RESEARCH_NO"/>
 		<result property="occupationNo" column="OCCUPATION_NO"/>
+		<result property="researchStateNo" column="RESEARCH_STATE_NO"/>
 	</resultMap>
 	
 	<resultMap type="TargetMember" id="targetMemberResultMap">
@@ -71,6 +72,19 @@
 		<result property="occupationNo" column="OCCUPATION_NO"/>
 		<result property="locationNo" column="LOCATION_NO"/>
 		<result property="attemptDate" column="ATTEMPT_DATE"/>
+	</resultMap>
+	
+	<resultMap type="MailingList" id="mailingListResultMap">
+		<id property="researchNo" column="RESEARCH_NO"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="researchStateNo" column="RESEARCH_STATE_NO"/>
+		<result property="researchStatus" column="RESEARCH_STATUS"/>
+	</resultMap>
+	
+	<resultMap type="MailingReceiver" id="mailingReceiverResultMap">
+		<id property="mailingHistoryNo" column="MAILINGHISTORY_NO"/>
 	</resultMap>
 	
 	<sql id="searchUserType">
@@ -620,9 +634,12 @@
 	</insert>
 	
 	<select id="researchTargetMailing" parameterType="_int" resultMap="researchTargetResultMap">
-		SELECT *
-		FROM RESEARCHTARGET
-		WHERE RESEARCH_NO = #{researchNo}
+		SELECT RT.TARGET_NO, RT.TARGET_GENDER, RT.TARGET_AGERANGE, RT.TARGET_LOCATION, RT.RESEARCH_NO, RT.OCCUPATION_NO, RSH.RESEARCH_STATE_NO
+		FROM RESEARCHTARGET RT
+		JOIN RSTATUSHISTORY RSH ON(RT.RESEARCH_NO = RSH.RESEARCH_NO)
+		WHERE RT.RESEARCH_NO = #{researchNo}
+		GROUP BY RT.TARGET_NO, RT.TARGET_GENDER, RT.TARGET_AGERANGE, RT.TARGET_LOCATION, RT.RESEARCH_NO, RT.OCCUPATION_NO, RSH.RESEARCH_STATE_NO
+		HAVING MAX(RSH.RESEARCH_CHANGEDATE) = (SELECT MAX(RESEARCH_CHANGEDATE) FROM RSTATUSHISTORY WHERE RESEARCH_NO = #{researchNo})
 	</select>
 	
 	<select id="selectTargetList" parameterType="TargetMember" resultMap="targetMemberResultMap">
@@ -736,9 +753,42 @@
 		<result property="rchoiceOrder" column="RCHOICE_ORDER"/>
 	</resultMap>
 	
-	<!-- <select id="selectPanelTs" resultMap="PanelThanksSurvey">
+	<select id="selectCountMailingList" resultType="_int">
+		SELECT COUNT(*)
+		FROM RESEARCH R
+		JOIN RSTATUSHISTORY RSH ON(R.RESEARCH_NO = RSH.RESEARCH_NO)
+		WHERE RSH.RESEARCH_STATE_NO = 5 OR RSH.RESEARCH_STATE_NO = 6
+	</select>
 	
-	</select> -->
+	<select id="selectMailingList" resultMap="mailingListResultMap">
+		SELECT R.RESEARCH_NO, C.COMPANY_NAME, R.RESEARCH_NAME, R.RESEARCH_ENGAGEMENT_GOALS, MAX(RSH.RESEARCH_STATE_NO) AS "RESEARCH_STATE_NO", MAX(RSH.RESEARCH_CHANGEDATE)
+		FROM RESEARCH R
+		JOIN RSTATUSHISTORY RSH ON(R.RESEARCH_NO = RSH.RESEARCH_NO)
+		JOIN CORP C ON(R.MNO = C.MNO)
+		JOIN RESEARCHSTATE RS ON(RSH.RESEARCH_STATE_NO = RS.RESEARCH_STATE_NO)
+		WHERE RSH.RESEARCH_STATE_NO = 5 OR RSH.RESEARCH_STATE_NO = 6
+		GROUP BY R.RESEARCH_NO, C.COMPANY_NAME, R.RESEARCH_NAME, R.RESEARCH_ENGAGEMENT_GOALS
+		ORDER BY R.RESEARCH_NO ASC
+	</select>
+	
+	<insert id="insertMailingHistory" parameterType="_int">
+		INSERT INTO MAILINGHISTORY VALUES (SEQ_MAILINGHISTORY.NEXTVAL, 1, #{researchNo}, SYSDATE)
+	</insert>
+	
+	<insert id="insertRStatusHistory" parameterType="_int">
+		INSERT INTO RSTATUSHISTORY VALUES (SEQ_RSTATUSHISTORY.NEXTVAL, #{researchNo}, 6, SYSDATE, NULL)
+	</insert>
+	
+	<select id="selectMailingHistoryNo" parameterType="_int" resultType="_int">
+		SELECT MAX(MAILINGHISTORY_NO) AS "MAILINGHISTORY_NO"
+		FROM MAILINGHISTORY
+		WHERE RESEARCH_NO = #{researchNo}
+		GROUP BY RESEARCH_NO
+	</select>
+	
+	<insert id="insertMailingReceiver" parameterType="MailingReceiver">
+		INSERT INTO MAILINGRECIEVER VALUES (SEQ_MAILINGRECEIVER.NEXTVAL, #{mailingHistoryNo}, #{mno})
+	</insert>
 </mapper>
 
 

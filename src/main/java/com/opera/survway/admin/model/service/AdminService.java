@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.admin.model.vo.MailingList;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.ResearchTarget;
@@ -89,5 +90,9 @@ public interface AdminService {
 	int tsQaManagementUpdate(ArrayList<ResearchQuestion> questionList);
 
 	List<PanelThanksSurvey> selectPanelTs(PanelThanksSurvey ps);
+
+	List<MailingList> selectMailingList(MailingList list);
+
+	int getListCountMailingList(MailingList list);
 
 }

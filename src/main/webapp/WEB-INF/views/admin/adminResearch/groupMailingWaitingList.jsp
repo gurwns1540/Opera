@@ -128,32 +128,100 @@
 			</tr>
 		</table>
 		<table id="listTable">
-			<tr id="tableTitle">
-				<th style="width: 10%;">리서치 번호</th>
-				<th style="width: 15%;">기업명</th>
-				<th style="width: 40%;">리서치 제목</th>
-				<th style="width: 20%;">상태</th>
-				<th style="width: 15%;">메일전송</th>
-			</tr>
-			<c:forEach var="i" begin="0" end="9">
-				<tr class="tableContext">
-					<td><c:out value="${ i + 22 }" /></td>
-					<td>기업명</td>
-					<td>리서치 제목</td>
-					<td>상태</td>
-					<td colspan="8"><input type="button" value="메일 전송" class="sendBtn"></td>
+			<thead id="listThead">
+				<tr id="tableTitle">
+					<th style="width: 10%;">리서치 번호</th>
+					<th style="width: 10%;">기업명</th>
+					<th style="width: 30%;">리서치 제목</th>
+					<th style="width: 10%;">응답인원/목표인원</th>
+					<th style="width: 10%;">예상완료시간</th>
+					<th style="width: 10%;">최근전송날짜</th>
+					<th style="width: 10%;">상태</th>
+					<th style="width: 10%;">메일전송</th>
 				</tr>
-			</c:forEach>
+			</thead>
+			<tbody id="listTbody">
+				<c:forEach var="mailingList" items="${ mailingList }">
+					<tr class="tableContext">
+						<td>${ mailingList.researchNo }</td>
+						<td>${ mailingList.companyName }</td>
+						<td>${ mailingList.researchName }</td>
+						<td>10 / ${ mailingList.researchEngagementGoals }</td>
+						<td>예상완료시간</td>
+						<td>${ mailingList.currentMailingDate }</td>
+						<td>
+							<c:if test="${ mailingList.researchStateNo == 5 }">
+								리서치 대기중
+							</c:if>
+							<c:if test="${ mailingList.researchStateNo == 6 }">
+								리서치 배포중
+							</c:if>
+						</td>
+						<td><input type="button" value="메일 전송" class="sendBtn"></td>
+					</tr>
+				</c:forEach>
+			</tbody>
 		</table>
 		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
-			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
-		</div>
+					<c:url var="MailingListFirst" value="groupMailingWaitingList.admin">
+						<c:param name="currentPage" value="${1}" />
+						<c:if test="${ !empty param.researchName }">
+							<c:param name="researchName" value="${param.researchName}" />
+						</c:if>
+					</c:url>
+					<a href="${ MailingListFirst }"><span>[처음]</span></a>&nbsp;
+
+					<c:if test="${pi.currentPage <= 1}">
+						<span>[이전]</span> &nbsp;
+			</c:if>
+					<c:if test="${pi.currentPage > 1}">
+						<c:url var="MailingListBack" value="groupMailingWaitingList.admin">
+							<c:param name="currentPage" value="${pi.currentPage - 1}" />
+							<c:if test="${ !empty param.researchName }">
+								<c:param name="researchName" value="${param.researchName}" />
+							</c:if>
+						</c:url>
+						<a href="${MailingListBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+
+					<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+						<c:if test="${p eq pi.currentPage }">
+							<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+						</c:if>
+						<c:if test="${p ne pi.currentPage }">
+							<c:url var="MailingListCheck" value="groupMailingWaitingList.admin">
+								<c:param name="currentPage" value="${ p }" />
+								<c:if test="${ !empty param.researchName }">
+									<c:param name="researchName" value="${param.researchName}" />
+								</c:if>
+							</c:url>
+							<a href="${ MailingListCheck }"><span>${ p }</span></a>
+						</c:if>
+
+					</c:forEach>
+
+					<c:if test="${pi.currentPage < pi.maxPage}">
+						<c:url var="MailingListNext" value="groupMailingWaitingList.admin">
+							<c:param name="currentPage" value="${pi.currentPage + 1}" />
+							<c:if test="${ !empty param.researchName }">
+								<c:param name="researchName" value="${param.researchName}" />
+							</c:if>
+						</c:url>
+				&nbsp;<a href="${MailingListNext}"><span>[다음]</span></a>
+					</c:if>
+					<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+					</c:if>
+
+					<c:url var="MailingListEnd" value="groupMailingWaitingList.admin">
+						<c:param name="currentPage" value="${pi.maxPage}" />
+						<c:if test="${ !empty param.researchName }">
+							<c:param name="researchName" value="${param.researchName}" />
+						</c:if>
+					</c:url>
+					<a href="${MailingListEnd}"><span>[마지막]</span></a>&nbsp;
+				</div>
+				<!-- #pagingArea end -->
 	</div>
 	
 	<div class="ui tiny modal" id="sendMailModal">
