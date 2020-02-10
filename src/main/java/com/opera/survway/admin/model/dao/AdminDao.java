@@ -1,5 +1,6 @@
 package com.opera.survway.admin.model.dao;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -132,5 +133,20 @@ public interface AdminDao {
 	int insertMailingReceiver(SqlSessionTemplate sqlSession, MailingReceiver mr);
 
 	int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo);
+	
+	int insertMailingHistoryRe(SqlSessionTemplate sqlSession, int researchNo);
+
+	int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals)
+			throws ResearchException;
+
+	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
+
+	int selectMailingHistoryOrder(SqlSessionTemplate sqlSession, int researchNo);
+
+	String selectMailingHistoryCurrentDate(SqlSessionTemplate sqlSession, int researchNo);
+
+	String selectResearchPeriod(SqlSessionTemplate sqlSession, int researchNo);
 
 }

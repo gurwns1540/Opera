@@ -10,8 +10,8 @@ public class MailingList {
 	private String researchName;				//리서치제목
 	private int researchCount;					//리서치응답인원수
 	private int researchEngagementGoals;		//리서치목표인원수
-	private Date researchPeriod;				//리서치완료시간
-	private Date currentMailingDate;			//최근전송날짜
+	private String researchPeriod;				//리서치완료시간
+	private String currentMailingDate;			//최근전송날짜
 	private int researchStateNo;
 	private String researchStatus;					//상태
 	private PageInfo pi;
@@ -19,7 +19,7 @@ public class MailingList {
 		super();
 	}
 	public MailingList(int researchNo, String companyName, String researchName, int researchCount,
-			int researchEngagementGoals, Date researchPeriod, Date currentMailingDate, int researchStateNo,
+			int researchEngagementGoals, String researchPeriod, String currentMailingDate, int researchStateNo,
 			String researchStatus, PageInfo pi) {
 		super();
 		this.researchNo = researchNo;
@@ -63,16 +63,16 @@ public class MailingList {
 	public void setResearchEngagementGoals(int researchEngagementGoals) {
 		this.researchEngagementGoals = researchEngagementGoals;
 	}
-	public Date getResearchPeriod() {
+	public String getResearchPeriod() {
 		return researchPeriod;
 	}
-	public void setResearchPeriod(Date researchPeriod) {
+	public void setResearchPeriod(String researchPeriod) {
 		this.researchPeriod = researchPeriod;
 	}
-	public Date getCurrentMailingDate() {
+	public String getCurrentMailingDate() {
 		return currentMailingDate;
 	}
-	public void setCurrentMailingDate(Date currentMailingDate) {
+	public void setCurrentMailingDate(String currentMailingDate) {
 		this.currentMailingDate = currentMailingDate;
 	}
 	public int getResearchStateNo() {

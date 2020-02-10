@@ -1,5 +1,6 @@
 package com.opera.survway.admin.model.dao;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -351,45 +352,21 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectList("Admin.selectPanelTs",ps);
 	}
 
-	/**
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 2. 10.
-	 * @ModifyDate  : 2020. 2. 10.
-	 * @Description : 메일링리스트 불러오기
-	 */
 	@Override
 	public List<MailingList> selectMailingList(SqlSessionTemplate sqlSession, MailingList list) {
 		return sqlSession.selectList("Admin.selectMailingList", list);
 	}
 
-	/**
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 2. 10.
-	 * @ModifyDate  : 2020. 2. 10.
-	 * @Description : 메일링 카운트
-	 */
 	@Override
 	public int getListCountMailingList(SqlSessionTemplate sqlSession, MailingList list) {
 		return sqlSession.selectOne("Admin.selectCountMailingList", list);
 	}
 
-	/**
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 2. 10.
-	 * @ModifyDate  : 2020. 2. 10.
-	 * @Description : 메일링 히스토리 insert
-	 */
 	@Override
 	public int insertMailingHistory(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.insert("Admin.insertMailingHistory", researchNo);
 	}
 
-	/**
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 2. 10.
-	 * @ModifyDate  : 2020. 2. 10.
-	 * @Description : 리서치상태변경이력 insert
-	 */
 	@Override
 	public int insertRStatusHistory(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.insert("Admin.insertRStatusHistory", researchNo);
@@ -403,6 +380,26 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int insertMailingReceiver(SqlSessionTemplate sqlSession, MailingReceiver mr) {
 		return sqlSession.insert("Admin.insertMailingReceiver", mr);
+	}
+	
+	@Override
+	public int insertMailingHistoryRe(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.insert("Admin.insertMailingHistoryRe", researchNo);
+	}
+
+	@Override
+	public int selectMailingHistoryOrder(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectMailingHistoryOrder", researchNo);
+	}
+
+	@Override
+	public String selectMailingHistoryCurrentDate(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectMailingHistoryCurrentDate", researchNo);
+	}
+
+	@Override
+	public String selectResearchPeriod(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectResearchPeriod", researchNo);
 	}
 
 }

@@ -739,17 +739,7 @@
 		INSERT INTO RESEARCHCHOICE VALUES
 		(SEQ_CHOICE.NEXTVAL, #{choiceContext}, #{rquestionNo}, #{choiceOrder})
 	</insert>
-
-	<resultMap type="UploadFile"  id="selectAudio">
-		<result property="fileNo" column="FILE_NO"/>
-		<result property="fileType" column="FILE_TYPE"/>
-		<result property="originName" column="ORIGIN_NAME"/>
-		<result property="changeName" column="CHANGE_NAME"/>
-		<result property="filePath" column="FILE_PATH"/>
-		<result property="uploadDate" column="UPLOAD_DATE"/>
-		<result property="fileStatus" column="FILE_STATUS"/>
-		<result property="researchNo" column="RESEARCH_NO"/>
-	</resultMap>
+	
 	
 	<resultMap type="PanelThanksSurvey" id="PanelThanksSurvey">
 		<result property="mno" column="MNO"/>
@@ -758,11 +748,9 @@
 		<result property="rquestionResponse" column="RQUESTION_RESPONSE"/>
 		<result property="researchOrder" column="RESEARCH_ORDER"/>
 		<result property="rquestionContext" column="RQUESTION_CONTEXT"/>
-		<collection property="choiceList" column="RQUESTION_NO" ofType="ResearchChoice" javaType="java.util.List">
-			<result property="choiceNo" column="RCHOICE_NO"/>
-			<result property="choiceContext" column="RCHOICE_CONTEXT"/>
-			<result property="choiceOrder" column="RCHOICE_ORDER"/>
-		</collection>
+		<result property="rchoiceNo" column="RCHOICE_NO"/>
+		<result property="rchoiceContext" column="RCHOICE_CONTEXT"/>
+		<result property="rchoiceOrder" column="RCHOICE_ORDER"/>
 	</resultMap>
 	
 	<select id="selectCountMailingList" resultType="_int">
@@ -801,23 +789,58 @@
 	<insert id="insertMailingReceiver" parameterType="MailingReceiver">
 		INSERT INTO MAILINGRECIEVER VALUES (SEQ_MAILINGRECEIVER.NEXTVAL, #{mailingHistoryNo}, #{mno})
 	</insert>
-  
-	<select id="selectPanelTs" resultMap="PanelThanksSurvey">
-		SELECT RQ.RQUESTION_NO, RQ.RESEARCH_ORDER, RH.RQUESTION_RESPONSE,RQ.RQUESTION_CONTEXT, RC.RCHOICE_ORDER, RC.RCHOICE_CONTEXT, RQ.QUESTION_FORM_NO
-		FROM RESEARCHHISTORY RH
-		JOIN RESEARCHQUESTION RQ ON (RH.RQUESTION_NO = RQ.RQUESTION_NO)
-		LEFT JOIN RESEARCHCHOICE RC ON (RH.RQUESTION_NO = RC.RQUESTION_NO)
-		WHERE RH.MNO=#{mno} AND RH.RESEARCH_NO =1
-		ORDER BY RQ.RESEARCH_ORDER ASC, RC.RCHOICE_ORDER ASC
-	</select> 
-  
-	<update id="uploadAudio"  parameterType="UploadFile">
-		MERGE INTO UPLOADFILE
-			USING DUAL
-			ON(RESEARCH_NO=2)
-			WHEN MATCHED THEN
-				UPDATE SET CHANGE_NAME=#{changeName}
-			WHEN NOT MATCHED THEN
-				INSERT VALUES (SEQ_UPLOADFILE.NEXTVAL, 'pc환경조사',#{originName},#{changeName},#{filePath},SYSDATE,'Y', NULL, NULL, NULL, NULL, NULL, 2) 
-	</update>
+	
+	<insert id="insertMailingHistoryRe" parameterType="_int">
+		INSERT INTO MAILINGHISTORY VALUES (SEQ_MAILINGHISTORY.NEXTVAL, (SELECT MAX(MAILING_ORDER) FROM MAILINGHISTORY WHERE RESEARCH_NO = #{researchNo})+1, #{researchNo}, SYSDATE)
+	</insert>
+	
+	<select id="selectMailingHistoryOrder" parameterType="_int" resultType="_int">
+		SELECT MAX(MAILING_ORDER) FROM MAILINGHISTORY
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<select id="selectMailingHistoryCurrentDate" parameterType="_int" resultType="String">
+		SELECT TO_CHAR(MAX(MAILING_DATE), 'YYYY/MM/DD') FROM MAILINGHISTORY
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<select id="selectResearchPeriod" parameterType="_int" resultType="String">
+		SELECT TO_CHAR(TO_DATE(SUBSTR(RESEARCH_PERIOD, 10, 8),'YY/MM/DD'),'YYYY/MM/DD') FROM RESEARCH
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

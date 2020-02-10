@@ -30,8 +30,6 @@ import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
 
-import oracle.net.aso.a;
-
 @Service
 public class AdminServiceImpl implements AdminService{
 
@@ -39,7 +37,7 @@ public class AdminServiceImpl implements AdminService{
 	private AdminDao ad;
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-  @Autowired
+	@Autowired
 	private JavaMailSender mailSender; // Mail Sender
 	
 	/**
@@ -577,8 +575,8 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return isRefer;
 	}
-  
-  /**
+
+	/**
 	 * @throws ResearchException 
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 2. 5.
@@ -663,12 +661,53 @@ public class AdminServiceImpl implements AdminService{
 			}
 		} else {
 			/* 리서치상태가 6번일때 작성 */
-			
+			int insertMailingHistoryRe = ad.insertMailingHistoryRe(sqlSession, target.getResearchNo());
+			if(insertMailingHistoryRe == 0) {
+				throw new ResearchException("메일링 히스토리 insert 실패");
+			} else {
+				int mailingHistoryNo = ad.selectMailingHistoryNo(sqlSession, target.getResearchNo());
+//				int mailingHistoryOrder = ad.selectMailingHistoryOrder(sqlSession, target.getResearchNo());
+				for(int i = 0; i < targetList.size(); i++) {
+					MailingReceiver mr = new MailingReceiver();
+					mr.setMailingHistoryNo(mailingHistoryNo);
+					mr.setMno(targetList.get(i).getMno());
+					int insesrtMailingReceiver = ad.insertMailingReceiver(sqlSession, mr);
+					if(insesrtMailingReceiver == 0) {
+						throw new ResearchException("메일링 리시버 insert 실패");
+					} else {
+						//메일 전송 부분 시작
+						String setfrom = "yychani94@gmail.com";         
+					    String tomail  = targetList.get(i).getTargetEmail();     // 받는 사람 이메일
+					    String title   = "리서치 안내메일입니다.";      // 제목
+					    String content = "test이메일입니다. 리서치 하세요";
+					   
+					    try {
+							MimeMessage message = mailSender.createMimeMessage();
+							MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+							 
+							messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
+							messageHelper.setTo(tomail);     // 받는사람 이메일
+							messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+							messageHelper.setText(content);  // 메일 내용
+			 
+							String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + content; 
+							messageHelper.setText(contents, true); 
+							
+//							FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
+//							messageHelper.addInline("logo", file);
+
+							mailSender.send(message);
+					    } catch(Exception e){
+					      System.out.println(e);
+					    }
+						//메일 전송 부분 끝
+					}
+				}
+			}
 		}
 		return true;
 	}
-  
-	/**
+  /**
 	 * @Author      : hjheo
 	 * @CreateDate  : 2020. 2. 5.
 	 * @ModifyDate  : 2020. 2. 5.
@@ -715,20 +754,6 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	/**
-	 * @Author      : hjheo
-	 * @CreateDate  : 2020. 2. 7.
-	 * @ModifyDate  : 2020. 2. 7.
-	 * @Description : pc환경조사
-	 */
-	@Override
-	public int uploadAudio(UploadFile ufo) {
-		
-		int result = ad.uploadAudio(sqlSession,ufo);
-		System.out.println("pc");
-		return result;
-	}
-
-  /**
 	 * @Author	:hansol
 	 * @CreateDate	:2020. 2. 9.
 	 * @ModifyDate	:2020. 2. 9.
@@ -763,7 +788,14 @@ public class AdminServiceImpl implements AdminService{
 		List<MailingList> mailingList = ad.selectMailingList(sqlSession, list);
 		System.out.println("=========serviceImpl=========");
 		for(int i = 0; i < mailingList.size(); i++) {
+			if(mailingList.get(i).getResearchStateNo() == 6) {
+				int mailingHistoryOrder = ad.selectMailingHistoryOrder(sqlSession, mailingList.get(i).getResearchNo());
+				mailingList.get(i).setResearchStatus(String.valueOf(mailingHistoryOrder));
+				mailingList.get(i).setCurrentMailingDate(ad.selectMailingHistoryCurrentDate(sqlSession, mailingList.get(i).getResearchNo()));
+				mailingList.get(i).setResearchPeriod(ad.selectResearchPeriod(sqlSession, mailingList.get(i).getResearchNo()));
+			}
 			System.out.println(mailingList.get(i));
+			
 //			if(mailingList.get(i).getResearchStateNo() == 5) {
 //				mailingList.get(i).set`
 //			}
@@ -772,4 +804,12 @@ public class AdminServiceImpl implements AdminService{
 		
 		return mailingList;
 	}
+
+	@Override
+	public int uploadAudio(UploadFile ufo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
 }
