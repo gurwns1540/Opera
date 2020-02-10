@@ -133,4 +133,10 @@ public interface AdminDao {
 
 	int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo);
 
+	int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals) throws ResearchException;
+
+	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
+
 }
