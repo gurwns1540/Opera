@@ -53,6 +53,9 @@
 	font-weight: bold;
 	width: 15%;
 }
+#icon3{
+	color:navy;
+}
 </style>
 <body>
 	<div class="wrap">
@@ -83,22 +86,22 @@
 			
 			<div class="contentsArea" style="width: 100%;">
 				<div><b>회원님의 리워드를 캐시아웃 신청하는 공간입니다.</b></div>
-				<h1 class="ui header">나의 리워드 량 ${Reward.afterChangePoint  }</h1>
+				<h1 class="ui header">현재 리워드   ${Reward.afterChangePoint  }<i class="coins icon" id="icon3"></i></h1>
 				<br /><div class="ui three steps">
 				  <div class="step">
-				    <i class="truck icon"></i>
+				    <i class="check circle outline icon"></i>
 				    <div class="content">
 				      <div class="title">캐시아웃 신청</div>
 				    </div>
 				  </div>
 				  <div class="step">
-				    <i class="payment icon"></i>
+				    <i class="edit icon"></i>
 				    <div class="content">
 				      <div class="title">관리자 승인</div>
 				    </div>
 				  </div>
 				  <div class="step">
-				    <i class="info icon"></i>
+				    <i class="hand holding usd icon"></i>
 				    <div class="content">
 				      <div class="title">캐시아웃 지급 완료</div>
 				    </div>
