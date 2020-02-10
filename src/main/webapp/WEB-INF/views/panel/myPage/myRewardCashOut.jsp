@@ -53,6 +53,9 @@
 	font-weight: bold;
 	width: 15%;
 }
+#icon3{
+	color:navy;
+}
 </style>
 <body>
 	<div class="wrap">
@@ -83,10 +86,28 @@
 			
 			<div class="contentsArea" style="width: 100%;">
 				<div><b>회원님의 리워드를 캐시아웃 신청하는 공간입니다.</b></div>
-				<br />
-				<div class="cashOutImgArea">
-					나의 보유 리워드 양 : ${Reward.afterChangePoint  }
-				</div>  <!-- .cashOutImgArea end -->
+				<h1 class="ui header">현재 리워드   ${Reward.afterChangePoint  }<i class="coins icon" id="icon3"></i></h1>
+				<br /><div class="ui three steps">
+				  <div class="step">
+				    <i class="check circle outline icon"></i>
+				    <div class="content">
+				      <div class="title">캐시아웃 신청</div>
+				    </div>
+				  </div>
+				  <div class="step">
+				    <i class="edit icon"></i>
+				    <div class="content">
+				      <div class="title">관리자 승인</div>
+				    </div>
+				  </div>
+				  <div class="step">
+				    <i class="hand holding usd icon"></i>
+				    <div class="content">
+				      <div class="title">캐시아웃 지급 완료</div>
+				    </div>
+				  </div>
+				</div>
+				
 				<br />
 				<hr />
 				<br />
@@ -94,21 +115,12 @@
 					<div><b>금액을 선택해주세요</b></div>
 					<br />
 					<div class="ui buttons moneyArea">
-						<c:if test="${Reward.afterChangePoint >=10000 }">
-						<button class="ui button active" value="10000">1만원</button>
-						</c:if>
-						<c:if test="${Reward.afterChangePoint >=20000 }">
-						<button class="ui button" value="20000">2만원</button>
-						</c:if>
-						<c:if test="${Reward.afterChangePoint >=30000 }">
-						<button class="ui button" value="30000">3만원</button>
-						</c:if>
-						<c:if test="${Reward.afterChangePoint >=40000 }">
-						<button class="ui button" value="40000">4만원</button>
-						<</c:if>
-						<c:if test="${Reward.afterChangePoint >=50000 }">
-						<button class="ui button" value="50000">5만원</button>
-						</c:if>
+						
+						<button class="ui button active" value="10000" id="one">1만원</button>
+						<button class="ui button" value="20000" id="two">2만원</button>
+						<button class="ui button" value="30000" id="three">3만원</button>
+						<button class="ui button" value="40000" id="four">4만원</button>
+						<button class="ui button" value="50000" id="five">5만원</button>
 					</div>
 					<br /><br />
 					
@@ -188,7 +200,31 @@
 
 				});
 				
-				
+				$(function(){
+					var reward='${Reward.afterChangePoint}';
+					console.log(reward);
+					if(reward < 10000){
+						$("#one").prop("disabled", true);
+						$("#two").prop("disabled", true);
+						$("#three").prop("disabled", true);
+						$("#four").prop("disabled", true);
+						$("#five").prop("disabled", true);
+					}else if(reward < 20000){
+						$("#two").prop("disabled", true);
+						$("#three").prop("disabled", true);
+						$("#four").prop("disabled", true);
+						$("#five").prop("disabled", true);
+					}else if(reward < 30000){
+						$("#three").prop("disabled", true);
+						$("#four").prop("disabled", true);
+						$("#five").prop("disabled", true);
+					}else if(reward < 40000){
+						$("#four").prop("disabled", true);
+						$("#five").prop("disabled", true);
+					}else if(reward < 50000){
+						$("#five").prop("disabled", true);
+					}
+				})
 				
 			</script>
 			

@@ -30,6 +30,8 @@ import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
 
+import oracle.net.aso.a;
+
 @Service
 public class AdminServiceImpl implements AdminService{
 
@@ -37,7 +39,7 @@ public class AdminServiceImpl implements AdminService{
 	private AdminDao ad;
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	@Autowired
+  @Autowired
 	private JavaMailSender mailSender; // Mail Sender
 	
 	/**
@@ -575,8 +577,8 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return isRefer;
 	}
-
-	/**
+  
+  /**
 	 * @throws ResearchException 
 	 * @Author      : yhj
 	 * @CreateDate  : 2020. 2. 5.
@@ -665,7 +667,8 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return true;
 	}
-  /**
+  
+	/**
 	 * @Author      : hjheo
 	 * @CreateDate  : 2020. 2. 5.
 	 * @ModifyDate  : 2020. 2. 5.
@@ -712,6 +715,20 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 7.
+	 * @ModifyDate  : 2020. 2. 7.
+	 * @Description : pc환경조사
+	 */
+	@Override
+	public int uploadAudio(UploadFile ufo) {
+		
+		int result = ad.uploadAudio(sqlSession,ufo);
+		System.out.println("pc");
+		return result;
+	}
+
+  /**
 	 * @Author	:hansol
 	 * @CreateDate	:2020. 2. 9.
 	 * @ModifyDate	:2020. 2. 9.
@@ -755,6 +772,4 @@ public class AdminServiceImpl implements AdminService{
 		
 		return mailingList;
 	}
-
-	
 }

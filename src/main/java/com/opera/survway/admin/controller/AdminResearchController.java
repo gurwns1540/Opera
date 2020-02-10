@@ -1,26 +1,33 @@
 package com.opera.survway.admin.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.filefilter.OrFileFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.service.AdminService;
 import com.opera.survway.admin.model.vo.MailingList;
+import com.opera.survway.common.model.vo.OperaFileNamePolicy;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.ResearchState;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
@@ -558,12 +565,7 @@ public class AdminResearchController {
 		
 		return mv;
 	}
-	/**
-	 * @Author      : Ungken
-	 * @CreateDate  : 2020. 2. 9.
-	 * @ModifyDate  : 2020. 2. 9.
-	 * @Description : 리서치 문항 재구성 반려
-	 */
+	
 	@PostMapping("reconstructureRefer.adminResearch")
 	public ModelAndView reconstructureRefer(ModelAndView mv, String researchNoStr, String referReason) {
 		int researchNo = Integer.parseInt(researchNoStr);
@@ -578,29 +580,12 @@ public class AdminResearchController {
 		return mv;
 	}
 	
-	@PostMapping("researchTargetMailing.adminResearch")
-	public ModelAndView researchTargetMailing(ModelAndView mv, int researchNo) {
-//		ResearchTarget target = as.researchTargetMailing(researchNo);
-		Boolean result;
-		try {
-			result = as.researchTargetMailing(researchNo);
-			System.out.println(result);
-			mv.addObject("result", result);
-		} catch (ResearchException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		System.out.println(target);
-		mv.setViewName("jsonView");
-		return mv;
-	}
-  
-  //타입안정해서
+	//타입안정해서
 	@RequestMapping("tsQaManagement.adminResearch")
 	public String tsQaManagement(Model model) {
 		List<Object> r = as.tsQaManagement();
-		model.addAttribute("research", r);		
 		System.out.println(r);
+		model.addAttribute("research", r);		
 		return "tsQaManagement";
 	}
 	
@@ -674,5 +659,71 @@ public class AdminResearchController {
 		model.addAttribute("mailingList", mailingList);
 		model.addAttribute("pi", pi);
 		return "adminResearch/groupMailingWaitingList";
+  }
+	
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 6.
+	 * @ModifyDate  : 2020. 2. 6.
+	 * @Description : pc환경조사 audio
+	 */
+	@PostMapping("uploadFile.adminResearch")
+	public ModelAndView uploadAudio(HttpServletRequest request, ModelAndView mv, MultipartFile file) {
+		String root = request.getSession().getServletContext().getRealPath("resources"); //루트
+		String savePath = root + "\\uploadFiles"; //저장경로
+		
+		String originFileName = file.getOriginalFilename(); //파일 원본이름가져오기
+		String ext = originFileName.substring(originFileName.lastIndexOf(".")); //확장자
+		String saveFile = OperaFileNamePolicy.getRandomString() + ext; //랜덤이름+확장자
+	
+		UploadFile ufo =new UploadFile();  //업로드 파일 객체 생성
+		
+		ufo.setChangeName(saveFile); //change이름 넣기
+		ufo.setOriginName(originFileName); //오리지널 이름 넣기
+		ufo.setFilePath(savePath); //파일 경로 넣기
+		
+		System.out.println(ufo);
+		
+		int result =0;
+		result = as.uploadAudio(ufo);
+		
+		try { 
+			file.transferTo(new File(savePath + "\\" + saveFile)); 
+		} catch(IllegalStateException | IOException e) { 
+			e.printStackTrace(); 
+		}
+		 
+		mv.addObject("ufo", ufo);
+		mv.setViewName("jsonView");
+		
+		System.out.println(originFileName);
+		System.out.println(saveFile);
+		return mv;
+		
+	}
+	
+	
+	
+	
+	@PostMapping("audioEnviron.adminResearch")
+	public ModelAndView audioEnviron(ModelAndView mv, @RequestParam(value="questionTitle") String questionTitle,String [] choiceTitleArr,String[] choiceOrderArr) {
+		Research r = new Research();
+		int result =0;
+		System.out.println(questionTitle);
+		for(int i = 0; i < choiceOrderArr.length; i++) {
+			System.out.println(choiceOrderArr[i]);
+		}
+		for(int i = 0; i < choiceTitleArr.length; i++) {
+			System.out.println(choiceTitleArr[i]);
+		}
+		
+		
+		
+		//as.audioEnviron(questionTitle,choiceTitleArr,choiceOrderArr);
+		
+		mv.addObject("r",r);
+		mv.setViewName("jsonView");
+		
+		return mv;
 	}
 }

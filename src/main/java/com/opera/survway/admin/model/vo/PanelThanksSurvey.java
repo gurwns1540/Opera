@@ -1,5 +1,9 @@
 package com.opera.survway.admin.model.vo;
 
+import java.util.ArrayList;
+
+import com.opera.survway.corporation.model.vo.ResearchChoice;
+
 public class PanelThanksSurvey {
 	private int mno;	//해당 패널의 번호
 	private int researchNo;		//리서치 번호 예) researchNo =1 이면 thanks서베이
@@ -7,14 +11,13 @@ public class PanelThanksSurvey {
 	private String rquestionResponse;	//패널이 응답한 번호
 	private int researchOrder;		//문제 번호
 	private String rquestionContext;//문제
-	private int rchoiceNo;	//문제 보기문항 고유값
-	private String rchoiceContext;	//리서치 보개 내용
-	private int rchoiceOrder;	//보기 번호
+	
+	ArrayList<ResearchChoice> choiceList;
 	
 	public PanelThanksSurvey() {}
 
 	public PanelThanksSurvey(int mno, int researchNo, int rquestionNo, String rquestionResponse, int researchOrder,
-			String rquestionContext, int rchoiceNo, String rchoiceContext, int rchoiceOrder) {
+			String rquestionContext, ArrayList<ResearchChoice> choiceList) {
 		super();
 		this.mno = mno;
 		this.researchNo = researchNo;
@@ -22,9 +25,7 @@ public class PanelThanksSurvey {
 		this.rquestionResponse = rquestionResponse;
 		this.researchOrder = researchOrder;
 		this.rquestionContext = rquestionContext;
-		this.rchoiceNo = rchoiceNo;
-		this.rchoiceContext = rchoiceContext;
-		this.rchoiceOrder = rchoiceOrder;
+		this.choiceList = choiceList;
 	}
 
 	public int getMno() {
@@ -75,40 +76,19 @@ public class PanelThanksSurvey {
 		this.rquestionContext = rquestionContext;
 	}
 
-	public int getRchoiceNo() {
-		return rchoiceNo;
+	public ArrayList<ResearchChoice> getChoiceList() {
+		return choiceList;
 	}
 
-	public void setRchoiceNo(int rchoiceNo) {
-		this.rchoiceNo = rchoiceNo;
-	}
-
-	public String getRchoiceContext() {
-		return rchoiceContext;
-	}
-
-	public void setRchoiceContext(String rchoiceContext) {
-		this.rchoiceContext = rchoiceContext;
-	}
-
-	public int getRchoiceOrder() {
-		return rchoiceOrder;
-	}
-
-	public void setRchoiceOrder(int rchoiceOrder) {
-		this.rchoiceOrder = rchoiceOrder;
+	public void setChoiceList(ArrayList<ResearchChoice> choiceList) {
+		this.choiceList = choiceList;
 	}
 
 	@Override
 	public String toString() {
 		return "PanelThanksSurvey [mno=" + mno + ", researchNo=" + researchNo + ", rquestionNo=" + rquestionNo
 				+ ", rquestionResponse=" + rquestionResponse + ", researchOrder=" + researchOrder
-				+ ", rquestionContext=" + rquestionContext + ", rchoiceNo=" + rchoiceNo + ", rchoiceContext="
-				+ rchoiceContext + ", rchoiceOrder=" + rchoiceOrder + "]";
+				+ ", rquestionContext=" + rquestionContext + ", choiceList=" + choiceList + "]";
 	}
-	
-	
-	
-	
-	
+
 }

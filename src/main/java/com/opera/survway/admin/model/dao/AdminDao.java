@@ -20,7 +20,6 @@ import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchChoice;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
-import com.opera.survway.panel.model.vo.PanelMember;
 
 public interface AdminDao {
 
@@ -108,13 +107,7 @@ public interface AdminDao {
 
 	int reconstructureReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState);
 
-	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
-
-	List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals) throws ResearchException;
-
-	int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo);
-
-  List<Object> tsQaManagement(SqlSessionTemplate sqlSession);
+	List<Object> tsQaManagement(SqlSessionTemplate sqlSession);
 
 	int tsDeleteChoice(SqlSessionTemplate sqlSession);
 
@@ -138,6 +131,6 @@ public interface AdminDao {
 
 	int insertMailingReceiver(SqlSessionTemplate sqlSession, MailingReceiver mr);
 
-	
-}
+	int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo);
 
+}

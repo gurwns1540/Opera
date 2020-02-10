@@ -438,17 +438,20 @@
 	<script>
 		$('.ui.accordion').accordion();
 		$("#userType").dropdown();
-		$(".ui.dropdown").dropdown();
+		//$(".ui.dropdown").dropdown();
 		$("#newFaqBtn").click(function() {
 			$("#newFaqModal").modal("show");
 		});
 		
 		var isActivated = "false";
 		$('.ui.dropdown').mouseenter(function(){
+			isActivated = "true";
 			if(isActivated == "false"){
 				$(this).dropdown();
 			}
-			isActivated = "true";
+		}).mouseleave(function(){
+			isActivated = "false";
+			$(this).dropdown({on: 'hover'});
 		})
 		$('ui.selection.dropdown').dropdown();
 		$("#question").click(function(){

@@ -130,7 +130,7 @@
   		margin-top: 30px;
   	}
   	#choice, .choice {
-  		margin: 0 auto;
+  		margin-left:20%; 
   		margin-top: 20px;
   		width: fit-content;
   	}
@@ -327,22 +327,8 @@
 		<div class="scrolling content">
 			<div>
 				<ul id="sortable">
-					<li class="ui-state-default">Q1.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q2.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q3.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q4.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q5.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q6.
-						<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q7.
-			  			<div class="choice">보기</div></li>
-			  		<li class="ui-state-default">Q8.
-				  		<div class="choice">보기</div></li>
+					
+			  		
 				</ul>
 				<hr>
 			</div>
@@ -365,8 +351,30 @@
 				data:{
 					mno:mno
 				},success:function(data){
-					console.log(data);
 					$('#research').modal('show');
+					for(var i=0; i<data.list.length; i++){
+					
+						var Q = data.list[i].rquestionContext;
+						console.log(Q);
+						var $question = $('<li class="ui-state-default">Q' + data.list[i].researchOrder + '. ' + Q + '</li>');
+						//var $choice = $('<div class="choice">' + data.list[i].rquestionContext + '</div>');
+						var choiceList = data.list[i].choiceList
+						if(choiceList.length != 0){
+							for(var j = 0; j < choiceList.length; j++){
+								var choice = choiceList[j];
+								if(data.list[i].rquestionResponse == choice.choiceOrder){
+									var $choiceArea = ('<div class="choice"><input checked disabled type="checkbox" id="choice' + data.list[i].researchOrder + '_' + choice.choiceOrder + '"> ' + choice.choiceContext + '</div>');
+								}else {
+									var $choiceArea = ('<div class="choice"><input disabled type="checkbox" id="choice' + data.list[i].researchOrder + '_' + choice.choiceOrder + '"> ' + choice.choiceContext + '</div>');
+								}
+								$question.append($choiceArea);
+							}
+						}else {
+							var $choiceArea = ('<div class="choice"> <div class="ui input"><input type="text" readonly value="' + data.list[i].rquestionResponse + '"></div></div>');
+							$question.append($choiceArea);
+						}
+						$("#sortable").append($question);
+					}
 				},error:function(){
 					console.log("실패");
 				}

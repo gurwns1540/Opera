@@ -95,8 +95,6 @@
 					</td>
 				</tr>
 
-				
-
 			</table>
 			
 			
@@ -122,14 +120,22 @@
 						<td>
 							<div class="ui segment" id="segmentTwo">
 							<div style="margin: 0 auto; width: fit-content;">
- 							 	<div style="width: fit-content; height: 50%; margin: 0 auto; font-size: 19em; line-height: 260px; display: inline-block;"><i class="volume up icon"></i></div>
- 							 		<input type="button" value="업로드" id="uploadAudio" style="background: #00679A; color: white; border:0;">
- 							 		<input type="file" id="audioFile" value="허현주" style="display:none">
+							<div style="margin-top: 20px;">
+						 		<audio id="audioTag" controls loop style="vertical-align: middle; ">
+ 							 		<source id="audio" src="#" type="audio/mpeg">
+ 							 	</audio>
+						 		<input type="button" value="업로드" id="uploadAudio" style="background: #00679A; color: white; border:0;">
+						 		<input type="file" id="audioFile" value="허현주" style="display:none"> 
+						 		 <c:set var="fileStore" value="${requestScope.UploadFile.ChangeName}"/>
+
+						 	</div>
 								</div>
 															
 								<div style="text-align: center; margin: 50px auto;">
 										위 아이콘을 눌렀을때 나오는 소리는 무엇입니까?	
-								</div>							
+								</div>	
+							
+												
 								
 								<div class="choiceArr">
 									<div class="choice">
@@ -142,8 +148,8 @@
 									</div>
 								</div>
 								
-								<div  id="saveAudio" style="text-align: center; ">
-									<input type="button" style="width: 100px; height: 40px; border: 0; background: #00679A; color: white;" value="저장하기" >
+								<div  style="text-align: center; ">
+									<input type="button" id="saveAudio" style="width: 100px; height: 40px; border: 0; background: #00679A; color: white;" value="저장하기" >
 								</div>
 							</div>
 						
@@ -167,17 +173,23 @@
 								</div>							
 								
 								<div class="choiceArr">
+									<c:forEach var ="choice" items="${question.requsetChoiceList }">
 									<div class="choice">
 										<div class="ui input">
 			 	 							<input type="text" placeholder="보기 작성" class="choiceInput" value="보기">
 										</div>
 										<span class="add">
 											<i class="plus circle icon"></i>
-										</span><span class="delete"><i class="minus circle icon"></i></span>
+										</span>
+										<span class="delete">
+											<i class="minus circle icon"></i>
+										</span>
 									</div>
+									</c:forEach>
 								</div>
 								<div  id="saveAudio" style="text-align: center; ">
-									<input type="button" style="width: 100px; height: 40px; border: 0; background: #00679A; color: white;" value="저장하기" >
+								
+									<input type="button" style="width: 100px; height: 40px; border: 0; background: #00679A; color: white;" value="저장하기" id="uploadAudio">
 								</div>
 							</div>
 								
@@ -195,15 +207,23 @@
 		
 		  <p></p>
 		</div>
-	</div>0
+	</div>
 	<script>
 		$(".ui.dropdown").dropdown();
 		
 		$(function(){
 			$("#segmentVideo").hide();
 		})
+		var count = 0;
 		
+		function countChoice(){
+			count = 0;
+			$(".choiceInput").each(function(){
+				count += 1;
+			});
+		}
 		$(document).on("click", ".add", function(){
+				var addCount = 0; 
 			var $choice = $("<div class='ui input'><input type='text' placeholder='보기 작성' class='choiceInput' value='보기'></div>");
 			var $add = $("<span class='add'><i class='plus circle icon'></i></span>&nbsp;");
 			var $delete = $("<span class='delete'><i class='minus circle icon'></i></span>");
@@ -213,15 +233,117 @@
 			$choiceDiv.append($add);
 			$choiceDiv.append($delete);
 			
-			$(this).parent().parent().append($choiceDiv);
+			countChoice();
+			if(count == 5){
+				Swal.fire(
+					'보기 추가 불가!',
+					'보기는 5개까지 가능합니다.',
+					'warning'
+				) 
+			}else{
+				$(this).parent().parent().append($choiceDiv);
+			}
+
 		});
+		
+		
+		
 		$(document).on("click", ".delete", function(){
-			$(this).parent().remove();
+			
+			countChoice();
+			if(count == 1){
+				Swal.fire(
+					'보기 삭제 불가!',
+					'보기는 최소 1개 이상이어야 합니다.',
+					'warning'
+				) 
+			}else{
+				$(this).parent().remove();
+			}
 		})
 		
 		$(document).on("click", "#uploadAudio", function(){
 			$("#audioFile").click();
+			
+			
+			
 		})
+		
+		
+		//위에서 뭔가 id가audio파일인것에 변화가ㅏ 있으면 이게 ? 동작
+		$(document).on("change", "#audioFile", function(){
+			
+			var formData = new FormData();
+            formData.append('file',$("#audioFile")[0].files[0]);
+            
+            //var fileStore=filePath+changeName;	         
+           	$.ajax({
+				url: 'uploadFile.adminResearch',
+				enctype: 'multipart/form-data',
+				processData: false,
+				contentType: false,
+				data: formData,
+				type: 'post',
+				
+				//success는 나중에 생각하고일단 
+				success:function(data){
+					console.log(data);
+					document.getElementById("audio").src = "/survway/resources/uploadFiles/"+data.ufo.changeName; 
+					console.log("/survway/resources/uploadfiles/"+data.ufo.changeName);
+					document.getElementById("audioTag").load();
+				},error:function(data){
+					console.log("pc환경조사오류");
+				}
+			});
+		});
+		
+		$(document).on("click","#saveAudio",function(){
+		 	var questionTitle;
+		 	var choiceTitleArr = [];
+		 	var choiceOrderArr = [];
+		 	if($("#choose").value=0){
+           		questionTitle ="영상";
+           		
+           	}else{
+           		questionTitle ="음성";
+           		
+           		$(".choiceInput").each(function(index){
+           			choiceTitleArr.push($(this).val());
+           			choiceOrderArr.push(index += 1);
+           		})
+           	}
+		 	/* console.log(questionTitle); String questionTitle
+		 	console.log(choiceTitleArr); String[] choiceTitleArr
+		 	console.log(choiceOrderArr); String[] choiceOrderArr */
+			
+			$.ajax({
+				url:"audioEnviron.adminResearch",
+				type:"post",
+				traditional:true,
+				data:{
+					questionTitle:questionTitle,
+					choiceTitleArr:choiceTitleArr,
+					choiceOrderArr:choiceOrderArr
+				},
+				success:function(data){
+					Swal.fire(
+							'pc환경조사 작성완료!',
+							'pc환경조사가 등록되었습니다.',
+							'success'
+							)
+							
+						setTimeout(function () {
+							location.reload();
+							
+						},1500)	
+							
+				},
+				error:function(data){
+					console.log(data);
+				}
+			});
+		});
+		
 		
 		$(document).on("change", "#choose", function(){
 			if($(this).val() == "1"){
@@ -232,6 +354,15 @@
 				$("#segmentVideo").show();
 			}
 		})
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 	</script>
 	
