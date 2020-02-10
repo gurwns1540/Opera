@@ -611,4 +611,20 @@ public class AdminServiceImpl implements AdminService{
 		return result;
 	}
 
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 7.
+	 * @ModifyDate  : 2020. 2. 7.
+	 * @Description : pc환경조사
+	 */
+	@Override
+	public int uploadAudio(UploadFile ufo) {
+		
+		int result = ad.uploadAudio(sqlSession,ufo);
+		System.out.println("pc");
+		return result;
+	}
+
+
+
 }

@@ -110,4 +110,7 @@ public interface AdminDao {
 
 	int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice);
 
+	int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo);
+
+
 }

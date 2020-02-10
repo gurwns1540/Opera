@@ -642,39 +642,30 @@
 		INSERT INTO RESEARCHCHOICE VALUES
 		(SEQ_CHOICE.NEXTVAL, #{choiceContext}, #{rquestionNo}, #{choiceOrder})
 	</insert>
+	
+	<resultMap type="UploadFile"  id="selectAudio">
+	
+		<result property="fileNo" column="FILE_NO"/>
+		<result property="fileType" column="FILE_TYPE"/>
+		<result property="originName" column="ORIGIN_NAME"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="uploadDate" column="UPLOAD_DATE"/>
+		<result property="fileStatus" column="FILE_STATUS"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+	</resultMap>
+
+	
+	<update id="uploadAudio"  parameterType="UploadFile">
+	
+		MERGE INTO UPLOADFILE
+			USING DUAL
+			ON(RESEARCH_NO=2)
+			WHEN MATCHED THEN
+				UPDATE SET CHANGE_NAME=#{changeName}
+			WHEN NOT MATCHED THEN
+				INSERT VALUES (SEQ_UPLOADFILE.NEXTVAL, 'pc환경조사',#{originName},#{changeName},#{filePath},SYSDATE,'Y', NULL, NULL, NULL, NULL, NULL, 2) 
+				
+	
+	</update>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

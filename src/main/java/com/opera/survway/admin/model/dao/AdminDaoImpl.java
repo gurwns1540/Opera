@@ -318,5 +318,18 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.insert("Admin.insertChoice", researchChoice);
 	}
 
+	@Override
+	public int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo) {
+		System.out.println("dao");
+		
+		return sqlSession.update("Admin.uploadAudio",ufo);
+		
+		
+		
+		
+	}
+
+	
+
 
 }
