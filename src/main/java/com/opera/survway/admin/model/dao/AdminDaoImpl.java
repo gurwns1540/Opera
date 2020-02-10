@@ -8,6 +8,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.admin.model.vo.MailingList;
+import com.opera.survway.admin.model.vo.MailingReceiver;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.ResearchTarget;
@@ -347,6 +349,60 @@ public class AdminDaoImpl implements AdminDao{
   @Override
 	public List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps) {
 		return sqlSession.selectList("Admin.selectPanelTs",ps);
+	}
+
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 10.
+	 * @ModifyDate  : 2020. 2. 10.
+	 * @Description : 메일링리스트 불러오기
+	 */
+	@Override
+	public List<MailingList> selectMailingList(SqlSessionTemplate sqlSession, MailingList list) {
+		return sqlSession.selectList("Admin.selectMailingList", list);
+	}
+
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 10.
+	 * @ModifyDate  : 2020. 2. 10.
+	 * @Description : 메일링 카운트
+	 */
+	@Override
+	public int getListCountMailingList(SqlSessionTemplate sqlSession, MailingList list) {
+		return sqlSession.selectOne("Admin.selectCountMailingList", list);
+	}
+
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 10.
+	 * @ModifyDate  : 2020. 2. 10.
+	 * @Description : 메일링 히스토리 insert
+	 */
+	@Override
+	public int insertMailingHistory(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.insert("Admin.insertMailingHistory", researchNo);
+	}
+
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 10.
+	 * @ModifyDate  : 2020. 2. 10.
+	 * @Description : 리서치상태변경이력 insert
+	 */
+	@Override
+	public int insertRStatusHistory(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.insert("Admin.insertRStatusHistory", researchNo);
+	}
+
+	@Override
+	public int selectMailingHistoryNo(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectMailingHistoryNo", researchNo);
+	}
+
+	@Override
+	public int insertMailingReceiver(SqlSessionTemplate sqlSession, MailingReceiver mr) {
+		return sqlSession.insert("Admin.insertMailingReceiver", mr);
 	}
 
 }

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.service.AdminService;
+import com.opera.survway.admin.model.vo.MailingList;
 import com.opera.survway.common.model.vo.OperaFileNamePolicy;
 import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -629,6 +630,36 @@ public class AdminResearchController {
 		return mv;
 	}
 	
+	@RequestMapping("groupMailingWaitingList.admin")
+	public String forwardGroupMailingWaitingList(HttpServletRequest request, Model model) {
+		// Post로 보낸걸 queryString이라고 한다
+		String queryString = request.getQueryString();
+		// 그걸 쪼개기 작업하기
+		Map<String, List<String>> queryMap = null;
+		int currentPage = 1;
+		String researchName = "";
+		MailingList list = new MailingList();
+		if (queryString != null) {
+			queryMap = Util.splitQuery(queryString);
+			if (queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+			if (queryMap.containsKey("researchName")) {
+				researchName = queryMap.get("inquiryTitle").get(0);
+				list.setResearchName(researchName);
+			}
+		}
+		
+		int listCount = 0;
+		
+		listCount = as.getListCountMailingList(list);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		list.setPi(pi);
+		List<MailingList> mailingList = as.selectMailingList(list);
+		model.addAttribute("mailingList", mailingList);
+		model.addAttribute("pi", pi);
+		return "adminResearch/groupMailingWaitingList";
+  }
 	
 	/**
 	 * @Author      : hjheo

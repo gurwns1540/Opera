@@ -6,6 +6,8 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.admin.model.vo.MailingList;
+import com.opera.survway.admin.model.vo.MailingReceiver;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.ResearchTarget;
@@ -115,7 +117,20 @@ public interface AdminDao {
 
 	int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice);
 
+	List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps);
+
+	List<MailingList> selectMailingList(SqlSessionTemplate sqlSession, MailingList list);
+
+	int getListCountMailingList(SqlSessionTemplate sqlSession, MailingList list);
+
+	int insertMailingHistory(SqlSessionTemplate sqlSession, int researchNo);
+
+	int insertRStatusHistory(SqlSessionTemplate sqlSession, int researchNo);
+
+	int selectMailingHistoryNo(SqlSessionTemplate sqlSession, int researchNo);
+
+	int insertMailingReceiver(SqlSessionTemplate sqlSession, MailingReceiver mr);
+
 	int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo);
 
-  List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps);
 }

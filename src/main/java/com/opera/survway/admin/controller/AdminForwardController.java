@@ -18,11 +18,11 @@ public class AdminForwardController {
 		return "memberManagement/newPanelManagement";
 	}
 
-	//단체 메일링 대기 목록
-	@RequestMapping("groupMailingWaitingList.admin")
-	public String forwardGroupMailingWaitingList() {
-		return "adminResearch/groupMailingWaitingList";
-	}
+//	//단체 메일링 대기 목록
+//	@RequestMapping("groupMailingWaitingList.admin")
+//	public String forwardGroupMailingWaitingList() {
+//		return "adminResearch/groupMailingWaitingList";
+//	}
 
 	//폐기응답목록
 	@RequestMapping("disposalResponseManagement.admin")
