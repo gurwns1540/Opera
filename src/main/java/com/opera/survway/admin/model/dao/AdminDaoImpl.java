@@ -321,35 +321,32 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public int tsDeleteChoice(SqlSessionTemplate sqlSession) {
-		System.out.println("dao");
 		return sqlSession.delete("Admin.tsDeleteChoice");
 	}
 
 	@Override
 	public int tsDeleteQuestion(SqlSessionTemplate sqlSession) {
-		System.out.println("dao");
 		return sqlSession.delete("Admin.tsDeleteQuestion");
 	}
 
 	@Override
 	public int insertQuestion(SqlSessionTemplate sqlSession, ResearchQuestion question) {
-		System.out.println("dao");
 		return sqlSession.insert("Admin.tsInsertQuestion", question);
 	}
 
 	@Override
 	public int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice) {
-		System.out.println("dao");
 		return sqlSession.insert("Admin.insertChoice", researchChoice);
 	}
 
 	@Override
+	public int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo) {
+		return sqlSession.update("Admin.uploadAudio",ufo);
+  }
+  
+  @Override
 	public List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps) {
-		
 		return sqlSession.selectList("Admin.selectPanelTs",ps);
 	}
-
-	
-
 
 }

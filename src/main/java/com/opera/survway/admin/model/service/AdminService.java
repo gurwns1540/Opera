@@ -14,6 +14,7 @@ import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.corporation.model.vo.Research;
 import com.opera.survway.corporation.model.vo.ResearchQuestion;
 import com.opera.survway.exception.SelectException;
@@ -88,6 +89,9 @@ public interface AdminService {
 
 	int tsQaManagementUpdate(ArrayList<ResearchQuestion> questionList);
 
+	int uploadAudio(UploadFile ufo);
+
 	List<PanelThanksSurvey> selectPanelTs(PanelThanksSurvey ps);
+
 
 }

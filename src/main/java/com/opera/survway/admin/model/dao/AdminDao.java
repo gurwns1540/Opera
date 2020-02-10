@@ -106,13 +106,7 @@ public interface AdminDao {
 
 	int reconstructureReferConferenceHistory(SqlSessionTemplate sqlSession, ResearchState researchState);
 
-	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
-
-	List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals) throws ResearchException;
-
-	int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo);
-
-  List<Object> tsQaManagement(SqlSessionTemplate sqlSession);
+	List<Object> tsQaManagement(SqlSessionTemplate sqlSession);
 
 	int tsDeleteChoice(SqlSessionTemplate sqlSession);
 
@@ -122,6 +116,7 @@ public interface AdminDao {
 
 	int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice);
 
-	List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps);
-}
+	int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo);
 
+  List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps);
+}
