@@ -128,11 +128,15 @@
 							<c:forEach var="reward" items="${list }">
 								<tr>
 									<td>${reward.rewardHistoryNo }</td>
-									<td><c:if test="${reward.researchHistoryNo != 0}">
+									<td>
+									<c:choose>
+									<c:when test="${reward.researchHistoryNo != 0}">
 										${reward.researchName }
-									</c:if> <c:if test="${reward.sHistoryNo != 0}">
+									</c:when> <c:when test="${reward.sHistoryNo != 0}">
 										${reward.surveyTitle }
-									</c:if></td>
+									</c:when> <c:otherwise>
+										추천인 코드
+									</c:otherwise></c:choose></td>
 									<td>${reward.rewardChangeDate }</td>
 									<td>${reward.changeAmount }</td>
 								</tr>
