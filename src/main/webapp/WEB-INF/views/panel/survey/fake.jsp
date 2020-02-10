@@ -263,7 +263,7 @@
 				</div>
 				
 				<!-- 서베이 응답들어가기 전 설명 TS -->
-				<!-- '<div class="ui overlay fullscreen modal" id="Q0">
+				<div class="ui overlay fullscreen modal" id="Q0">
 					<div class="header" style="height:61px; padding:5px;">
 						<table style="width:100%;">
 							<tr>
@@ -301,10 +301,10 @@
 							돌아가기 
 						</div>
 					</div>
-				</div>' -->
+				</div>
 				
 				<!-- 서베이 응답들어가기 전 설명 일반 -->
-				<!-- '<div class="ui overlay fullscreen modal" id="Q0">
+				<div class="ui overlay fullscreen modal" id="Q0">
 					<div class="header" style="height:61px; padding:5px;">
 						<table style="width:100%;">
 							<tr>
@@ -342,7 +342,7 @@
 							돌아가기 
 						</div>
 					</div>
-				</div>' -->
+				</div>
 				
 				<c:forEach var="q" items="${ researchQuestionList }">
 					<!-- 객관식 하나선택 디자인 -->

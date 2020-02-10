@@ -8,95 +8,100 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>
 <style>
-#faqTableArea {
-	border-top: 1px solid #3C3C3C;
-	border-collapse: collapse;
-}
-
-#faqTheadArea {
-	background-color: #DBDBDB;
-}
-
-#faqTheadArea>tr>th {
-	height: 25px;
-}
-
-#faqTbodyArea {
-	text-align: center;
-}
-
-#faqTbodyArea>tr {
-	border-top: 1px solid #C4C4C4;
-	border-bottom: 1px solid #C4C4C4;
-}
-
-#faqTbodyArea>tr>td {
-	height: 45px;
-}
-
-.ui.input {
-	height: 30px;
-}
-
-#searchBtn {
-	background-color: #00679A;
-	border-radius: 5px;
-	width: 65px;
-	height: 30px;
-	color: white;
-}
-
-/*페이징 css */
-#pagingArea {
-	margin-top: 40px;
-	/* 드래그 방지용 소스*/
-	-ms-user-select: none;
-	-moz-user-select: -moz-none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	user-select: none;
-	/* 드래그 방지용 소스*/
-}
-
-#pagingArea span {
-	margin-left: 5px;
-	margin-right: 5px;
-	font-size: 10pt;
-}
-
-#pagingArea span:hover {
-	margin-left: 5px;
-	margin-right: 5px;
-	font-size: 10pt;
-	cursor: pointer;
-}
-/* 페이징 css end */
-.insetBox {
-	width: 100px;
-	background: #FBFBFB;
-	box-shadow: 0px 4px 4px #E2E2E2 inset;
-}
-
-#searchFaq {
-	margin-top: 10px;
-	margin-left: 10px;
-}
-
-#searchFaq, .ui.action.input {
-	width: 240px;
-	height: 37px;
-	font-size: 11pt;
-	right: 10px;
-	float: right;
-}
-
-#userType, .ui.dropdown {
-	float: right !important;
-	margin-right: 15px;
-	width: 100px;
-	min-width: 100px !important;
-	padding-right: 10px !important;
-}
+	#faqTableArea {
+		border-top: 1px solid #3C3C3C;
+		border-collapse: collapse;
+	}
+	
+	#faqTheadArea {
+		background-color: #DBDBDB;
+	}
+	
+	#faqTheadArea>tr>th {
+		height: 25px;
+	}
+	
+	#faqTbodyArea {
+		text-align: center;
+	}
+	
+	#faqTbodyArea>tr {
+		border-top: 1px solid #C4C4C4;
+		border-bottom: 1px solid #C4C4C4;
+	}
+	
+	#faqTbodyArea>tr>td {
+		height: 45px;
+	}
+	
+	.ui.input {
+		height: 30px;
+	}
+	
+	#searchBtn {
+		background-color: #00679A;
+		border-radius: 5px;
+		width: 65px;
+		height: 30px;
+		color: white;
+	}
+	
+	/*페이징 css */
+	#pagingArea {
+		margin-top: 40px;
+		/* 드래그 방지용 소스*/
+		-ms-user-select: none;
+		-moz-user-select: -moz-none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		user-select: none;
+		/* 드래그 방지용 소스*/
+	}
+	
+	#pagingArea span {
+		margin-left: 5px;
+		margin-right: 5px;
+		color: black;
+		font-size: 10pt;
+	}
+	
+	#pagingArea span:hover {
+		margin-left: 5px;
+		margin-right: 5px;
+		font-size: 10pt;
+		color: dodgerblue;
+		cursor: pointer;
+	}
+	/* 페이징 css end */
+	.insetBox {
+		width: 100px;
+		background: #FBFBFB;
+		box-shadow: 0px 4px 4px #E2E2E2 inset;
+	}
+	
+	#searchFaq {
+		margin-top: 10px;
+		margin-left: 10px;
+	}
+	
+	#searchFaq, .ui.action.input {
+		width: 240px;
+		height: 37px;
+		font-size: 11pt;
+		right: 10px;
+		float: right;
+	}
+	
+	#userType, .ui.dropdown {
+		float: right !important;
+		margin-right: 15px;
+		width: 100px;
+		min-width: 100px !important;
+		padding-right: 10px !important;
+	}
+	.ui.selection.dropdown {
+		float: left !important;
+	}
 </style>
 <body>
 	<div class="wrap">
@@ -142,7 +147,7 @@
 									</div>
 
 									<select class="ui dropdown" name="faqCategoryNo" id="userType"
-										style="float: right;">
+										style="float: right !important;">
 										<option value="0">전체</option>
 										<option value="1">가입</option>
 										<option value="2">조사</option>
@@ -324,19 +329,14 @@
 							<td style="text-align: center; height: 50px;">구분</td>
 							<td>:</td>
 							<td style="text-align: left;">
-								<div class="ui selection dropdown"
-									style="margin-left: 8px; float: left !important;">
-									<input type="hidden" name="faqCategoryNo"> <i
-										class="dropdown icon"></i>
-									<div class="default text" data-value="0">선택</div>
-									<div class="menu">
-										<div class="item" data-value="1">가입</div>
-										<div class="item" data-value="2">조사</div>
-										<div class="item" data-value="3">리워드</div>
-										<div class="item" data-value="4">이벤트</div>
-										<div class="item" data-value="5">기타</div>
-									</div>
-								</div>
+								<select class="ui dropdown" name="faqCategoryNo" id="faqCategoryNo" style="margin-left: 8px; float: left !important;">
+									<option value="0">전체</option>
+									<option value="1">가입</option>
+									<option value="2">조사</option>
+									<option value="3">리워드</option>
+									<option value="4">이벤트</option>
+									<option value="5">기타</option>
+								</select>
 							</td>
 						</tr>
 						<tr>
@@ -388,19 +388,14 @@
 								<td style="text-align: center; height: 50px;">구분</td>
 								<td>:</td>
 								<td style="text-align: left;">
-									<div class="ui selection dropdown"
-										style="margin-left: 8px; float: left !important;">
-										<input type="hidden" name="faqCategoryNo"> <i
-											class="dropdown icon"></i>
-										<div class="default text" data-value="0">선택</div>
-										<div class="menu">
-											<div class="item" data-value="1">가입</div>
-											<div class="item" data-value="2">조사</div>
-											<div class="item" data-value="3">리워드</div>
-											<div class="item" data-value="4">이벤트</div>
-											<div class="item" data-value="5">기타</div>
-										</div>
-									</div>
+									<select class="ui dropdown" name="faqCategoryNo" id="faqCategoryNo" style="margin-left: 8px; float: left !important;">
+									<option value="0">전체</option>
+									<option value="1">가입</option>
+									<option value="2">조사</option>
+									<option value="3">리워드</option>
+									<option value="4">이벤트</option>
+									<option value="5">기타</option>
+								</select>
 								</td>
 							</tr>
 							<tr>
@@ -443,29 +438,31 @@
 	<script>
 		$('.ui.accordion').accordion();
 		$("#userType").dropdown();
+		//$(".ui.dropdown").dropdown();
 		$("#newFaqBtn").click(function() {
 			$("#newFaqModal").modal("show");
 		});
 		
 		var isActivated = "false";
 		$('.ui.dropdown').mouseenter(function(){
+			isActivated = "true";
 			if(isActivated == "false"){
 				$(this).dropdown();
 			}
-			isActivated = "true";
+		}).mouseleave(function(){
+			isActivated = "false";
+			$(this).dropdown({on: 'hover'});
 		})
 		$('ui.selection.dropdown').dropdown();
 		$("#question").click(function(){
 			$("#faq").submit();
 			Swal.fire(
-		               '완료!',
-		               '자주묻는 질문 등록이 완료 되었습니다',
-		               'success'
-		             )
+				'완료!',
+				'자주묻는 질문 등록이 완료 되었습니다',
+				'success'
+			)
 		})
-			
-		
-		
+
 		$(document).on("click", "#deleteFaq",function(){
 			var faqNo = $(this).parent().find(".faqNo").val();
 			
@@ -524,6 +521,13 @@
 				    )
 		});
 	</script>
+	
+					<script>
+					$(document).on("change", ".ui.dropdown", function () {
+						var value = $(this).find("select").val(); 
+						console.log(value);
+					});
+				</script>
 </body>
 </html>
 

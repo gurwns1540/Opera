@@ -6,8 +6,13 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.PanelThanksSurvey;
+import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
+import com.opera.survway.admin.model.vo.TargetMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.ResearchState;
@@ -290,46 +295,58 @@ public class AdminDaoImpl implements AdminDao{
 	}
 
 	@Override
+	public ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.researchTargetMailing", researchNo);
+	}
+
+	@Override
+	public List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals) throws ResearchException {
+		RowBounds rowBounds = new RowBounds(0, researchEngagementGoals);
+		List<TargetMember> list = sqlSession.selectList("Admin.selectTargetList", target, rowBounds);
+		if(list == null) {
+			throw new ResearchException("타겟멤버 불러오기 실패");
+		}
+		return list;
+	}
+
+	@Override
+	public int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectResearchEngagementGoals", researchNo);
+	}
+	
+  @Override
 	public List<Object> tsQaManagement(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectList("Admin.researchSelect");
 	}
 
 	@Override
 	public int tsDeleteChoice(SqlSessionTemplate sqlSession) {
-		System.out.println("dao");
 		return sqlSession.delete("Admin.tsDeleteChoice");
 	}
 
 	@Override
 	public int tsDeleteQuestion(SqlSessionTemplate sqlSession) {
-		System.out.println("dao");
 		return sqlSession.delete("Admin.tsDeleteQuestion");
 	}
 
 	@Override
 	public int insertQuestion(SqlSessionTemplate sqlSession, ResearchQuestion question) {
-		System.out.println("dao");
 		return sqlSession.insert("Admin.tsInsertQuestion", question);
 	}
 
 	@Override
 	public int insertChoice(SqlSessionTemplate sqlSession, ResearchChoice researchChoice) {
-		System.out.println("dao");
 		return sqlSession.insert("Admin.insertChoice", researchChoice);
 	}
 
 	@Override
 	public int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo) {
-		System.out.println("dao");
-		
 		return sqlSession.update("Admin.uploadAudio",ufo);
-		
-		
-		
-		
+  }
+  
+  @Override
+	public List<PanelThanksSurvey> selectPanelTs(SqlSessionTemplate sqlSession, PanelThanksSurvey ps) {
+		return sqlSession.selectList("Admin.selectPanelTs",ps);
 	}
-
-	
-
 
 }

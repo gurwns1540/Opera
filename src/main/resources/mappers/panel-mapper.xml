@@ -18,8 +18,8 @@
 		<result property="entDate" column="ENT_DATE"/>
 		<result property="modifyDate" column="MODIFY_DATE"/>
 		<result property="panelBirthday" column="PANEL_BIRTHDAY"/>
-		<result property="panelGender" column="PANEL_GENDER"/>
-		<result property="referPanelCode" column="REFER_PANEL_CODE"/>
+		<result property="panelGender" column="PANEL_GENDER"/> 
+		<result property="referPanelCode" column="REFER_PANELCODE"/>
 		<result property="nominee" column="NOMINEE"/>
 		<result property="panellevelNo" column="PANELLEVEL_NO"/>
 		<result property="occupationNo" column="OCCUPATION_NO"/>
@@ -76,7 +76,7 @@
 	
 	<insert id="insertMemberTable" parameterType="PanelMember">
 		INSERT INTO MEMBER VALUES
-		(SEQ_MNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{userAddress}, #{userPhone}, #{userEmail}, '패널', NULL, SYSDATE, SYSDATE, 'N')
+		(SEQ_MNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{userAddress}, #{userPhone}, #{userEmail}, '패널', NULL, SYSDATE, SYSDATE, 'N', NULL)
 	</insert>
 	<insert id="insertPanelTable" parameterType="PanelMember">
 		INSERT INTO PANEL VALUES
@@ -126,6 +126,7 @@
 		<result property="surveyNo" column="SURVEY_NO"/>
 		<result property="researchName" column="RESEARCH_NAME"/>
 		<result property="surveyTitle" column="SURVEY_TITLE"/>
+		<result property="cashConfirmDate" column="CASHOUT_CONFIRM_DATE"/>
 	</resultMap>
 	
 	<select id="getListCountRewardSaved" resultType="_int" parameterType="Reward">
@@ -164,23 +165,13 @@
 	
 	<select id="showMyRewardDetailUsed" resultMap="RewardResultSet" parameterType="Reward">
 		
-		SELECT RH.REWARDHISTORY_NO, RH.AFTERCHANGE_POINT,RH.CHANGE_REASON,RH.CHANGE_AMOUNT, RH.REWARD_CHANGEDATE,RH.SURVEY_NO, PS.SURVEY_TITLE
+		SELECT *
 		FROM REWARDHISTORY RH
-		LEFT JOIN PANELSURVEY PS ON(RH.SURVEY_NO = PS.SURVEY_NO)
-		WHERE RH.MNO= #{mno}
-        AND RH.CHANGE_AMOUNT LIKE '%' || '-' || '%'
-		AND RH.SURVEY_NO IS NOT NULL
-		
-		UNION 
-		
-		SELECT R.REWARDHISTORY_NO,R.AFTERCHANGE_POINT, R.CHANGE_REASON, R.CHANGE_AMOUNT, R.REWARD_CHANGEDATE, R.CASHOUTHISTORY_NO,'캐시 아웃'
-		FROM REWARDHISTORY R
-		WHERE R.MNO =#{mno}
-		AND R.CHANGE_AMOUNT LIKE '%' || '-' || '%'
-		AND R.CASHOUTHISTORY_NO IS NOT NULL
+		LEFT JOIN CASHOUTHISTORY CH ON(CH.CASHOUTHISTORY_NO = RH.CASHOUTHISTORY_NO)
+        LEFT JOIN PANELSURVEY PS ON(RH.SURVEY_NO = PS.SURVEY_NO)
+		WHERE RH.MNO = #{mno}
+		AND RH.CHANGE_AMOUNT LIKE '%' || '-' || '%'
 		ORDER BY REWARD_CHANGEDATE DESC
-
-
 	</select>
 	
 	<select id="getPanelReward" resultMap="RewardResultSet" parameterType="_int">
@@ -189,8 +180,27 @@
 		WHERE ROWNUM =1
 	</select>
 
-
-
+	<select id="surveyOutReward" parameterType="Reward" resultType="_int">
+		SELECT COUNT(*)*25
+		FROM REWARDHISTORY
+		WHERE MNO =#{mno}
+		AND SURVEY_NO IS NOT NULL
+	</select>
+	
+	<select id="cashOutReward" parameterType="Reward" resultType="_int">
+		SELECT NVL(SUM(CASHOUT_NO) * 10000, 0)
+		FROM CASHOUTHISTORY 
+		WHERE CASHOUTHISTORY_NO IN
+		(SELECT CASHOUTHISTORY_NO 
+		FROM REWARDHISTORY 
+		WHERE MNO = #{mno} AND CASHOUTHISTORY_NO IS NOT NULL) 
+	</select>
+	
+	<select id="nowMyReward" parameterType="Reward" resultType="_int">
+		SELECT REWARD_POINT
+		FROM PANELREWARD
+		WHERE MNO =#{mno}
+	</select>
 	 	
 	 <update id="updateLeaveMember" parameterType="PanelMember">
 	   UPDATE MEMBER SET LEAVE_DATE = SYSDATE, MODIFY_DATE = SYSDATE, CERTIFICATION = 'N', LEAVE_REASON = #{leaveReason}
@@ -444,7 +454,7 @@
 		            GROUP BY RESEARCH_NO)
 		      ON (RNO = RESEARCH_NO)
 		      WHERE RESEARCH_CHANGEDATE = CDATE
-		      AND RESEARCH_STATE_NO = 8)
+		      AND RESEARCH_STATE_NO = 6)
 		USING (RESEARCH_NO)
 		JOIN (SELECT RESEARCH_NO, LISTAGG(RQUESTION_VIDEOLINK || '') WITHIN GROUP (ORDER BY RQUESTION_VIDEOLINK) RQUESTION_VIDEOLINK
 		      FROM RESEARCHQUESTION
@@ -496,7 +506,7 @@
 		            GROUP BY RESEARCH_NO)
 		      ON (RNO = RESEARCH_NO)
 		      WHERE RESEARCH_CHANGEDATE = CDATE
-		      AND RESEARCH_STATE_NO = 8)
+		      AND RESEARCH_STATE_NO = 6)
 		USING (RESEARCH_NO)
 		JOIN (SELECT RESEARCH_NO, LISTAGG(RQUESTION_VIDEOLINK || '') WITHIN GROUP (ORDER BY RQUESTION_VIDEOLINK) RQUESTION_VIDEOLINK
 		      FROM RESEARCHQUESTION
@@ -588,4 +598,49 @@
 		UPDATE NOTICE SET NOTICE_STATUS='N'
 		WHERE NOTICE_NO=#{noticeNo}
 	</update>
+	
+	<update id="updateAccount" parameterType="PanelMember">
+		UPDATE PANEL SET 
+		WITHDRAW_ACCOUNT = #{withdrawAccount}
+		WHERE MNO = #{mno}
+	</update>
+  	
+  	<insert id="insertAttemptParticipant" parameterType="AttemptInsert">
+  		INSERT INTO ATTEMPTPARTICIPANT VALUES(SEQ_ATTEMPTPARTICIPANT, SYSDATE, #{ mno }, #{ researchNo })
+  	</insert>
+  
+  	<update id="updateNomineeReward" parameterType="java.lang.String">
+  		UPDATE PANELREWARD 
+  		SET REWARD_POINT = (SELECT REWARD_POINT FROM PANELREWARD 
+							WHERE MNO = (SELECT MNO
+										FROM PANEL P 
+										WHERE P.REFER_PANELCODE = #{nominee})) + 100
+		WHERE MNO = (SELECT MNO
+					FROM PANEL P 
+					WHERE P.REFER_PANELCODE = #{nominee})
+  	</update>
+  	
+  	<update id="updateUserReward" parameterType="PanelMember">
+  		UPDATE PANELREWARD 
+  		SET REWARD_POINT = (SELECT REWARD_POINT FROM PANELREWARD 
+							WHERE MNO = #{mno}) + 500
+		WHERE MNO = #{mno}
+	</update>
+	
+	<insert id="insertRewardNomineeHistory" parameterType="java.lang.String">
+		INSERT INTO REWARDHISTORY VALUES
+		(SEQ_REWARDHISTORY.NEXTVAL, (SELECT REWARD_POINT FROM PANELREWARD 
+									WHERE MNO = (SELECT MNO
+												FROM PANEL P 
+												WHERE P.REFER_PANELCODE = #{nominee})), '피추천인', '+100', (SELECT MNO
+																										FROM PANEL P 
+																										WHERE P.REFER_PANELCODE = #{nominee}), 
+		SYSDATE, NULL, NULL, NULL, NULL)
+	</insert>
+	
+	<insert id="insertRewardUserHistory" parameterType="PanelMember">
+		INSERT INTO REWARDHISTORY VALUES
+		(SEQ_REWARDHISTORY.NEXTVAL, (SELECT REWARD_POINT FROM PANELREWARD 
+									WHERE MNO = #{mno}), '추천인', '+500', #{mno}, SYSDATE, NULL, NULL, NULL, NULL)
+	</insert>
 </mapper>

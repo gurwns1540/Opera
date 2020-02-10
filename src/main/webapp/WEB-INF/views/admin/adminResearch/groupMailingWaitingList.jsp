@@ -137,11 +137,11 @@
 			</tr>
 			<c:forEach var="i" begin="0" end="9">
 				<tr class="tableContext">
-					<td>리서치 번호</td>
+					<td><c:out value="${ i + 22 }" /></td>
 					<td>기업명</td>
 					<td>리서치 제목</td>
 					<td>상태</td>
-					<td colspan="8"><input type="button" value="메일 전송" id="sendBtn"></td>
+					<td colspan="8"><input type="button" value="메일 전송" class="sendBtn"></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -166,7 +166,9 @@
 	
 	<script>
 	
-	$("#sendBtn").on("click", function(){
+	$(".sendBtn").on("click", function(){
+		var researchNo = $(this).parent().parent().children().eq(0).text();
+		console.log(researchNo);
 		Swal.fire({
 		  	title: '정말 메일을 보내시겠습니까?',
 		  	text: "이 결정은 되돌릴 수 없습니다!",
@@ -176,7 +178,7 @@
 		  	cancelButtonColor: '#d33',
 		  	confirmButtonText: 'Yes'
 		}).then((result) => {
-		  	if (result.value) {
+		  	/* if (result.value) {
 			  	$("#sendMailModal").modal("show");
 			  	setTimeout(function() {
 			  		$("#sendMailModal").modal("hide");
@@ -186,6 +188,22 @@
 						'success'
 					)
 				}, 3000);
+		  } */
+		  console.log(result.value);
+		  if(result.value) {
+			  $.ajax({
+				  url: "researchTargetMailing.adminResearch",
+				  type: "post",
+				  data: {
+					  researchNo: researchNo
+				  },
+				  success: function(data) {
+					  console.log(data.result);
+				  },
+				  error: function(data) {
+					  console.log("ajax 실패");
+				  }
+			  });
 		  }
 		})
 	});

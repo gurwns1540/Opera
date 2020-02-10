@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.service.AdminService;
 import com.opera.survway.common.model.vo.OperaFileNamePolicy;
+import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.ResearchState;
@@ -366,7 +368,7 @@ public class AdminResearchController {
 	 * @Author      : Ungken
 	 * @CreateDate  : 2020. 2. 2.
 	 * @ModifyDate  : 2020. 2. 2.
-	 * @Description : 가격 협상 승인
+	 * @Description : 가격 협상 
 	 */
 	@PostMapping("researchPaymentRefer.adminResearch")
 	public ModelAndView researchPaymentRefer(ModelAndView mv, String researchNoStr, String researchPriceStr, String referReason) {

@@ -6,7 +6,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
+import com.opera.survway.admin.model.vo.PanelThanksSurvey;
+import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -80,11 +83,15 @@ public interface AdminService {
 
 	boolean reconstructureRefer(ResearchState researchState);
 
+	boolean researchTargetMailing(int researchNo) throws ResearchException;
+
 	List<Object> tsQaManagement();
 
 	int tsQaManagementUpdate(ArrayList<ResearchQuestion> questionList);
 
 	int uploadAudio(UploadFile ufo);
+
+	List<PanelThanksSurvey> selectPanelTs(PanelThanksSurvey ps);
 
 
 }

@@ -435,23 +435,35 @@
 		<div class="header">기업 회원</div>
 		<div class="scrolling content">
 			<div>
-				사진 영역
+				<img src="/survway/resources/images/noImage.png" id="corpImage" style="width: 100%;">
 			</div>
 		</div>
 		<div class="actions">
-			<div class="ui button">Download</div>
+			<div class="ui button" id="download">Download</div>
 		    <div class="ui cancel button" id="companyPictureClose">Cancel</div>
   		</div>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
 	<script>
+		$(document).on("click", "#download", function(){
+			$.ajax({
+				url:"fileDown.memberManagement",
+				type:"post",
+				data:{
+					file:$("#corpImage").prop("src");
+				},
+				success:function(data){
+					console.log(data);
+				}
+			})
+		});
 		$("#companyPictureBtn").on("click", function(){
 			$("#companyPicture").modal("show");
-		})
+		});
 		$("#companyPictureClose").on("click",function(){
 			$('#corp').modal('show');
-		})
+		});
 		$("#nextBtn").on("click", function(){
 			$('#research').modal('show');
 		});
@@ -464,6 +476,7 @@
 				type:"post",
 				data:{mno:mno},
 				success:function(data){
+					console.log(data);
 					var address = data.member.userAddress;
 					var passphrase = "1234";
 			        var decrypted1 = CryptoJS.AES.decrypt(address, passphrase);
@@ -483,6 +496,12 @@
 						$("#corp td").eq(6).text(data.member.userName);
 						$("#corp td").eq(7).text(phone1);
 						$("#corp td").eq(8).text(data.member.userEmail);
+						if(data.member.changeName != "" && data.member.changeName != null){
+							console.log("changeName없다.")
+							$("#corpImage").prop("src", "/survway/resources/uploadFiles/" +data.member.changeName );
+						}else {
+							$("#corpImage").prop("src", "/survway/resources/images/noImage.png");
+						}
 						$('#corp').modal('show');
 					}else{
 						$("#panel td").eq(0).text(data.member.mno);

@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.service.AdminService;
+import com.opera.survway.admin.model.vo.PanelThanksSurvey;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.panel.model.vo.ResearchQuestion;
 
 @Controller
 public class MemberManagementController {
@@ -169,6 +172,7 @@ public class MemberManagementController {
 			newPanel = as.selectNewPanelDetail(Integer.parseInt(mno));
 			
 			mv.addObject("newPanel", newPanel);
+			mv.addObject("mno", mno);
 			mv.setViewName("jsonView");
 		} catch (SelectException e) {
 			mv.setViewName("redirect:errorPage.me");
@@ -176,4 +180,24 @@ public class MemberManagementController {
 		return mv;
 	}
 	
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 9.
+	 * @ModifyDate	:2020. 2. 9.
+	 * @Description	:패널이 작성한 ts가져오기
+	 */
+	@RequestMapping("selectPanelTs.memberManagement")
+	public ModelAndView selectPanelTs(ModelAndView mv, String mno, PanelThanksSurvey ps) {
+		System.out.println(Integer.parseInt(mno));
+		ps.setMno(Integer.parseInt(mno));
+		ps.setResearchNo(1);
+		List<PanelThanksSurvey> list = as.selectPanelTs(ps);
+		System.out.println(list);
+		
+		mv.addObject("list",list);
+		mv.setViewName("jsonView");
+		
+		
+		return mv;
+	}
 }

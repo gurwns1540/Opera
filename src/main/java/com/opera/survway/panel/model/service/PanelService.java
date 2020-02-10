@@ -9,9 +9,11 @@ import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.panel.model.vo.AttemptInsert;
 import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
@@ -90,5 +92,15 @@ public interface PanelService {
 	Notice selectNotice(int parseInt);
 
 	int noticeDelete(int parseInt);
+
+	int useRewardList(Reward r) ;
+
+	int nowMyReward(Reward r);
+
+	int insertResearchTry(AttemptInsert attempt);
+
+	int insertAnswer(InsertAnswer answer);
+
+
 
 }

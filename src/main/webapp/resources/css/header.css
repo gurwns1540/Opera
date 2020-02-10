@@ -36,9 +36,8 @@
 .navContainer {
 	margin-left: auto;
 	margin-right: auto;
-	height: inherit;
+	height: 100%;
 	width: 60%;
-	vertical-align:center;
 }
 
 #nav {
@@ -68,4 +67,3 @@
 .surveyMenu {
 	size:inherit;
 }
-  

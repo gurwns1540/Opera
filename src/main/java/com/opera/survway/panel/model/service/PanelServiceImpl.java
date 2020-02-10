@@ -17,8 +17,10 @@ import com.opera.survway.exception.RewardException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.dao.PanelDao;
+import com.opera.survway.panel.model.vo.AttemptInsert;
 import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
@@ -85,6 +87,18 @@ public class PanelServiceImpl implements PanelService {
 				pd.insertRewardPanel(sqlSession, pm);
 				pd.insertTernaryPanel(sqlSession, pm);
 			}
+			int result = pd.updateNomineeReward(sqlSession, pm.getNominee());
+			if(result > 0) {
+				//해당 추천인이 존재하면 피추천인의 리워드 100포인트 증가
+				int result2 = pd.updateUserReward(sqlSession, pm);
+				if(result2 > 0) {
+					// 추천자의 리워드도 500포인트 증가
+					int result3 = pd.insertRewardNomineeHistory(sqlSession, pm.getNominee());
+					int result4 = pd.insertRewardUserHistory(sqlSession, pm);
+					
+				}
+			} 
+			
 		}
 		
 		if(!(resultMemberTable>0 && resultPanelTable>0)) {
@@ -594,5 +608,58 @@ public class PanelServiceImpl implements PanelService {
 	public int noticeDelete(int noticeNo) {
 		return pd.noticeDelete(noticeNo,sqlSession);
 	}
+
+	/**
+	 * @throws InquiryException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 6.
+	 * @ModifyDate	:2020. 2. 6.
+	 * @Description	:총 사용한 리워드
+	 */
+	@Override
+	public int useRewardList(Reward r)  {
+		int num = pd.useRewardList(sqlSession,r);
+		return num;
+	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 7.
+	 * @ModifyDate	:2020. 2. 7.
+	 * @Description	:현재 나의 리워드
+	 */
+	@Override
+	public int nowMyReward(Reward r) {
+		
+		int num = pd.nowMyReward(sqlSession,r);
+		
+		return num;
+	}
+
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 9.
+	 * @ModifyDate  : 2020. 2. 9.
+	 * @Description : 설문조사 시도 테이블에 인서트
+	 */
+	@Override
+	public int insertResearchTry(AttemptInsert attempt) {
+		int result = pd.insertAttemptParticipant(sqlSession, attempt);
+		return result;
+	}
+
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 9.
+	 * @ModifyDate  : 2020. 2. 9.
+	 * @Description : 설문조사 응답 내용 인서트
+	 */
+	@Override
+	public int insertAnswer(InsertAnswer answer) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 
 }

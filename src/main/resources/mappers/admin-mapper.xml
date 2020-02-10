@@ -30,6 +30,7 @@
 		<result property="researchResponseDate" column="RESEARCH_RESPONSE_DATE"/>
 		<result property="cashoutAmount" column="CASHOUT_AMOUNT"/>
 		<result property="ternaryCount" column="TERNARY_COUNT"/>
+		<result property="changeName" column="CHANGE_NAME"/>
 	</resultMap>
 	
 	<resultMap type="AllMember" id="newPanelResultSet">
@@ -52,6 +53,26 @@
 		<result property="applicantDate" column="CASHOUT_APPLICANT_DATE"/>
 		<result property="confrimDate" column="CASHOUT_CONFIRM_DATE"/>
 	</resultMap>
+	
+	<resultMap type="ResearchTarget" id="researchTargetResultMap">
+		<id property="targetNo" column="TARGET_NO"/>
+		<result property="targetGender" column="TARGET_GENDER"/>
+		<result property="targetAgeRange" column="TARGET_AGERANGE"/>
+		<result property="targetLocation" column="TARGET_LOCATION"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="occupationNo" column="OCCUPATION_NO"/>
+	</resultMap>
+	
+	<resultMap type="TargetMember" id="targetMemberResultMap">
+		<id property="mno" column="MNO"/>
+		<result property="targetEmail" column="USER_EMAIL"/>
+		<result property="age" column="AGE"/>
+		<result property="targetGender" column="PANEL_GENDER"/>
+		<result property="occupationNo" column="OCCUPATION_NO"/>
+		<result property="locationNo" column="LOCATION_NO"/>
+		<result property="attemptDate" column="ATTEMPT_DATE"/>
+	</resultMap>
+	
 	<sql id="searchUserType">
 		<if test="userType != null">
 			AND USER_TYPE = #{userType}
@@ -114,7 +135,7 @@
 		SELECT NVL2((SELECT MAX(RESEARCH_RESPONSE_DATE) FROM RESEARCHHISTORY WHERE MNO = #{mno}), TO_CHAR((SELECT MAX(RESEARCH_RESPONSE_DATE) FROM RESEARCHHISTORY WHERE MNO = #{mno}), 'YYYY-MM-DD'), '참여 기록 없음') AS RESEARCH_RESPONSE_DATE, 
         NVL2((SELECT SUM(CO.CASHOUT_AMOUNT) FROM CASHOUTHISTORY CH LEFT JOIN CASHOUT CO ON(CH.CASHOUT_NO = CO.CASHOUT_NO) WHERE MNO = #{mno}), (SELECT SUM(CO.CASHOUT_AMOUNT) FROM CASHOUTHISTORY CH LEFT JOIN CASHOUT CO ON(CH.CASHOUT_NO = CO.CASHOUT_NO) WHERE MNO = #{mno}), 0) AS CASHOUT_AMOUNT, 
         PT.TERNARY_COUNT,
-        M.MNO, M.USER_ID, M.USER_PWD, M.USER_NAME, M.USER_ADDRESS, M.USER_PHONE, M.USER_EMAIL, M.USER_TYPE, TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD') AS LEAVE_DATE, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE, TO_CHAR(M.MODIFY_DATE, 'YYYY-MM-DD') AS MODIFY_DATE, P.PANEL_BIRTHDAY, P.PANEL_GENDER, P.REFER_PANELCODE, P.NOMINEE, O.OCCUPATION_NAME, P.WITHDRAW_ACCOUNT, L.PANELLEVEL_NAME, C.COMPANY_NAME, C.C_REGISTRATION_NUMBER, PR.REWARD_POINT FROM MEMBER M
+        M.MNO, M.USER_ID, M.USER_PWD, M.USER_NAME, M.USER_ADDRESS, M.USER_PHONE, M.USER_EMAIL, M.USER_TYPE, TO_CHAR(M.LEAVE_DATE, 'YYYY-MM-DD') AS LEAVE_DATE, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE, TO_CHAR(M.MODIFY_DATE, 'YYYY-MM-DD') AS MODIFY_DATE, P.PANEL_BIRTHDAY, P.PANEL_GENDER, P.REFER_PANELCODE, P.NOMINEE, O.OCCUPATION_NAME, P.WITHDRAW_ACCOUNT, L.PANELLEVEL_NAME, C.COMPANY_NAME, C.C_REGISTRATION_NUMBER, PR.REWARD_POINT, UF.CHANGE_NAME FROM MEMBER M
         LEFT JOIN PANEL P ON (P.MNO = M.MNO)
         LEFT JOIN PANELLEVEL L ON (P.PANELLEVEL_NO = L.PANELLEVEL_NO)
         LEFT JOIN OCCUPATION O ON (P.OCCUPATION_NO = O.OCCUPATION_NO)
@@ -122,6 +143,7 @@
         LEFT JOIN PANELREWARD PR ON (PR.MNO = M.MNO)
         LEFT JOIN RESEARCHHISTORY RH ON (RH.MNO = M.MNO)
         LEFT JOIN PANELTERNARY PT ON(PT.MNO = M.MNO)
+        LEFT JOIN UPLOADFILE UF ON (UF.MNO = C.MNO)
 		WHERE CERTIFICATION = 'Y'
 		AND M.MNO = #{mno}
 	</select>
@@ -179,7 +201,7 @@
         M.MNO,  M.USER_NAME, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
         FROM MEMBER M
         JOIN PANEL P ON (P.MNO = M.MNO)
-		WHERE CERTIFICATION = 'Y'researchPaymentApproved
+		WHERE CERTIFICATION = 'Y'
 		AND PANELLEVEL_NO = 1
 		<include refid="newPanelSearchInputName"/>
 		ORDER BY ENT_DATE DESC
@@ -597,6 +619,64 @@
 		(SEQ_CONFERENCEHISTORY.NEXTVAL, #{referReason}, #{researchHistoryNo}, null)
 	</insert>
 	
+	<select id="researchTargetMailing" parameterType="_int" resultMap="researchTargetResultMap">
+		SELECT *
+		FROM RESEARCHTARGET
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<select id="selectTargetList" parameterType="TargetMember" resultMap="targetMemberResultMap">
+		
+			SELECT M.MNO, M.USER_EMAIL, EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM TO_DATE(P.PANEL_BIRTHDAY)) AS "AGE", P.PANEL_GENDER, P.OCCUPATION_NO,
+	        RH.RQUESTION_RESPONSE AS "LOCATION_NO", AP.ATTEMPT_DATE
+			FROM MEMBER M
+			JOIN PANEL P ON(M.MNO = P.MNO)
+			JOIN RESEARCHHISTORY RH ON(M.MNO = RH.MNO)
+			JOIN RESEARCHQUESTION RQ ON(RH.RQUESTION_NO = RQ.RQUESTION_NO)
+			JOIN ATTEMPTPARTICIPANT AP ON(M.MNO = AP.MNO)
+			<![CDATA[
+			WHERE M.MNO < 5000
+			]]>
+			AND EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM TO_DATE(P.PANEL_BIRTHDAY)) BETWEEN #{minAge} AND #{maxAge}
+			AND RQ.RESEARCH_NO = 1
+			<choose>
+				<when test='targetGender == "M"'>
+					AND P.PANEL_GENDER = 'M'
+				</when>
+				<when test='targetGender == "F"'>
+					AND P.PANEL_GENDER = 'F'
+				</when>
+				<otherwise>
+					AND 1=1
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="targetLocation == 'city'">
+					AND ((RQ.RESEARCH_ORDER = 8 AND (RH.RQUESTION_RESPONSE = '1' OR RH.RQUESTION_RESPONSE = '2' OR RH.RQUESTION_RESPONSE = '3' OR RH.RQUESTION_RESPONSE = '4' OR RH.RQUESTION_RESPONSE = '5' OR RH.RQUESTION_RESPONSE = '6' OR RH.RQUESTION_RESPONSE = '7')))
+				</when>
+				<when test="targetLocation == 'metropolitan'">
+					AND ((RQ.RESEARCH_ORDER = 8 AND (RH.RQUESTION_RESPONSE = '1' OR RH.RQUESTION_RESPONSE = '2' OR RH.RQUESTION_RESPONSE = '8')))
+				</when>
+				<otherwise>
+					AND RQ.RESEARCH_ORDER = 8
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="occupationNo != 13">
+					AND P.OCCUPATION_NO = #{occupationNo}
+				</when>
+				<otherwise>
+					AND 1=1
+				</otherwise>
+			</choose>
+			ORDER BY AP.ATTEMPT_DATE ASC
+	</select>
+	
+	<select id="selectResearchEngagementGoals" parameterType="_int" resultType="_int">
+		SELECT RESEARCH_ENGAGEMENT_GOALS FROM RESEARCH
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+
 	<!--여기서 담아준다--> 
 	<resultMap type="ResearchQuestion" id="tsResearchDetail">
 		<result property="questionNo" column="RQUESTION_NO"/>
@@ -642,9 +722,8 @@
 		INSERT INTO RESEARCHCHOICE VALUES
 		(SEQ_CHOICE.NEXTVAL, #{choiceContext}, #{rquestionNo}, #{choiceOrder})
 	</insert>
-	
+
 	<resultMap type="UploadFile"  id="selectAudio">
-	
 		<result property="fileNo" column="FILE_NO"/>
 		<result property="fileType" column="FILE_TYPE"/>
 		<result property="originName" column="ORIGIN_NAME"/>
@@ -654,10 +733,31 @@
 		<result property="fileStatus" column="FILE_STATUS"/>
 		<result property="researchNo" column="RESEARCH_NO"/>
 	</resultMap>
-
 	
+	<resultMap type="PanelThanksSurvey" id="PanelThanksSurvey">
+		<result property="mno" column="MNO"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="rquestionNo" column="RQUESTION_NO"/>
+		<result property="rquestionResponse" column="RQUESTION_RESPONSE"/>
+		<result property="researchOrder" column="RESEARCH_ORDER"/>
+		<result property="rquestionContext" column="RQUESTION_CONTEXT"/>
+		<collection property="choiceList" column="RQUESTION_NO" ofType="ResearchChoice" javaType="java.util.List">
+			<result property="choiceNo" column="RCHOICE_NO"/>
+			<result property="choiceContext" column="RCHOICE_CONTEXT"/>
+			<result property="choiceOrder" column="RCHOICE_ORDER"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectPanelTs" resultMap="PanelThanksSurvey">
+		SELECT RQ.RQUESTION_NO, RQ.RESEARCH_ORDER, RH.RQUESTION_RESPONSE,RQ.RQUESTION_CONTEXT, RC.RCHOICE_ORDER, RC.RCHOICE_CONTEXT, RQ.QUESTION_FORM_NO
+		FROM RESEARCHHISTORY RH
+		JOIN RESEARCHQUESTION RQ ON (RH.RQUESTION_NO = RQ.RQUESTION_NO)
+		LEFT JOIN RESEARCHCHOICE RC ON (RH.RQUESTION_NO = RC.RQUESTION_NO)
+		WHERE RH.MNO=#{mno} AND RH.RESEARCH_NO =1
+		ORDER BY RQ.RESEARCH_ORDER ASC, RC.RCHOICE_ORDER ASC
+	</select> 
+  
 	<update id="uploadAudio"  parameterType="UploadFile">
-	
 		MERGE INTO UPLOADFILE
 			USING DUAL
 			ON(RESEARCH_NO=2)
@@ -665,7 +765,5 @@
 				UPDATE SET CHANGE_NAME=#{changeName}
 			WHEN NOT MATCHED THEN
 				INSERT VALUES (SEQ_UPLOADFILE.NEXTVAL, 'pc환경조사',#{originName},#{changeName},#{filePath},SYSDATE,'Y', NULL, NULL, NULL, NULL, NULL, 2) 
-				
-	
 	</update>
 </mapper>
