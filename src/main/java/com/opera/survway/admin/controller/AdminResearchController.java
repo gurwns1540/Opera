@@ -743,4 +743,12 @@ public class AdminResearchController {
 		
 		return mv;
 	}
+	
+	@PostMapping("selectResearchGraph.adminResearch")
+	public ModelAndView selectResearchGraph(ModelAndView mv, int researchNo) {
+		
+//		mv.addObject("result", result);
+		mv.setViewName("jsonView");
+		return mv;
+	}
 }
