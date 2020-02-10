@@ -630,6 +630,23 @@ public class AdminResearchController {
 		return mv;
 	}
 	
+	@PostMapping("researchTargetMailing.adminResearch")
+	public ModelAndView researchTargetMailing(ModelAndView mv, int researchNo) {
+//		ResearchTarget target = as.researchTargetMailing(researchNo);
+		Boolean result;
+		try {
+			result = as.researchTargetMailing(researchNo);
+			System.out.println(result);
+			mv.addObject("result", result);
+		} catch (ResearchException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		System.out.println(target);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
 	@RequestMapping("groupMailingWaitingList.admin")
 	public String forwardGroupMailingWaitingList(HttpServletRequest request, Model model) {
 		// Post로 보낸걸 queryString이라고 한다
