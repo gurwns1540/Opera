@@ -699,12 +699,12 @@
 	
 	<sql id="searchSurveyValue">
 		<if test="searchValue != null">
-			AND SURVEY_TITLE LIKE '%'|| #{searchValue} ||'%'
+			AND PS.SURVEY_TITLE LIKE '%'|| #{searchValue} ||'%'
 		</if>
 	</sql>
 	<sql id="searchSurveyCategory">
 		<if test="interests != null">
-			AND SCATEGORY_NO = #{interests}
+			AND PS.SCATEGORY_NO = #{interests}
 		</if>
 	</sql>
 	<sql id="searchSurveyOrder">
@@ -759,4 +759,33 @@
 		INSERT INTO LIKEHISTORY VALUES
 		(SEQ_LIKEHISTORY.NEXTVAL, #{surveyNo}, #{mno})
 	</insert>
+	
+	<resultMap type="map" id="statisticMap">
+		<result property="choiceContext" column="SCHOICE_CONTEXT"/>
+		<result property="choiceCount" column="CHOICE_COUNT"/>
+	</resultMap>
+	
+	<select id="statisticList" parameterType="_int" resultMap="statisticMap">
+		SELECT SC.SCHOICE_CONTEXT, COUNT(SC.SCHOICE_CONTEXT) AS CHOICE_COUNT FROM SURVEYHISTORY SH
+		JOIN SURVEYCHOICE SC ON (SC.SCHOICE_NO = SH.SCHOICE_NO)
+		WHERE SH.SURVEY_NO = #{surveyNo}
+		GROUP BY SC.SCHOICE_CONTEXT
+	</select>
+	
+	<resultMap type="map" id="replyMap">
+		<result property="surveyReplyNo" column="SURVEYREPLY_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="surveyReplyContext" column="SURVEYREPLY_CONTEXT"/>
+		<result property="surveyReplyDate" column="SURVEYREPLY_DATE"/>
+		<result property="surveyReplyRefrid" column="SURVEYREPLY_REFRID"/>
+	</resultMap>
+	
+	<select id="replyList" parameterType="_int" resultMap="replyMap">
+		SELECT SR.SURVEYREPLY_NO, M.USER_NAME, SR.SURVEYREPLY_CONTEXT, TO_CHAR(SR.SURVEYREPLY_DATE + 9 / (24) + 71 / (24 * 60 * 60), 'YYYY-MM-DD "at" HH:MI AM') AS SURVEYREPLY_DATE, SR.SURVEYREPLY_REFRID
+		FROM SURVEYREPLY SR
+		JOIN PANELSURVEY PS ON (PS.SURVEY_NO = SR.SURVEY_NO)
+		JOIN MEMBER M ON(M.MNO = SR.MNO)
+		WHERE SR.SURVEY_NO = #{surveyNo}
+		ORDER BY SR.SURVEYREPLY_DATE ASC
+	</select>
 </mapper>

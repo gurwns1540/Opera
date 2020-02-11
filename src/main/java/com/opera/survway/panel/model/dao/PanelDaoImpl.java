@@ -453,5 +453,15 @@ public class PanelDaoImpl implements PanelDao{
 	public int addLikeHistory(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey) {
 		return sqlSession.delete("Panel.addLikeHistory", panelSurvey);
 	}
+
+	@Override
+	public List<Map<String, Object>> statisticList(SqlSessionTemplate sqlSession, int surveyNo) {
+		return sqlSession.selectList("Panel.statisticList", surveyNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> replyList(SqlSessionTemplate sqlSession, int surveyNo) {
+		return sqlSession.selectList("Panel.replyList", surveyNo);
+	}
 	
 }

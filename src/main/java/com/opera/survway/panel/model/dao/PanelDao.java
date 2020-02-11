@@ -150,4 +150,8 @@ public interface PanelDao {
 
 	int addLikeHistory(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
 
+	List<Map<String, Object>> statisticList(SqlSessionTemplate sqlSession, int surveyNo);
+
+	List<Map<String, Object>> replyList(SqlSessionTemplate sqlSession, int surveyNo);
+
 }

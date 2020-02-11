@@ -116,4 +116,8 @@ public interface PanelService {
 
 	int changeLikeCount(int surveyNo, int mno, String status);
 
+	List<Map<String, Object>> statisticList(int surveyNo);
+
+	List<Map<String, Object>> replyList(int surveyNo);
+
 }

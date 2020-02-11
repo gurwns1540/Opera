@@ -764,5 +764,15 @@ public class PanelServiceImpl implements PanelService {
 		return result;
 	}
 
+	@Override
+	public List<Map<String, Object>> statisticList(int surveyNo) {
+		return pd.statisticList(sqlSession, surveyNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> replyList(int surveyNo) {
+		return pd.replyList(sqlSession, surveyNo);
+	}
+
 
 }

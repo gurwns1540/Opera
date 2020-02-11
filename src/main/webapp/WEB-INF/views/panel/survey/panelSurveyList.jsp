@@ -5,6 +5,10 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
 </head>
 <style>
 
@@ -143,6 +147,18 @@ div.ui.segment.eachSurveyBox {
 textarea:focus {
 	outline: none;
 }
+.ui.reply.form {
+	width: 100% !important;
+	height: 180px;
+}
+.show {display:block} /*보여주기*/
+
+.hide {display:none} /*숨기기*/
+
+.ui.comments .comment>.comments {
+    margin: 0 0 0.5em 1.5em !important;
+    padding: 0em 0 0em 1em !important;
+}
 </style>
 <body>
 	<div class="wrap">
@@ -182,7 +198,7 @@ textarea:focus {
 											<img src="resources/images/q.png" alt="" class="icon" style="width:40px; height:40px;">
 										</td>
 										<td style="vertical-align: middle;">
-											<span style="font-size:1vw; font-weight:bold; color:#2B2B2B; padding-left:5px;">${ survey.surveyTitle }</span>
+											<span style="font-size:1vw; font-weight:bold; color:#2B2B2B; padding-left:5px;" class="surveyTitle">${ survey.surveyTitle }</span>
 										</td>
 									</tr>
 									<tr>
@@ -251,8 +267,8 @@ textarea:focus {
 									<tr>
 										<td>
 											<button class="like ui toggle button"><i class="heart outline icon"></i> 좋아요 ${ survey.surveyLike }</button>
-											<button class="reply ui basic button" id="commentBtn"><i class="comment dots outline icon"></i> 댓글  ${ survey.replyCount }</button>
-											<button class="report ui basic button" id="reportBtn"><i class="bell outline icon"></i> 신고</button>
+											<button class="replyModal ui basic button"><i class="comment dots outline icon"></i> 댓글  ${ survey.replyCount }</button>
+											<button class="report ui basic button"><i class="bell outline icon"></i> 신고</button>
 										</td>
 										<td style="text-align:right;">
 											<button class="loginCheck" id="voteBtn">투표하기</button>
@@ -314,31 +330,31 @@ textarea:focus {
 							</div>
 							<div style="padding-left: 25px;">
 								<div class="ui checked checkbox" style="margin-bottom: 9px;">
-									<input type="radio" name="interests" id="love" value="love">
+									<input type="radio" name="interests" id="love" value="1">
 									<label for="love" style="cursor:pointer;"> 연애 / 사랑</label>
 								</div>
 								<div class="ui checked checkbox" style="margin-bottom: 9px;">
-									<input type="radio" name="interests" id="economy" value="economy">
+									<input type="radio" name="interests" id="economy" value="2">
 									<label for="economy" style="cursor:pointer;"> 경제 / 사회</label>
 								</div>
 								<div class="ui checked checkbox" style="margin-bottom: 9px;">
-									<input type="radio" name="interests" id="travel" value="travel">
+									<input type="radio" name="interests" id="travel" value="3">
 									<label for="travel" style="cursor:pointer;"> 여행 / 레저 / 스포츠</label>
 								</div>
 								<div class="ui checked checkbox" style="margin-bottom: 9px;">
-									<input type="radio" name="interests" id="education" value="education">
+									<input type="radio" name="interests" id="education" value="4">
 									<label for="education" style="cursor:pointer;"> 육아 / 교육</label>
 								</div>
 								<div class="ui checked checkbox" style="margin-bottom: 9px;">
-									<input type="radio" name="interests" id="food" value="food">
+									<input type="radio" name="interests" id="food" value="5">
 									<label for="food" style="cursor:pointer;"> 음식 / 주류</label>
 								</div>
 								<div class="ui checked checkbox" style="margin-bottom: 9px;">
-									<input type="radio" name="interests" id="fashion" value="fashion">
+									<input type="radio" name="interests" id="fashion" value="6">
 									<label for="fashion" style="cursor:pointer;"> 패션 / 쇼핑 / 뷰티</label>
 								</div>
 								<div class="ui checked checkbox">
-									<input type="radio" name="interests" id="etc" value="etc">
+									<input type="radio" name="interests" id="etc" value="7">
 									<label for="etc" style="cursor:pointer;"> 기타</label>
 								</div>
 							</div>
@@ -363,6 +379,32 @@ textarea:focus {
 			<br />
 		</section>
 		<!-- container end -->
+		
+		<div class="ui modal" id="replyModal">
+			<div class="header">Header</div>
+			<div class="scrolling content">
+				<div id="chartArea">
+				
+				</div>
+	    		<div id="replyArea" style="width: 90%; margin: 10px auto;">
+	    			<div class="ui comments" id="commentArea" style="width: 100%; max-width: 1000px;">
+						<h3 class="ui dividing header">Comments</h3>
+						<div class="field">
+							<div class="ui form" style="width: 100%">
+								<textarea id="replyContext" style="resize: none; line-height: 30px;"></textarea>
+							</div>
+						</div>
+						<div class="ui blue labeled submit icon button" style="float:right; margin-top: 15px;">
+							<i class="icon edit"></i> Add Reply
+						</div>
+					</div>
+	    		</div>
+			</div>
+			 <div class="actions">
+				<div class="ui cancel button">Cancel</div>
+			</div>
+		</div>
+
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 	<!-- wrap end -->
@@ -414,13 +456,151 @@ textarea:focus {
 						mnoStr:mno
 					},
 					success:function(data){
-						console.log(data);
 					}
 				})
 			});
 		</script>
 	</c:if>
 	<script>
+		$(document).on("click", ".replyModal.ui.basic.button", function(){
+			var surveyTitle = $(this).parent().parent().parent().parent().parent().parent().find(".surveyTitle").text();
+			$("#replyModal").find(".header").eq(0).text(surveyTitle);
+			var surveyNo = $(this).parent().parent().parent().parent().parent().parent().find(".surveyNo").val();
+			$.ajax({
+				url:"statisticAndReply.survey",
+				type:"post",
+				data:{
+					surveyNoStr:surveyNo
+				},
+				success:function(data){
+					var statisticList = data.statisticList;
+					var replyList = data.replyList;
+					
+					console.log(statisticList);
+					var $commnetTitle = $("<h3 class='ui dividing header'>Comments</h3>");
+					var $commentInput = $('<div class="field" style="margin-top: 20px;"> <div class="ui form" style="width: 100%"> <textarea id="replyContext" style="resize: none; line-height: 30px;"></textarea> </div> </div> <div class="ui blue labeled submit icon button" style="float:right; margin-top: 15px;"> <i class="icon edit"></i> Add Reply </div>');
+					$("#chartArea").html("");
+					$("#commentArea").html("");
+					
+					$("#commentArea").append($commnetTitle);
+					
+					if(statisticList.length == 0){
+						var $statistic = $("<div style='text-align:center; padding-top: 80px; padding-bottom: 80px; padding-left: 21%; padding-right: 20%;'>응답 이력이 없습니다.</div>");
+						$("#chartArea").html($statistic);
+					}else {
+						var $canvas = $('<div style="width:75%;margin:0 auto;"> <canvas id="chart_canvas" class="chartjs" style="display: block; width: 100%; height: 300px;"></canvas> </div>');
+						$("#chartArea").append($canvas);
+						var ctx = $("#chart_canvas");
+						var lables = [];
+						var data = [];
+						for(var i = 0; i < statisticList.length; i++){
+							lables.push(statisticList[i].choiceContext);
+							data.push(statisticList[i].choiceCount);
+						}
+						var myChart = new Chart(ctx, {
+						  type: 'pie',
+						  data: {
+						    labels: lables,
+						    datasets: [{
+						      label: '# of Tomatoes',
+						      data: data,
+						      backgroundColor: [
+						        'rgba(204, 51, 153, 0.7)',
+						        'rgba(242, 242, 242, 0.7)',
+						        'rgba(231, 230, 230, 0.7)',
+						        'rgba(217, 217, 217, 0.7)',
+						        'rgba(203, 203, 203, 0.7)',
+						        'rgba(191, 191, 191, 0.7)',
+						        'rgba(182, 182, 182, 0.7)',
+						        'rgba(174, 174, 174, 0.7)',
+						        'rgba(166, 166, 166, 0.7)',
+						        'rgba(159, 159, 159, 0.7)'
+						        
+						      ],
+						      borderColor: [
+						        'rgba(204, 51, 153, 1)',
+						        'rgba(242, 242, 242, 1)',
+						        'rgba(231, 230, 230, 1)',
+						        'rgba(217, 217, 217, 1)',
+						        'rgba(203, 203, 203, 1)',
+						        'rgba(191, 191, 191, 1)',
+						        'rgba(182, 182, 182, 1)',
+						        'rgba(174, 174, 174, 1)',
+						        'rgba(166, 166, 166, 1)',
+						        'rgba(159, 159, 159, 1)'
+						      ],
+						      borderWidth: 1
+						    }]
+						  },
+						  options: {
+						   	cutoutPercentage: 40,
+						    responsive: false,
+
+						  }
+						});
+					}
+					if(replyList.length == 0){
+						
+						var $comment = $("<div style='text-align:center; padding-top: 35px; padding-bottom: 40px; padding-left: 21%; padding-right: 20%;'>댓글이 없습니다.</div>");
+						
+						$("#commentArea").append($comment);
+						
+					}else {
+						for(var i = 0; i < replyList.length; i++){
+								console.log(replyList[i].surveyReplyRefrid);
+							var refrid = replyList[i].surveyReplyRefrid;
+							if(typeof refrid == "undefined"){
+								var $commentClass = $('<div class="comment">');
+								var $content = $('<div class="content">');
+								var $author = $('<a class="author">' + replyList[i].userName + '</a>');
+								var $metadata = $('<div class="metadata"> <span class="date">' + replyList[i].surveyReplyDate + '</span> </div>');
+								var $text = $('<div class="text">' + replyList[i].surveyReplyContext + '</div>');
+								var $replyBtn = $('<div class="actions"> <a class="reply">Reply</a> </div>');
+								var $rereplyArea = $('<div class="ui reply form hide"> <div class="field" style="height: 100px;"> <textarea style="resize: none; line-height: 30px; height: 100%"></textarea> <div class="ui primary submit labeled icon button" style="float:right; margin-top: 15px;"> <i class="icon edit"></i> Add Reply </div> </div> </div>');
+								$content.append($author);
+								$content.append($metadata);
+								$content.append($text);
+								$content.append($replyBtn);
+								$content.append($rereplyArea);
+								var $rereplyComments = $('<div class="comments">');
+								for(var j = 0; j < replyList.length; j++){
+									var refrid2 = replyList[j].surveyReplyRefrid;
+									if(replyList[i].surveyReplyNo == refrid2){
+										var $rereplyComment = $('<div class="comment">');
+										var $rereplyContent = $('<div class="content">');
+										var $rereplyauthor = $('<a class="author">' + replyList[j].userName + '</a>');
+										var $rereplymetadata = $('<div class="metadata"> <span class="date">' + replyList[j].surveyReplyDate + '</span> </div>');
+										var $rereplytext = $('<div class="text">' + replyList[j].surveyReplyContext + '</div>');
+										
+										$rereplyContent.append($rereplyauthor);
+										$rereplyContent.append($rereplymetadata);
+										$rereplyContent.append($rereplytext);
+										$rereplyComment.append($rereplyContent);
+										
+										$rereplyComments.append($rereplyComment);
+										
+									}
+								}
+								
+								$commentClass.append($content);
+								$commentClass.append($rereplyComments);
+								
+								$("#commentArea").append($commentClass);
+							}
+						}
+					}
+				
+					$("#commentArea").append($commentInput);
+				}
+			})	
+			$("#replyModal").modal("show");
+		});
+		$(document).on("click", ".reply", function(){
+			$(this).parent().parent().find(".ui.reply.form").toggle(
+				function(){$(this).addClass('show')}, //클릭하면 show클래스 적용되서 보이기
+				function(){$(this).addClass('hide')} //한 번 더 클릭하면 hide클래스가 숨기기
+			);
+		});
 		$(document).on("click", ".ui.segment.eachSurveyBox", function(){
 			$(this).find(".choicebox").prop("checked", true);
 		});

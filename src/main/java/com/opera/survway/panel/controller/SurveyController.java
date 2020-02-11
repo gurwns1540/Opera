@@ -404,4 +404,22 @@ public class SurveyController {
 		mv.setViewName("jsonView");
 		return mv;
 	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 통계에 필요한 데이터와 댓글 리스트
+	 */
+	@PostMapping("statisticAndReply.survey")
+	public ModelAndView statisticAndReply(ModelAndView mv, String surveyNoStr) {
+		int surveyNo = Integer.parseInt(surveyNoStr);
+		List<Map<String, Object>> statisticList = ps.statisticList(surveyNo);
+		List<Map<String, Object>> replyList = ps.replyList(surveyNo);
+		
+		mv.addObject("statisticList", statisticList);
+		mv.addObject("replyList", replyList);
+		mv.setViewName("jsonView");
+		return mv;
+	}
 }
