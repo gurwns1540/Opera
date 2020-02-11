@@ -402,4 +402,16 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectOne("Admin.selectResearchPeriod", researchNo);
 	}
 
+	@Override
+	public int updatePanelLevel(SqlSessionTemplate sqlSession, int mno) {
+		
+		return sqlSession.update("Admin.updatePanelLevel",mno);
+	}
+
+	@Override
+	public int deletePanelThanksSurvey(SqlSessionTemplate sqlSession, int mno) {
+		
+		return sqlSession.delete("Admin.deletePanelThanksSurvey",mno);
+	}
+
 }
