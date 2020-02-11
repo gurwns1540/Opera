@@ -267,8 +267,8 @@
 					<hr>
 					<button class="ui blue button" style="float:right; margin-top:20px;" onclick="location.href='panelMain.panel'">메인으로</button>
 				</c:if>
-				
-				<c:if test="${ pi.maxPage != 0 } or ${ pi.maxPage != 1 }">
+				 
+				<c:if test="${ pi.maxPage > 1 }">
 					<div id="pagingArea" align="center">
 					
 						<c:url var="surveyListFirst" value="surveyList.survey">
@@ -421,37 +421,30 @@
 					if(panellevelNo != 1) {
 						var mno = $(document).find("#mno").val();
 						var researchNo = $(document).find("#researchNo").val();
-						console.log("조사시도 mno : " + mno);
-						console.log("조사시도 researchNo : " + researchNo);
 					
 						$.ajax({
-						url:"insertResearchTry.survey",
-						type:"post",
-						data:{
-							researchNo:researchNo,
-							mno:mno
+							url:"insertResearchTry.survey",
+							type:"post",
+							data:{
+								researchNo:researchNo,
+								mno:mno
+								},
+							success:function(data){
+								console.log("조사시도테이블 인서트 성공");
 							},
-						success:function(data){
-							console.log("조사시도테이블 인서트 성공");
-						},
-						error:function(status){
-							console.log(status);
-						}
-					});
-						
+							error:function(status){
+								console.log(status);
+							}
+						});
 					}
-					
-					
 				});
 				
-				//마지막 nextBtn을 누르면 설문조사 끝난 시간 기록
+				//마지막 nextBtn을 누르면 설문조사 끝난 시간 기록 및 응답 인서트, 리워드 계산 결과 리턴
 				var endTime = "";
 				$(document).on("click", ".button[id*=nextBtn]", function(){
 					
 					var qCountNo = $(document).find("#qCount").val();
-					console.log("qCountNo : " + qCountNo);
 					var lastNextBtn = 'nextBtn' + qCountNo;
-					console.log("lastNextBtn : " + lastNextBtn);
 					
 					if($(this).attr('id') == lastNextBtn) {
 						endTime = new Date();
@@ -460,11 +453,10 @@
 				});
 				
 				
-				//설문조사 끝나고 마지막버튼 눌렀을 때
+				//설문조사 끝나고 마지막버튼 눌렀을 때 리워드 DB에 인서트
 				$(document).on("click", "#lastBtn",function(){
 					
 					totalAnswer = totalAnswer + ",";
-					console.log(totalAnswer);
 					
 					var surveyTime = (endTime.getTime())-(startTime.getTime());
 					surveyTime = surveyTime/1000/60;
@@ -479,6 +471,7 @@
 						reward = '1000~1000P';
 						researchNo = '1';
 					}
+					
 					//1이면 정규식에 어긋난거, 일단 1로 set
 					var answerCheck = 1;
 					
@@ -492,7 +485,6 @@
 						answerCheck = 0;
 					}
 					
-					console.log("answerCheck : " + answerCheck);
 					
 					$.ajax({
 						url:"insertResearchAnswers.survey",
@@ -530,13 +522,9 @@
 					if(researchNo == "") {
 						researchNo = 1;
 					}
-					console.log("researchNo : " + researchNo);
 					var userName = $(this).find(".top-left").children().eq(2).val();
-					console.log("userName : " + userName);
 					var panellevelNo = $(this).find(".top-left").children().eq(3).val();
-					console.log("panellevelNo : " + panellevelNo);
 					var reward = $(this).find(".bottom-top").children().eq(0).text();
-					console.log("reward : " + reward);
 					
 					$.ajax({
 						url:"selectResearchQuestions.survey",
@@ -584,7 +572,6 @@
 								//가져온 데이터 값 꺼내기
 								var questionFormNo = rquestionList[i].questionFormNo;
 								var researchOrder = rquestionList[i].researchOrder;
-								//console.log("researchOrder : " + researchOrder);
 								var progressDataPercent = rquestionList[i].progressDataPercent;
 								var rquestionContext = rquestionList[i].rquestionContext;
 								var rquestionVideolink = rquestionList[i].rquestionVideolink;
@@ -787,7 +774,7 @@
 											
 											totalAnswer.push(eachAnswer);
 											totalAnswer.push("/");
-											console.log(totalAnswer);
+											console.log("전체 응답 : " + totalAnswer);
 											eachAnswer = [];
 										}
 									}
