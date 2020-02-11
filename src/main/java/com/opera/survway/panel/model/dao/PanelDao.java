@@ -2,11 +2,13 @@ package com.opera.survway.panel.model.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.AttemptInsert;
@@ -15,11 +17,14 @@ import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelSurvey;
+import com.opera.survway.panel.model.vo.PanelSurveyChoice;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SearchSurvey;
 
 public interface PanelDao {
 
@@ -124,5 +129,25 @@ public interface PanelDao {
 	int insertRewardNomineeHistory(SqlSessionTemplate sqlSession, String nominee);
 
 	int insertRewardUserHistory(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int uploadSurvey(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
+
+	int uploadSurveyChoice(SqlSessionTemplate sqlSession, PanelSurveyChoice panelSurveyChoice);
+
+	int uploadSurveyChoiceImage(SqlSessionTemplate sqlSession, UploadFile uploadFile);
+
+	int getPanelSurveyList(SqlSessionTemplate sqlSession);
+
+	List<Map<String, Object>> panelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey);
+
+	List<Integer> likeCheck(SqlSessionTemplate sqlSession, int mno);
+
+	int minusLikeCount(SqlSessionTemplate sqlSession, int surveyNo);
+
+	int plusLikeCount(SqlSessionTemplate sqlSession, int surveyNo);
+
+	int deleteLikeHistory(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
+
+	int addLikeHistory(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
 
 }

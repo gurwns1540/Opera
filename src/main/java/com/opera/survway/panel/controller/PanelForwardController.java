@@ -7,53 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PanelForwardController {
 	
-	
-//	//메인페이지
-//	@GetMapping("panelMain.panel")
-//	public String showPanelMain() {
-//		return "main/panelMain";
-//	}
-	
-	
-	
-	// 고객센터 메뉴 페이지들
-	//1. 자주 묻는 질문
-//	@GetMapping("faq.panel")
-//	public String showFaq() {
-//		return "customerCenter/faq";
-//	}
-	
-
-	//3. 1:1 문의하기
-	@GetMapping("panelNewInquiry.panel")
-	public String showPanelNewInquiry() {
-		return "customerCenter/panelNewInquiry";
-	}
-	//4. 공지사항
-//	//3. 1:1 문의하기
-//	@GetMapping("panelNewInquiry.panel")
-//	public String showPanelNewInquiry() {
-//		return "customerCenter/panelNewInquiry";
-//	}
-//	//4. 공지사항
-//	@GetMapping("notice.panel")
-//	public String showNotice() {
-//		return "customerCenter/notice";
-//	}
-
-	/*
-	 * //5. 패널 1:1문의 목록
-	 * 
-	 * @GetMapping("panelInquiryList.panel") public String showPanelInquiryList() {
-	 * return "customerCenter/panelInquiryList"; }
-	 */
-	//5-1. 패널 1:1문의 상세보기
-	@GetMapping("panelInquiryDetail.panel")
-	public String showPanelInquiryDetail() {
-		return "customerCenter/panelInquiryDetail";
-	}
-
-	
 	// 안내 메뉴 페이지들
 	//1. 혜택 안내
 	@GetMapping("benefitInfo.panel")
@@ -74,16 +27,6 @@ public class PanelForwardController {
 	public String showMyInfo() {
 		return "myPage/myInfo";
 	}
-	//1-1. 내 정보 상세보기
-	@GetMapping("myInfoDetail.panel")
-	public String showMyInfoDetail() {
-		return "myPage/myInfoDetail";
-	}
-	//2. 내 1:1 문의 목록
-	/*
-	 * @GetMapping("myInquiryList.panel") public String showMyInquiryList() { return
-	 * "myPage/myInquiryList"; }
-	 */
 	//2-1. 내 1:1문의 상세보기
 	@GetMapping("myInquiryDetail.panel")
 	public String showMyInquiryDetail() {
@@ -178,11 +121,7 @@ public class PanelForwardController {
 	public String showMySurveyList_retry() {
 		return "survey/mySurveyList_retry";
 	}
-	//3. 패널서베이목록
-	@GetMapping("panelSurveyList.panel")
-	public String showPanelSurveyList() {
-		return "survey/panelSurveyList";
-	}
+
 	//4. 내 투표목록
 	@GetMapping("myPanelSurvey.panel")
 	public String showMyPanelSurvey() {

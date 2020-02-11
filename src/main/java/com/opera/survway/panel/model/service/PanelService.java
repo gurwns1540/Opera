@@ -1,10 +1,13 @@
 package com.opera.survway.panel.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
@@ -16,10 +19,12 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelSurvey;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SearchSurvey;
 
 
 
@@ -85,7 +90,7 @@ public interface PanelService {
 
 	Research getResearchInfo(String researchNo) throws SelectException;
 
-  int writeNotice(Notice n);
+	int writeNotice(Notice n);
 
 	int editNotice(Notice n);
 
@@ -101,6 +106,14 @@ public interface PanelService {
 
 	int insertAnswer(InsertAnswer answer);
 
+	int uploadSurvey(PanelSurvey panelSurvey, ArrayList<UploadFile> uploadFileList) throws SurveyException;
 
+	int getPanelSurveyList();
+
+	List<Map<String, Object>> panelSurveyList(SearchSurvey searchSurvey) throws SelectException;
+
+	List<Integer> likeCheck(int mno);
+
+	int changeLikeCount(int surveyNo, int mno, String status);
 
 }
