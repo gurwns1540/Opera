@@ -811,5 +811,41 @@ public class AdminServiceImpl implements AdminService{
 		return 0;
 	}
 
+	/**
+	 * @throws ResearchException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 11.
+	 * @ModifyDate	:2020. 2. 11.
+	 * @Description	:패널 회원의 등급을 활성화 회원으로 바꾸는 메소드
+	 */
+	@Override
+	public int updatePanelLevel(int mno) throws ResearchException {
+		
+		int result = ad.updatePanelLevel(sqlSession, mno);
+		
+		if(result <0) {
+			throw new ResearchException("패널회원의 등급을 활성화 하는데 실패 하였습니다.");
+		}
+		return result;
+	}
+
+	/**
+	 * @throws ResearchException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 11.
+	 * @ModifyDate	:2020. 2. 11.
+	 * @Description	:관리자의 반려로 인한 thanksSurvey삭제 메소드
+	 */
+	@Override
+	public int deletePanelThanksSurvey(int mno) throws ResearchException {
+		int result = ad.deletePanelThanksSurvey(sqlSession, mno);
+		
+		if(result <0) {
+			throw new ResearchException("thanksSurvey삭제를 실패하셨습니다.");
+		}
+		
+		return result;
+	}
+
 	
 }

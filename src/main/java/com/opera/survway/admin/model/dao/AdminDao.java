@@ -155,4 +155,8 @@ public interface AdminDao {
 
 	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
 
+	int updatePanelLevel(SqlSessionTemplate sqlSession, int mno);
+
+	int deletePanelThanksSurvey(SqlSessionTemplate sqlSession, int mno);
+
 }

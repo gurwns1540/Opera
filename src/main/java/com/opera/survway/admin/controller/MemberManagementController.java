@@ -1,11 +1,15 @@
 package com.opera.survway.admin.controller;
 
+
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +32,8 @@ public class MemberManagementController {
 	
 	@Autowired
 	private AdminService as;
+	@Autowired
+	private JavaMailSender mailSender; // Mail Sender
 	
 	/**
 	 * @Author      : Ungken
@@ -144,8 +150,6 @@ public class MemberManagementController {
 		try {
 			listCount = as.getListCountNewPanel(searchMember);
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-			System.out.println(listCount);
-			System.out.println(pi);
 			searchMember.setPi(pi);
 			
 			List<AllMember> newPanelList = as.getListNewPanel(searchMember); 
@@ -201,4 +205,103 @@ public class MemberManagementController {
 		
 		return mv;
 	}
+	
+	@PostMapping("newPanelMailing.memberManagement")
+	public ModelAndView newPanelMailing(ModelAndView mv, int mno){
+		try {
+			AllMember newPanel = as.selectNewPanelDetail(mno);
+			
+			
+			//메일 전송 부분 시작
+			String setfrom = "yychani94@gmail.com";         
+		    String tomail  = newPanel.getUserEmail();     // 받는 사람 이메일
+		    String title   = "서브웨이 Thanks Survey 결과입니다.";      // 제목
+		    String content = "안녕하세요 " + newPanel.getUserName()+ "님, ThanksSurvey에 참여해주셔서 감사합니다." + "<br>"+
+		    		"Thanks Survey 결과 회원님은 패널로 활동하실 수 있습니다." + "<br>"+
+		    		"다양한 리서치 참여로  소정의 리워드를 받아가세요.";
+		   
+		    try {
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+				 
+				messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
+				messageHelper.setTo(tomail);     // 받는사람 이메일
+				messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+				messageHelper.setText(content);  // 메일 내용
+ 
+				String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + "<br>" +content; 
+				messageHelper.setText(contents, true); 
+				
+//				FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
+//				messageHelper.addInline("logo", file);
+
+				mailSender.send(message);
+				
+				int result1 = as.updatePanelLevel(mno);
+		    } catch(Exception e){
+		      System.out.println(e);
+		    }
+			//메일 전송 부분 끝
+			
+			
+		} catch (SelectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		mv.addObject("result",true);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
+	@PostMapping("newPanelReferMailing.memberManagement")
+	public ModelAndView newPanelReferMailing(ModelAndView mv, int mno, String text ) {
+		
+		try {
+			AllMember newPanel = as.selectNewPanelDetail(mno);
+			System.out.println(newPanel);
+			
+			//메일 전송 부분 시작
+			String setfrom = "yychani94@gmail.com";         
+		    String tomail  = newPanel.getUserEmail();     // 받는 사람 이메일
+		    String title   = "서브웨이 Thanks Survey 결과입니다.";      // 제목
+		    String content = text +" 라는 이유로 thanksSurvey가 반려 되셨습니다.";
+		   
+		    try {
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+				 
+				messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
+				messageHelper.setTo(tomail);     // 받는사람 이메일
+				messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+				messageHelper.setText(content);  // 메일 내용
+ 
+				String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + "<br>" +content; 
+				messageHelper.setText(contents, true); 
+				
+//				FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
+//				messageHelper.addInline("logo", file);
+
+				mailSender.send(message);
+				
+				int result1 = as.deletePanelThanksSurvey(mno);
+		    } catch(Exception e){
+		      System.out.println(e);
+		    }
+			//메일 전송 부분 끝
+			
+			
+		} catch (SelectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		mv.addObject("result",true);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
+	
 }
