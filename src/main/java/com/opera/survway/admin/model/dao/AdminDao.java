@@ -146,14 +146,8 @@ public interface AdminDao {
 	int selectMailingHistoryOrder(SqlSessionTemplate sqlSession, int researchNo);
 
 	String selectMailingHistoryCurrentDate(SqlSessionTemplate sqlSession, int researchNo);
-
+ 
 	String selectResearchPeriod(SqlSessionTemplate sqlSession, int researchNo);
-
-	int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo);
-
-	List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals) throws ResearchException;
-
-	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
 
 	int updatePanelLevel(SqlSessionTemplate sqlSession, int mno);
 
