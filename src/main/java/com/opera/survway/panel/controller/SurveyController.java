@@ -97,6 +97,7 @@ public class SurveyController {
 		
 		//신규 및 일반회원용
 		model.addAttribute("researchList", researchList);
+		System.out.println("pi.getMaxPage : " + pi.getMaxPage());
 		model.addAttribute("pi", pi);
 		//휴면or블랙리스트회원용
 		model.addAttribute("msg", msg);
