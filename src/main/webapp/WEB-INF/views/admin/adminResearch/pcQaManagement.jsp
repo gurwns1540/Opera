@@ -485,7 +485,7 @@
 			if($(this).val() == "1"){
 				$("#segmentVideo").hide();
 				$("#segmentAudio").show();
-			}else if($(this).val() == "0"){
+			}else if($(this).val() == "0"){ 
 				$("#segmentAudio").hide();
 				$("#segmentVideo").show();
 			}
