@@ -71,16 +71,4 @@ public class AdminForwardController {
 		return "adminResearch/researchCompletedProcessingList";
 	}
 	
-	//ts질문관리
-	@RequestMapping("tsQaManagement.admin")
-	public String forwardTsQaManagement() {
-		return "adminResearch/tsQaManagement";
-	}
-	
-	
-	//패널 pc환경조사 질문관리
-	@RequestMapping("pcQaManagement.admin")
-	public String forwardpcQaManagement() {
-		return "adminResearch/pcQaManagement";
-	}
 }

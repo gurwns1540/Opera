@@ -98,4 +98,13 @@ public interface AdminService {
 
 	int getListCountMailingList(MailingList list);
 
+	int audioEnviron(String questionTitle, String[] choiceTitleArr, String[] choiceOrderArr,String titleContex,String questionFormNo);
+
+	ResearchQuestion pcQaManagement();
+
+	int videoInsert(String questionTitle, String[] choiceTitleArr, String[] choiceOrderArr, String titleContext,
+			String questionFormNo, String videoAdress);
+
+
+
 }
