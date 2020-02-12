@@ -119,5 +119,8 @@ public interface AdminService {
 
 	ResearchOne selectResearchOne(int researchNo);
 
+	int updatePanelLevel(int mno) throws ResearchException;
+
+	int deletePanelThanksSurvey(int mno) throws ResearchException;
 
 }

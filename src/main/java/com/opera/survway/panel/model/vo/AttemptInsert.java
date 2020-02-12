@@ -8,30 +8,30 @@ package com.opera.survway.panel.model.vo;
  *
  */
 public class AttemptInsert {
-	private String mno;
-	private String researchNo;
+	private int mno;
+	private int researchNo;
 	
 	public AttemptInsert() {}
 
-	public AttemptInsert(String mno, String researchNo) {
+	public AttemptInsert(int mno, int researchNo) {
 		super();
 		this.mno = mno;
 		this.researchNo = researchNo;
 	}
 
-	public String getMno() {
+	public int getMno() {
 		return mno;
 	}
 
-	public void setMno(String mno) {
+	public void setMno(int mno) {
 		this.mno = mno;
 	}
 
-	public String getResearchNo() {
+	public int getResearchNo() {
 		return researchNo;
 	}
 
-	public void setResearchNo(String researchNo) {
+	public void setResearchNo(int researchNo) {
 		this.researchNo = researchNo;
 	}
 

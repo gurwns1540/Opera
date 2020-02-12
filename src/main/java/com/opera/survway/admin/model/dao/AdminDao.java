@@ -153,7 +153,7 @@ public interface AdminDao {
 	int selectMailingHistoryOrder(SqlSessionTemplate sqlSession, int researchNo);
 
 	String selectMailingHistoryCurrentDate(SqlSessionTemplate sqlSession, int researchNo);
-
+ 
 	String selectResearchPeriod(SqlSessionTemplate sqlSession, int researchNo);
 
 	List<ResearchReport> selectResearchReportList(SqlSessionTemplate sqlSession);
@@ -171,5 +171,9 @@ public interface AdminDao {
 	List<Choice> selectChoiceList(SqlSessionTemplate sqlSession, int researchNo);
 
 	ResearchOne selectResearchOne(SqlSessionTemplate sqlSession, int researchNo);
+	
+  int updatePanelLevel(SqlSessionTemplate sqlSession, int mno);
+
+	int deletePanelThanksSurvey(SqlSessionTemplate sqlSession, int mno);
 
 }

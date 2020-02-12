@@ -39,6 +39,7 @@
 		<typeAlias type="com.opera.survway.admin.model.vo.Question" alias="Question"/>
 		<typeAlias type="com.opera.survway.admin.model.vo.Choice" alias="Choice"/>
 		<typeAlias type="com.opera.survway.admin.model.vo.ResearchOne" alias="ResearchOne"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.SurveyReward" alias="SurveyReward"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>

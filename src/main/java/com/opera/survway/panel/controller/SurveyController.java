@@ -22,6 +22,7 @@ import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
+import com.opera.survway.panel.model.vo.SurveyReward;
 
 @Controller
 public class SurveyController {
@@ -97,6 +98,7 @@ public class SurveyController {
 		
 		//신규 및 일반회원용
 		model.addAttribute("researchList", researchList);
+		System.out.println("pi.getMaxPage : " + pi.getMaxPage());
 		model.addAttribute("pi", pi);
 		//휴면or블랙리스트회원용
 		model.addAttribute("msg", msg);
@@ -111,10 +113,11 @@ public class SurveyController {
 	 * @Description : 설문조사 목록 중 선택한 설문조사에 대한 문제 및 보기 리스트 조회
 	 */
 	@PostMapping("selectResearchQuestions.survey")
-	public ModelAndView selectResearchQuestionList(String reward, String researchNo, String userName, String panellevelNo, ModelAndView mv) {
+	public ModelAndView selectResearchQuestionList(String reward, String researchNo, String userName, String panellevelNo, String rquestionVideolink, ModelAndView mv) {
 		
 		//문항수
 		int qCount = 0;
+		int targetCount = 0;
 		//예상소요시간 (분)
 		int time = 0;
 		int minTime = 0;
@@ -124,9 +127,16 @@ public class SurveyController {
 		try {
 			Research researchInfo = ps.getResearchInfo(researchNo);
 			System.out.println("researchInfo : " + researchInfo);
-			List<ResearchQuestion> researchQuestions = ps.getResearchQuestionList(researchNo);
+			List<ResearchQuestion> researchQuestions = ps.getResearchQuestionList(researchNo, rquestionVideolink);
 			System.out.println("researchQuestons : " + researchQuestions);
 			qCount = researchQuestions.size();
+			
+			for(int i=0; i<researchQuestions.size(); i++) {
+				if(researchQuestions.get(i).getQuestionType().equals("target")) {
+					targetCount++;
+				}
+			}
+			
 			
 			if(qCount <= 10) {
 				time = 5;
@@ -143,23 +153,30 @@ public class SurveyController {
 			minTime = time/2;
 			maxTime = time*2;
 			
-			for(ResearchQuestion r : researchQuestions) {
-				r.setResearchNo(Integer.parseInt(researchNo));
-				r.setProgressDataPercent((int)(Math.round((r.getResearchOrder()-1)/((double)qCount)*100)));
+			int odr = 1;
+			for(int i=0; i<researchQuestions.size(); i++) {
+				researchQuestions.get(i).setTotalOrder(odr);
+				odr++;
 			}
 			
-			System.out.println("time : " + time);
-			System.out.println("qCount : " + qCount);
+			
+			for(ResearchQuestion r : researchQuestions) {
+				r.setResearchNo(Integer.parseInt(researchNo));
+				r.setProgressDataPercent((int)(Math.round((r.getTotalOrder()-1)/((double)qCount)*100)));
+			}
 			
 			mv.addObject("researchInfo", researchInfo);
+			System.out.println("researchQuestions : " + researchQuestions);
 			mv.addObject("researchQuestionList", researchQuestions);
 			mv.addObject("questionCount", qCount);
+			mv.addObject("targetCount", targetCount);
 			mv.addObject("time", time);
 			mv.addObject("minTime", minTime);
 			mv.addObject("maxTime", maxTime);
 			mv.addObject("userName", userName);
 			mv.addObject("panellevelNo", panellevelNo);
 			mv.addObject("researchReward", reward);
+			mv.addObject("rquestionVideolink", rquestionVideolink);
 			mv.setViewName("jsonView");
 			
 		} catch (SelectException e) {
@@ -183,10 +200,10 @@ public class SurveyController {
 		System.out.println("조사시도 researchNo : " + researchNo);
 		
 		AttemptInsert attempt = new AttemptInsert();
-		attempt.setMno(mno);
-		attempt.setResearchNo(researchNo);
+		attempt.setMno(Integer.parseInt(mno));
+		attempt.setResearchNo(Integer.parseInt(researchNo));
 		
-//		int insertResult = ps.insertResearchTry(attempt);
+		int insertResult = ps.insertResearchTry(attempt);
 		
 		return mv;
 	}
@@ -196,10 +213,13 @@ public class SurveyController {
 	 * @Author      : Sooo
 	 * @CreateDate  : 2020. 2. 8.
 	 * @ModifyDate  : 2020. 2. 8.
-	 * @Description : 설문조사 응답 값 인서트
+	 * @Description : 설문조사 응답 값 인서트 및 최종리워드 리턴
 	 */
 	@PostMapping("insertResearchAnswers.survey")
-	public ModelAndView insertResearchAnswerList(String mno, String researchNo, String totalAnswer, String surveyTime, String minTime, String maxTime, String reward, String answerCheck, ModelAndView mv) {
+	public ModelAndView insertResearchAnswerList(String mno, String researchNo, String totalAnswer, String surveyTime, String minTime, String maxTime, String reward, String answerCheck, String targetCount, String pcCount, ModelAndView mv) {
+		
+		//targetCount : 대상조사 문제 갯수
+		//pcCount : pc환경조사문제 있는지 없는지 -> 있으면 1, 없으면 0
 		
 		double surveyT = Double.parseDouble(surveyTime);
 		int minT = Integer.parseInt(minTime);
@@ -221,18 +241,42 @@ public class SurveyController {
 		}
 		
 		InsertAnswer answer = new InsertAnswer();
-		answer.setMno(mno);
-		answer.setResearchNo(researchNo);
+		answer.setMno(Integer.parseInt(mno));
+		answer.setResearchNo(Integer.parseInt(researchNo));
 		answer.setTotalAnswer(totalAnswer);
-		answer.setSurveyTime(surveyTime);
-		answer.setFinalReward(finalReward);
+		System.out.println("totalAnswer : " + totalAnswer);
+		answer.setResearchTime(surveyTime);
+		answer.setTargetCount(Integer.parseInt(targetCount));
+		answer.setPcCount(Integer.parseInt(pcCount));
 		
-//		int insertResult = ps.insertAnswer(answer);
+		int insertResult = ps.insertAnswer(answer);
 		
+		mv.addObject("finalReward", finalReward);
 		mv.setViewName("jsonView");
 		return mv;
 	}
 	
+	
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 설문조사 리워드 인서트 및 관련 디비 테이블 처리
+	 */
+	@PostMapping("insertSurveyReward.survey")
+	public ModelAndView insertSurveyReward(String mno, String surveyReward, String researchNo, ModelAndView mv) {
+		
+		SurveyReward reward = new SurveyReward();
+		reward.setMno(Integer.parseInt(mno));
+		reward.setResearchNo(Integer.parseInt(researchNo));
+		reward.setSurveyReward(Integer.parseInt(surveyReward));
+		
+		int result = ps.insertSurveyReward(reward);
+		System.out.println("설문조사 리워드 인서트 결과 : " + result);
+		
+		mv.setViewName("jsonView");
+		return mv;
+	}
 	
 }
 

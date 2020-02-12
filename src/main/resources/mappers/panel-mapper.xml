@@ -410,6 +410,14 @@
 		<result property="rquestionVideolink" column="RQUESTION_VIDEOLINK" />
 		<result property="mediaExplain" column="MEDIA_EXPLAIN" />
 		<result property="qchangeName" column="CHANGE_NAME" />
+		<result property="correctAnswer" column="CORRECT_ANSWER" />
+	</resultMap>
+	
+	<resultMap type="PanelResearchQuestion" id="targetQuestionResultSet">
+		<id property="rquestionNo" column="DISCRIMINATION_QUESTIONNO" />
+		<result property="researchOrder" column="DISCRIMINATION_QUESTIONORDER" />
+		<result property="rquestionContext" column="DISCRIMINATION_QUESTIONTITLE" />
+		<result property="correctAnswer" column="CORRECT_ANSWER" />
 	</resultMap>
 	
 	<select id="selectTsQuestionList" resultMap="researchQuestionResultSet">
@@ -426,19 +434,26 @@
 		<result property="rchoiceContext" column="RCHOICE_CONTEXT" />
 		<result property="cchangeName" column="CHANGE_NAME" />
 	</resultMap>
+	
+	<resultMap type="PanelResearchChoice" id="targetChoiceResultSet">
+		<id property="rchoiceNo" column="DISCRIMINATION_CHOICENO" />
+		<result property="rquestionNo" column="DISCRIMINATION_QUESTIONNO" />
+		<result property="rchoiceOrder" column="DISCRIMINATION_CHOICEORDER" />
+		<result property="rchoiceContext" column="DISCRIMINATION_CHOICECONTEXT" />
+	</resultMap>
 
 	<select id="selectTsChoiceList" resultMap="researchChoiceResultSet" parameterType="_int">
 		SELECT *
 		FROM RESEARCHCHOICE
 		WHERE RQUESTION_NO = #{ rquestionNo }
+		ORDER BY RCHOICE_ORDER ASC
 	</select>
 	
 	<select id="selectCountMyResearch" resultType="_int" parameterType="PanelMember">
 		<![CDATA[
-		SELECT COUNT(*)
+		SELECT COUNT (*)
 		FROM RESEARCH R
-		LEFT JOIN RESEARCHTARGET RT USING (RESEARCH_NO)
-		LEFT JOIN ATTEMPTPARTICIPANT AP USING (RESEARCH_NO)
+		JOIN RESEARCHTARGET RT USING (RESEARCH_NO)
 		JOIN (SELECT RESEARCH_NO, RESEARCH_STATE_NO, RESEARCH_CHANGEDATE
 		      FROM RSTATUSHISTORY
 		      JOIN (SELECT RESEARCH_NO AS RNO, MAX(RESEARCH_CHANGEDATE) AS CDATE
@@ -452,36 +467,37 @@
 		      FROM RESEARCHQUESTION
 		      GROUP BY RESEARCH_NO)
 		USING (RESEARCH_NO)
-		WHERE RESEARCH_NO <> 1
+        WHERE RESEARCH_NO NOT IN (SELECT RESEARCH_NO
+                                FROM ATTEMPTPARTICIPANT
+                                WHERE MNO = #{ mno })
+		AND RESEARCH_NO <> 1
 		AND RESEARCH_NO <> 2
-		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO
-		                        FROM ATTEMPTPARTICIPANT
-		                        WHERE MNO = #{ mno })
-		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO FROM RESEARCHTARGET)
-		OR ((TARGET_GENDER = 'A' OR TARGET_GENDER = (SELECT P.PANEL_GENDER
+		AND ((TARGET_GENDER = 'A' OR TARGET_GENDER = (SELECT P.PANEL_GENDER
 		                                             FROM MEMBER M
 		                                             JOIN PANEL P USING (MNO)
 		                                             WHERE MNO = #{ mno }))
-		    AND (TARGET_AGERANGE = 'all' OR ( SUBSTR(TARGET_AGERANGE, 1, 2) <= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
-		                                                                        FROM MEMBER M
-		                                                                        JOIN PANEL P USING (MNO)
-		                                                                        WHERE MNO = #{ mno })
-		                                      AND SUBSTR(TARGET_AGERANGE, 4, 2) >= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
-		                                                                            FROM MEMBER M
-		                                                                            JOIN PANEL P USING (MNO)
-		                                                                            WHERE MNO = #{ mno })))
-		    AND (TARGET_LOCATION = 'all' OR ( TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'metropolitan', 2, 'metropolitan', 8, 'metropolitan', '')
-		                                                         FROM MEMBER M
-		                                                         LEFT JOIN RESEARCHHISTORY RH USING (MNO)
-		                                                         WHERE MNO = #{ mno }
-		                                                         AND RH.RESEARCH_NO = 1
-		                                                         AND RH.RQUESTION_NO = 8)
-		                                      OR TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'city', 2, 'city', 3, 'city', 4, 'city', 5, 'city', 6, 'city', 7, 'city', '')
-		                                                            FROM MEMBER M
-		                                                            LEFT JOIN RESEARCHHISTORY RH USING (MNO)
-		                                                            WHERE MNO = #{ mno }
-		                                                            AND RH.RESEARCH_NO = 1
-		                                                            AND RH.RQUESTION_NO = 8))))
+        AND (TARGET_AGERANGE = 'all' OR ( SUBSTR(TARGET_AGERANGE, 1, 2) <= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+                                                                            FROM MEMBER M
+                                                                            JOIN PANEL P USING (MNO)
+                                                                            WHERE MNO = #{ mno })
+                                          AND SUBSTR(TARGET_AGERANGE, 4, 2) >= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+                                                                                FROM MEMBER M
+                                                                                JOIN PANEL P USING (MNO)
+                                                                                WHERE MNO = #{ mno })))
+        AND (TARGET_LOCATION = 'all' OR ( TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'metropolitan', 2, 'metropolitan', 8, 'metropolitan', '')
+                                                             FROM MEMBER M
+                                                             LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+                                                             WHERE MNO = #{ mno }
+                                                             AND RH.RESEARCH_NO = 1
+                                                             AND RH.RQUESTION_NO = 73)
+                                          OR TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'city', 2, 'city', 3, 'city', 4, 'city', 5, 'city', 6, 'city', 7, 'city', '')
+                                                                FROM MEMBER M
+                                                                LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+                                                                WHERE MNO = #{ mno }
+                                                                AND RH.RESEARCH_NO = 1
+                                                                AND RH.RQUESTION_NO = 73))))
+
+        ORDER BY RESEARCH_NO ASC
 		]]>
 	</select>
 	
@@ -489,8 +505,7 @@
 		<![CDATA[
 		SELECT RESEARCH_NO, RESEARCH_NAME, RESEARCH_PERIOD, RESEARCH_PERPOSE, RESEARCH_REWARD, RQUESTION_VIDEOLINK
 		FROM RESEARCH R
-		LEFT JOIN RESEARCHTARGET RT USING (RESEARCH_NO)
-		LEFT JOIN ATTEMPTPARTICIPANT AP USING (RESEARCH_NO)
+		JOIN RESEARCHTARGET RT USING (RESEARCH_NO)
 		JOIN (SELECT RESEARCH_NO, RESEARCH_STATE_NO, RESEARCH_CHANGEDATE
 		      FROM RSTATUSHISTORY
 		      JOIN (SELECT RESEARCH_NO AS RNO, MAX(RESEARCH_CHANGEDATE) AS CDATE
@@ -504,45 +519,45 @@
 		      FROM RESEARCHQUESTION
 		      GROUP BY RESEARCH_NO)
 		USING (RESEARCH_NO)
-		WHERE RESEARCH_NO <> 1
+        WHERE RESEARCH_NO NOT IN (SELECT RESEARCH_NO
+                                FROM ATTEMPTPARTICIPANT
+                                WHERE MNO = #{ mno })
+		AND RESEARCH_NO <> 1
 		AND RESEARCH_NO <> 2
-		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO
-		                        FROM ATTEMPTPARTICIPANT
-		                        WHERE MNO = #{ mno })
-		AND RESEARCH_NO NOT IN (SELECT RESEARCH_NO FROM RESEARCHTARGET)
-		OR ((TARGET_GENDER = 'A' OR TARGET_GENDER = (SELECT P.PANEL_GENDER
+		AND ((TARGET_GENDER = 'A' OR TARGET_GENDER = (SELECT P.PANEL_GENDER
 		                                             FROM MEMBER M
 		                                             JOIN PANEL P USING (MNO)
 		                                             WHERE MNO = #{ mno }))
-		    AND (TARGET_AGERANGE = 'all' OR ( SUBSTR(TARGET_AGERANGE, 1, 2) <= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
-		                                                                        FROM MEMBER M
-		                                                                        JOIN PANEL P USING (MNO)
-		                                                                        WHERE MNO = #{ mno })
-		                                      AND SUBSTR(TARGET_AGERANGE, 4, 2) >= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
-		                                                                            FROM MEMBER M
-		                                                                            JOIN PANEL P USING (MNO)
-		                                                                            WHERE MNO = #{ mno })))
-		    AND (TARGET_LOCATION = 'all' OR ( TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'metropolitan', 2, 'metropolitan', 8, 'metropolitan', '')
-		                                                         FROM MEMBER M
-		                                                         LEFT JOIN RESEARCHHISTORY RH USING (MNO)
-		                                                         WHERE MNO = #{ mno }
-		                                                         AND RH.RESEARCH_NO = 1
-		                                                         AND RH.RQUESTION_NO = 8)
-		                                      OR TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'city', 2, 'city', 3, 'city', 4, 'city', 5, 'city', 6, 'city', 7, 'city', '')
-		                                                            FROM MEMBER M
-		                                                            LEFT JOIN RESEARCHHISTORY RH USING (MNO)
-		                                                            WHERE MNO = #{ mno }
-		                                                            AND RH.RESEARCH_NO = 1
-		                                                            AND RH.RQUESTION_NO = 8))))
-		 ORDER BY RESEARCH_NO ASC
+        AND (TARGET_AGERANGE = 'all' OR ( SUBSTR(TARGET_AGERANGE, 1, 2) <= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+                                                                            FROM MEMBER M
+                                                                            JOIN PANEL P USING (MNO)
+                                                                            WHERE MNO = #{ mno })
+                                          AND SUBSTR(TARGET_AGERANGE, 4, 2) >= (SELECT (EXTRACT(YEAR FROM SYSDATE) - SUBSTR(P.PANEL_BIRTHDAY, 1, 4) +1)
+                                                                                FROM MEMBER M
+                                                                                JOIN PANEL P USING (MNO)
+                                                                                WHERE MNO = #{ mno })))
+        AND (TARGET_LOCATION = 'all' OR ( TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'metropolitan', 2, 'metropolitan', 8, 'metropolitan', '')
+                                                             FROM MEMBER M
+                                                             LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+                                                             WHERE MNO = #{ mno }
+                                                             AND RH.RESEARCH_NO = 1
+                                                             AND RH.RQUESTION_NO = 73)
+                                          OR TARGET_LOCATION = (SELECT DECODE(RH.RQUESTION_RESPONSE, 1, 'city', 2, 'city', 3, 'city', 4, 'city', 5, 'city', 6, 'city', 7, 'city', '')
+                                                                FROM MEMBER M
+                                                                LEFT JOIN RESEARCHHISTORY RH USING (MNO)
+                                                                WHERE MNO = #{ mno }
+                                                                AND RH.RESEARCH_NO = 1
+                                                                AND RH.RQUESTION_NO = 73))))
+
+        ORDER BY RESEARCH_NO ASC
 		 ]]>
 	</select>
 	
 	<select id="selectResearchQuestionList" resultMap="researchQuestionResultSet" parameterType="java.lang.String">
 		SELECT *
-		FROM RESEARCHQUESTION
-		LEFT JOIN UPLOADFILE USING (RESEARCH_NO)
-		WHERE RESEARCH_NO = #{ researchNo }
+		FROM RESEARCHQUESTION RQ
+		LEFT JOIN UPLOADFILE USING (RQUESTION_NO)
+		WHERE RQ.RESEARCH_NO = #{ researchNo }
 		ORDER BY RESEARCH_ORDER ASC
 	</select>
 	
@@ -598,7 +613,7 @@
 	</update>
   	
   	<insert id="insertAttemptParticipant" parameterType="AttemptInsert">
-  		INSERT INTO ATTEMPTPARTICIPANT VALUES(SEQ_ATTEMPTPARTICIPANT, SYSDATE, #{ mno }, #{ researchNo })
+  		INSERT INTO ATTEMPTPARTICIPANT VALUES(SEQ_ATTEMPTPARTICIPANT.NEXTVAL, SYSDATE, #{ mno }, #{ researchNo })
   	</insert>
   
   	<update id="updateNomineeReward" parameterType="java.lang.String">
@@ -635,4 +650,61 @@
 		(SEQ_REWARDHISTORY.NEXTVAL, (SELECT REWARD_POINT FROM PANELREWARD 
 									WHERE MNO = #{mno}), '추천인', '+500', #{mno}, SYSDATE, NULL, NULL, NULL, NULL)
 	</insert>
+	
+	<select id="getCurrentPanelReward" parameterType="_int" resultType="_int">
+		SELECT REWARD_POINT
+		FROM PANELREWARD
+		WHERE MNO =#{ mno }
+	</select>
+	
+	<update id="updatePanelReward" parameterType="SurveyReward">
+  		UPDATE PANELREWARD 
+  		SET REWARD_POINT = #{ afterchangePoint }
+		WHERE MNO = #{ mno }
+	</update>
+	
+	<insert id="insertSurveyRewardHistory" parameterType="SurveyReward">
+		INSERT INTO REWARDHISTORY VALUES(SEQ_REWARDHISTORY.NEXTVAL, #{ afterchangePoint }, '설문조사참여', '+'||#{ surveyReward }, #{ mno }, SYSDATE, NULL, NULL, NULL, #{ researchNo })
+	</insert>
+	
+	<select id="selectPcQuestion" resultMap="researchQuestionResultSet" parameterType="java.lang.String">
+		SELECT *
+		FROM RESEARCHQUESTION RQ
+		LEFT JOIN UPLOADFILE UF ON (RQ.RESEARCH_NO = UF.RESEARCH_NO)
+		WHERE UF.RESEARCH_NO = 2
+		ORDER BY RESEARCH_ORDER ASC
+	</select>
+	
+	<select id="selectPcChoices" resultMap="researchChoiceResultSet" parameterType="_int">
+		SELECT *
+		FROM RESEARCHCHOICE
+		WHERE RQUESTION_NO = #{ rquestionNo }
+		ORDER BY RCHOICE_ORDER ASC
+	</select>
+	
+	<select id="selectTargetQuestions" resultMap="targetQuestionResultSet" parameterType="java.lang.String">
+		SELECT *
+		FROM DISCRIMINATIONQUESTION
+		WHERE RESEARCH_NO = #{ researchNo }
+        ORDER BY DISCRIMINATION_QUESTIONORDER ASC
+	</select>
+	
+	<select id="selectTargetChoices" resultMap="targetChoiceResultSet" parameterType="_int">
+		SELECT *
+		FROM DISCRIMINATIONCHOICE
+		WHERE DISCRIMINATION_QUESTIONNO = #{ rquestionNo }
+		ORDER BY DISCRIMINATION_CHOICEORDER ASC
+	</select>
+	
+	
+	<select id="selectRquestionNo" parameterType="InsertAnswer" resultType="_int">
+		SELECT RQUESTION_NO
+		FROM RESEARCHQUESTION
+		WHERE RESEARCH_NO = #{ researchNo }
+		AND RESEARCH_ORDER = #{ researchOrder }
+	</select>
+	
+	
 </mapper>
+
+
