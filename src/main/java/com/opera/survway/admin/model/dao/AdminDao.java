@@ -146,7 +146,11 @@ public interface AdminDao {
 	int selectMailingHistoryOrder(SqlSessionTemplate sqlSession, int researchNo);
 
 	String selectMailingHistoryCurrentDate(SqlSessionTemplate sqlSession, int researchNo);
-
+ 
 	String selectResearchPeriod(SqlSessionTemplate sqlSession, int researchNo);
+
+	int updatePanelLevel(SqlSessionTemplate sqlSession, int mno);
+
+	int deletePanelThanksSurvey(SqlSessionTemplate sqlSession, int mno);
 
 }

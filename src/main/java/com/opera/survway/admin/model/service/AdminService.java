@@ -98,4 +98,8 @@ public interface AdminService {
 
 	int getListCountMailingList(MailingList list);
 
+	int updatePanelLevel(int mno) throws ResearchException;
+
+	int deletePanelThanksSurvey(int mno) throws ResearchException;
+
 }
