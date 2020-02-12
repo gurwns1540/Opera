@@ -15,6 +15,7 @@ import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
@@ -124,5 +125,13 @@ public interface PanelDao {
 	int insertRewardNomineeHistory(SqlSessionTemplate sqlSession, String nominee);
 
 	int insertRewardUserHistory(SqlSessionTemplate sqlSession, PanelMember pm);
+
+	int getListCountPanelResearech(SqlSessionTemplate sqlSession, PanelResearchList rl);
+
+	List<PanelResearchList> selectAllPanelResearchList(SqlSessionTemplate sqlSession, PanelResearchList rl);
+
+	int getListCountPanelResearchRetry(SqlSessionTemplate sqlSession, PanelResearchList rl);
+
+	List<PanelResearchList> selectAllPanelResearchRetryList(SqlSessionTemplate sqlSession, PanelResearchList rl);
 
 }

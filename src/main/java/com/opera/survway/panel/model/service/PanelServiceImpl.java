@@ -23,6 +23,7 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
@@ -658,6 +659,72 @@ public class PanelServiceImpl implements PanelService {
 	public int insertAnswer(InsertAnswer answer) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	/**
+	 * @throws InquiryException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 12.
+	 * @ModifyDate	:2020. 2. 12.
+	 * @Description	:참여 완료한 목록 listCount
+	 */
+	@Override
+	public int getListCountPanelResearch(PanelResearchList rl) throws InquiryException {
+		
+		int result = pd.getListCountPanelResearech(sqlSession, rl );
+		
+		if(result <0) {
+			throw new InquiryException("참여한 설문조사 listCount 조회 실패");
+		}
+		return result;
+	}
+
+	/**
+	 * @throws InquiryException 
+	 * @Author	:im233
+	 * @CreateDate	:2020. 2. 12.
+	 * @ModifyDate	:2020. 2. 12.
+	 * @Description	:참여완료목록 가져오기 
+	 */
+	@Override
+	public List<PanelResearchList> selectAllPanelResearchList(PanelResearchList rl)  {
+		
+		List<PanelResearchList> list = pd.selectAllPanelResearchList(sqlSession, rl);
+		
+		
+		return list;
+	}
+
+	/**
+	 * @throws InquiryException 
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 13.
+	 * @ModifyDate	:2020. 2. 13.
+	 * @Description	:참여시도한 조사listCount
+	 */
+	@Override
+	public int getListCountPanelResearchRetry(PanelResearchList rl) throws InquiryException {
+		int result = pd.getListCountPanelResearchRetry(sqlSession,rl);
+		
+		if(result <0) {
+			throw new InquiryException("참여시도한 조사 listCount조회 실패");
+		}
+		
+		return result;
+	}
+
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 13.
+	 * @ModifyDate	:2020. 2. 13.
+	 * @Description	:참여시도한 조사 가져오기
+	 */
+	@Override
+	public List<PanelResearchList> selectAllPanelResearchRetryList(PanelResearchList rl) {
+		List<PanelResearchList> list = pd.selectAllPanelResearchRetryList(sqlSession, rl);
+		
+		
+		return list;
 	}
 
 

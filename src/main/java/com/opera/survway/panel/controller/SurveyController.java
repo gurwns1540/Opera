@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,11 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.Util;
+import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.service.PanelService;
 import com.opera.survway.panel.model.vo.AttemptInsert;
+import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 
@@ -234,7 +239,104 @@ public class SurveyController {
 		return mv;
 	}
 	
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 12.
+	 * @ModifyDate	:2020. 2. 12.
+	 * @Description	:참여 완료한 리서치 목록 검색 및 조회
+	 */
+	@RequestMapping("mySurveyList_complete.survey")
+	public String showMySurveyList_complete(HttpSession session,HttpServletRequest request, PanelResearchList rl,
+												Model model) {
+		PanelMember panelMember = (PanelMember) session.getAttribute("loginUser");
+		int mno = panelMember.getMno();
+		String queryString = request.getQueryString();
+
+		Map<String, List<String>> queryMap = null;
+
+		int currentPage = 1;
+		String researchTitle = "";
+		
+
+		rl = new PanelResearchList();
+		rl.setMno(mno);
+		if (queryString != null) {
+
+			queryMap = Util.splitQuery(queryString);
+			if (queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+			if (queryMap.containsKey("searchResearch")) {
+				researchTitle = queryMap.get("searchResearch").get(0);
+				rl.setResearchName(researchTitle);
+			}
+			
+		}
+		int listCount = 0;
+
+		try {
+			listCount = ps.getListCountPanelResearch(rl);
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			rl.setPi(pi);
+			List<PanelResearchList> list = ps.selectAllPanelResearchList(rl);
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+		} catch (InquiryException e) {
+			request.setAttribute("msg", e.getMessage());
+		}
+		
+		
+		return "mySurveyList_complete";
+	}
 	
+	
+	/**
+	 * @Author	:hansol
+	 * @CreateDate	:2020. 2. 13.
+	 * @ModifyDate	:2020. 2. 13.
+	 * @Description	:참여시도한 조사
+	 */
+	@RequestMapping("mySurveyList_retry.survey")
+	public String showMySurveyList_retry(HttpSession session,HttpServletRequest request, PanelResearchList rl,
+											Model model) {
+		PanelMember panelMember = (PanelMember) session.getAttribute("loginUser");
+		int mno = panelMember.getMno();
+		String queryString = request.getQueryString();
+
+		Map<String, List<String>> queryMap = null;
+
+		int currentPage = 1;
+		String researchTitle = "";
+		
+
+		rl = new PanelResearchList();
+		rl.setMno(mno);
+		if (queryString != null) {
+
+			queryMap = Util.splitQuery(queryString);
+			if (queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+			if (queryMap.containsKey("searchResearch")) {
+				researchTitle = queryMap.get("searchResearch").get(0);
+				rl.setResearchName(researchTitle);
+			}
+			
+		}
+		int listCount = 0;
+
+		try {
+			listCount = ps.getListCountPanelResearchRetry(rl);
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			rl.setPi(pi);
+			List<PanelResearchList> list = ps.selectAllPanelResearchRetryList(rl);
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+		} catch (InquiryException e) {
+			request.setAttribute("msg", e.getMessage());
+		}
+		return "mySurveyList_retry";
+	}
 }
 
 

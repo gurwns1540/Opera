@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="/WEB-INF/views/panel/common/head.jsp"%>
+<jsp:include page="/WEB-INF/views/panel/common/head.jsp" />
 </head>
 <style>
-
 .ui.tabular.menu .active.item {
 	width: 20%;
 	padding-left: 6%;
@@ -18,9 +17,11 @@
 	width: 20%;
 	padding-left: 6%;
 }
+
 .searchArea {
-	margin-top:50px;
+	margin-top: 50px;
 }
+
 #tableArea {
 	border-top: 1px solid #3C3C3C;
 	border-collapse: collapse;
@@ -88,109 +89,183 @@
 <body>
 	<c:if test="${ loginUser != null }">
 		<div class="wrap">
-			<%@ include file="/WEB-INF/views/panel/common/header.jsp"%>
+			<jsp:include page="/WEB-INF/views/panel/common/header.jsp" />
 			<section class="container">
 				<br />
-	
+
 				<table id="titleTable" height="10px;" width="99%;">
 					<tr>
 						<td id="menuTitle">참여한 설문조사</td>
 						<td id="pagePath">
 							<div class="ui breadcrumb">
-								<a class="section" id="depth1" href="panelMain.panel">Home</a>
-								<i class="right angle icon divider"></i>
-								<a class="section" id="depth2" href="surveyList.survey">서베이</a>
-								<i class="right angle icon divider"></i>
+								<a class="section" id="depth1" href="panelMain.panel">Home</a> <i
+									class="right angle icon divider"></i> <a class="section"
+									id="depth2" href="surveyList.survey">서베이</a> <i
+									class="right angle icon divider"></i>
 								<div class="active section" id="depth3">참여한 설문조사</div>
 							</div>
 						</td>
 					</tr>
 				</table>
-				
+
 				<div class="sectionLine">
 					<hr>
 				</div>
-	
-	
-	
+
+
+
 				<div class="ui tabular menu">
-					<a class="item active"> 참여 완료 조사 </a>
-					<a class="item" onclick="location.href='mySurveyList_retry.panel'"> 참여 시도 조사 </a>
+					<a class="item active"> 참여 완료 조사 </a> <a class="item"
+						onclick="location.href='mySurveyList_retry.survey'"> 참여 시도 조사
+					</a>
 				</div>
-	
-	
-				
+
+
+
 				<div class="ContentsArea" style="width: 100%;">
 					<div class="searchArea" align="right">
-						<table>
-							<tr>
-								<td>
-									<h4>검색어</h4>
-								</td>
-								<td></td>
-								<td></td>
-								<td>
-									<div class="ui input">
-										<input type="search" name="" />
-									</div>
-								</td>
-								<td>
-									<button id="searchBtn">검색</button>
-								</td>
-							</tr>
-						</table>
-					</div>  <!-- inquirySearchArea end -->
+						<form action="mySurveyList_complete.survey" method="get"
+							id="search">
+							<table>
+								<tr>
+									<td>
+										<h4>검색어</h4>
+									</td>
+									<td></td>
+									<td></td>
+									<td>
+										<div class="ui input">
+											<input type="search" name="searchResearch" />
+										</div>
+									</td>
+									<td>
+										<button id="searchBtn">검색</button>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div>
+					<!-- inquirySearchArea end -->
 					<br />
-					<div class="listArea" style="width: inherit;">	
+					<div class="listArea" style="width: inherit;">
 						<table id="tableArea" align="center" style="width: inherit;">
 							<thead id="tHeadArea">
 								<tr>
 									<th style="width: 20%;">조사번호</th>
 									<th style="width: 60%;">조사명</th>
 									<th style="width: 20%;">응답일자</th>
-									
+
 								</tr>
-							</thead>  <!-- #inquiryTheadArea end -->
+							</thead>
+							<!-- #inquiryTheadArea end -->
 							<tbody id="tBodyArea">
-							<c:forEach begin="1" end="5" step="1">
-								<tr>
-									<td>84532</td>
-									<td>스낵 선호도 조사</td>
-									<td>2020.01.11</td>
-								</tr>
-							</c:forEach>
-								
-							</tbody>  <!-- #inquiryTbodyArea end -->
-						</table>  <!-- #inquiryTableArea end -->
-					</div>  <!-- .inquiryArea end -->
-					<div id="pagingArea" align="center" style="margin-top: 50px;">
-				        <span>[처음]</span>
-				        <span>[이전]</span>
-				        <c:forEach var="i" begin="1" end="5">
-				        	<span><c:out value="${ i }"/></span>
-				        </c:forEach>
-				        <span>[다음]</span>
-				        <span>[마지막]</span>
-			     	</div>  <!-- #pagingArea end -->
-				</div>  <!-- .inquiryContentsArea end -->
-	
-	
-	
-	
-	
-	
+								<c:forEach var="PanelResearchList" items="${list }">
+									<tr>
+										<td><c:out value="${PanelResearchList.researchNo}" /></td>
+										<td><c:out value="${PanelResearchList.researchName}" /></td>
+										<td><c:out
+												value="${PanelResearchList.researchResponseDate}" /></td>
+									</tr>
+								</c:forEach>
+
+							</tbody>
+							<!-- #inquiryTbodyArea end -->
+						</table>
+						<!-- #inquiryTableArea end -->
+					</div>
+					<!-- .inquiryArea end -->
+					<div id="pagingArea" align="center">
+						<c:url var="inquiryListFirst" value="mySurveyList_retry.survey">
+							<c:param name="currentPage" value="${1}" />
+							<c:if test="${ !empty param.researchName }">
+								<c:param name="inquiryTitle" value="${param.researchName}" />
+							</c:if>
+
+						</c:url>
+						<a href="${inquiryListFirst}"><span>[처음]</span></a>&nbsp;
+
+						<c:if test="${pi.currentPage <= 1}">
+							<span>[이전]</span> &nbsp;
+			</c:if>
+						<c:if test="${pi.currentPage > 1}">
+							<c:url var="inquiryListBack" value="mySurveyList_retry.survey">
+								<c:param name="currentPage" value="${pi.currentPage - 1}" />
+								<c:if test="${ !empty param.researchName }">
+									<c:param name="researchName" value="${param.researchName}" />
+								</c:if>
+
+							</c:url>
+							<a href="${inquiryListBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+
+						<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+							<c:if test="${p eq pi.currentPage }">
+								<span
+									style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+							</c:if>
+							<c:if test="${p ne pi.currentPage }">
+								<c:url var="inquiryListCheck"
+									value="mySurveyList_retry.survey">
+									<c:param name="currentPage" value="${ p }" />
+									<c:if test="${ !empty param.researchName }">
+										<c:param name="researchName" value="${param.researchName}" />
+									</c:if>
+
+								</c:url>
+								<a href="${ inquiryListCheck }"><span>${ p }</span></a>
+							</c:if>
+
+						</c:forEach>
+
+						<c:if test="${pi.currentPage < pi.maxPage}">
+							<c:url var="inquiryListNext" value="mySurveyList_retry.survey">
+								<c:param name="currentPage" value="${pi.currentPage + 1}" />
+								<c:if test="${ !empty param.researchName }">
+									<c:param name="researchName" value="${param.researchName}" />
+								</c:if>
+
+							</c:url>
+				&nbsp;<a href="${inquiryListNext}"><span>[다음]</span></a>
+						</c:if>
+						<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+						</c:if>
+
+						<c:url var="inquiryListEnd" value="mySurveyList_retry.survey">
+							<c:param name="currentPage" value="${pi.maxPage}" />
+							<c:if test="${ !empty param.researchName }">
+								<c:param name="researchName" value="${param.researchName}" />
+							</c:if>
+
+						</c:url>
+						<a href="${inquiryListEnd}"><span>[마지막]</span></a>&nbsp;
+					</div>
+					<!-- #pagingArea end -->
+				</div>
+				<!-- .inquiryContentsArea end -->
+
+
+
+
+
+
 				<br />
 			</section>
 			<!-- container end -->
-			<%@ include file="/WEB-INF/views/panel/common/footer.jsp"%>
+			<jsp:include page="/WEB-INF/views/panel/common/footer.jsp" />
 		</div>
 		<!-- wrap end -->
 	</c:if>
 	<c:if test="${ loginUser == null }">
 		<script>
-			location.href="panelResult.panel?message=notLoginAccess";
+			location.href = "panelResult.panel?message=notLoginAccess";
 		</script>
 	</c:if>
+	<script>
+		$("#searchBtn").click(function() {
+			$("#search").submit();
+		});
+	</script>
 </body>
 </html>
 

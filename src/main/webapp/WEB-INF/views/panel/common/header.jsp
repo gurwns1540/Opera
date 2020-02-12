@@ -58,7 +58,7 @@
 		   		 서베이
 		   		 <div class="menu">
 			    	<a href="surveyList.survey" class="item">진행중인 설문조사</a>
-			    	<a href="mySurveyList_complete.panel" class="item">참여한 설문조사</a>
+			    	<a href="mySurveyList_complete.survey" class="item">참여한 설문조사</a>
 			    	<a href="panelSurveyList.panel" class="item">패널서베이</a>
 		    	</div>
 		  	</div>

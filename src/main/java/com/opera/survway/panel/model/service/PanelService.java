@@ -16,6 +16,7 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
@@ -100,6 +101,14 @@ public interface PanelService {
 	int insertResearchTry(AttemptInsert attempt);
 
 	int insertAnswer(InsertAnswer answer);
+
+	int getListCountPanelResearch(PanelResearchList rl) throws InquiryException;
+
+	List<PanelResearchList> selectAllPanelResearchList(PanelResearchList rl);
+
+	int getListCountPanelResearchRetry(PanelResearchList rl) throws InquiryException;
+
+	List<PanelResearchList> selectAllPanelResearchRetryList(PanelResearchList rl);
 
 
 
