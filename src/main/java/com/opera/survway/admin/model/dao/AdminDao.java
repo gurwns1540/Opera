@@ -1,17 +1,24 @@
 package com.opera.survway.admin.model.dao;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.admin.model.vo.Choice;
 import com.opera.survway.admin.model.vo.MailingList;
 import com.opera.survway.admin.model.vo.MailingReceiver;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.PanelThanksSurvey;
+import com.opera.survway.admin.model.vo.Question;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp2;
+import com.opera.survway.admin.model.vo.ResearchHistory;
+import com.opera.survway.admin.model.vo.ResearchOne;
+import com.opera.survway.admin.model.vo.ResearchReport;
 import com.opera.survway.admin.model.vo.ResearchTarget;
+import com.opera.survway.admin.model.vo.RquestionNo;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.admin.model.vo.TargetMember;
 import com.opera.survway.common.model.vo.AllMember;
@@ -148,5 +155,21 @@ public interface AdminDao {
 	String selectMailingHistoryCurrentDate(SqlSessionTemplate sqlSession, int researchNo);
 
 	String selectResearchPeriod(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<ResearchReport> selectResearchReportList(SqlSessionTemplate sqlSession);
+
+	List<ResearchHistory> selectResearchHistoryList(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<RquestionNo> selectRquestionNoList(SqlSessionTemplate sqlSession, int researchNo);
+
+	int selectResearchHistoryCount(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<ResearchGraphTemp2> selectResearchHistoryCountList(SqlSessionTemplate sqlSession, ResearchGraphTemp temp);
+
+	List<Question> selectQuestionList(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<Choice> selectChoiceList(SqlSessionTemplate sqlSession, int researchNo);
+
+	ResearchOne selectResearchOne(SqlSessionTemplate sqlSession, int researchNo);
 
 }
