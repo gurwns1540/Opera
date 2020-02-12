@@ -704,6 +704,9 @@
 		AND RESEARCH_ORDER = #{ researchOrder }
 	</select>
 	
+	<insert id="insertAnswer" parameterType="InsertAnswer">
+		INSERT INTO RESEARCHHISTORY VALUES(SEQ_RESEARCHHISTORY.NEXTVAL, #{ researchNo }, #{ mno }, NULL, #{ researchTime }, #{ rquestionNo }, SYSDATE, #{ rquestionResponse })
+	</insert>
 	
 </mapper>
 
