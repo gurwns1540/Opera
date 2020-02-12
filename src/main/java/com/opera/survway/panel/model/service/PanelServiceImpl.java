@@ -32,6 +32,7 @@ import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.SurveyReply;
 import com.opera.survway.panel.model.vo.Vote; 
 
 
@@ -824,5 +825,25 @@ public class PanelServiceImpl implements PanelService {
 		return pd.voteSurvey(sqlSession, vote);
 	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 댓글 달기
+	 */
+	@Override 
+	public int replyUpload(SurveyReply surveyReply) {
+		return pd.replyUpload(sqlSession, surveyReply);
+	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 대댓글 달기
+	 */
+	@Override 
+	public int rereplyUpload(SurveyReply surveyReply) {
+		return pd.rereplyUpload(sqlSession, surveyReply);
+	}
 }

@@ -25,6 +25,7 @@ import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.SurveyReply;
 import com.opera.survway.panel.model.vo.Vote;
 
 public interface PanelDao {
@@ -158,5 +159,9 @@ public interface PanelDao {
 	int voteCheck(SqlSessionTemplate sqlSession, Vote vote);
 
 	int voteSurvey(SqlSessionTemplate sqlSession, Vote vote);
+
+	int replyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply);
+
+	int rereplyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply);
 
 }

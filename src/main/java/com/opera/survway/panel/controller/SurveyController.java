@@ -35,6 +35,7 @@ import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.SurveyReply;
 import com.opera.survway.panel.model.vo.Vote;
 
 @Controller
@@ -454,6 +455,46 @@ public class SurveyController {
 		}
 		
 		mv.addObject("alreadyVoted", alreadyVoted);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 댓글 작성
+	 */
+	@PostMapping("replyUpload.survey")
+	public ModelAndView replyUpload(ModelAndView mv, String reply, String userName, String surveyNoStr, String mnoStr) {
+		
+		SurveyReply surveyReply = new SurveyReply();
+		surveyReply.setMno(Integer.parseUnsignedInt(mnoStr));
+		surveyReply.setSurveyNo(Integer.parseInt(surveyNoStr));
+		surveyReply.setSurveyReplyContext(reply);
+		int surveyReplyNo = 0; 
+		
+		ps.replyUpload(surveyReply);
+		surveyReplyNo = surveyReply.getSurveyReplyNo();
+		
+		mv.addObject("surveyReplyNo", surveyReplyNo);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	@PostMapping("rereplyUpload.survey")
+	public ModelAndView rereplyUpload(ModelAndView mv, String reply, String userName, String surveyNoStr, String mnoStr, String replyNoStr) {
+		SurveyReply surveyReply = new SurveyReply();
+		surveyReply.setMno(Integer.parseUnsignedInt(mnoStr));
+		surveyReply.setSurveyNo(Integer.parseInt(surveyNoStr));
+		surveyReply.setSurveyReplyContext(reply);
+		surveyReply.setSurveyReplyRefRid(Integer.parseInt(replyNoStr));
+		int surveyReplyNo = 0; 
+		
+		ps.rereplyUpload(surveyReply);
+		surveyReplyNo = surveyReply.getSurveyReplyNo();
+		
+		mv.addObject("surveyReplyNo", surveyReplyNo);
 		mv.setViewName("jsonView");
 		return mv;
 	}

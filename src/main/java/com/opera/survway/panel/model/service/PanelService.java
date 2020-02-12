@@ -25,6 +25,7 @@ import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.SurveyReply;
 import com.opera.survway.panel.model.vo.Vote;
 
 
@@ -124,5 +125,9 @@ public interface PanelService {
 	boolean voteCheck(Vote vote);
 
 	int voteSurvey(Vote vote);
+
+	int replyUpload(SurveyReply surveyReply);
+
+	int rereplyUpload(SurveyReply surveyReply);
 
 }

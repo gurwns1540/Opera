@@ -800,4 +800,20 @@
 		INSERT INTO SURVEYHISTORY VALUES
 		(SEQ_SURVEYHISTORY.NEXTVAL, #{choiceNo}, #{surveyNo}, #{mno}, SYSDATE)
 	</insert>
+	
+	<insert id="replyUpload" parameterType="SurveyReply">
+		INSERT INTO SURVEYREPLY VALUES
+		(SEQ_SURVEYREPLY.NEXTVAL, #{surveyReplyContext}, SYSDATE, NULL, #{surveyNo}, #{mno})
+		<selectKey keyProperty="surveyReplyNo" resultType="_int" order="AFTER">
+  			SELECT SEQ_SURVEYREPLY.CURRVAL FROM DUAL
+  		</selectKey>
+	</insert>
+	
+	<insert id="rereplyUpload" parameterType="SurveyReply">
+		INSERT INTO SURVEYREPLY VALUES
+		(SEQ_SURVEYREPLY.NEXTVAL, #{surveyReplyContext}, SYSDATE, #{surveyReplyRefRid}, #{surveyNo}, #{mno})
+		<selectKey keyProperty="surveyReplyNo" resultType="_int" order="AFTER">
+  			SELECT SEQ_SURVEYREPLY.CURRVAL FROM DUAL
+  		</selectKey>
+	</insert>
 </mapper>

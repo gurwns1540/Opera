@@ -441,7 +441,7 @@ textarea:focus {
 				$(this).parent().parent().parent().parent().parent().parent().find(".choicebox").each(function(){
 					if($(this).is(":checked")){
 						isChecked = true;
-						choiceNo = $(this).prop("id").substr(6,7);
+						choiceNo = $(this).prop("id").substr(6, 7);
 					}
 				})
 				
@@ -508,13 +508,151 @@ textarea:focus {
 					}
 				})
 			});
+			
+			$(document).on("click", "#replyCommentBtn", function(){
+				var reply = $(this).prev().find("#replyContext").val();
+				var userName = "${ loginUser.userName }";
+				var today = new Date();
+				//2020-01-29 at 11:51 오후
+				
+				var yyyy = today.getFullYear().toString();
+				var mm = (today.getMonth() + 1).toString();
+				var dd = today.getDate().toString();
+				var date = yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]);
+				var hour = today.getHours();
+				var minute = today.getMinutes();
+				var amPm = "";
+				if ( hour < 12 && hour >= 0 || hour == 24 ) {
+					if(hour == 24){
+						hour = 0;
+					}
+					amPm = "오전";
+				} else if (  hour >= 12  &&  hour  < 24  ) {
+					hour = hour - 12;
+					amPm = "오후";
+				}
+				
+				var times = ((String(hour).length == 1)? "0" + hour : hour) + ":" + ((String(minute).length == 1)? "0" + minute : minute) + " " + amPm
+				
+				var $commentClass = $('<div class="comment">');
+				var $content = $('<div class="content">');
+				var $author = $('<a class="author">' + userName + '</a>');
+				var $metadata = $('<div class="metadata"> <span class="date">' + date + ' at ' + times + '</span> </div>');
+				var $text = $('<div class="text">' + reply + '</div>');
+				var $replyBtn = $('<div class="actions"> <a class="reply">Reply</a> </div>');
+				var $rereplyArea = $('<div class="ui reply form hide"> <div class="field" style="height: 100px;"> <textarea readonly style="resize: none; line-height: 30px; height: 100%" placeholder="로그인을 먼저 해주세요" class="rereplyContext"></textarea> <div class="ui primary submit labeled icon button rereplyBtn"style="float:right; margin-top: 15px;"> <i class="icon edit"></i> Add Reply </div> </div> </div>'); 
+				$content.append($author);
+				$content.append($metadata);
+				$content.append($text);
+				$content.append($replyBtn);
+				$content.append($rereplyArea);
+				
+				$.ajax({
+					url:"replyUpload.survey",
+					type:"post",
+					data:{
+						userName:userName,
+						reply:reply,
+						surveyNoStr:surveyNo,
+						mnoStr:mno
+					},
+					success:function(data){
+						console.log(data);
+						var $replyNo = $('<input type="hidden" class="replyNo" value="' + data.surveyReplyNo + '">');
+						$content.append($replyNo);
+						$commentClass.append($content);
+						
+						$("#replyContext").val("");
+						$(".rereplyContext").each(function(){
+							$(this).val("");
+						});
+						
+						Swal.fire(
+							'댓글 등록 완료!',
+							'댓글이 등록되었습니다.',
+							'success'
+						)
+					}
+				});
+				$(this).parent().parent().find("#noReply").remove();
+				$(this).prev().prev().after($commentClass);
+				
+			})
+			$(document).on("click", ".rereplyBtn", function(){
+				var reply = $(this).prev().val();
+				var userName = "${ loginUser.userName }";
+				var replyNo = $(this).parent().parent().next().val();
+				var today = new Date();
+				//2020-01-29 at 11:51 오후
+				
+				var yyyy = today.getFullYear().toString();
+				var mm = (today.getMonth() + 1).toString();
+				var dd = today.getDate().toString();
+				var date = yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]);
+				var hour = today.getHours();
+				var minute = today.getMinutes();
+				var amPm = "";
+				if ( hour < 12 && hour >= 0 || hour == 24 ) {
+					if(hour == 24){
+						hour = 0;
+					}
+					amPm = "오전";
+				} else if (  hour >= 12  &&  hour  < 24  ) {
+					hour = hour - 12;
+					amPm = "오후";
+				}
+				
+				var times = ((String(hour).length == 1)? "0" + hour : hour) + ":" + ((String(minute).length == 1)? "0" + minute : minute) + " " + amPm
+				
+				var $rereplyComment = $('<div class="comment">');
+				var $rereplyContent = $('<div class="content">');
+				var $rereplyauthor = $('<a class="author">' + userName + '</a>');
+				var $rereplymetadata = $('<div class="metadata"> <span class="date">' + date + ' at ' + times + '</span> </div>');
+				var $rereplytext = $('<div class="text">' + reply + '</div>');
+				
+				$rereplyContent.append($rereplyauthor);
+				$rereplyContent.append($rereplymetadata);
+				$rereplyContent.append($rereplytext);
+				
+				
+				$.ajax({
+					url:"rereplyUpload.survey",
+					type:"post",
+					data:{
+						userName:userName,
+						reply:reply,
+						replyNoStr:replyNo,
+						surveyNoStr:surveyNo,
+						mnoStr:mno
+					},
+					success:function(data){
+						$rereplyComment.append($rereplyContent);
+						
+						$("#replyContext").val("");
+						$(".rereplyContext").each(function(){
+							$(this).val("");
+						});
+						
+						Swal.fire(
+							'대댓글 등록 완료!',
+							'대댓글이 등록되었습니다.',
+							'success'
+						)
+					}
+				});
+				$(this).parent().parent().parent().parent().find(".comments").append($rereplyComment);
+				
+			})
+			
 		</script>
 	</c:if>
 	<script>
 		$(document).on("click", ".replyModal.ui.basic.button", function(){
 			var surveyTitle = $(this).parent().parent().parent().parent().parent().parent().find(".surveyTitle").text();
 			$("#replyModal").find(".header").eq(0).text(surveyTitle);
-			var surveyNo = $(this).parent().parent().parent().parent().parent().parent().find(".surveyNo").val();
+			surveyNo = $(this).parent().parent().parent().parent().parent().parent().find(".surveyNo").val();
+			mno = "${ loginUser.mno }";
+			
 			$.ajax({
 				url:"statisticAndReply.survey",
 				type:"post",
@@ -525,9 +663,8 @@ textarea:focus {
 					var statisticList = data.statisticList;
 					var replyList = data.replyList;
 					
-					console.log(statisticList);
 					var $commnetTitle = $("<h3 class='ui dividing header'>Comments</h3>");
-					var $commentInput = $('<div class="field" style="margin-top: 20px;"> <div class="ui form" style="width: 100%"> <textarea id="replyContext" style="resize: none; line-height: 30px;"></textarea> </div> </div> <div class="ui blue labeled submit icon button" style="float:right; margin-top: 15px;"> <i class="icon edit"></i> Add Reply </div>');
+					var $commentInput = $('<div class="field" style="margin-top: 20px;"> <div class="ui form" style="width: 100%"> <textarea readonly placeholder="로그인을 먼저 해주세요" id="replyContext" style="resize: none; line-height: 30px;"></textarea> </div> </div> <div class="ui blue labeled submit icon button" style="float:right; margin-top: 15px;" id="replyCommentBtn"> <i class="icon edit"></i> Add Reply </div>');
 					$("#chartArea").html("");
 					$("#commentArea").html("");
 					
@@ -590,13 +727,12 @@ textarea:focus {
 					}
 					if(replyList.length == 0){
 						
-						var $comment = $("<div style='text-align:center; padding-top: 35px; padding-bottom: 40px; padding-left: 21%; padding-right: 20%;'>댓글이 없습니다.</div>");
+						var $comment = $("<div style='text-align:center; padding-top: 35px; padding-bottom: 40px; padding-left: 21%; padding-right: 20%;' id='noReply'>댓글이 없습니다.</div>");
 						
 						$("#commentArea").append($comment);
 						
 					}else {
 						for(var i = 0; i < replyList.length; i++){
-								console.log(replyList[i].surveyReplyRefrid);
 							var refrid = replyList[i].surveyReplyRefrid;
 							if(typeof refrid == "undefined"){
 								var $commentClass = $('<div class="comment">');
@@ -605,12 +741,14 @@ textarea:focus {
 								var $metadata = $('<div class="metadata"> <span class="date">' + replyList[i].surveyReplyDate + '</span> </div>');
 								var $text = $('<div class="text">' + replyList[i].surveyReplyContext + '</div>');
 								var $replyBtn = $('<div class="actions"> <a class="reply">Reply</a> </div>');
-								var $rereplyArea = $('<div class="ui reply form hide"> <div class="field" style="height: 100px;"> <textarea style="resize: none; line-height: 30px; height: 100%"></textarea> <div class="ui primary submit labeled icon button" style="float:right; margin-top: 15px;"> <i class="icon edit"></i> Add Reply </div> </div> </div>');
+								var $rereplyArea = $('<div class="ui reply form hide"> <div class="field" style="height: 100px;"> <textarea readonly style="resize: none; line-height: 30px; height: 100%" placeholder="로그인을 먼저 해주세요" class="rereplyContext"></textarea> <div class="ui primary submit labeled icon button rereplyBtn"style="float:right; margin-top: 15px;"> <i class="icon edit"></i> Add Reply </div> </div> </div>');
+								var $replyNo = $('<input type="hidden" class="replyNo" value="' + replyList[i].surveyReplyNo + '">');
 								$content.append($author);
 								$content.append($metadata);
 								$content.append($text);
 								$content.append($replyBtn);
 								$content.append($rereplyArea);
+								$content.append($replyNo);
 								var $rereplyComments = $('<div class="comments">');
 								for(var j = 0; j < replyList.length; j++){
 									var refrid2 = replyList[j].surveyReplyRefrid;
@@ -633,21 +771,44 @@ textarea:focus {
 								
 								$commentClass.append($content);
 								$commentClass.append($rereplyComments);
-								
+								$("#replyContext").prop("readonly", false);
+								$("#replyContext").prop("placeholder", "댓글 내용을 입력해주세요");
+								$(".rereplyContext").each(function(){
+									$(this).prop("readonly", false);
+									$(this).prop("placeholder", "대댓글 내용을 입력해주세요");
+								})
 								$("#commentArea").append($commentClass);
 							}
 						}
 					}
-				
 					$("#commentArea").append($commentInput);
+					if(mno != ""){
+						$("#replyContext").prop("readonly", false);
+						$("#replyContext").prop("placeholder", "댓글 내용을 입력해주세요");
+						$(".rereplyContext").each(function(){
+							$(this).prop("readonly", false);
+							$(this).prop("placeholder", "대댓글 내용을 입력해주세요");
+						})
+						
+					}
 				}
 			})	
+			
+			
+			
 			$("#replyModal").modal("show");
 		});
+		$(document).on("click", ".field" , function(event){
+			event.stopPropagation();
+			event.preventDefault();
+		})
 		$(document).on("click", ".reply", function(){
 			$(this).parent().parent().find(".ui.reply.form").toggle(
-				function(){$(this).addClass('show')}, //클릭하면 show클래스 적용되서 보이기
+				function(event){
+					$(this).addClass('show')
+				}, //클릭하면 show클래스 적용되서 보이기
 				function(){$(this).addClass('hide')} //한 번 더 클릭하면 hide클래스가 숨기기
+				
 			);
 		});
 		$(document).on("click", ".ui.segment.eachSurveyBox", function(){

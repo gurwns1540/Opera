@@ -27,6 +27,7 @@ import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.SurveyReply;
 import com.opera.survway.panel.model.vo.Vote;
 
 
@@ -474,5 +475,14 @@ public class PanelDaoImpl implements PanelDao{
 	public int voteSurvey(SqlSessionTemplate sqlSession, Vote vote) {
 		return sqlSession.insert("Panel.voteSurvey", vote);
 	}
+
+	@Override
+	public int replyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply) {
+		return sqlSession.insert("Panel.replyUpload", surveyReply);
+	}
 	
+	@Override
+	public int rereplyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply) {
+		return sqlSession.insert("Panel.rereplyUpload", surveyReply);
+	}
 }
