@@ -13,6 +13,7 @@ import java.util.List;
 public class ResearchQuestion {
 	
 	//필수정보
+	private String questionType;
 	private int questionFormNo;
 	private int rquestionNo;
 	private int researchNo;
@@ -20,6 +21,7 @@ public class ResearchQuestion {
 	private String rquestionContext;
 	private List<ResearchChoice> choiceList;
 	private int progressDataPercent;
+	private int totalOrder;
 	//첨부파일 있을경우
 	private String rquestionVideolink;
 	private String mediaExplain;
@@ -28,14 +30,16 @@ public class ResearchQuestion {
 	private String originName;
 	private String qchangeName;
 	private String filePath;
+	private int correctAnswer;
 	
 	public ResearchQuestion() {}
 
-	public ResearchQuestion(int questionFormNo, int rquestionNo, int researchNo, int researchOrder,
-			String rquestionContext, List<ResearchChoice> choiceList, int progressDataPercent,
+	public ResearchQuestion(String questionType, int questionFormNo, int rquestionNo, int researchNo, int researchOrder,
+			String rquestionContext, List<ResearchChoice> choiceList, int progressDataPercent, int totalOrder,
 			String rquestionVideolink, String mediaExplain, int fileNo, String fileType, String originName,
-			String qchangeName, String filePath) {
+			String qchangeName, String filePath, int correctAnswer) {
 		super();
+		this.questionType = questionType;
 		this.questionFormNo = questionFormNo;
 		this.rquestionNo = rquestionNo;
 		this.researchNo = researchNo;
@@ -43,6 +47,7 @@ public class ResearchQuestion {
 		this.rquestionContext = rquestionContext;
 		this.choiceList = choiceList;
 		this.progressDataPercent = progressDataPercent;
+		this.totalOrder = totalOrder;
 		this.rquestionVideolink = rquestionVideolink;
 		this.mediaExplain = mediaExplain;
 		this.fileNo = fileNo;
@@ -50,6 +55,15 @@ public class ResearchQuestion {
 		this.originName = originName;
 		this.qchangeName = qchangeName;
 		this.filePath = filePath;
+		this.correctAnswer = correctAnswer;
+	}
+
+	public String getQuestionType() {
+		return questionType;
+	}
+
+	public void setQuestionType(String questionType) {
+		this.questionType = questionType;
 	}
 
 	public int getQuestionFormNo() {
@@ -108,6 +122,14 @@ public class ResearchQuestion {
 		this.progressDataPercent = progressDataPercent;
 	}
 
+	public int getTotalOrder() {
+		return totalOrder;
+	}
+
+	public void setTotalOrder(int totalOrder) {
+		this.totalOrder = totalOrder;
+	}
+
 	public String getRquestionVideolink() {
 		return rquestionVideolink;
 	}
@@ -164,14 +186,23 @@ public class ResearchQuestion {
 		this.filePath = filePath;
 	}
 
+	public int getCorrectAnswer() {
+		return correctAnswer;
+	}
+
+	public void setCorrectAnswer(int correctAnswer) {
+		this.correctAnswer = correctAnswer;
+	}
+
 	@Override
 	public String toString() {
-		return "ResearchQuestion [questionFormNo=" + questionFormNo + ", rquestionNo=" + rquestionNo + ", researchNo="
-				+ researchNo + ", researchOrder=" + researchOrder + ", rquestionContext=" + rquestionContext
-				+ ", choiceList=" + choiceList + ", progressDataPercent=" + progressDataPercent
-				+ ", rquestionVideolink=" + rquestionVideolink + ", mediaExplain=" + mediaExplain + ", fileNo=" + fileNo
-				+ ", fileType=" + fileType + ", originName=" + originName + ", qchangeName=" + qchangeName
-				+ ", filePath=" + filePath + "]";
+		return "ResearchQuestion [questionType=" + questionType + ", progressDataPercent=" + progressDataPercent + 
+				", questionFormNo=" + questionFormNo
+				+ ", rquestionNo=" + rquestionNo + ", researchNo=" + researchNo + ", researchOrder=" + researchOrder
+				+ ", rquestionContext=" + rquestionContext  + ", totalOrder=" + totalOrder + ", rquestionVideolink=" + rquestionVideolink
+				+ ", mediaExplain=" + mediaExplain + ", fileNo=" + fileNo + ", fileType=" + fileType + ", originName="
+				+ originName + ", qchangeName=" + qchangeName + ", filePath=" + filePath + ", correctAnswer="
+				+ correctAnswer + "]" + ",\n choiceList=" + choiceList + "\n" ;
 	}
-	
+
 }

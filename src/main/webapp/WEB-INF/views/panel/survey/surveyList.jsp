@@ -219,6 +219,7 @@
 														<span style="font-size:0.9vw;">${ list.researchNo }</span>
 														<input type="text" value="${ sessionScope.loginUser.userName }" style="display:none;">
 														<input type="text" value="${ sessionScope.loginUser.panellevelNo }" style="display:none;">
+														<input type="text" value="${ list.rquestionVideolink }" style="display:none;">
 														<span style="font-size:0.9vw;">]</span>
 													</td>
 													<td class="top-right">
@@ -396,7 +397,7 @@
 			<%@ include file="/WEB-INF/views/panel/common/footer.jsp"%>
 			
 			<script>
-				
+				var sumInput = 0;
 				//설문조사목록에서 TS조사 클릭하면 조사시작 모달창 띄우기 
 				$(document).on('click', '#thanksSurvey',function(){
 					$('#surveyStart').modal('setting', 'closable', false).modal('show');
@@ -421,7 +422,8 @@
 					if(panellevelNo != 1) {
 						var mno = $(document).find("#mno").val();
 						var researchNo = $(document).find("#researchNo").val();
-					
+						console.log("if문 들어옴");
+						
 						$.ajax({
 							url:"insertResearchTry.survey",
 							type:"post",
@@ -442,13 +444,87 @@
 				//마지막 nextBtn을 누르면 설문조사 끝난 시간 기록 및 응답 인서트, 리워드 계산 결과 리턴
 				var endTime = "";
 				$(document).on("click", ".button[id*=nextBtn]", function(){
-					
+					sumInput = 0;
 					var qCountNo = $(document).find("#qCount").val();
 					var lastNextBtn = 'nextBtn' + qCountNo;
 					
 					if($(this).attr('id') == lastNextBtn) {
+						
+						
+						$(this).parent().parent().find('input:checked').each(function(){
+							eachAnswer.push($(this).val());
+						});
+						$(this).parent().parent().find('input[type=text]').each(function(){
+							eachAnswer.push($(this).val());
+						});
+						
+						totalAnswer.push(eachAnswer);
+						totalAnswer.push("/");
+						console.log("전체 응답 : " + totalAnswer);
+						eachAnswer = [];
+						
 						endTime = new Date();
 						console.log("endTime : " + endTime);
+						
+						totalAnswer = totalAnswer + ",";
+						
+						var surveyTime = (endTime.getTime())-(startTime.getTime());
+						surveyTime = surveyTime/1000/60;
+						
+						var minTime = $(document).find("#minTime").val();
+						var maxTime = $(document).find("#maxTime").val();
+						var reward = $(document).find("#reward").val();
+						var targetCount = $(document).find("#targetCount").val();
+						var pcCount = $(document).find("#pcQuestion").val();
+						var mno = $(document).find("#mno").val();
+						var researchNo = $(document).find("#researchNo").val();
+						var panellevelNo = $(document).find("#panellevelNo").val();
+						if(panellevelNo == 1) {
+							reward = '1000~1000P';
+							researchNo = '1';
+						}
+						
+						//1이면 정규식에 어긋난거, 일단 1로 set
+						var answerCheck = 1;
+						
+						//한글체크(자음모음 안됨)
+						var check1 = /[가-힣]/;
+						//특수문자체크
+						var check2 = /[~!@#$%^&*()_+|<>?:{}]/;
+						
+						if(check1.test(totalAnswer) && check1.test(totalAnswer)) {
+							answerCheck = 0;
+						}
+						
+						$.ajax({
+							url:"insertResearchAnswers.survey",
+							type:"post",
+							data:{
+								totalAnswer:totalAnswer,
+								surveyTime:surveyTime,
+								minTime:minTime,
+								maxTime:maxTime,
+								reward:reward,
+								mno:mno,
+								researchNo:researchNo,
+								answerCheck:answerCheck,
+								targetCount:targetCount,
+								pcCount:pcCount
+								},
+							success:function(data){
+								
+								console.log("컨트롤러 갔다옴");
+								var finalReward = data.finalReward;
+								var $finalReward = $('<input type="text" id="finalReward" value="' + finalReward + '" style="display:none;">');
+								$("#modalAppendArea").append($finalReward);
+								//마지막 모달페이지에 책정된 리워드 띄우기
+								$(document).find("#rewardTd").text(finalReward + 'P');
+								
+							},
+							error:function(status){
+								console.log(status);
+							}
+						});
 					}
 				});
 				
@@ -456,52 +532,23 @@
 				//설문조사 끝나고 마지막버튼 눌렀을 때 리워드 DB에 인서트
 				$(document).on("click", "#lastBtn",function(){
 					
-					totalAnswer = totalAnswer + ",";
-					
-					var surveyTime = (endTime.getTime())-(startTime.getTime());
-					surveyTime = surveyTime/1000/60;
-					
-					var minTime = $(document).find("#minTime").val();
-					var maxTime = $(document).find("#maxTime").val();
-					var reward = $(document).find("#reward").val();
 					var mno = $(document).find("#mno").val();
 					var researchNo = $(document).find("#researchNo").val();
-					var panellevelNo = $(document).find("#panellevelNo").val();
-					if(panellevelNo == 1) {
-						reward = '1000~1000P';
-						researchNo = '1';
-					}
-					
-					//1이면 정규식에 어긋난거, 일단 1로 set
-					var answerCheck = 1;
-					
-					//한글체크(자음모음 안됨)
-					var check1 = /[가-힣]/;
-					//특수문자체크
-					var check2 = /[~!@#$%^&*()_+|<>?:{}]/;
-					
-					
-					if(check1.test(totalAnswer) && check1.test(totalAnswer)) {
-						answerCheck = 0;
-					}
-					
+					var surveyReward = $(document).find("#finalReward").val();
 					
 					$.ajax({
-						url:"insertResearchAnswers.survey",
+						url:"insertSurveyReward.survey",
 						type:"post",
 						data:{
-							totalAnswer:totalAnswer,
-							surveyTime:surveyTime,
-							minTime:minTime,
-							maxTime:maxTime,
-							reward:reward,
 							mno:mno,
-							researchNo:researchNo,
-							answerCheck:answerCheck
+							surveyReward:surveyReward,
+							researchNo:researchNo
 							},
 						success:function(data){
-							Swal.fire('안내', '인서트 성공', 'warning');
-							/* location.href="surveyList.survey"; */
+							
+							console.log("리워드 인서트 성공");
+							/* location.relocate? */
+							
 						},
 						error:function(status){
 							console.log(status);
@@ -518,13 +565,17 @@
 				
 				//일반설문조사 목록 클릭 시 ajax로 값 받아와서 설문조사 모달창 시작
 				$(".clickSurvey").on("click", function(){
+					
 					var researchNo = $(this).find(".top-left").children().eq(1).text();
 					if(researchNo == "") {
 						researchNo = 1;
 					}
 					var userName = $(this).find(".top-left").children().eq(2).val();
 					var panellevelNo = $(this).find(".top-left").children().eq(3).val();
+					var rquestionVideolink = $(this).find(".top-left").children().eq(4).val();
+					console.log("rquestionVideolink : " + rquestionVideolink);
 					var reward = $(this).find(".bottom-top").children().eq(0).text();
+					
 					
 					$.ajax({
 						url:"selectResearchQuestions.survey",
@@ -533,7 +584,8 @@
 								researchNo:researchNo,
 								reward:reward,
 								userName:userName,
-								panellevelNo:panellevelNo
+								panellevelNo:panellevelNo,
+								rquestionVideolink:rquestionVideolink
 							 },
 						success:function(data){
 							
@@ -543,11 +595,16 @@
 							var rquestionList = data.researchQuestionList;
 							var reward = data.researchReward;
 							var qCount = data.questionCount;
+							var targetCount = data.targetCount;
 							var time = data.time;
 							var minTime = data.minTime;
 							var maxTime = data.maxTime;
 							var userName = data.userName;
 							var panellevelNo = data.panellevelNo;
+							var pcQuestion = 0;
+							if(data.rquestionVideolink != null) {
+								pcQuestion = 1;
+							}
 							
 							//나중에 쓸 변수들 input으로 박아놓기
 							var $qCountInput = $('<input type="text" id="qCount" value="' + qCount + '" style="display:none;">');
@@ -562,16 +619,20 @@
 							$("#modalAppendArea").append($panellevelNoInput);
 							var $researchNoInput = $('<input type="text" id="researchNo" value="' + researchNo + '" style="display:none;">');
 							$("#modalAppendArea").append($researchNoInput);
+							var $targetCountInput = $('<input type="text" id="targetCount" value="' + targetCount + '" style="display:none;">');
+							$("#modalAppendArea").append($targetCountInput);
+							var $pcQuestionInput = $('<input type="text" id="pcQuestion" value="' + pcQuestion + '" style="display:none;">');
+							$("#modalAppendArea").append($pcQuestionInput);
 							
 							var $tsQ0 = $('<div class="ui overlay fullscreen modal" id="Q0"> <div class="header" style="height:61px; padding:5px;"> <table style="width:100%;"> <tr> <td style="width:30%; height:inherit;transform:translateY(-4px);"> <img src="resources/images/footerLogo.png" alt="" id="footerImg"> </td> <td style="width:70%; height:inherit; padding-right:20px;"> <div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;"> 0 of ' + qCount + ' done </div> <div class="ui indicating progress active" data-value="0" data-total="' + qCount + '" id="progress0" data-percent="0%" style="margin-top:10px; width:40%; float:right;"> <input type="text" value="0" style="display:none;"> <div class="bar" style="transition-duration: 200ms; display: block; width:0%;"> <div class="progress">0%</div> </div> </div> </td> </tr> </table> </div> <div class="content insetBox"> <div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);"> <div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;"> <span style="line-height:180%; font-size:1.1vw;"> <b>' + userName + '</b>님, 안녕하세요.<br>서브웨이 패널회원으로 가입해주셔서 감사합니다.<br><br>지금부터 몇 가지 기본 정보를 여쭙고자 합니다.<br><br><u>본 조사에 참여하셔야 앞으로 ' + userName + '님께 맞는 조사를 제공</u>해드릴 수 있으니,<br>성실한 답변을 부탁드립니다. </span> </div> <div class="actions" style="text-align:center; margin-top:70px;"> <button class="ui blue button" id="nextBtn0" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button> </div> </div> </div> <div class="actions"> <div class="ui primary approve button" style="background-color:#6A6A6A;"> 돌아가기 </div> </div> </div>');
 							var $otherQ0 = $('<div class="ui overlay fullscreen modal" id="Q0"> <div class="header" style="height:61px; padding:5px;"> <table style="width:100%;"> <tr> <td style="width:30%; height:inherit;transform:translateY(-4px);"> <img src="resources/images/footerLogo.png" alt="" id="footerImg"> </td> <td style="width:70%; height:inherit; padding-right:20px;"> <div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;"> 0 of ' + qCount + ' done </div> <div class="ui indicating progress active" data-value="0" data-total="' + qCount + '" id="progress0" data-percent="0%" style="margin-top:10px; width:40%; float:right;"> <input type="text" value="0" style="display:none;"> <div class="bar" style="transition-duration: 200ms; display: block; width:0%;"> <div class="progress">0%</div> </div> </div> </td> </tr> </table> </div> <div class="content insetBox"> <div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);"> <div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;"> <span style="line-height:180%; font-size:1.1vw;"> <b>' + userName + '</b>님, 안녕하세요.<br><br>본 조사의 예상 소요시간은 ' + time + '분이며, 조사 목적 또는 패널님의 응답 퀄리티에 따라 ' + researchReward + 'P의 리워드를 받으실 수 있습니다.<br><br>설문 답변 소요시간이 ' + minTime + '분 미만인 경우 또는 ' + maxTime + '분을 초과하는 경우,<br>답변에 상관 없이 최저 리워드를 드리니 시간을 엄수하여 주시기 바랍니다. </span> </div> <div class="actions" style="text-align:center; margin-top:70px;"> <button class="ui blue button" id="nextBtn0" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button> </div> </div> </div> <div class="actions"> <div class="ui primary approve button" style="background-color:#6A6A6A;"> 돌아가기 </div> </div> </div>');
-							var $lastModal = $('<div class="ui overlay fullscreen modal" id="Q' + (qCount +1) + '"> <div class="header" style="height:61px; padding:5px;"> <table style="width:100%;"> <tr> <td style="width:30%; height:inherit;transform:translateY(-4px);"> <img src="resources/images/footerLogo.png" alt="" id="footerImg"> </td> <td style="width:70%; height:inherit; padding-right:20px;"> <div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;"> ' + qCount + ' of ' + qCount + ' done </div> <div class="ui indicating progress active" data-value="' + qCount + '" data-total="' + qCount + '" id="progress' + (qCount+1) + '" data-percent="100%" style="margin-top:10px; width:40%; float:right;"> <input type="text" value="100" style="display:none;"> <div class="bar" style="transition-duration: 200ms; display: block; width:100%;"> <div class="progress">100%</div> </div> </div> </td> </tr> </table> </div> <div class="content insetBox"> <div class="modalContainer ui raised segment" style="width:50%; min-height:580px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);"> <div class="ui header" style="text-align:center; margin-top:60px; margin-bottom:40px;"> <span style="font-size:28px;"><i class="check square outline icon"></i>조사가 완료되었습니다.</span> </div> <div class="ui segment" style="height:40px; width:80%; margin:0 auto; margin-top:20px; padding:7px; background-color:white; text-align:center;"> <span style="line-height:180%; font-size:0.8vw; width:100%; color:#00679A;"> <i class="exclamation circle icon" style="color:#00679A;"></i><b>본 페이지에서 뒤로가기나 새로고침을 하면 적립금이 정상적으로 처리되지 않습니다.</b> </span> </div> <div class="ui segment" style="height:90px; width:80%; margin:0 auto; margin-top:30px; margin-bottom:20px; padding:13px; background-color:#EFEFEF; text-align:center; padding-top:15px; padding-bottom:15px;"> <span style="line-height:150%; font-size:1vw; width:100%;"> <table style="width:100%;"> <tr> <td style="width:10%;">조사명</td><td style="width:5%;"> : </td><td style="width:85%; text-align:left; padding-left:6px;">[' + researchNo + '] ' + researchName + '</td> </tr> <tr> <td style="width:10%;">적립금</td><td style="width:5%;"> : </td><td style="width:85%; text-align:left; padding-left:6px;">' + researchReward + 'P</td> </tr> </table> </span> </div> <div style="width:80%; margin:0 auto;"> <img src="resources/images/surveyEndPic.PNG" style="width:100%;"> </div> <div class="actions" style="text-align:center; margin-top:25px;"> <button class="ui blue button" id="lastBtn" style="border-radius:2px; font-size:18px;">내 리워드 확인하기 <i class="right chevron icon"></i></button> </div> </div> </div> <div class="actions"> <div class="ui primary approve button" style="background-color:#6A6A6A;"> 창 닫기 </div> </div> </div>');
+							var $lastModal = $('<div class="ui overlay fullscreen modal" id="Q' + (qCount +1) + '"> <div class="header" style="height:61px; padding:5px;"> <table style="width:100%;"> <tr> <td style="width:30%; height:inherit;transform:translateY(-4px);"> <img src="resources/images/footerLogo.png" alt="" id="footerImg"> </td> <td style="width:70%; height:inherit; padding-right:20px;"> <div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;"> ' + qCount + ' of ' + qCount + ' done </div> <div class="ui indicating progress active" data-value="' + qCount + '" data-total="' + qCount + '" id="progress' + (qCount+1) + '" data-percent="100%" style="margin-top:10px; width:40%; float:right;"> <input type="text" value="100" style="display:none;"> <div class="bar" style="transition-duration: 200ms; display: block; width:100%;"> <div class="progress">100%</div> </div> </div> </td> </tr> </table> </div> <div class="content insetBox"> <div class="modalContainer ui raised segment" style="width:50%; min-height:580px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);"> <div class="ui header" style="text-align:center; margin-top:60px; margin-bottom:40px;"> <span style="font-size:28px;"><i class="check square outline icon"></i>조사가 완료되었습니다.</span> </div> <div class="ui segment" style="height:40px; width:80%; margin:0 auto; margin-top:20px; padding:7px; background-color:white; text-align:center;"> <span style="line-height:180%; font-size:0.8vw; width:100%; color:#00679A;"> <i class="exclamation circle icon" style="color:#00679A;"></i><b>본 페이지에서 뒤로가기나 새로고침을 하면 적립금이 정상적으로 처리되지 않습니다.</b> </span> </div> <div class="ui segment" style="height:90px; width:80%; margin:0 auto; margin-top:30px; margin-bottom:20px; padding:13px; background-color:#EFEFEF; text-align:center; padding-top:15px; padding-bottom:15px;"> <span style="line-height:150%; font-size:1vw; width:100%;"> <table style="width:100%;"> <tr> <td style="width:10%;">조사명</td><td style="width:5%;"> : </td><td style="width:85%; text-align:left; padding-left:6px;">[' + researchNo + '] ' + researchName + '</td> </tr> <tr> <td style="width:10%;">적립금</td><td style="width:5%;"> : </td><td id="rewardTd" style="width:85%; text-align:left; padding-left:6px;">' + researchReward + 'P</td> </tr> </table> </span> </div> <div style="width:80%; margin:0 auto;"> <img src="resources/images/surveyEndPic.PNG" style="width:100%;"> </div> <div class="actions" style="text-align:center; margin-top:25px;"> <button class="ui blue button" id="lastBtn" style="border-radius:2px; font-size:18px;">내 리워드 확인하기 <i class="right chevron icon"></i></button> </div> </div> </div> <div class="actions"> <div class="ui primary approve button" style="background-color:#6A6A6A;"> 창 닫기 </div> </div> </div>');
 							
 							for(var i = 0; i<qCount; i++) {
 								
 								//가져온 데이터 값 꺼내기
 								var questionFormNo = rquestionList[i].questionFormNo;
-								var researchOrder = rquestionList[i].researchOrder;
+								var totalOrder = rquestionList[i].totalOrder;
 								var progressDataPercent = rquestionList[i].progressDataPercent;
 								var rquestionContext = rquestionList[i].rquestionContext;
 								var rquestionVideolink = rquestionList[i].rquestionVideolink;
@@ -582,14 +643,14 @@
 								
 								
 								//문제수만큼 생성할 모달 공통 틀 변수
-								var $modalArea = $('<div class="ui overlay fullscreen modal" id="Q' + researchOrder + '"></div>');
-								var $header = $('<div class="header" style="height:61px; padding:5px;"> <table style="width:100%; height:100%;"> <tr> <td style="width:30%; height:inherit;"> <img src="resources/images/footerLogo.png" alt="" id="footerImg"> </td> <td style="width:70%; height:inherit; padding-right:20px;"> <div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;"> ' + (researchOrder-1) + ' of ' + qCount + ' done </div> <div class="ui indicating progress active" data-value="' + researchOrder + '" data-total="' + qCount + '" id="progress' + researchOrder + '" data-percent="' + progressDataPercent + '%" style="margin-top:10px; width:40%; float:right;"> <input type="text" value="' + progressDataPercent + '" style="display:none;"> <div class="bar" style="transition-duration: 200ms; display: block; width:' + progressDataPercent + '%;"> <div class="progress">' + progressDataPercent + '%</div> </div> </div> </td> </tr> </table> </div>');
+								var $modalArea = $('<div class="ui overlay fullscreen modal" id="Q' + totalOrder + '"></div>');
+								var $header = $('<div class="header" style="height:61px; padding:5px;"> <table style="width:100%; height:100%;"> <tr> <td style="width:30%; height:inherit;"> <img src="resources/images/footerLogo.png" alt="" id="footerImg"> </td> <td style="width:70%; height:inherit; padding-right:20px;"> <div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;"> ' + (totalOrder-1) + ' of ' + qCount + ' done </div> <div class="ui indicating progress active" data-value="' + totalOrder + '" data-total="' + qCount + '" id="progress' + totalOrder + '" data-percent="' + progressDataPercent + '%" style="margin-top:10px; width:40%; float:right;"> <input type="text" value="' + progressDataPercent + '" style="display:none;"> <div class="bar" style="transition-duration: 200ms; display: block; width:' + progressDataPercent + '%;"> <div class="progress">' + progressDataPercent + '%</div> </div> </div> </td> </tr> </table> </div>');
 								var $contentArea = $('<div class="content insetBox"></div>');
 								var $contentBox = $('<div class="modalContainer ui raised segment" style="width:50%; height:auto; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);"></div>');
 								var $questionArea = $('<div class="ui segment" style="min-height:50px; width:90%; margin:0 auto; margin-top:42px; padding:25px; background-color:#EFF8FA;"></div>');
-								var $question = $('<div class="questionArea" style="width:100%;"> <table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;"> <tr> <th style="width: 3%;"> <div class="iconDiv"> <span style="font-size:1vw;"><b>Q' + researchOrder + '.</b></span> </div> </th> <td style="width:97%; padding-right:20px;"> <span style="font-size:1vw;">' + rquestionContext + '</span> </td> </tr> </table> </div>');
+								var $question = $('<div class="questionArea" style="width:100%;"> <table id="choiceTable" style="font-size: 0.9vw; line-height: 200%; width:inherit;"> <tr> <th style="width: 3%;"> <div class="iconDiv"> <span style="font-size:1vw;"><b>Q' + totalOrder + '.</b></span> </div> </th> <td style="width:97%; padding-right:20px;"> <span style="font-size:1vw;">' + rquestionContext + '</span> </td> </tr> </table> </div>');
 								var $choiceArea = $('<div class="choiceArea" style="height:320px; overflow-y:auto; width:90%; margin:0 auto; margin-top:30px;"></div>');
-								var $nextBtn = $('<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;"> <button class="ui blue button" id="nextBtn' + researchOrder + '" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button> </div>');
+								var $nextBtn = $('<div class="actions" style="text-align:center; margin-top:40px; margin-bottom:30px;"> <button class="ui blue button" id="nextBtn' + totalOrder + '" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button> </div>');
 								var $footer = $('<div class="actions"> <div class="ui primary approve button" style="background-color:#6A6A6A;"> 돌아가기 </div> </div>');
 								var $choiceHr = $('<table style="width:100%; margin:0 auto; margin-top:50px;"> <tr> <td style="width:46%;"><hr></td> <td style="width:8%; text-align:center;">보 기</td> <td style="width:46%;"><hr></td> </tr> </table>');
 								var $answerHr = $('<table style="width:100%; margin:0 auto; margin-top:50px;"> <tr> <td style="width:46%;"><hr></td> <td style="width:8%; text-align:center;">답 변</td> <td style="width:46%;"><hr></td> </tr> </table>');
@@ -603,7 +664,12 @@
 								
 								//1-2. 문제에 사진 유
 								if(qchangeName != "") {
-									var $mediaArea = $('<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;"> <div class="media" style="margin:0 auto; text-align:center;"> <img src="resources/uploadFiles/' + changeName + '" style="height:320px; max-width:90%; margin:0 auto;"> </div> <div class="mediaExplain ui stacked segment" style="margin:0 auto; margin-top: 20px; width:90%; height:auto; padding:15px;"> <span>' + mediaExplain + '</span> </div> </div>');
+									/* if(rquestionVideolink != "" && totalOrder == 1) {
+										var $mediaArea = $('<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;"><div class="media" style="margin:0 auto; text-align:center; width:80%;"><audio id="audioTag" controls loop style="vertical-align: middle; "><source id="audio" src="resources/uploadfiles/' + qchangeName + '" type="audio/mpeg"></audio></div></div>');
+									}else{
+										var $mediaArea = $('<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;"> <div class="media" style="margin:0 auto; text-align:center;"> <img src="resources/uploadFiles/' + qchangeName + '" style="height:320px; max-width:90%; margin:0 auto;"> </div> <div class="mediaExplain ui stacked segment" style="margin:0 auto; margin-top: 20px; width:90%; height:auto; padding:15px;"> <span>' + mediaExplain + '</span> </div> </div>');
+									} */
+									var $mediaArea = $('<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;"> <div class="media" style="margin:0 auto; text-align:center;"> <img src="resources/uploadFiles/' + qchangeName + '" style="height:320px; max-width:90%; margin:0 auto;"> </div> <div class="mediaExplain ui stacked segment" style="margin:0 auto; margin-top: 20px; width:90%; height:auto; padding:15px;"> <span>' + mediaExplain + '</span> </div> </div>');
 									$choiceArea.append($mediaArea);
 								}
 								
@@ -629,7 +695,7 @@
 										var rchoiceOrder = rquestionList[i].choiceList[j].rchoiceOrder;
 										var rchoiceContext = rquestionList[i].choiceList[j].rchoiceContext;
 										
-										var $choice = $('<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;"> <div class="eachSurveyBox" style="height:auto;"> <div class="eachBox" style="min-height:20px;"> <div class="choiceNameArea" style="padding-top:5px;"> <div class="ui radio checkbox" style="margin-bottom: 5px;"> <input type="radio" name="' + researchOrder + '" class="choiceBox" id="' + researchOrder + 'choice' + rchoiceOrder + '" value="'+ rchoiceOrder + '"> <label for="' + researchOrder + 'choice' + rchoiceOrder + '" style="cursor: pointer;"> ' + rchoiceContext + '</label> </div> </div> </div> </div> </div>');
+										var $choice = $('<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;"> <div class="eachSurveyBox" style="height:auto;"> <div class="eachBox" style="min-height:20px;"> <div class="choiceNameArea" style="padding-top:5px;"> <div class="ui radio checkbox" style="margin-bottom: 5px;"> <input type="radio" name="' + totalOrder + '" class="choiceBox" id="' + totalOrder + 'choice' + rchoiceOrder + '" value="'+ rchoiceOrder + '"> <label for="' + totalOrder + 'choice' + rchoiceOrder + '" style="cursor: pointer;"> ' + rchoiceContext + '</label> </div> </div> </div> </div> </div>');
 										$choiceBox.append($choice);
 									}
 									$choiceArea.append($choiceBox);
@@ -648,7 +714,7 @@
 										var rchoiceOrder = rquestionList[i].choiceList[j].rchoiceOrder;
 										var rchoiceContext = rquestionList[i].choiceList[j].rchoiceContext;
 										
-										var $choice = $('<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;"> <div class="eachSurveyBox" style="height:auto;"> <div class="eachBox" style="min-height:20px;"> <div class="choiceNameArea" style="padding-top:5px;"> <div class="ui checked checkbox" style="margin-bottom: 5px;"> <input type="checkbox" name="' + researchOrder + '" class="choiceBox" id="' + researchOrder + 'choice' + rchoiceOrder + '" value="'+ rchoiceOrder + '"> <label for="' + researchOrder + 'choice' + rchoiceOrder + '" style="cursor: pointer;"> ' + rchoiceContext + '</label> </div> </div> </div> </div> </div>');
+										var $choice = $('<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;"> <div class="eachSurveyBox" style="height:auto;"> <div class="eachBox" style="min-height:20px;"> <div class="choiceNameArea" style="padding-top:5px;"> <div class="ui checked checkbox" style="margin-bottom: 5px;"> <input type="checkbox" name="' + totalOrder + '" class="choiceBox" id="' + totalOrder + 'choice' + rchoiceOrder + '" value="'+ rchoiceOrder + '"> <label for="' + totalOrder + 'choice' + rchoiceOrder + '" style="cursor: pointer;"> ' + rchoiceContext + '</label> </div> </div> </div> </div> </div>');
 										$choiceBox.append($choice);
 									}
 									$choiceArea.append($choiceBox);
@@ -668,7 +734,7 @@
 										var rchoiceContext = rquestionList[i].choiceList[j].rchoiceContext;
 										var cchangeName = rquestionList[i].choiceList[j].cchangeName;
 										
-										var $choice = $('<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;"> <div class="ui segment eachSurveyBox" style="margin:10px;"> <div class="eachSurveyBox" style="height:200px;"> <div class="imgArea" style="height:73%; width:100%; margin:0 auto;"> <img src="resources/uploadFiles/' + cchangeName + '" style="height:100%; width:100%;"> </div> <div class="choiceNameArea" style="padding-top:10px; padding-left:5px;"> <div class="ui radio checkbox" style="margin-bottom: 9px;"> <input type="radio" name="' + researchOrder + '" class="choiceBox" id="' + researchOrder + 'choice' + rchoiceOrder + '" value="' + rchoiceOrder + '"> <label for="' + researchOrder + 'choice' + rchoiceOrder + '" style="cursor: pointer; line-height:150%;">  ' + rchoiceContext + '</label> </div> </div> </div> </div> </div>');
+										var $choice = $('<div class="column" style="margin-top:10px; margin-bottom:10px; padding:0px; padding-right:5px; padding-left:5px;"> <div class="ui segment eachSurveyBox" style="margin:10px;"> <div class="eachSurveyBox" style="height:200px;"> <div class="imgArea" style="height:73%; width:100%; margin:0 auto;"> <img src="resources/uploadFiles/' + cchangeName + '" style="height:100%; width:100%;"> </div> <div class="choiceNameArea" style="padding-top:10px; padding-left:5px;"> <div class="ui radio checkbox" style="margin-bottom: 9px;"> <input type="radio" name="' + totalOrder + '" class="choiceBox" id="' + totalOrder + 'choice' + rchoiceOrder + '" value="' + rchoiceOrder + '"> <label for="' + totalOrder + 'choice' + rchoiceOrder + '" style="cursor: pointer; line-height:150%;">  ' + rchoiceContext + '</label> </div> </div> </div> </div> </div>');
 										$choiceBox.append($choice);
 									}
 									$choiceArea.append($choiceBox);
@@ -676,7 +742,7 @@
 								
 								//2-4. 주관식 단답형
 								if(questionFormNo == 2) {
-									$answerText = $('<div style="width:100%; text-align:center;"><div class="ui input" style="width:30%; margin:0 auto; margin-top:50px; text-align:center;"><input type="text" name="' + researchOrder + '"></div></div>');
+									$answerText = $('<div style="width:100%; text-align:center;"><div class="ui input" style="width:30%; margin:0 auto; margin-top:50px; text-align:center;"><input type="text" name="' + totalOrder + '"></div></div>');
 									
 									if(qchangeName != "" || rquestionVideolink != "") {
 										$choiceArea.append($answerHr);
@@ -698,7 +764,7 @@
 								
 								//2-6. 리커트 척도형
 								if(questionFormNo == 4) {
-									$scaleDiv = $('<div style="height:100%; width:100%; padding-top:130px; "> <table style="width:100%; height:70px; margin:0 auto; margin-bottom:0; text-align:center;"> <tr> <td style="width:9%;"></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'one" value="1"> <label for="' + researchOrder + 'one"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'two" value="2"> <label for="' + researchOrder + 'two"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'three" value="3"> <label for="' + researchOrder + 'three"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'four" value="4"> <label for="' + researchOrder + 'four"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + researchOrder + '" id="' + researchOrder + 'five" value="5"> <label for="' + researchOrder + 'five"></label> </div> </td> <td style="width:9%;"></td> </tr> <tr style="font-size:17px;"> <td colspan="3"> <label for="' + researchOrder + 'one" style="cursor: pointer;">매우 부정</label> </td> <td colspan="3"> <label for="' + researchOrder + 'two" style="cursor: pointer;">부 정</label> </td> <td colspan="3"> <label for="' + researchOrder + 'three" style="cursor: pointer;">보 통</label> </td> <td colspan="3"> <label for="' + researchOrder + 'four" style="cursor: pointer;">긍 정</label> </td> <td colspan="3"> <label for="' + researchOrder + 'five" style="cursor: pointer;">매우 긍정</label> </td> </tr> </table> </div>');
+									$scaleDiv = $('<div style="height:100%; width:100%; padding-top:130px; "> <table style="width:100%; height:70px; margin:0 auto; margin-bottom:0; text-align:center;"> <tr> <td style="width:9%;"></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + totalOrder + '" id="' + totalOrder + 'one" value="1"> <label for="' + totalOrder + 'one"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + totalOrder + '" id="' + totalOrder + 'two" value="2"> <label for="' + totalOrder + 'two"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + totalOrder + '" id="' + totalOrder + 'three" value="3"> <label for="' + totalOrder + 'three"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + totalOrder + '" id="' + totalOrder + 'four" value="4"> <label for="' + totalOrder + 'four"></label> </div> </td> <td colspan="2" style="width:18%;"><hr></td> <td style="width:2%;"> <div class="ui radio checkbox" style="margin-bottom: 2px; padding-left:10px; text-align:center;"> <input type="radio" name="' + totalOrder + '" id="' + totalOrder + 'five" value="5"> <label for="' + totalOrder + 'five"></label> </div> </td> <td style="width:9%;"></td> </tr> <tr style="font-size:17px;"> <td colspan="3"> <label for="' + totalOrder + 'one" style="cursor: pointer;">매우 부정</label> </td> <td colspan="3"> <label for="' + totalOrder + 'two" style="cursor: pointer;">부 정</label> </td> <td colspan="3"> <label for="' + totalOrder + 'three" style="cursor: pointer;">보 통</label> </td> <td colspan="3"> <label for="' + totalOrder + 'four" style="cursor: pointer;">긍 정</label> </td> <td colspan="3"> <label for="' + totalOrder + 'five" style="cursor: pointer;">매우 긍정</label> </td> </tr> </table> </div>');
 									$choiceArea.append($scaleDiv);
 								}
 								
@@ -707,12 +773,12 @@
 									$table = $('<table class="ui celled striped table" style="width:80%; margin:0 auto; margin-top:20px; margin-bottom:30px;"></table>');
 									$thead = $('<thead> <tr> <th colspan="2" style="text-align:center; color:#00679A; background-color:#EDEDED;">※ 답변의 총합이 100이 되도록 점수를 분배해주세요.</th> </tr> </thead>');
 									$tbody = $('<tbody></tbody>');
-									$lastTr = $('<tr style="background-color:#EDEDED;"> <td class="collapsing" style="font-size:12pt; padding-left:20px;"> 총 합 </td> <td class="center aligned collapsing"> <div class="ui input" style="width:30%; margin:0 auto;"><input type="text" id="sumInput" value="" readonly></div> / 100 </td> </tr>');
+									$lastTr = $('<tr style="background-color:#EDEDED;"> <td class="collapsing" style="font-size:12pt; padding-left:20px;"> 총 합</td> <td class="center aligned collapsing"> <div class="ui input" style="width: fit-content; margin:0 auto;"><span class="sumInput"></span></div> / 100 </td> </tr>');
 									
 									for(var j=0; j<rquestionList[i].choiceList.length; j++) {
 										var rchoiceOrder = rquestionList[i].choiceList[j].rchoiceOrder;
 										var rchoiceContext = rquestionList[i].choiceList[j].rchoiceContext;
-										$contentTr = $('<tr> <td class="collapsing" style="width:90%; font-size:12pt; padding-left:20px;"> ' + rchoiceContext + ' </td> <td class="center aligned collapsing" style="width:10%"> <div class="ui input" style="width:40%; margin:0 auto;"><input type="text" name="' + researchOrder + 'answer' + rchoiceOrder + '"></div> </td> </tr>');
+										$contentTr = $('<tr> <td class="collapsing" style="width:90%; font-size:12pt; padding-left:20px;">' + rchoiceContext + '</td> <td class="center aligned collapsing" style="width:10%"> <div class="ui input" style="width:40%; margin:0 auto;"><input type="text" class="eachValue" name="' + totalOrder + 'answer' + rchoiceOrder + '"></div> </td> </tr>');
 										$tbody.append($contentTr);
 									}
 									$tbody.append($lastTr);
@@ -772,14 +838,36 @@
 											$(document).find('#'+next).modal('setting', 'closable', false).modal('show');
 											$(document).find('#'+current).modal('hide');
 											
-											totalAnswer.push(eachAnswer);
-											totalAnswer.push("/");
-											console.log("전체 응답 : " + totalAnswer);
-											eachAnswer = [];
+											var qCountNo = $(document).find("#qCount").val();
+											var lastNextBtn = 'nextBtn' + qCountNo;
+											
+											if($(this).attr('id') != lastNextBtn) {
+												totalAnswer.push(eachAnswer);
+												totalAnswer.push("/");
+												console.log("전체 응답 : " + totalAnswer);
+												eachAnswer = [];
+											}
 										}
 									}
 								});
 							});
+							
+							$('.ui.celled.striped.table').find(".eachValue").keyup(function(){
+								
+								sumInput = 0;
+								$(".sumInput").text("");
+								$('.ui.celled.striped.table').find(".eachValue").each(function(){
+									sumInput += Number($(this).val());
+								})
+								$(".sumInput").text(sumInput);
+								
+								if(sumInput != 100) {
+									$(this).parent().parent().parent().parent().parent().parent().parent().find('.ui.blue.button').prop("disabled", true);
+								}
+								if(sumInput == 100) {
+									$(this).parent().parent().parent().parent().parent().parent().parent().find('.ui.blue.button').prop("disabled", false);
+								}
+							})
 						},
 						error:function(status){
 							console.log(status);
