@@ -788,4 +788,16 @@
 		WHERE SR.SURVEY_NO = #{surveyNo}
 		ORDER BY SR.SURVEYREPLY_DATE ASC
 	</select>
+	
+	<select id="voteCheck" parameterType="Vote" resultType="_int">
+		SELECT COUNT(*)
+		FROM SURVEYHISTORY
+		WHERE SURVEY_NO = #{surveyNo}
+		AND MNO = #{mno}
+	</select>
+	
+	<insert id="voteSurvey" parameterType="Vote">
+		INSERT INTO SURVEYHISTORY VALUES
+		(SEQ_SURVEYHISTORY.NEXTVAL, #{choiceNo}, #{surveyNo}, #{mno}, SYSDATE)
+	</insert>
 </mapper>

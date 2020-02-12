@@ -35,6 +35,7 @@ import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.Vote;
 
 @Controller
 public class SurveyController {
@@ -394,6 +395,12 @@ public class SurveyController {
 		return mv;
 	}
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 좋아요 증가 및 감소
+	 */
 	@PostMapping("changeLikeCount.survey")
 	public ModelAndView changeLikeCount(ModelAndView mv, String surveyNoStr, String likeStatus, String mnoStr) {
 		int surveyNo = Integer.parseInt(surveyNoStr);
@@ -419,6 +426,34 @@ public class SurveyController {
 		
 		mv.addObject("statisticList", statisticList);
 		mv.addObject("replyList", replyList);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 서베이 투표확인 및 투표
+	 */
+	@PostMapping("vote.survey")
+	public ModelAndView vote(ModelAndView mv, String mnoStr, String surveyNoStr, String choiceNoStr) {
+		int mno = Integer.parseInt(mnoStr);
+		int surveyNo = Integer.parseInt(surveyNoStr);
+		int choiceNo = Integer.parseInt(choiceNoStr);
+		
+		Vote vote = new Vote();
+		vote.setMno(mno);
+		vote.setSurveyNo(surveyNo);
+		vote.setChoiceNo(choiceNo);
+		
+		boolean alreadyVoted = ps.voteCheck(vote);
+		
+		if(alreadyVoted == false) {
+			int result = ps.voteSurvey(vote);
+		}
+		
+		mv.addObject("alreadyVoted", alreadyVoted);
 		mv.setViewName("jsonView");
 		return mv;
 	}

@@ -25,6 +25,7 @@ import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.Vote;
 
 public interface PanelDao {
 
@@ -153,5 +154,9 @@ public interface PanelDao {
 	List<Map<String, Object>> statisticList(SqlSessionTemplate sqlSession, int surveyNo);
 
 	List<Map<String, Object>> replyList(SqlSessionTemplate sqlSession, int surveyNo);
+
+	int voteCheck(SqlSessionTemplate sqlSession, Vote vote);
+
+	int voteSurvey(SqlSessionTemplate sqlSession, Vote vote);
 
 }

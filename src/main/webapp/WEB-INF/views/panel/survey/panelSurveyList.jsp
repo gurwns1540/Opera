@@ -109,7 +109,7 @@ div.ui.segment.leftArea {
 	cursor: pointer;
 	font-size:10pt;
 }
-#voteBtn {
+.voteBtn {
 	background-color: #CC3399;
 	width: 150px;
 	height: 40px;
@@ -271,7 +271,7 @@ textarea:focus {
 											<button class="report ui basic button"><i class="bell outline icon"></i> 신고</button>
 										</td>
 										<td style="text-align:right;">
-											<button class="loginCheck" id="voteBtn">투표하기</button>
+											<button class="voteBtn">투표하기</button>
 										</td>
 									</tr>
 								</table>
@@ -431,6 +431,55 @@ textarea:focus {
 					}
 					
 				});
+			});
+			
+			$(document).on("click", ".voteBtn", function(){
+				var mno = "${ loginUser.mno }";
+				var surveyNo = $(this).parent().parent().parent().parent().parent().parent().find(".surveyNo").val();
+				var isChecked = false;
+				var choiceNo = 0;
+				$(this).parent().parent().parent().parent().parent().parent().find(".choicebox").each(function(){
+					if($(this).is(":checked")){
+						isChecked = true;
+						choiceNo = $(this).prop("id").substr(6,7);
+					}
+				})
+				
+				if(isChecked == false){
+					Swal.fire(
+						'선택 없음!',
+						'보기를 선택해주세요!',
+						'error'
+					)
+				}else {
+					$.ajax({
+						url:"vote.survey",
+						type:"post",
+						data:{
+							mnoStr:mno,
+							surveyNoStr:surveyNo,
+							choiceNoStr:choiceNo
+						},
+						success:function(data){
+							if(data.alreadyVoted == true){
+								Swal.fire(
+									'투표 오류!',
+									'이미 투표하셨습니다.',
+									'error'
+								)
+							}else {
+								Swal.fire(
+									'투표 완료!',
+									'투표가 적용되었습니다.',
+									'success'
+								)
+								setTimeout(function(){
+								    location.reload();
+								},1500);
+							}
+						}
+					})
+				}
 			});
 			$(document).on("click", ".like", function(){
 				var likeCount = Number($(this).text().substr(5, 6));

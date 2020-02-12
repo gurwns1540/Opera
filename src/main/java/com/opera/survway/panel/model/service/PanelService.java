@@ -25,6 +25,7 @@ import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.Vote;
 
 
 
@@ -119,5 +120,9 @@ public interface PanelService {
 	List<Map<String, Object>> statisticList(int surveyNo);
 
 	List<Map<String, Object>> replyList(int surveyNo);
+
+	boolean voteCheck(Vote vote);
+
+	int voteSurvey(Vote vote);
 
 }

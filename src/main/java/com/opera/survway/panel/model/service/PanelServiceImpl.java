@@ -10,7 +10,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.UploadFile;
@@ -33,6 +32,7 @@ import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.Vote; 
 
 
 @Service
@@ -747,6 +747,12 @@ public class PanelServiceImpl implements PanelService {
 		return pd.likeCheck(sqlSession, mno);
 	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 좋아요 증가 및 감소
+	 */
 	@Override
 	public int changeLikeCount(int surveyNo, int mno, String status) {
 		int result = 0;
@@ -764,14 +770,58 @@ public class PanelServiceImpl implements PanelService {
 		return result;
 	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 통계 리스트
+	 */
 	@Override
 	public List<Map<String, Object>> statisticList(int surveyNo) {
 		return pd.statisticList(sqlSession, surveyNo);
 	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 댓글 리스트
+	 */
 	@Override
 	public List<Map<String, Object>> replyList(int surveyNo) {
 		return pd.replyList(sqlSession, surveyNo);
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 투표여부 확인
+	 */
+	@Override
+	public boolean voteCheck(Vote vote) {
+		boolean alreadyVoted = false;
+		
+		int result = pd.voteCheck(sqlSession, vote);
+		
+		if(result > 0) {
+			alreadyVoted = true;
+		}else {
+			alreadyVoted = false;
+		}
+		
+		return alreadyVoted;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 투표
+	 */
+	@Override
+	public int voteSurvey(Vote vote) {
+		return pd.voteSurvey(sqlSession, vote);
 	}
 
 
