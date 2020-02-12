@@ -285,7 +285,7 @@
 					<li class="innerMenu"><a href="researchReportStandbyList.admin">리서치 보고서 작성 대기 관리</a></li>
 					<li class="innerMenu"><a href="researchCompletedProcessingList.admin">완료된 리서치 목록</a></li>
 					<li class="innerMenu"><a href="tsQaManagement.adminResearch">TS 질문 관리</a></li>
-					<li class="innerMenu"><a href="pcQaManagement.adminResearch" style="border-bottom: 0;">패널 PC 환경조사 질문 관리</a></li>
+					<li class="innerMenu"><a href="pcQaManagement.admin" style="border-bottom: 0;">패널 PC 환경조사 질문 관리</a></li>
 				</ul>
 			</li>
 			<li class="topMenu">

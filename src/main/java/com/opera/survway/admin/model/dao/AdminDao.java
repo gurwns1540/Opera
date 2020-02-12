@@ -1,6 +1,5 @@
 package com.opera.survway.admin.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -133,25 +132,5 @@ public interface AdminDao {
 	int insertMailingReceiver(SqlSessionTemplate sqlSession, MailingReceiver mr);
 
 	int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo);
-
-
-	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
-
-	int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo);
-
-	List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals) throws ResearchException;
-
-	int deleteChoice(SqlSessionTemplate sqlSession);
-
-	int mergeQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req);
-
-	int insertAudioChoice(SqlSessionTemplate sqlSession, ResearchChoice choice);
-
-	ResearchQuestion pcQaManagement(SqlSessionTemplate sqlSession);
-
-	int mergeVideoQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req);
-
-
-	
 
 }

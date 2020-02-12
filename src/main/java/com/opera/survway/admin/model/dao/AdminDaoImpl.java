@@ -1,11 +1,9 @@
 package com.opera.survway.admin.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
-import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -407,32 +405,4 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.insert("Admin.insertMailingReceiver", mr);
 	}
 
-	@Override
-	public int deleteChoice(SqlSessionTemplate sqlSession) {
-		return sqlSession.update("Admin.deleteChoice");
-	}
-
-	@Override
-	public int mergeQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req) {
-		return sqlSession.update("Admin.updateQuestion",req); 
-	
-	}
-
-	@Override
-	public int insertAudioChoice(SqlSessionTemplate sqlSession, ResearchChoice choice) {
-		return sqlSession.insert("Admin.insertAudioChoice", choice);
-	}
-
-	@Override
-	public ResearchQuestion pcQaManagement(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("Admin.selectPcQa");
-	}
-
-	@Override
-	public int mergeVideoQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req) {
-		return sqlSession.update("Admin.updateVideoQuestion",req);
-	}
-
-	
 }
-
