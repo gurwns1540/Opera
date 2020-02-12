@@ -32,6 +32,7 @@
 		<typeAlias type="com.opera.survway.admin.model.vo.PanelThanksSurvey" alias="PanelThanksSurvey"/>
 		<typeAlias type="com.opera.survway.admin.model.vo.MailingList" alias="MailingList"/>
 		<typeAlias type="com.opera.survway.admin.model.vo.MailingReceiver" alias="MailingReceiver"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.SurveyReward" alias="SurveyReward"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>
