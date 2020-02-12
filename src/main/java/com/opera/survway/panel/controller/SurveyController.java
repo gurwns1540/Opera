@@ -64,6 +64,8 @@ public class SurveyController {
 		
 		//신규회원일때 - 리서치정보조회 X, TS조사 질문들 바로 리턴
 		case 1 : 
+			listCount = 1;
+			pi = Pagination.getPageInfo(currentPage, listCount);
 			path = "surveyList";
 			break;
 			
