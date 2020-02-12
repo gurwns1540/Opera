@@ -40,7 +40,7 @@ import com.opera.survway.exception.SelectException;
 
 @Service
 public class AdminServiceImpl implements AdminService{
-
+  
 	@Autowired 
 	private AdminDao ad;
 	@Autowired
@@ -895,6 +895,86 @@ public class AdminServiceImpl implements AdminService{
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int audioEnviron(String questionTitle, String[] choiceTitleArr, String[] choiceOrderArr,String titleContext,String questionFormNo) {
+		
+		ArrayList<ResearchChoice> choiceList = new ArrayList<>();
+		
+		for(int i = 0; i < choiceOrderArr.length; i++) {
+			ResearchChoice choice = new ResearchChoice();
+			
+			choice.setChoiceContext(choiceTitleArr[i]);
+			choice.setChoiceOrder(Integer.parseInt(choiceOrderArr[i]));
+			
+			choiceList.add(choice);
+		}
+		ResearchQuestion req =new ResearchQuestion();
+		req.setRquestionContext(titleContext);
+		req.setQuestionFormNo(Integer.parseInt(questionFormNo));
+		req.setMediaExplain(questionTitle);
+		
+		ad.mergeQuestion(sqlSession,req);
+		
+		
+		
+		
+		
+		
+		int result = ad.deleteChoice(sqlSession);
+		if(result > 0) {
+			for(int i = 0; i < choiceList.size(); i++) {
+				ad.insertAudioChoice(sqlSession, choiceList.get(i));
+				System.out.println("choiceList.get(i) : " + choiceList.get(i));
+			}
+		}
+		
+		return result;
+	}
+
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 영상 yotube주소 포함 저장
+	 */
+	@Override
+	public int videoInsert(String questionTitle, String[] choiceTitleArr, String[] choiceOrderArr, String titleContext,
+			String questionFormNo, String videoAdress) {
+		
+		ArrayList<ResearchChoice> choiceList = new ArrayList<>();
+		
+		for(int i = 0; i < choiceOrderArr.length; i++) {
+			ResearchChoice choice = new ResearchChoice();
+			
+			choice.setChoiceContext(choiceTitleArr[i]);
+			choice.setChoiceOrder(Integer.parseInt(choiceOrderArr[i]));
+			
+			choiceList.add(choice);
+		}
+		ResearchQuestion req =new ResearchQuestion();
+		req.setRquestionContext(titleContext);
+		req.setQuestionFormNo(Integer.parseInt(questionFormNo));
+		req.setMediaExplain(questionTitle);
+		req.setQuestionVideoLink(videoAdress);
+		
+		ad.mergeVideoQuestion(sqlSession,req);
+		
+		int result = ad.deleteChoice(sqlSession);
+		if(result > 0) {
+			for(int i = 0; i < choiceList.size(); i++) {
+				ad.insertAudioChoice(sqlSession, choiceList.get(i));
+				System.out.println("choiceList.get(i) : " + choiceList.get(i));
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public ResearchQuestion pcQaManagement() {
+		ResearchQuestion rq = ad.pcQaManagement(sqlSession); 
+		return rq;
 	}
 
 }

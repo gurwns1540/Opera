@@ -172,8 +172,18 @@ public interface AdminDao {
 
 	ResearchOne selectResearchOne(SqlSessionTemplate sqlSession, int researchNo);
 	
-  int updatePanelLevel(SqlSessionTemplate sqlSession, int mno);
+	int updatePanelLevel(SqlSessionTemplate sqlSession, int mno);
 
 	int deletePanelThanksSurvey(SqlSessionTemplate sqlSession, int mno);
+
+	int deleteChoice(SqlSessionTemplate sqlSession);
+
+	int mergeQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req);
+
+	int insertAudioChoice(SqlSessionTemplate sqlSession, ResearchChoice choice);
+
+	ResearchQuestion pcQaManagement(SqlSessionTemplate sqlSession);
+
+	int mergeVideoQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req);
 
 }

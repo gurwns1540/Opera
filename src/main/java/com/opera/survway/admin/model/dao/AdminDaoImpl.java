@@ -459,5 +459,29 @@ public class AdminDaoImpl implements AdminDao{
 	public int deletePanelThanksSurvey(SqlSessionTemplate sqlSession, int mno) {
 		return sqlSession.delete("Admin.deletePanelThanksSurvey",mno);
 	}
+	
+	@Override
+	public int deleteChoice(SqlSessionTemplate sqlSession) {
+		return sqlSession.update("Admin.deleteChoice");
+	}
 
+	@Override
+	public int mergeQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req) {
+		return sqlSession.update("Admin.updateQuestion",req); 
+	}
+
+	@Override 
+	public int insertAudioChoice(SqlSessionTemplate sqlSession, ResearchChoice choice) {
+		return sqlSession.insert("Admin.insertAudioChoice", choice);
+	}
+
+	@Override
+	public ResearchQuestion pcQaManagement(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.selectPcQa");
+	}
+
+	@Override
+	public int mergeVideoQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req) {
+		return sqlSession.update("Admin.updateVideoQuestion",req);
+	}
 }
