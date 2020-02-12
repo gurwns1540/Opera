@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="/WEB-INF/views/panel/common/head.jsp"%>
+<jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
 </head>
 <style>
 .ui.tabular.menu .active.item {
@@ -125,7 +125,7 @@
 <body>
 	<c:if test="${ loginUser != null }">
 		<div class="wrap">
-			<%@ include file="/WEB-INF/views/panel/common/header.jsp"%>
+			<jsp:include page="/WEB-INF/views/panel/common/header.jsp"/>
 			<section class="container">
 				<br />
 	
@@ -151,7 +151,7 @@
 	
 	
 				<div class="ui tabular menu">
-					<a class="item" onclick="location.href='mySurveyList_complete.panel'"> 참여 완료 조사 </a>
+					<a class="item" onclick="location.href='mySurveyList_complete.survey'"> 참여 완료 조사 </a>
 					<a class="item active"> 참여 시도 조사 </a>
 				</div>
 	
@@ -159,6 +159,7 @@
 				
 				<div class="ContentsArea" style="width: 100%;">
 					<div class="searchArea" align="right">
+					<form action="mySurveyList_retry.survey" method="get" id="search">
 						<table>
 							<tr>
 								<td>
@@ -168,7 +169,7 @@
 								<td></td>
 								<td>
 									<div class="ui input">
-										<input type="search" name="" />
+										<input type="search" name="searchResearch" />
 									</div>
 								</td>
 								<td>
@@ -176,6 +177,7 @@
 								</td>
 							</tr>
 						</table>
+						</form>
 					</div>  <!-- inquirySearchArea end -->
 					<br />
 					<div class="listArea" style="width: inherit;">	
@@ -185,44 +187,89 @@
 									<th style="width: 15%;">조사번호</th>
 									<th style="width: 50%;">문의제목</th>
 									<th style="width: 15%;">시도일자</th>
-									<th style="width: 20%;">상  태</th>
+									
 									
 								</tr>
 							</thead>  <!-- #inquiryTheadArea end -->
 							<tbody id="tBodyArea">
-							<%-- <c:forEach begin="1" end="5" step="1"> --%>
+							<c:forEach var="PanelResearchList" items="${list }" >
 								<tr>
-									<td>84532</td>
-									<td>스낵 선호도 조사</td>
-									<td>2020.01.05</td>
-									<td><button id="retryBtn">재참여하기</button></td>
+									<td><c:out value="${PanelResearchList.researchNo}" /></td>
+									<td><c:out value="${PanelResearchList.researchName}" /></td>
+									<td><c:out value="${PanelResearchList.attemptDate}" /></td>
 								</tr>
-								<tr>
-									<td>84524</td>
-									<td>소비자 인식 조사</td>
-									<td>2020.01.10</td>
-									<td><button id="disableBtn" disabled>재참여불가</button></td>
-								</tr>
-								<tr>
-									<td>84532</td>
-									<td>음료 선호도 조사</td>
-									<td>2020.01.15</td>
-									<td><button id="overBtn" disabled>기간만료</button></td>
-								</tr>
-							<%-- </c:forEach> --%>
+							</c:forEach>
 								
 							</tbody>  <!-- #inquiryTbodyArea end -->
 						</table>  <!-- #inquiryTableArea end -->
 					</div>  <!-- .inquiryArea end -->
-					<div id="pagingArea" align="center" style="margin-top: 50px;">
-				        <span>[처음]</span>
-				        <span>[이전]</span>
-				        <c:forEach var="i" begin="1" end="5">
-				        	<span><c:out value="${ i }"/></span>
-				        </c:forEach>
-				        <span>[다음]</span>
-				        <span>[마지막]</span>
-			     	</div>  <!-- #pagingArea end -->
+					<div id="pagingArea" align="center">
+						<c:url var="inquiryListFirst" value="mySurveyList_complete.survey">
+							<c:param name="currentPage" value="${1}" />
+							<c:if test="${ !empty param.researchName }">
+								<c:param name="inquiryTitle" value="${param.researchName}" />
+							</c:if>
+
+						</c:url>
+						<a href="${inquiryListFirst}"><span>[처음]</span></a>&nbsp;
+
+						<c:if test="${pi.currentPage <= 1}">
+							<span>[이전]</span> &nbsp;
+			</c:if>
+						<c:if test="${pi.currentPage > 1}">
+							<c:url var="inquiryListBack" value="mySurveyList_complete.survey">
+								<c:param name="currentPage" value="${pi.currentPage - 1}" />
+								<c:if test="${ !empty param.researchName }">
+									<c:param name="researchName" value="${param.researchName}" />
+								</c:if>
+
+							</c:url>
+							<a href="${inquiryListBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+
+						<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+							<c:if test="${p eq pi.currentPage }">
+								<span
+									style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+							</c:if>
+							<c:if test="${p ne pi.currentPage }">
+								<c:url var="inquiryListCheck"
+									value="mySurveyList_complete.survey">
+									<c:param name="currentPage" value="${ p }" />
+									<c:if test="${ !empty param.researchName }">
+										<c:param name="researchName" value="${param.researchName}" />
+									</c:if>
+
+								</c:url>
+								<a href="${ inquiryListCheck }"><span>${ p }</span></a>
+							</c:if>
+
+						</c:forEach>
+
+						<c:if test="${pi.currentPage < pi.maxPage}">
+							<c:url var="inquiryListNext" value="mySurveyList_complete.survey">
+								<c:param name="currentPage" value="${pi.currentPage + 1}" />
+								<c:if test="${ !empty param.researchName }">
+									<c:param name="researchName" value="${param.researchName}" />
+								</c:if>
+
+							</c:url>
+				&nbsp;<a href="${inquiryListNext}"><span>[다음]</span></a>
+						</c:if>
+						<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+						</c:if>
+
+						<c:url var="inquiryListEnd" value="mySurveyList_complete.survey">
+							<c:param name="currentPage" value="${pi.maxPage}" />
+							<c:if test="${ !empty param.researchName }">
+								<c:param name="researchName" value="${param.researchName}" />
+							</c:if>
+
+						</c:url>
+						<a href="${inquiryListEnd}"><span>[마지막]</span></a>&nbsp;
+					</div>
+					<!-- #pagingArea end -->
 				</div>  <!-- .inquiryContentsArea end -->
 				
 				
@@ -233,7 +280,7 @@
 				<br />
 			</section>
 			<!-- container end -->
-			<%@ include file="/WEB-INF/views/panel/common/footer.jsp"%>
+			<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 		</div>
 		<!-- wrap end -->
 	</c:if>
@@ -242,6 +289,12 @@
 			location.href="panelResult.panel?message=notLoginAccess";
 		</script>
 	</c:if>
+	
+	<script>
+		$("#searchBtn").click(function(){
+			 $("#search").submit();
+		 )};
+	</script>
 </body>
 </html>
 

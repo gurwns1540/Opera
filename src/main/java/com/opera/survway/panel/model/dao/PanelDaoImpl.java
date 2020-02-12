@@ -18,6 +18,7 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
@@ -398,7 +399,36 @@ public class PanelDaoImpl implements PanelDao{
 	}
 
 	@Override
-	public int selectPanelReward(SqlSessionTemplate sqlSession, int mno) {
+	public int getListCountPanelResearech(SqlSessionTemplate sqlSession, PanelResearchList rl) {
+		
+		return sqlSession.selectOne("Panel.getListCountPanelResearch",rl);
+	}
+
+	@Override
+	public List<PanelResearchList> selectAllPanelResearchList(SqlSessionTemplate sqlSession, PanelResearchList rl) {
+		List<PanelResearchList> list = null;
+		int offset = (rl.getPi().getCurrentPage()-1)*rl.getPi().getLimit();
+		RowBounds rowBounds = new RowBounds(offset, rl.getPi().getLimit());
+		list = sqlSession.selectList("Panel.selectAllPanelResearchList",rl,rowBounds);
+		return list;
+	}
+
+	@Override
+	public int getListCountPanelResearchRetry(SqlSessionTemplate sqlSession, PanelResearchList rl) {
+		return sqlSession.selectOne("Panel.getListCountPanelResearchRetry",rl);
+	}
+
+	@Override
+	public List<PanelResearchList> selectAllPanelResearchRetryList(SqlSessionTemplate sqlSession,
+			PanelResearchList rl) {
+		List<PanelResearchList> list = null;
+		int offset = (rl.getPi().getCurrentPage()-1)*rl.getPi().getLimit();
+		RowBounds rowBounds = new RowBounds(offset, rl.getPi().getLimit());
+		list = sqlSession.selectList("Panel.selectAllPanelResearchRetryList",rl,rowBounds);
+		return list;
+
+  @Override
+  public int selectPanelReward(SqlSessionTemplate sqlSession, int mno) {
 		return sqlSession.selectOne("Panel.getCurrentPanelReward", mno);
 	}
 

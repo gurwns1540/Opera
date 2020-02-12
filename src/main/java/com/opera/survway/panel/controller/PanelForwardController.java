@@ -169,15 +169,15 @@ public class PanelForwardController {
 		return "survey/surveyList";
 	}
 	//2. 참여한 설문조사 목록 - 참여 완료 조사
-	@GetMapping("mySurveyList_complete.panel")
-	public String showMySurveyList_complete() {
-		return "survey/mySurveyList_complete";
-	}
+//	@GetMapping("mySurveyList_complete.panel")
+//	public String showMySurveyList_complete() {
+//		return "survey/mySurveyList_complete";
+//	}
 	//2-2. 참여한 설문조사 목록 - 참여 시도 조사
-	@GetMapping("mySurveyList_retry.panel")
-	public String showMySurveyList_retry() {
-		return "survey/mySurveyList_retry";
-	}
+//	@GetMapping("mySurveyList_retry.panel")
+//	public String showMySurveyList_retry() {
+//		return "survey/mySurveyList_retry";
+//	}
 	//3. 패널서베이목록
 	@GetMapping("panelSurveyList.panel")
 	public String showPanelSurveyList() {

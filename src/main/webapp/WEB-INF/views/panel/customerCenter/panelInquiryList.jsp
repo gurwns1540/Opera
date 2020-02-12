@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/WEB-INF/views/panel/common/head.jsp"/>
+<jsp:include page="/WEB-INF/views/panel/common/head.jsp" />
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>
 <style>
@@ -197,29 +197,26 @@
 								<tr class="title"
 									style="color: black !important; font-weight: normal;">
 									<td>${ Inquiry.inquiryNo }</td>
-									<td>
-										<c:if test="${Inquiry.inquiryCategoryNo == 1 }">
+									<td><c:if test="${Inquiry.inquiryCategoryNo == 1 }">
                            					가입
-                           				</c:if> 
-                           				<c:if test="${Inquiry.inquiryCategoryNo == 2 }">
+                           				</c:if> <c:if
+											test="${Inquiry.inquiryCategoryNo == 2 }">
                            					조사
-                           				</c:if> 
-                           				<c:if test="${Inquiry.inquiryCategoryNo == 3 }">
+                           				</c:if> <c:if
+											test="${Inquiry.inquiryCategoryNo == 3 }">
                            					리워드
-                           				</c:if> 
-                           				<c:if test="${Inquiry.inquiryCategoryNo == 4 }">
+                           				</c:if> <c:if
+											test="${Inquiry.inquiryCategoryNo == 4 }">
                            					기타
-                           				</c:if>
-                           			</td>
+                           				</c:if></td>
 									<td><c:out value="${Inquiry.inquiryTitle }" /></td>
 									<td><c:out value="${Inquiry.inquiryDate }" /></td>
 									<td><c:if test="${Inquiry.inquiryAnswerDate == null}"> 
                            			 		답변 대기 
-                           		 		</c:if> 
-                           		 		<c:if test="${Inquiry.inquiryAnswerDate != null }">
+                           		 		</c:if> <c:if
+											test="${Inquiry.inquiryAnswerDate != null }">
 											<c:out value=" ${Inquiry.inquiryAnswerDate  }" />
-										</c:if>
-									</td>
+										</c:if></td>
 								</tr>
 								<tr class="content">
 									<td colspan="5">
@@ -229,30 +226,36 @@
 											</span>
 										</div> <c:if test="${Inquiry.inquiryAnswer != null}">
 											<div style="width: 100%; padding: 50px;">
-												관리자 曰
+												<h4 class="ui horizontal divider header">
+													<i class="comments icon"></i> 답변
+												</h4>
+												<div align="left" style="width: 100%; margin-left: 110px;">
 												<c:out value="${Inquiry.inquiryAnswer }" />
+												</div>
 											</div>
-										</c:if>
-										<c:if test="${sessionScope.loginUser.userType eq '관리자' }">
-										
-											<div class="ui form" style="width:100%; padding:50px;">
-											  <div class="field">
-											    <textarea id="answerArea"></textarea>
-											  </div>
-											  <c:if test="${Inquiry.inquiryAnswer == null}">
-											  <div>
-											  	<input type="hidden" value="${Inquiry.inquiryNo }" id="answerNo">
-											  	<button class="ui icon button answerBtn" >답변하기</button>
-											  </div>
-											  </c:if>
-											  <c:if test="${Inquiry.inquiryAnswer != null}">
-											  <div>
-											  	<input type="hidden" value="${Inquiry.inquiryNo }" id="answerNo">
-											  	<button class="ui icon button answerBtn">수정하기</button>
-											  	<button class="ui icon button deleteAnswerBtn" >답변 삭제하기</button>
-											  </div>
-											  </c:if>
-										</div>
+										</c:if> <c:if test="${sessionScope.loginUser.userType eq '관리자' }">
+
+											<div class="ui form" style="width: 100%; padding: 50px;">
+												<div class="field">
+													<textarea id="answerArea"></textarea>
+												</div>
+												<c:if test="${Inquiry.inquiryAnswer == null}">
+													<div>
+														<input type="hidden" value="${Inquiry.inquiryNo }"
+															id="answerNo">
+														<button class="ui icon button answerBtn">답변하기</button>
+													</div>
+												</c:if>
+												<c:if test="${Inquiry.inquiryAnswer != null}">
+													<div>
+														<input type="hidden" value="${Inquiry.inquiryNo }"
+															id="answerNo">
+														<button class="ui icon button answerBtn">수정하기</button>
+														<button class="ui icon button deleteAnswerBtn">답변
+															삭제하기</button>
+													</div>
+												</c:if>
+											</div>
 										</c:if>
 									</td>
 								</tr>
@@ -265,9 +268,9 @@
 				</div>
 				<!-- .inquiryArea end -->
 				<c:if test="${sessionScope.loginUser.userType eq '패널' }">
-				<div class="inquiryBtnArea" align="right" style="margin-top: 15px;">
-					<button id="newInquiryBtn">1:1 문의하기</button>
-				</div>
+					<div class="inquiryBtnArea" align="right" style="margin-top: 15px;">
+						<button id="newInquiryBtn">1:1 문의하기</button>
+					</div>
 				</c:if>
 				<!-- inquiryBtnArea end -->
 				<div id="pagingArea" align="center">
@@ -359,7 +362,7 @@
 			<br />
 		</section>
 		<!-- container end -->
-		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
+		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp" />
 	</div>
 	<!-- wrap end -->
 
@@ -508,8 +511,8 @@
 			});
 		});
 		</script>
-		
-	
+
+
 </body>
 </html>
 
