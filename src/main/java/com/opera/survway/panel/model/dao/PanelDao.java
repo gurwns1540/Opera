@@ -143,4 +143,6 @@ public interface PanelDao {
 
 	int selectRquestionNo(SqlSessionTemplate sqlSession, InsertAnswer answer);
 
+	int insertAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
 }

@@ -436,5 +436,10 @@ public class PanelDaoImpl implements PanelDao{
 	public int selectRquestionNo(SqlSessionTemplate sqlSession, InsertAnswer answer) {
 		return sqlSession.selectOne("Panel.selectRquestionNo", answer);
 	}
+
+	@Override
+	public int insertAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.insert("Panel.insertAnswer", answer);
+	}
 	
 }

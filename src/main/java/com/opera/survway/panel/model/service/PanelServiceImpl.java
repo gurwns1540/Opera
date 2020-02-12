@@ -707,7 +707,7 @@ public class PanelServiceImpl implements PanelService {
 			rquestionOrder++;
 			
 			//RESEARCHHISTORY에 인서트
-			
+			int insertResult = pd.insertAnswer(sqlSession, answer);
 		}
 		
 		
