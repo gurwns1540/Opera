@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -683,7 +684,6 @@ public class AdminResearchController {
 		ufo.setFilePath(savePath); //파일 경로 넣기
 		
 		System.out.println(ufo);
-		
 		int result =0;
 		result = as.uploadAudio(ufo);
 		
@@ -705,10 +705,15 @@ public class AdminResearchController {
 	
 	
 	
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 10.
+	 * @ModifyDate  : 2020. 2. 10.
+	 * @Description : pc환경조사_오디오ver저장
+	 */
 	@PostMapping("audioEnviron.adminResearch")
-	public ModelAndView audioEnviron(ModelAndView mv, @RequestParam(value="questionTitle") String questionTitle,String [] choiceTitleArr,String[] choiceOrderArr) {
-		Research r = new Research();
-		int result =0;
+	public ModelAndView audioEnviron(ModelAndView mv, @RequestParam(value="questionTitle") String questionTitle,@RequestParam(value="choiceTitleArr") String [] choiceTitleArr,@RequestParam(value="choiceOrderArr") String[] choiceOrderArr ,@RequestParam(value="titleContext") String titleContext,@RequestParam(value="questionFormNo") String questionFormNo) {
+		//questionTitle,choicetitle
 		System.out.println(questionTitle);
 		for(int i = 0; i < choiceOrderArr.length; i++) {
 			System.out.println(choiceOrderArr[i]);
@@ -718,12 +723,53 @@ public class AdminResearchController {
 		}
 		
 		
+		//1.이거로 해서 delete부터
+	   int result =as.audioEnviron(questionTitle,choiceTitleArr,choiceOrderArr,titleContext,questionFormNo);  
 		
-		//as.audioEnviron(questionTitle,choiceTitleArr,choiceOrderArr);
-		
-		mv.addObject("r",r);
+	   System.out.println("questionTitle"+questionTitle);
+	   System.out.println("titleContext:"+titleContext);
+		mv.addObject("result",result);
 		mv.setViewName("jsonView");
 		
+		return mv;
+	}
+	
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 이거는 pc환경조사 select
+	 */
+	@RequestMapping("pcQaManagement.adminResearch")
+	public String pcQaManagement(Model model) {
+		ResearchQuestion question = as.pcQaManagement();
+				System.out.println(question);
+		//초이스리스트는 컬렉션으로		
+		model.addAttribute("pcQa", question);
+		return "pcQaManagement";
+	}
+	
+	@PostMapping("video.adminResearch")
+	public ModelAndView videoInsert(HttpServletRequest request,ModelAndView mv, String questionTitle,String [] choiceTitleArr,String[] choiceOrderArr,String titleContext, String questionFormNo,String videoAdress ) {
+		for(int i = 0; i < choiceOrderArr.length; i++) {
+			System.out.println(choiceOrderArr[i]);
+		}
+		for(int i = 0; i < choiceTitleArr.length; i++) {
+			System.out.println(choiceTitleArr[i]);
+		}
+		String videoLink = (videoAdress.replace("https://", "")).replace("http://", "");
+		
+		System.out.println(videoLink);
+		
+		int result =as.videoInsert(questionTitle,choiceTitleArr,choiceOrderArr,titleContext,questionFormNo,videoLink);
+		
+	
+		System.out.println("result:"+result);
+		System.out.println("videoLink"+videoLink);
+		
+		
+		
+		mv.setViewName("jsonView");
 		return mv;
 	}
 }
