@@ -123,4 +123,11 @@ public interface AdminService {
 
 	int deletePanelThanksSurvey(int mno) throws ResearchException;
 
+	int audioEnviron(String questionTitle, String[] choiceTitleArr, String[] choiceOrderArr,String titleContex,String questionFormNo);
+
+	ResearchQuestion pcQaManagement();
+
+	int videoInsert(String questionTitle, String[] choiceTitleArr, String[] choiceOrderArr, String titleContext,
+			String questionFormNo, String videoAdress);
+
 }

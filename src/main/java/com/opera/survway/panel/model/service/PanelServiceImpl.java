@@ -757,9 +757,11 @@ public class PanelServiceImpl implements PanelService {
 		
 		if(result <0) {
 			throw new InquiryException("참여시도한 조사 listCount조회 실패");
-  }
+		}
+		return result;
+	}
     
-  /**
+	/**
 	 * @Author      : Sooo
 	 * @CreateDate  : 2020. 2. 11.
 	 * @ModifyDate  : 2020. 2. 11.

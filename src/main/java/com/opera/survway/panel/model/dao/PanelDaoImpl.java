@@ -419,16 +419,16 @@ public class PanelDaoImpl implements PanelDao{
 	}
 
 	@Override
-	public List<PanelResearchList> selectAllPanelResearchRetryList(SqlSessionTemplate sqlSession,
-			PanelResearchList rl) {
+	public List<PanelResearchList> selectAllPanelResearchRetryList(SqlSessionTemplate sqlSession, PanelResearchList rl) {
 		List<PanelResearchList> list = null;
 		int offset = (rl.getPi().getCurrentPage()-1)*rl.getPi().getLimit();
 		RowBounds rowBounds = new RowBounds(offset, rl.getPi().getLimit());
 		list = sqlSession.selectList("Panel.selectAllPanelResearchRetryList",rl,rowBounds);
 		return list;
+	}
 
-  @Override
-  public int selectPanelReward(SqlSessionTemplate sqlSession, int mno) {
+	@Override
+	public int selectPanelReward(SqlSessionTemplate sqlSession, int mno) {
 		return sqlSession.selectOne("Panel.getCurrentPanelReward", mno);
 	}
 
