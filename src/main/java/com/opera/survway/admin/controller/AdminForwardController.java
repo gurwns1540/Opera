@@ -47,11 +47,11 @@ public class AdminForwardController {
 		return "adminResearch/poorResponseComplete";
 	}
 	
-	//리서치 보고서 작성 대기 목록-통계처리
-	@RequestMapping("researchReportStandbyList.admin")
-	public String forwardResearchReportStandbyList() {
-		return "adminResearch/researchReportStandbyList";
-	}
+//	//리서치 보고서 작성 대기 목록-통계처리
+//	@RequestMapping("researchReportStandbyList.admin")
+//	public String forwardResearchReportStandbyList() {
+//		return "adminResearch/researchReportStandbyList";
+//	}
 	
 	//리서치 보고서 작성 대기 목록-보고서 작성 목록
 	@RequestMapping("researchReportWriteList.admin")

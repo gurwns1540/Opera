@@ -14,11 +14,19 @@ import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.dao.AdminDao;
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.admin.model.vo.Choice;
 import com.opera.survway.admin.model.vo.MailingList;
 import com.opera.survway.admin.model.vo.MailingReceiver;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.PanelThanksSurvey;
+import com.opera.survway.admin.model.vo.Question;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp2;
+import com.opera.survway.admin.model.vo.ResearchHistory;
+import com.opera.survway.admin.model.vo.ResearchOne;
+import com.opera.survway.admin.model.vo.ResearchReport;
 import com.opera.survway.admin.model.vo.ResearchTarget;
+import com.opera.survway.admin.model.vo.RquestionNo;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.admin.model.vo.TargetMember;
 import com.opera.survway.common.model.vo.AllMember;
@@ -811,6 +819,48 @@ public class AdminServiceImpl implements AdminService{
 		return 0;
 	}
 
+	@Override
+	public List<ResearchReport> selectResearchReportList() {
+		return ad.selectResearchReportList(sqlSession);
+	}
+
+	@Override
+	public List<ResearchHistory> selectResearchHistoryList(int researchNo) {
+//		int historyListCount =ad.selectResearchHistoryCount(sqlSession, researchNo);
+		List<ResearchHistory> historyList = ad.selectResearchHistoryList(sqlSession, researchNo);
+		System.out.println(historyList);
+		
+		
+//		List<Integer> selectRquestionNoList = ad.selectRquestionNoList(sqlSession, researchNo);
+//		System.out.println(selectRquestionNoList);
+		return historyList;
+	}
+
+	@Override
+	public List<RquestionNo> selectRquestionNoList(int researchNo) {
+		return ad.selectRquestionNoList(sqlSession, researchNo);
+	}
+
+	@Override
+	public List<ResearchGraphTemp2> selectResearchHistoryCountList(ResearchGraphTemp temp) {
+		return ad.selectResearchHistoryCountList(sqlSession, temp);
+	}
+
+	@Override
+	public List<Question> selectQuestionList(int researchNo) {
+		return ad.selectQuestionList(sqlSession, researchNo);
+	}
+
+	@Override
+	public List<Choice> selectChoiceList(int researchNo) {
+		return ad.selectChoiceList(sqlSession, researchNo);
+	}
+
+	@Override
+	public ResearchOne selectResearchOne(int researchNo) {
+		return ad.selectResearchOne(sqlSession, researchNo);
+	}
+
 	/**
 	 * @throws ResearchException 
 	 * @Author	:hansol
@@ -847,5 +897,4 @@ public class AdminServiceImpl implements AdminService{
 		return result;
 	}
 
-	
 }
