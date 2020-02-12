@@ -2,13 +2,13 @@ package com.opera.survway.panel.model.service;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.exception.InquiryException;
@@ -29,6 +29,7 @@ import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SurveyReward;
 
 
 @Service
@@ -508,18 +509,45 @@ public class PanelServiceImpl implements PanelService {
 	 * @Description : 설문조사 목록 중 선택한 설문조사에 대한 문제 및 보기 리스트 조회
 	 */
 	@Override
-	public List<ResearchQuestion> getResearchQuestionList(String researchNo) throws SelectException {
+	public List<ResearchQuestion> getResearchQuestionList(String researchNo, String rquestionVideolink) throws SelectException {
 		
-		//TS문제 정보들 받아와서 ResearchQuestion 리스트에 담기
-		List<ResearchQuestion> researchQuestions = null;
-		researchQuestions = pd.getResearchQuestionList(sqlSession, researchNo);
+		List<ResearchQuestion> researchQuestions = new ArrayList<ResearchQuestion>();
+		List<ResearchChoice> researchChoices = new ArrayList<ResearchChoice>();
 		
-		//반복문으로 rquestionNo 하나씩 보내서 해당 choice들 조회해와서 ResearchChoice 어레이리스트에 담고 이걸 setter로 ResearchQuestion객체에 담기
-		List<ResearchChoice> researchChoices = null;
-		for(int i=0; i<researchQuestions.size(); i++) {
-			researchChoices = pd.getResearchChoiceList(sqlSession, researchQuestions.get(i).getRquestionNo());
-			researchQuestions.get(i).setChoiceList(researchChoices);
+		//미디어가 있다면 pc환경조사 먼저 가져와서 리스트에 먼저 담기
+		if(rquestionVideolink != null) {
+			ResearchQuestion pcQuestion = pd.getPcQuestion(sqlSession);
+			pcQuestion.setCorrectAnswer(pcQuestion.getQuestionFormNo());
+			pcQuestion.setQuestionFormNo(1);
+			List<ResearchChoice> pcChoices = pd.getPcChoices(sqlSession, pcQuestion.getRquestionNo());
+			pcQuestion.setChoiceList(pcChoices);
+			pcQuestion.setQuestionType("pc");
+			researchQuestions.add(pcQuestion);
 		}
+		
+		//조사대상자테이블 조회해서 조사대상자퀴즈가 있다면 pc환경조사 다음에 담기
+		List<ResearchQuestion> targetQuestions = pd.getTargetQuestions(sqlSession, researchNo);
+		if(targetQuestions != null) {
+			for(int i=0; i<targetQuestions.size(); i++) {
+				targetQuestions.get(i).setQuestionFormNo(1);
+				List<ResearchChoice> targetChoices = pd.getTargetChoiceList(sqlSession, targetQuestions.get(i).getRquestionNo());
+				targetQuestions.get(i).setChoiceList(targetChoices);
+				targetQuestions.get(i).setQuestionType("target");
+				researchQuestions.add(targetQuestions.get(i));
+			}
+		}
+		
+		//선택한 researchNo로  ResearchQuestion 받아와서 리스트에 담기
+		List<ResearchQuestion> rquestions = pd.getResearchQuestionList(sqlSession, researchNo);
+				
+		//반복문으로 rquestionNo 하나씩 보내서 해당 choice들 조회해와서 ResearchChoice 어레이리스트에 담고 이걸 setter로 ResearchQuestion객체에 담기
+		for(int i=0; i<rquestions.size(); i++) {
+			List<ResearchChoice> rchoices = pd.getResearchChoiceList(sqlSession, rquestions.get(i).getRquestionNo());
+			rquestions.get(i).setChoiceList(rchoices);
+			rquestions.get(i).setQuestionType("general");
+			researchQuestions.add(rquestions.get(i));
+		}
+		
 		return researchQuestions;
 	}
 
@@ -657,7 +685,31 @@ public class PanelServiceImpl implements PanelService {
 	 */
 	@Override
 	public int insertAnswer(InsertAnswer answer) {
-		// TODO Auto-generated method stub
+		//totalAnswer를 나눠서 rquestionResponse에 잘라넣어서 각 문제마다 InsertAnswer객체 생성해서 반복문으로 insert
+		String[] eachResponse = answer.getTotalAnswer().split(",/,");
+		
+		for(int i=0; i<eachResponse.length; i++) {
+			System.out.println("문제 " + (i+1) + "번 답 : " + eachResponse[i]);
+		}
+		
+		int count = (eachResponse.length) - answer.getPcCount() - answer.getTargetCount();
+		System.out.println("원래문제갯수 : " + count);
+		int startIndex = eachResponse.length - count;
+		System.out.println("startIndex : " + startIndex);
+		//문제order를 다시 set하기위한 int 선언
+		int rquestionOrder = 1;
+		for(int i=startIndex; i<eachResponse.length; i++) {
+			//문제 order로 rquestionNo 가져오기
+			answer.setResearchOrder(rquestionOrder);
+			int rquestionNo = pd.selectRquestionNo(sqlSession, answer);
+			answer.setRquestionNo(rquestionNo);
+			answer.setRquestionResponse(eachResponse[i]);
+			System.out.println("응답테이블 인서트 직전 answer : " + answer);
+			rquestionOrder++;
+			
+			//RESEARCHHISTORY에 인서트
+			int insertResult = pd.insertAnswer(sqlSession, answer);
+		}
 		return 0;
 	}
 
@@ -688,10 +740,7 @@ public class PanelServiceImpl implements PanelService {
 	 */
 	@Override
 	public List<PanelResearchList> selectAllPanelResearchList(PanelResearchList rl)  {
-		
 		List<PanelResearchList> list = pd.selectAllPanelResearchList(sqlSession, rl);
-		
-		
 		return list;
 	}
 
@@ -708,6 +757,34 @@ public class PanelServiceImpl implements PanelService {
 		
 		if(result <0) {
 			throw new InquiryException("참여시도한 조사 listCount조회 실패");
+  }
+    
+  /**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 설문조사 리워드 인서트 및 관련 디비 테이블 처리
+	 */
+	@Override
+	public int insertSurveyReward(SurveyReward reward) {
+		
+		//먼저 해당 회원의 기존 리워드 가져와서 세팅하기
+		int getPanelReward = pd.selectPanelReward(sqlSession, reward.getMno());
+		System.out.println("기존리워드 : " + getPanelReward);
+		int afterchangePoint = getPanelReward + reward.getSurveyReward();
+		System.out.println("변경리워드 : " + afterchangePoint);
+		reward.setAfterchangePoint(afterchangePoint);
+		
+		int result = 0;
+		
+		
+		//해당 정보 넘겨서 패널리워드 테이블에 업데이트
+		int result1 = pd.updateSurveyReard(sqlSession, reward);
+		//리워드히스토리에 관련 정보 인서트
+		int result2 = pd.insertSurveyRewardHistory(sqlSession, reward);
+		
+		if(result1>0 && result2>0) {
+			result = 1;
 		}
 		
 		return result;
@@ -722,11 +799,6 @@ public class PanelServiceImpl implements PanelService {
 	@Override
 	public List<PanelResearchList> selectAllPanelResearchRetryList(PanelResearchList rl) {
 		List<PanelResearchList> list = pd.selectAllPanelResearchRetryList(sqlSession, rl);
-		
-		
 		return list;
 	}
-
-
-
 }

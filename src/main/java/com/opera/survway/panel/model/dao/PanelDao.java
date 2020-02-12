@@ -13,6 +13,7 @@ import com.opera.survway.panel.model.vo.AttemptInsert;
 import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.PanelResearchList;
@@ -21,6 +22,7 @@ import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SurveyReward;
 
 public interface PanelDao {
 
@@ -133,5 +135,23 @@ public interface PanelDao {
 	int getListCountPanelResearchRetry(SqlSessionTemplate sqlSession, PanelResearchList rl);
 
 	List<PanelResearchList> selectAllPanelResearchRetryList(SqlSessionTemplate sqlSession, PanelResearchList rl);
+
+  int selectPanelReward(SqlSessionTemplate sqlSession, int mno);
+
+	int updateSurveyReard(SqlSessionTemplate sqlSession, SurveyReward reward);
+
+	int insertSurveyRewardHistory(SqlSessionTemplate sqlSession, SurveyReward reward);
+
+	ResearchQuestion getPcQuestion(SqlSessionTemplate sqlSession);
+
+	List<ResearchChoice> getPcChoices(SqlSessionTemplate sqlSession, int rquestionNo);
+
+	List<ResearchQuestion> getTargetQuestions(SqlSessionTemplate sqlSession, String researchNo);
+
+	List<ResearchChoice> getTargetChoiceList(SqlSessionTemplate sqlSession, int rquestionNo);
+
+	int selectRquestionNo(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int insertAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer);
 
 }

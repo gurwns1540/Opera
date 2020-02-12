@@ -1,6 +1,5 @@
 package com.opera.survway.admin.model.dao;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,11 +8,19 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.admin.model.vo.Choice;
 import com.opera.survway.admin.model.vo.MailingList;
 import com.opera.survway.admin.model.vo.MailingReceiver;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.PanelThanksSurvey;
+import com.opera.survway.admin.model.vo.Question;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp2;
+import com.opera.survway.admin.model.vo.ResearchHistory;
+import com.opera.survway.admin.model.vo.ResearchOne;
+import com.opera.survway.admin.model.vo.ResearchReport;
 import com.opera.survway.admin.model.vo.ResearchTarget;
+import com.opera.survway.admin.model.vo.RquestionNo;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.admin.model.vo.TargetMember;
 import com.opera.survway.common.model.vo.AllMember;
@@ -403,14 +410,53 @@ public class AdminDaoImpl implements AdminDao{
 	}
 
 	@Override
+	public List<ResearchReport> selectResearchReportList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectList("Admin.selectResearchReportList");
+	}
+
+	@Override
+	public List<ResearchHistory> selectResearchHistoryList(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.selectResearchHistoryList", researchNo);
+	}
+
+	@Override
+	public List<RquestionNo> selectRquestionNoList(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.selectRquestionNoList", researchNo);
+	}
+
+	@Override
+	public int selectResearchHistoryCount(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectResearchHistoryCount", researchNo);
+	}
+
+	@Override
+	public List<ResearchGraphTemp2> selectResearchHistoryCountList(SqlSessionTemplate sqlSession,
+			ResearchGraphTemp temp) {
+		return sqlSession.selectList("Admin.selectResearchHistoryCountList", temp);
+	}
+
+	@Override
+	public List<Question> selectQuestionList(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.selectQuestionList", researchNo);
+	}
+
+	@Override
+	public List<Choice> selectChoiceList(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.selectChoiceList", researchNo);
+	}
+
+	@Override
+	public ResearchOne selectResearchOne(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectResearchOne", researchNo);
+	}
+	
+	@Override
 	public int updatePanelLevel(SqlSessionTemplate sqlSession, int mno) {
-		
 		return sqlSession.update("Admin.updatePanelLevel",mno);
 	}
 
 	@Override
 	public int deletePanelThanksSurvey(SqlSessionTemplate sqlSession, int mno) {
-		
 		return sqlSession.delete("Admin.deletePanelThanksSurvey",mno);
 	}
 

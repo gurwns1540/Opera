@@ -21,6 +21,7 @@ import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SurveyReward;
 
 
 
@@ -82,7 +83,7 @@ public interface PanelService {
 
 	List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi);
 
-	List<ResearchQuestion> getResearchQuestionList(String researchNo) throws SelectException;
+	List<ResearchQuestion> getResearchQuestionList(String researchNo, String rquestionVideolink) throws SelectException;
 
 	Research getResearchInfo(String researchNo) throws SelectException;
 
@@ -109,6 +110,8 @@ public interface PanelService {
 	int getListCountPanelResearchRetry(PanelResearchList rl) throws InquiryException;
 
 	List<PanelResearchList> selectAllPanelResearchRetryList(PanelResearchList rl);
+	
+  int insertSurveyReward(SurveyReward reward);
 
 
 

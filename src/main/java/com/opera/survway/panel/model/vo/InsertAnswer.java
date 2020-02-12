@@ -9,36 +9,47 @@ package com.opera.survway.panel.model.vo;
  */
 public class InsertAnswer {
 	
-	private String mno;
-	private String researchNo;
+	private int mno;
+	private int researchNo;
 	private String totalAnswer;
-	private String surveyTime;
-	private String finalReward;
+	private String researchTime;
+	private String researchDisposal;
+	private int rquestionNo;
+	private String rquestionResponse;
+	private int pcCount;
+	private int targetCount;
+	private int researchOrder;
 	
 	public InsertAnswer() {}
 
-	public InsertAnswer(String mno, String researchNo, String totalAnswer, String surveyTime, String finalReward) {
+	public InsertAnswer(int mno, int researchNo, String totalAnswer, String researchTime, String researchDisposal,
+			int rquestionNo, String rquestionResponse, int pcCount, int targetCount, int researchOrder) {
 		super();
 		this.mno = mno;
 		this.researchNo = researchNo;
 		this.totalAnswer = totalAnswer;
-		this.surveyTime = surveyTime;
-		this.finalReward = finalReward;
+		this.researchTime = researchTime;
+		this.researchDisposal = researchDisposal;
+		this.rquestionNo = rquestionNo;
+		this.rquestionResponse = rquestionResponse;
+		this.pcCount = pcCount;
+		this.targetCount = targetCount;
+		this.researchOrder = researchOrder;
 	}
 
-	public String getMno() {
+	public int getMno() {
 		return mno;
 	}
 
-	public void setMno(String mno) {
+	public void setMno(int mno) {
 		this.mno = mno;
 	}
 
-	public String getResearchNo() {
+	public int getResearchNo() {
 		return researchNo;
 	}
 
-	public void setResearchNo(String researchNo) {
+	public void setResearchNo(int researchNo) {
 		this.researchNo = researchNo;
 	}
 
@@ -50,26 +61,68 @@ public class InsertAnswer {
 		this.totalAnswer = totalAnswer;
 	}
 
-	public String getSurveyTime() {
-		return surveyTime;
+	public String getResearchTime() {
+		return researchTime;
 	}
 
-	public void setSurveyTime(String surveyTime) {
-		this.surveyTime = surveyTime;
+	public void setResearchTime(String researchTime) {
+		this.researchTime = researchTime;
 	}
 
-	public String getFinalReward() {
-		return finalReward;
+	public String getResearchDisposal() {
+		return researchDisposal;
 	}
 
-	public void setFinalReward(String finalReward) {
-		this.finalReward = finalReward;
+	public void setResearchDisposal(String researchDisposal) {
+		this.researchDisposal = researchDisposal;
+	}
+
+	public int getRquestionNo() {
+		return rquestionNo;
+	}
+
+	public void setRquestionNo(int rquestionNo) {
+		this.rquestionNo = rquestionNo;
+	}
+
+	public String getRquestionResponse() {
+		return rquestionResponse;
+	}
+
+	public void setRquestionResponse(String rquestionResponse) {
+		this.rquestionResponse = rquestionResponse;
+	}
+
+	public int getPcCount() {
+		return pcCount;
+	}
+
+	public void setPcCount(int pcCount) {
+		this.pcCount = pcCount;
+	}
+
+	public int getTargetCount() {
+		return targetCount;
+	}
+
+	public void setTargetCount(int targetCount) {
+		this.targetCount = targetCount;
+	}
+
+	public int getResearchOrder() {
+		return researchOrder;
+	}
+
+	public void setResearchOrder(int researchOrder) {
+		this.researchOrder = researchOrder;
 	}
 
 	@Override
 	public String toString() {
 		return "InsertAnswer [mno=" + mno + ", researchNo=" + researchNo + ", totalAnswer=" + totalAnswer
-				+ ", surveyTime=" + surveyTime + ", finalReward=" + finalReward + "]";
+				+ ", researchTime=" + researchTime + ", researchDisposal=" + researchDisposal + ", rquestionNo="
+				+ rquestionNo + ", rquestionResponse=" + rquestionResponse + ", pcCount=" + pcCount + ", targetCount="
+				+ targetCount + ", researchOrder=" + researchOrder + "]";
 	}
 	
 }

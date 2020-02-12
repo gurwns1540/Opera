@@ -15,6 +15,7 @@ import com.opera.survway.panel.model.vo.AttemptInsert;
 import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.PanelResearchList;
@@ -23,6 +24,7 @@ import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SurveyReward;
 
 
 @Repository
@@ -413,7 +415,6 @@ public class PanelDaoImpl implements PanelDao{
 
 	@Override
 	public int getListCountPanelResearchRetry(SqlSessionTemplate sqlSession, PanelResearchList rl) {
-		
 		return sqlSession.selectOne("Panel.getListCountPanelResearchRetry",rl);
 	}
 
@@ -425,6 +426,50 @@ public class PanelDaoImpl implements PanelDao{
 		RowBounds rowBounds = new RowBounds(offset, rl.getPi().getLimit());
 		list = sqlSession.selectList("Panel.selectAllPanelResearchRetryList",rl,rowBounds);
 		return list;
+
+  @Override
+  public int selectPanelReward(SqlSessionTemplate sqlSession, int mno) {
+		return sqlSession.selectOne("Panel.getCurrentPanelReward", mno);
+	}
+
+	@Override
+	public int updateSurveyReard(SqlSessionTemplate sqlSession, SurveyReward reward) {
+		return sqlSession.update("Panel.updatePanelReward", reward);
+	}
+
+	@Override
+	public int insertSurveyRewardHistory(SqlSessionTemplate sqlSession, SurveyReward reward) {
+		return sqlSession.insert("Panel.insertSurveyRewardHistory", reward);
+	}
+
+	@Override
+	public ResearchQuestion getPcQuestion(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Panel.selectPcQuestion");
+	}
+
+	@Override
+	public List<ResearchChoice> getPcChoices(SqlSessionTemplate sqlSession, int rquestionNo) {
+		return sqlSession.selectList("Panel.selectPcChoices", rquestionNo);
+	}
+	
+	@Override
+	public List<ResearchQuestion> getTargetQuestions(SqlSessionTemplate sqlSession, String researchNo) {
+		return sqlSession.selectList("Panel.selectTargetQuestions", researchNo);
+	}
+
+	@Override
+	public List<ResearchChoice> getTargetChoiceList(SqlSessionTemplate sqlSession, int rquestionNo) {
+		return sqlSession.selectList("Panel.selectTargetChoices", rquestionNo);
+	}
+
+	@Override
+	public int selectRquestionNo(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.selectOne("Panel.selectRquestionNo", answer);
+	}
+
+	@Override
+	public int insertAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.insert("Panel.insertAnswer", answer);
 	}
 	
 }
