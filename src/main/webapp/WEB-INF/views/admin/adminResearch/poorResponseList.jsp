@@ -117,8 +117,6 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='disposalResponseManagement.admin'">폐기응답 목록</button>
-						<button onclick="location.href='poorResponseList.admin'" id="clickBtn">불량응답 목록</button>
 					</div>
 				</td>
 			</tr>
@@ -148,7 +146,7 @@
 				<th style="width: 10%;">폐기응답번호</th>
 				<th style="width: 10%;">패널번호</th> <!-- 아이디아님 -->
 				<th style="width: 10%;">리서치 번호</th>
-				<th style="width: 20%;">분류</th>
+				<th style="width: 20%;">폐기 사유</th>
 				<th style="width: 10%;">처리 상태</th>
 				<th style="width: 20%;">처리 일</th>
 				<th style="width: 15%;">상세보기</th>
@@ -159,7 +157,7 @@
 					<td>폐기응답번호</td>
 					<td>패널번호</td>
 					<td>리서치</td>
-					<td>분류</td>
+					<td>폐기 사유</td>
 					<td>처리 상태</td>
 					<td>처리 일</td>
 					<td><button class="detail">상세보기</button></td>

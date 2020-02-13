@@ -217,4 +217,6 @@ public interface PanelDao {
 
 	int updateBlack(SqlSessionTemplate sqlSession, InsertAnswer answer);
 
+	PanelMember getPanelInfo(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
 }

@@ -2,12 +2,20 @@ package com.opera.survway.panel.model.service;
 
 
 
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.MimeMessage;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +55,8 @@ public class PanelServiceImpl implements PanelService {
 	private PanelDao pd;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private JavaMailSender mailSender; // Mail Sender
 	
 	
 	/**
@@ -688,23 +698,25 @@ public class PanelServiceImpl implements PanelService {
 	 */
 	@Override
 	public int insertAnswer(InsertAnswer answer) {
-		//totalAnswer를 나눠서 rquestionResponse에 잘라넣어서 각 문제마다 InsertAnswer객체 생성해서 반복문으로 insert
-		String[] eachResponse = answer.getTotalAnswer().split(",/,");
 		
-		for(int i=0; i<eachResponse.length; i++) {
-			System.out.println("문제 " + (i+1) + "번 답 : " + eachResponse[i]);
+		//이메일
+		InetAddress inet;
+		String svrIp = "";
+		try {
+			inet = InetAddress.getLocalHost();
+			svrIp = inet.getHostAddress();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
 		}
 		
+		PanelMember pm = pd.getPanelInfo(sqlSession, answer);
+		
+		//totalAnswer를 나눠서 rquestionResponse에 잘라넣어서 각 문제마다 InsertAnswer객체 생성해서 반복문으로 insert
+		String[] eachResponse = answer.getTotalAnswer().split(",/,");
 		
 		boolean answerCheck = true;
 		if(answer.getTargetCount() > 0) {
 			String[] eachTargetCorrectAnswer = answer.getTargetAnswer().split(",");
-			
-			for(int i=0; i<answer.getTargetCount(); i++) {
-				System.out.println("answer.getTargetAnswer().split(',') : " + eachTargetCorrectAnswer[i]);
-			}
-			
-			
 			
 			for(int i=0; i<answer.getTargetCount(); i++) {
 				if(!(eachResponse[(i+1)]).equals(eachTargetCorrectAnswer[i])) {
@@ -718,9 +730,7 @@ public class PanelServiceImpl implements PanelService {
 		}
 		
 		int count = (eachResponse.length) - answer.getPcCount() - answer.getTargetCount();
-		System.out.println("원래문제갯수 : " + count);
 		int startIndex = eachResponse.length - count;
-		System.out.println("startIndex : " + startIndex);
 		//문제order를 다시 set하기위한 int 선언
 		int rquestionOrder = 1;
 		for(int i=startIndex; i<eachResponse.length; i++) {
@@ -729,7 +739,6 @@ public class PanelServiceImpl implements PanelService {
 			int rquestionNo = pd.selectRquestionNo(sqlSession, answer);
 			answer.setRquestionNo(rquestionNo);
 			answer.setRquestionResponse(eachResponse[i]);
-			System.out.println("응답테이블 인서트 직전 answer : " + answer);
 			rquestionOrder++;
 			
 			//RESEARCHHISTORY에 인서트
@@ -759,10 +768,67 @@ public class PanelServiceImpl implements PanelService {
 				answer.setTernaryReason("블랙리스트 등록");
 				//해당 회원 패널레벨 6으로 변경
 				int blackResult = pd.updateBlack(sqlSession, answer);
+				
+				/*메일 전송 부분 시작*/
+				String setfrom = "yychani94@gmail.com";         
+			    String tomail  = pm.getUserEmail();     // 받는 사람 이메일
+			    String title   = "Survway 응답 관련 안내입니다.";      // 제목
+			    String userName = pm.getUserName();
+			    String content = "<p> " + userName + "님 안녕하세요, 서브웨이입니다.<br> 회원님께서는 불량응답을 3회 기록하셨기에 1년간 설문조사에 참여하실 수 없습니다. <br> 1년 후 3개월 안에 회원정보 재인증하지 않을 시 회원탈퇴 및 회원정보가 삭제됩니다.  <br> 이 결과에 유감을  표합니다. 감사합니다. </p> <input type='hidden' name='userId' value='" + pm.getUserId() + "'>";    // 내용
+			   
+			    try {
+					MimeMessage message = mailSender.createMimeMessage();
+					MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+					 
+					messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
+					messageHelper.setTo(tomail);     // 받는사람 이메일
+					messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+					messageHelper.setText(content);  // 메일 내용
+	 
+					String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + content; 
+					messageHelper.setText(contents, true); 
+					
+					FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
+					messageHelper.addInline("logo", file);
+
+					mailSender.send(message);
+			    } catch(Exception e){
+			      System.out.println(e);
+			    }
+				/*메일 전송 부분 끝*/
+			    
 			}else {
 				ternaryCount++;
 				answer.setTernaryCount(ternaryCount);
 				answer.setTernaryReason("불량응답 기록");
+				
+				/*메일 전송 부분 시작*/
+				String setfrom = "yychani94@gmail.com";         
+			    String tomail  = pm.getUserEmail();     // 받는 사람 이메일
+			    String title   = "Survway 응답 관련 안내입니다.";      // 제목
+			    String userName = pm.getUserName();
+			    String content = "<p> " + userName + "님 안녕하세요, 서브웨이입니다.<br> 회원님께서는 현재까지 불량응답을 " + ternaryCount + "번 기록하셨기에 안내드립니다. <br> 설문조사 응답 시 'ㅋㅋㅋ', 'ㅏㅏ' 등의 자음 또는 모음을 입력하시거나 특수문자를 입력하시면 불량 응답으로 기록되며,<br> 불량 응답 3회 기록 시 1년간 활동이 제한되니 성의 있는 답변 부탁드립니다. <br> 감사합니다. </p> <input type='hidden' name='userId' value='" + pm.getUserId() + "'>";    // 내용
+			   
+			    try {
+					MimeMessage message = mailSender.createMimeMessage();
+					MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+					 
+					messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
+					messageHelper.setTo(tomail);     // 받는사람 이메일
+					messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+					messageHelper.setText(content);  // 메일 내용
+	 
+					String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + content; 
+					messageHelper.setText(contents, true); 
+					
+					FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
+					messageHelper.addInline("logo", file);
+
+					mailSender.send(message);
+			    } catch(Exception e){
+			      System.out.println(e);
+			    }
+				/*메일 전송 부분 끝*/
 			}
 			
 			//ternaryCount 업데이트 및 ternaryout history 인서트
