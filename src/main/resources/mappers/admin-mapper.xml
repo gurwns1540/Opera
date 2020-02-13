@@ -852,6 +852,11 @@
 		GROUP BY RESEARCH_NO
 	</select>
 	
+	<select id="selectMailingHistoryOrder" parameterType="_int" resultType="_int">
+		SELECT MAX(MAILING_ORDER) FROM MAILINGHISTORY
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+	
 	<insert id="insertMailingReceiver" parameterType="MailingReceiver">
 		INSERT INTO MAILINGRECIEVER VALUES (SEQ_MAILINGRECEIVER.NEXTVAL, #{mailingHistoryNo}, #{mno})
 	</insert>
@@ -995,4 +1000,16 @@
 		WHEN NOT MATCHED THEN
 		INSERT VALUES (#{questionFormNo},SEQ_QUESTION.NEXTVAL,2,#{questionVideoLink},#{mediaExplain}, 1,#{rquestionContext})
 	</update>
+	
+	<select id="getPanelCount" resultType="_int">
+		SELECT COUNT(*) FROM PANEL
+	</select>
+	
+	<select id="getCorpCount" resultType="_int">
+		SELECT COUNT(*) FROM CORP
+	</select>
+	
+	<select id="getResearchCount" resultType="_int">
+		SELECT COUNT(*) FROM RESEARCH
+	</select>
 </mapper>

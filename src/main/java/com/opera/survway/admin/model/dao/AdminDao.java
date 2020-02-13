@@ -186,4 +186,10 @@ public interface AdminDao {
 
 	int mergeVideoQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req);
 
+	int getPanelCount(SqlSessionTemplate sqlSession);
+
+	int getCorpCount(SqlSessionTemplate sqlSession);
+
+	int getResearchCount(SqlSessionTemplate sqlSession);
+
 }

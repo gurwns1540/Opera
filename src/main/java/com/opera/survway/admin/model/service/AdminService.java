@@ -130,4 +130,10 @@ public interface AdminService {
 	int videoInsert(String questionTitle, String[] choiceTitleArr, String[] choiceOrderArr, String titleContext,
 			String questionFormNo, String videoAdress);
 
+	int getPanelCount();
+
+	int getCorpCount();
+
+	int getResearchCount();
+
 }

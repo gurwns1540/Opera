@@ -887,4 +887,5 @@ public class AdminResearchController {
 		mv.setViewName("jsonView");
 		return mv;
 	}
+	
 }

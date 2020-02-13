@@ -199,7 +199,7 @@
 						</div>
 					</td>
 					<td style="width:30%; height:100px; text-align:center; padding-top:20px; padding-bottom:10px;">
-						<a href="faq.panel"><img src="resources/images/faq.png" style="margin-left:7%; height:100%; border:grey;"></a>
+						<a href="faq.customerCenter"><img src="resources/images/faq.png" style="margin-left:7%; height:100%; border:grey;"></a>
 					</td>
 					<td rowspan="2" style="width:35%; vertical-align:middle; text-align:right;">
 						<img src="resources/images/callNumber.png" style="vertical-align:middle; height:150px;">
@@ -207,7 +207,7 @@
 				</tr>
 				<tr>
 					<td style="height:100px; text-align:center; padding-top:10px; padding-bottom:20px;">
-						<a id="inquiryBtn"><img src="resources/images/inquiry.png" style="margin-left:7%; height:100%; border:grey;"></a>
+						<a href="panelInquiryList.customerCenter" id="inquiryBtn"><img src="resources/images/inquiry.png" style="margin-left:7%; height:100%; border:grey;"></a>
 					</td>
 				</tr>
 			</table>
