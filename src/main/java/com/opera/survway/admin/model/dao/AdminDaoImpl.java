@@ -396,7 +396,13 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public int selectMailingHistoryOrder(SqlSessionTemplate sqlSession, int researchNo) {
-		return sqlSession.selectOne("Admin.selectMailingHistoryOrder", researchNo);
+		String result = sqlSession.selectOne("Admin.selectMailingHistoryOrder", researchNo);
+		System.out.println("dao : " + result);
+		if(result == null) {
+			return 0;
+		} else {
+			return Integer.parseInt(result);
+		}
 	}
 
 	@Override

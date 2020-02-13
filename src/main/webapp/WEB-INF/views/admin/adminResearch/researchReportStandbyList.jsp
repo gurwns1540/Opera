@@ -263,6 +263,7 @@
 			</div>
 		</div>
 		<div class="actions">
+		    <div class="ui button" id="pdfBtn">Download</div>
 		    <div class="ui approve button" id="approvalBtn">Approve</div>
 		    <div class="ui cancel button">Cancel</div>
   		</div>
@@ -481,6 +482,36 @@
 				}
 			});
 		} //drawChart() end
+		
+		$("#pdfBtn").click(function() {
+	         console.log("pdfBtn");
+	         html2canvas($("#sortable")[0]).then(function(canvas) {
+//	             var doc = new jsPDF('p', 'mm', 'a4'); //jspdf객체 생성
+//	              var imgData = canvas.toDataURL('image/png'); //캔버스를 이미지로 변환
+//	              doc.addImage(imgData, 'PNG', 0, 0); //이미지를 기반으로 pdf생성
+//	              doc.save('sample-file.pdf'); //pdf저장
+	            var imgData = canvas.toDataURL('image/png');
+	            var imgWidth = 210; 
+	            var pageHeight = 295;  
+	            var imgHeight = canvas.height * imgWidth / canvas.width;
+	            var heightLeft = imgHeight;
+	            var doc = new jsPDF('p', 'mm', 'a4');
+	            var position = 0;
+
+	            doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+	            heightLeft -= pageHeight;
+
+	            while (heightLeft >= 0) {
+	              position = heightLeft - imgHeight;
+	              doc.addPage();
+	              doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+	              heightLeft -= pageHeight;
+	            }
+	            doc.save($("#projectName").text() + '_reseult' + '.pdf');
+
+
+	         })
+	      });
 	</script>
 </body>
 </html>

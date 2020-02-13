@@ -53,17 +53,17 @@ public class AdminForwardController {
 //		return "adminResearch/researchReportStandbyList";
 //	}
 	
-	//리서치 보고서 작성 대기 목록-보고서 작성 목록
-	@RequestMapping("researchReportWriteList.admin")
-	public String forwardResearchReportWriteList() {
-		return "adminResearch/researchReportWriteList";
-	}
+//	//리서치 보고서 작성 대기 목록-보고서 작성 목록
+//	@RequestMapping("researchReportWriteList.admin")
+//	public String forwardResearchReportWriteList() {
+//		return "adminResearch/researchReportWriteList";
+//	}
 
 	//리서치 보고서 작성 대기 목록-결과 전송 목록
-	@RequestMapping("researchReportSendList.admin")
-	public String forwardResearchReportSendList() {
-		return "adminResearch/researchReportSendList";
-	}
+//	@RequestMapping("researchReportSendList.admin")
+//	public String forwardResearchReportSendList() {
+//		return "adminResearch/researchReportSendList";
+//	}
 	
 	//완료된 리서치 목록
 	@RequestMapping("researchCompletedProcessingList.admin")

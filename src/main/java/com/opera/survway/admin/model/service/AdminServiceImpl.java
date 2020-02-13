@@ -795,9 +795,13 @@ public class AdminServiceImpl implements AdminService{
 	public List<MailingList> selectMailingList(MailingList list) {
 		List<MailingList> mailingList = ad.selectMailingList(sqlSession, list);
 		System.out.println("=========serviceImpl=========");
+		System.out.println("list : " + mailingList.size());
 		for(int i = 0; i < mailingList.size(); i++) {
+			System.out.println("for문 실행 : " + i);
 			if(mailingList.get(i).getResearchStateNo() == 6) {
+				System.out.println("researchStataNo() == 6 실행 : ");
 				int mailingHistoryOrder = ad.selectMailingHistoryOrder(sqlSession, mailingList.get(i).getResearchNo());
+				System.out.println("mailingHistoryOrder" + mailingHistoryOrder);
 				mailingList.get(i).setResearchStatus(String.valueOf(mailingHistoryOrder));
 				mailingList.get(i).setCurrentMailingDate(ad.selectMailingHistoryCurrentDate(sqlSession, mailingList.get(i).getResearchNo()));
 				mailingList.get(i).setResearchPeriod(ad.selectResearchPeriod(sqlSession, mailingList.get(i).getResearchNo()));
@@ -975,6 +979,11 @@ public class AdminServiceImpl implements AdminService{
 	public ResearchQuestion pcQaManagement() {
 		ResearchQuestion rq = ad.pcQaManagement(sqlSession); 
 		return rq;
+	}
+
+	@Override
+	public int uploadReport(UploadFile ufo) {
+		return 0;
 	}
 
 }

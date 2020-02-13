@@ -854,6 +854,20 @@
 		GROUP BY RESEARCH_NO
 	</select>
 	
+	<select id="selectMailingHistoryOrder" parameterType="_int" resultType="String">
+      SELECT MAX(MAILING_ORDER) FROM MAILINGHISTORY
+      WHERE RESEARCH_NO = #{researchNo}
+   </select>
+	
+	<insert id="insertMailingHistoryRe" parameterType="_int">
+		INSERT INTO MAILINGHISTORY VALUES (SEQ_MAILINGHISTORY.NEXTVAL, (SELECT MAX(MAILING_ORDER) FROM MAILINGHISTORY WHERE RESEARCH_NO = #{researchNo})+1, #{researchNo}, SYSDATE)
+	</insert>
+	
+	<select id="selectMailingHistoryCurrentDate" parameterType="_int" resultType="String">
+		SELECT TO_CHAR(MAX(MAILING_DATE), 'YYYY/MM/DD') FROM MAILINGHISTORY
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+	
 	<insert id="insertMailingReceiver" parameterType="MailingReceiver">
 		INSERT INTO MAILINGRECIEVER VALUES (SEQ_MAILINGRECEIVER.NEXTVAL, #{mailingHistoryNo}, #{mno})
 	</insert>
