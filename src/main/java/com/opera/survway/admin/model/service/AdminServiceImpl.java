@@ -813,10 +813,18 @@ public class AdminServiceImpl implements AdminService{
 		return mailingList;
 	}
 
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 7.
+	 * @ModifyDate  : 2020. 2. 7.
+	 * @Description : pc환경조사 음성 파일 넣기
+	 */
 	@Override
 	public int uploadAudio(UploadFile ufo) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int result = ad.uploadAudio(sqlSession,ufo);
+		System.out.println("pc");
+		return result;
 	}
 
 	@Override
