@@ -2,14 +2,45 @@ package com.opera.survway.admin.controller;
 
 import javax.xml.ws.RequestWrapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.opera.survway.admin.model.service.AdminService;
+import com.opera.survway.admin.model.vo.MailingList;
+import com.opera.survway.exception.SelectException;
 
 @Controller
 public class AdminForwardController {
+	@Autowired
+	AdminService as;
+	
 	@RequestMapping("adminMain.admin")
-	public String forwardMain() {
-		return "common/adminMain";
+	public String forwardMain(Model model) {
+		
+		MailingList list = new MailingList();
+		try {
+			int panelCount = as.getPanelCount();
+			int corpCount = as.getCorpCount();
+			int approvalListCount = as.getListCountArrovalList();
+			int reconstructionListCount = as.getListCountSurveyReconstructionList();
+			int mailingWaitingListCount = as.getListCountMailingList(list);
+			int allResearchCount = as.getResearchCount();
+			
+			model.addAttribute("panelCount", panelCount);
+			model.addAttribute("corpCount", corpCount);
+			model.addAttribute("approvalListCount", approvalListCount);
+			model.addAttribute("reconstructionListCount", reconstructionListCount);
+			model.addAttribute("mailingWaitingListCount", mailingWaitingListCount);
+			model.addAttribute("allResearchCount", allResearchCount);
+			
+			return "common/adminMain";
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
+		
 	}
 	
 	// 신규 패널 관리

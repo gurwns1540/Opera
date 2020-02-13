@@ -10,6 +10,7 @@
 <link rel="shortcut icon" href="resources/images/favicon.ico" type="image/x-icon">
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <style>
 
 	#listArea {
@@ -189,7 +190,10 @@
   		margin-top: 20px;
   		width: fit-content;
   	}
-  	
+  	.box { 
+  		display: block; width: 350px; height: 350px;
+		padding: 30px; box-sizing: border-box;
+	}
 </style>
 </head>
 <body>
@@ -443,8 +447,10 @@
 						</tr>
 					</table>
 				</c:if>
-				<c:if test="${ research.researchState == '리서치 완료' }">
-					데이터들 들어갈거임
+				<c:if test="${ research.researchState == '리서치 완료' || research.researchState == '리서치 보고서 완료'}">
+					<ul id="sortable" style="margin-top: 30px; margin-bottom: 30px;">
+					
+					</ul>
 				</c:if>
 				<c:if test="${ research.researchState == '질문 재구성 협의중' || research.researchState == '검토 대기' }">
 					<table id="questionTable">
@@ -512,6 +518,50 @@
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 	<script>
+	function drawChart(idStr, chartLabels, chartData) {
+		var ctx = document.getElementById(idStr);
+		var myChart = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				labels: chartLabels,
+				datasets: [{
+					label: '# of Votes',
+					data: chartData,
+					backgroundColor: [
+                          'rgba(204, 51, 153, 0.7)',
+                          'rgba(242, 242, 242, 0.7)',
+                          'rgba(231, 230, 230, 0.7)',
+                          'rgba(217, 217, 217, 0.7)',
+                          'rgba(203, 203, 203, 0.7)',
+                          'rgba(191, 191, 191, 0.7)',
+                          'rgba(182, 182, 182, 0.7)',
+                          'rgba(174, 174, 174, 0.7)',
+                          'rgba(166, 166, 166, 0.7)',
+                          'rgba(159, 159, 159, 0.7)'
+                          
+                        ],
+                        borderColor: [
+                            'rgba(204, 51, 153, 1)',
+                            'rgba(242, 242, 242, 1)',
+                            'rgba(231, 230, 230, 1)',
+                            'rgba(217, 217, 217, 1)',
+                            'rgba(203, 203, 203, 1)',
+                            'rgba(191, 191, 191, 1)',
+                            'rgba(182, 182, 182, 1)',
+                            'rgba(174, 174, 174, 1)',
+                            'rgba(166, 166, 166, 1)',
+                            'rgba(159, 159, 159, 1)'
+                          ],
+						borderWidth: 1
+					}]
+				},
+				options: {
+					scales: {
+						
+					}
+				}
+			});
+		} //drawChart() end
 		$(function(){
 			var researchState = "${research.researchState}";
 			
@@ -810,7 +860,44 @@
 	</c:if>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
-	
+	<c:if test="${ research.researchState == '리서치 완료' || research.researchState == '리서치 보고서 완료'}">
+		<script>
+			var researchNo = "${research.researchNo}";
+			$.ajax({
+				url: "selectResearchDetail.adminResearch",
+				type: "post",
+				data: {
+					researchNo: researchNo
+				},
+				success: function(data) {
+					console.log("jsonChoiceArr : " + data.jsonChoiceArr);
+					$("#sortable").empty();
+					for(var i = 0; i < data.question.length; i++) {
+						var chartLabels = [];
+	 					var chartData = [];
+	 					console.log(data.jsonChoiceArr[i]);
+						for(var j = 0; j < data.jsonArr[i].length; j++) {
+							console.log(data.jsonChoiceArr[i][j]);
+							if(data.jsonChoiceArr[i][j] == null) {
+								chartLabels.push(data.jsonArr[i][j].rquestionResponse);
+								chartData.push(data.jsonArr[i][j].count);
+							} else {
+								chartLabels.push(data.jsonChoiceArr[i][j].rchoiceContext);
+								chartData.push(data.jsonArr[i][j].count);
+							}
+						}
+						$("#sortable").append('<li class="ui-state-default">Q' + data.question[i].researchOrder + '<br>' + data.question[i].rquestionContext + '</li>');
+						$("#sortable").append('<div align="center"><div class="box"><canvas id="' + data.question[i].rquestionNo + '" width="30%" height="30%"></canvas></div></div>');
+						
+						drawChart(data.question[i].rquestionNo, chartLabels, chartData);
+					}
+				},
+				error: function(data) {
+					console.log("ajax실패");
+				}
+			});
+		</script>
+	</c:if>
 	<c:if test="${ !empty sessionScope.loginUser }">
 		<script>
 		function payment(){

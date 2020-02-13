@@ -132,4 +132,10 @@ public interface AdminService {
 
 	int uploadReport(UploadFile ufo);
 
+	int getPanelCount();
+
+	int getCorpCount();
+
+	int getResearchCount();
+
 }

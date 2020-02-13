@@ -783,13 +783,11 @@
 		WHERE RESEARCH_NO = 1
 	</delete>
 	
-	<insert id="tsInsertQuestion" parameterType="ResearchQuestion">
-		INSERT INTO RESEARCHQUESTION VALUES
-		(#{questionFormNo}, SEQ_QUESTION.NEXTVAL, 1, NULL, NULL, #{questionOrder}, #{rquestionContext})
-		<selectKey keyProperty="questionNo" resultType="_int" order="AFTER">
-			SELECT SEQ_QUESTION.CURRVAL FROM DUAL
-		</selectKey>
-	</insert>
+	<update id="tsUpdateQuestion" parameterType="ResearchQuestion">
+		UPDATE RESEARCHQUESTION 
+		SET RQUESTION_CONTEXT=#{rquestionContext}
+		WHERE RQUESTION_NO = #{questionNo}
+	</update>
 	
 	<insert id="insertChoice" parameterType="ResearchChoice">
 		INSERT INTO RESEARCHCHOICE VALUES
@@ -865,9 +863,9 @@
 	
 	<select id="selectMailingHistoryCurrentDate" parameterType="_int" resultType="String">
 		SELECT TO_CHAR(MAX(MAILING_DATE), 'YYYY/MM/DD') FROM MAILINGHISTORY
-		WHERE RESEARCH_NO = #{researchNo}
+    WHERE RESEARCH_NO = #{researchNo}
 	</select>
-	
+  
 	<insert id="insertMailingReceiver" parameterType="MailingReceiver">
 		INSERT INTO MAILINGRECIEVER VALUES (SEQ_MAILINGRECEIVER.NEXTVAL, #{mailingHistoryNo}, #{mno})
 	</insert>
@@ -1011,4 +1009,16 @@
 		WHEN NOT MATCHED THEN
 		INSERT VALUES (#{questionFormNo},SEQ_QUESTION.NEXTVAL,2,#{questionVideoLink},#{mediaExplain}, 1,#{rquestionContext})
 	</update>
+	
+	<select id="getPanelCount" resultType="_int">
+		SELECT COUNT(*) FROM PANEL
+	</select>
+	
+	<select id="getCorpCount" resultType="_int">
+		SELECT COUNT(*) FROM CORP
+	</select>
+	
+	<select id="getResearchCount" resultType="_int">
+		SELECT COUNT(*) FROM RESEARCH
+	</select>
 </mapper>

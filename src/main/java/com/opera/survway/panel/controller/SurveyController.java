@@ -58,7 +58,13 @@ public class SurveyController {
 	public String selectSurveyList(HttpServletRequest request, Model model) {
 		
 		//request에서 패널정보 받아오기
-		PanelMember loginUser = (PanelMember)request.getSession().getAttribute("loginUser");
+		PanelMember loginUser = new PanelMember();
+		if(request.getSession().getAttribute("loginUser") != null) {
+			loginUser = (PanelMember)request.getSession().getAttribute("loginUser");
+		}else {
+			return "redirect:panelResult.panel?message=notLoginAccess";
+		}
+		int mno = loginUser.getMno();
 		
 		//뷰페이지로 보낼 변수들 선언
 		List<Research> researchList = null;
@@ -102,12 +108,16 @@ public class SurveyController {
 			
 		//휴면회원일때
 		case 5 :
+			listCount = 1;
+			pi = Pagination.getPageInfo(currentPage, listCount);
 			msg = "SURVWAY를 오랫동안 이용하지 않아 회원님의 아이디가 휴면 상태로 전환되었습니다.<br>회원정보 재인증 후 이용하실 수 있습니다.";
 			path = "surveyList";
 			break;
 			
 		//블랙회원일때
 		case 6 :
+			listCount = 1;
+			pi = Pagination.getPageInfo(currentPage, listCount);
 			msg = "회원님께서는 3회 불량 응답하였으므로 설문조사에 참여하실 수 없습니다.";
 			path = "surveyList";
 			break;
@@ -139,6 +149,9 @@ public class SurveyController {
 		//문항수
 		int qCount = 0;
 		int targetCount = 0;
+		int pcCount  = 0;
+		String pcAnswer = "";
+		String targetAnswer = "";
 		//예상소요시간 (분)
 		int time = 0;
 		int minTime = 0;
@@ -152,9 +165,20 @@ public class SurveyController {
 			System.out.println("researchQuestons : " + researchQuestions);
 			qCount = researchQuestions.size();
 			
+			if(!(rquestionVideolink.equals(""))) {
+				pcCount = 1;
+				pcAnswer = researchQuestions.get(0).getCorrectAnswer() + "";
+			}
+			
 			for(int i=0; i<researchQuestions.size(); i++) {
 				if(researchQuestions.get(i).getQuestionType().equals("target")) {
 					targetCount++;
+				}
+			}
+			
+			if(targetCount > 0) {
+				for(int i=1; i<targetCount+1; i++) {
+					targetAnswer += researchQuestions.get(i).getCorrectAnswer() + ",";
 				}
 			}
 			
@@ -190,7 +214,12 @@ public class SurveyController {
 			System.out.println("researchQuestions : " + researchQuestions);
 			mv.addObject("researchQuestionList", researchQuestions);
 			mv.addObject("questionCount", qCount);
+			mv.addObject("pcCount", pcCount);
+			mv.addObject("pcAnswer", pcAnswer);
+			System.out.println("pcAnswer : " + pcAnswer);
 			mv.addObject("targetCount", targetCount);
+			mv.addObject("targetAnswer", targetAnswer);
+			System.out.println("targetAnswer : " + targetAnswer);
 			mv.addObject("time", time);
 			mv.addObject("minTime", minTime);
 			mv.addObject("maxTime", maxTime);
@@ -237,10 +266,11 @@ public class SurveyController {
 	 * @Description : 설문조사 응답 값 인서트 및 최종리워드 리턴
 	 */
 	@PostMapping("insertResearchAnswers.survey")
-	public ModelAndView insertResearchAnswerList(String mno, String researchNo, String totalAnswer, String surveyTime, String minTime, String maxTime, String reward, String answerCheck, String targetCount, String pcCount, ModelAndView mv) {
+	public ModelAndView insertResearchAnswerList(String mno, String researchNo, String totalAnswer, String surveyTime, String minTime, String maxTime, String reward, String answerCheck, String pcCount, String pcAnswer, String targetCount, String targetAnswer, ModelAndView mv) {
 		
 		//targetCount : 대상조사 문제 갯수
 		//pcCount : pc환경조사문제 있는지 없는지 -> 있으면 1, 없으면 0
+		
 		
 		double surveyT = Double.parseDouble(surveyTime);
 		int minT = Integer.parseInt(minTime);
@@ -275,14 +305,19 @@ public class SurveyController {
 			disposalReason = "시간제한,불량응답";
 		}
 		
+		System.out.println("응답인서트 컨트롤러 pcAnswer : " + pcAnswer);
+		System.out.println("응답인서트 컨트롤러 targetAnswer : " + targetAnswer);
+		
 		InsertAnswer answer = new InsertAnswer();
 		answer.setMno(Integer.parseInt(mno));
 		answer.setResearchNo(Integer.parseInt(researchNo));
 		answer.setTotalAnswer(totalAnswer);
 		System.out.println("totalAnswer : " + totalAnswer);
 		answer.setResearchTime(surveyTime);
-		answer.setTargetCount(Integer.parseInt(targetCount));
 		answer.setPcCount(Integer.parseInt(pcCount));
+		answer.setPcAnswer(pcAnswer);
+		answer.setTargetCount(Integer.parseInt(targetCount));
+		answer.setTargetAnswer(targetAnswer);
 		answer.setDisposalReason(disposalReason);
 		
 		int insertResult = ps.insertAnswer(answer);
@@ -304,8 +339,14 @@ public class SurveyController {
 	@RequestMapping("mySurveyList_complete.survey")
 	public String showMySurveyList_complete(HttpSession session,HttpServletRequest request, PanelResearchList rl,
 												Model model) {
-		PanelMember panelMember = (PanelMember) session.getAttribute("loginUser");
+		PanelMember panelMember = new PanelMember();
+		if(session.getAttribute("loginUser") != null) {
+			panelMember = (PanelMember)session.getAttribute("loginUser");
+		}else {
+			return "redirect:panelResult.panel?message=notLoginAccess";
+		}
 		int mno = panelMember.getMno();
+		
 		String queryString = request.getQueryString();
 
 		Map<String, List<String>> queryMap = null;
@@ -354,7 +395,12 @@ public class SurveyController {
 	@RequestMapping("mySurveyList_retry.survey")
 	public String showMySurveyList_retry(HttpSession session,HttpServletRequest request, PanelResearchList rl,
 											Model model) {
-		PanelMember panelMember = (PanelMember) session.getAttribute("loginUser");
+		PanelMember panelMember = new PanelMember();
+		if(session.getAttribute("loginUser") != null) {
+			panelMember = (PanelMember)session.getAttribute("loginUser");
+		}else {
+			return "redirect:panelResult.panel?message=notLoginAccess";
+		}
 		int mno = panelMember.getMno();
 		String queryString = request.getQueryString();
 

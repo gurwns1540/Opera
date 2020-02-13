@@ -695,6 +695,28 @@ public class PanelServiceImpl implements PanelService {
 			System.out.println("문제 " + (i+1) + "번 답 : " + eachResponse[i]);
 		}
 		
+		
+		boolean answerCheck = true;
+		if(answer.getTargetCount() > 0) {
+			String[] eachTargetCorrectAnswer = answer.getTargetAnswer().split(",");
+			
+			for(int i=0; i<answer.getTargetCount(); i++) {
+				System.out.println("answer.getTargetAnswer().split(',') : " + eachTargetCorrectAnswer[i]);
+			}
+			
+			
+			
+			for(int i=0; i<answer.getTargetCount(); i++) {
+				if(!(eachResponse[(i+1)]).equals(eachTargetCorrectAnswer[i])) {
+					answerCheck = false;
+				}
+			}
+		}
+		
+		if(!answerCheck) {
+			answer.setDisposalReason("비대상자");
+		}
+		
 		int count = (eachResponse.length) - answer.getPcCount() - answer.getTargetCount();
 		System.out.println("원래문제갯수 : " + count);
 		int startIndex = eachResponse.length - count;
@@ -719,7 +741,7 @@ public class PanelServiceImpl implements PanelService {
 		answer.setResearchhistoryNo(lastResearchhistoryNo);
 		
 		//폐기일경우 폐기테이블 insert
-		if( (answer.getDisposalReason()).equals("시간제한") || (answer.getDisposalReason()).equals("불량응답") || (answer.getDisposalReason()).equals("시간제한,불량응답") ) {
+		if( (answer.getDisposalReason()).equals("비대상자") || (answer.getDisposalReason()).equals("시간제한") || (answer.getDisposalReason()).equals("불량응답") || (answer.getDisposalReason()).equals("시간제한,불량응답") ) {
 			int result = pd.insertDisposalHistsory(sqlSession, answer);
 		}else {
 			int result = pd.insertNondisposalhistory(sqlSession, answer);

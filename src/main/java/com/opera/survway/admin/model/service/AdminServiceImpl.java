@@ -739,7 +739,7 @@ public class AdminServiceImpl implements AdminService{
 		int result = 0;
 		ad.tsDeleteChoice(sqlSession);
 		System.out.println("deleteChoice함");
-		ad.tsDeleteQuestion(sqlSession);
+		//ad.tsDeleteQuestion(sqlSession);
 		int result1 = 0;
 		for(int i = 0; i < questionList.size(); i++) {
 			ResearchQuestion question = questionList.get(i);
@@ -817,10 +817,18 @@ public class AdminServiceImpl implements AdminService{
 		return mailingList;
 	}
 
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 7.
+	 * @ModifyDate  : 2020. 2. 7.
+	 * @Description : pc환경조사 음성 파일 넣기
+	 */
 	@Override
 	public int uploadAudio(UploadFile ufo) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		int result = ad.uploadAudio(sqlSession,ufo);
+		System.out.println("pc");
+		return result;
 	}
 
 	@Override
@@ -984,6 +992,21 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int uploadReport(UploadFile ufo) {
 		return 0;
+  }
+  
+  @Override
+	public int getPanelCount() {
+		return ad.getPanelCount(sqlSession);
+	}
+
+	@Override
+	public int getCorpCount() {
+		return ad.getCorpCount(sqlSession);
+	}
+
+	@Override
+	public int getResearchCount() {
+		return ad.getResearchCount(sqlSession);
 	}
 
 }

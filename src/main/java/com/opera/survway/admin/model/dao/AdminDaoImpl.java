@@ -341,7 +341,7 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public int insertQuestion(SqlSessionTemplate sqlSession, ResearchQuestion question) {
-		return sqlSession.insert("Admin.tsInsertQuestion", question);
+		return sqlSession.update("Admin.tsUpdateQuestion", question); 
 	}
 
 	@Override
@@ -489,5 +489,20 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int mergeVideoQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req) {
 		return sqlSession.update("Admin.updateVideoQuestion",req);
+	}
+
+	@Override
+	public int getPanelCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getPanelCount");
+	}
+
+	@Override
+	public int getCorpCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getCorpCount");
+	}
+
+	@Override
+	public int getResearchCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getResearchCount");
 	}
 }
