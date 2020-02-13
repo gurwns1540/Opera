@@ -739,7 +739,7 @@ public class AdminServiceImpl implements AdminService{
 		int result = 0;
 		ad.tsDeleteChoice(sqlSession);
 		System.out.println("deleteChoice함");
-		ad.tsDeleteQuestion(sqlSession);
+		//ad.tsDeleteQuestion(sqlSession);
 		int result1 = 0;
 		for(int i = 0; i < questionList.size(); i++) {
 			ResearchQuestion question = questionList.get(i);

@@ -782,13 +782,11 @@
 		WHERE RESEARCH_NO = 1
 	</delete>
 	
-	<insert id="tsInsertQuestion" parameterType="ResearchQuestion">
-		INSERT INTO RESEARCHQUESTION VALUES
-		(#{questionFormNo}, SEQ_QUESTION.NEXTVAL, 1, NULL, NULL, #{questionOrder}, #{rquestionContext})
-		<selectKey keyProperty="questionNo" resultType="_int" order="AFTER">
-			SELECT SEQ_QUESTION.CURRVAL FROM DUAL
-		</selectKey>
-	</insert>
+	<update id="tsUpdateQuestion" parameterType="ResearchQuestion">
+		UPDATE RESEARCHQUESTION 
+		SET RQUESTION_CONTEXT=#{rquestionContext}
+		WHERE RQUESTION_NO = #{questionNo}
+	</update>
 	
 	<insert id="insertChoice" parameterType="ResearchChoice">
 		INSERT INTO RESEARCHCHOICE VALUES
