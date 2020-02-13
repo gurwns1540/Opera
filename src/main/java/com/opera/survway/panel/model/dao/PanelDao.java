@@ -2,11 +2,13 @@ package com.opera.survway.panel.model.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.AttemptInsert;
@@ -16,12 +18,17 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelSurvey;
+import com.opera.survway.panel.model.vo.PanelSurveyChoice;
 import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.SurveyReply;
+import com.opera.survway.panel.model.vo.Vote;
 import com.opera.survway.panel.model.vo.SurveyReward;
 
 public interface PanelDao {
@@ -74,7 +81,7 @@ public interface PanelDao {
 
 	int insertCashOutHistory(SqlSessionTemplate sqlSession, Reward r);
 
-	int insertRewardHistory(SqlSessionTemplate sqlSession, Reward r);
+	int insertRewardHistory(SqlSessionTemplate sqlSession, Reward reward);
 
 	int updatePanelReward(SqlSessionTemplate sqlSession, Reward r);
 
@@ -153,5 +160,41 @@ public interface PanelDao {
 	int selectRquestionNo(SqlSessionTemplate sqlSession, InsertAnswer answer);
 
 	int insertAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer);
+  
+  int uploadSurvey(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
+
+	int uploadSurveyChoice(SqlSessionTemplate sqlSession, PanelSurveyChoice panelSurveyChoice);
+
+	int uploadSurveyChoiceImage(SqlSessionTemplate sqlSession, UploadFile uploadFile);
+
+	int getPanelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey);
+
+	List<Map<String, Object>> panelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey, int offsetSize);
+
+	List<Integer> likeCheck(SqlSessionTemplate sqlSession, int mno);
+
+	int minusLikeCount(SqlSessionTemplate sqlSession, int surveyNo);
+
+	int plusLikeCount(SqlSessionTemplate sqlSession, int surveyNo);
+
+	int deleteLikeHistory(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
+
+	int addLikeHistory(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
+
+	List<Map<String, Object>> statisticList(SqlSessionTemplate sqlSession, int surveyNo);
+
+	List<Map<String, Object>> replyList(SqlSessionTemplate sqlSession, int surveyNo);
+
+	int voteCheck(SqlSessionTemplate sqlSession, Vote vote);
+
+	int voteSurvey(SqlSessionTemplate sqlSession, Vote vote);
+
+	int replyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply);
+
+	int rereplyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply);
+
+	int insertPanelReward(SqlSessionTemplate sqlSession, Vote vote);
+
+	int insertSurveyRewardHistory(SqlSessionTemplate sqlSession, Vote vote);
 
 }

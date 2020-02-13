@@ -155,7 +155,12 @@ public class RewardController {
 	
 	@RequestMapping("myRewardMain.myPage")
 	public String showMyRewardMain(HttpSession session, Reward r, Model model) {
-		PanelMember panelMember = (PanelMember) session.getAttribute("loginUser");
+		PanelMember panelMember = new PanelMember();
+		if(session.getAttribute("loginUser") != null) {
+			panelMember = (PanelMember)session.getAttribute("loginUser");
+		}else {
+			return "redirect:panelResult.panel?message=notLoginAccess";
+		}
 		int mno = panelMember.getMno();
 		r.setMno(mno);
 			int useReward = ps.useRewardList(r);

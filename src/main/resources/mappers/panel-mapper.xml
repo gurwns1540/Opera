@@ -126,7 +126,6 @@
 		<result property="surveyNo" column="SURVEY_NO"/>
 		<result property="researchName" column="RESEARCH_NAME"/>
 		<result property="surveyTitle" column="SURVEY_TITLE"/>
-		<result property="cashConfirmDate" column="CASHOUT_CONFIRM_DATE"/>
 	</resultMap>
 	
 	<select id="getListCountRewardSaved" resultType="_int" parameterType="Reward">
@@ -156,11 +155,21 @@
 	<select id="showMyRewardDetailUsed" resultMap="RewardResultSet" parameterType="Reward">
 		SELECT *
 		FROM REWARDHISTORY RH
-		LEFT JOIN CASHOUTHISTORY CH ON(CH.CASHOUTHISTORY_NO = RH.CASHOUTHISTORY_NO)
-        LEFT JOIN PANELSURVEY PS ON(RH.SURVEY_NO = PS.SURVEY_NO)
-		WHERE RH.MNO = #{mno}
-		AND RH.CHANGE_AMOUNT LIKE '%' || '-' || '%'
+		LEFT JOIN PANELSURVEY PS ON(RH.SURVEY_NO = PS.SURVEY_NO)
+		WHERE RH.MNO= #{mno}
+        AND RH.CHANGE_AMOUNT LIKE '%' || '-' || '%'
+		AND RH.SURVEY_NO IS NOT NULL
+		
+		UNION 
+		
+		SELECT R.REWARDHISTORY_NO,R.AFTERCHANGE_POINT, R.CHANGE_REASON, R.CHANGE_AMOUNT, R.REWARD_CHANGEDATE, R.CASHOUTHISTORY_NO,'캐시 아웃'
+		FROM REWARDHISTORY R
+		WHERE R.MNO =#{mno}
+		AND R.CHANGE_AMOUNT LIKE '%' || '-' || '%'
+		AND R.CASHOUTHISTORY_NO IS NOT NULL
 		ORDER BY REWARD_CHANGEDATE DESC
+
+
 	</select>
 	
 	<select id="getPanelReward" resultMap="RewardResultSet" parameterType="_int">
@@ -220,7 +229,6 @@
 	 
 	 <select id="selectMainNoticeList" resultMap="noticeListResultMap" parameterType="Notice">
 	 	SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE FROM NOTICE
-	 	WHERE NOTICE_STATUS = 'Y'
 	 	ORDER BY NOTICE_NO DESC
 	 </select>
   	<select id="selectMainResearchList" resultMap="MainResearchResultSet" parameterType="PanelResearch">
@@ -744,6 +752,185 @@
 		INSERT INTO RESEARCHHISTORY VALUES(SEQ_RESEARCHHISTORY.NEXTVAL, #{ researchNo }, #{ mno }, NULL, #{ researchTime }, #{ rquestionNo }, SYSDATE, #{ rquestionResponse })
 	</insert>
 	
+  <insert id="uploadSurvey" parameterType="PanelSurvey">
+		INSERT INTO PANELSURVEY VALUES
+		(SEQ_PANELSURVEY.NEXTVAL, #{surveyTitle}, SYSDATE, #{mno}, #{scategoryNo}, #{surveyContext}, 'Y', 0)
+		<selectKey keyProperty="surveyNo" resultType="_int" order="AFTER">
+			SELECT SEQ_PANELSURVEY.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="uploadSurveyChoice" parameterType="PanelSurveyChoice">
+		INSERT INTO SURVEYCHOICE VALUES
+		(SEQ_PANELSURVEYCHOICE.NEXTVAL, #{schoiceContext}, #{surveyNo}, #{schoiceOrder})
+		<selectKey keyProperty="schoiceNo" resultType="_int" order="AFTER">
+			SELECT SEQ_PANELSURVEYCHOICE.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="uploadSurveyChoiceImage" parameterType="UploadFile">
+		INSERT INTO UPLOADFILE VALUES 
+		(SEQ_UPLOADFILE.NEXTVAL, '패널서베이 보기', #{originName}, #{changeName}, #{filePath}, SYSDATE, 'Y', NULL, #{schoiceNo}, NULL, NULL, NULL, NULL)
+	</insert>
+	
+	<select id="getPanelSurveyList" resultType="_int">
+		SELECT COUNT(*)
+		FROM PANELSURVEY
+		WHERE PANELSURVEY_STATUS = 'Y'
+		<include refid="searchSurveyValue"/>
+	    <include refid="searchSurveyCategory"/>
+	</select>
+	
+	<resultMap type="map" id="panelSurveyListMap">
+		<result property="surveyNo" column="SURVEY_NO"/>
+		<result property="surveyTitle" column="SURVEY_TITLE"/>
+		<result property="surveyDate" column="SURVEY_DATE"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="scategoryName" column="SCATEGORY_NAME"/>
+		<result property="surveyContext" column="SURVEY_CONTEXT"/>
+		<result property="replyCount" column="REPLY_COUNT"/>
+		<result property="surveyLike" column="SURVEY_LIKE"/>
+		<collection property="choiceList" column="SURVEY_NO" ofType="PanelSurveyChoice" javaType="java.util.List">
+			<result property="schoiceNo" column="SCHOICE_NO"/>
+			<result property="schoiceContext" column="SCHOICE_CONTEXT"/>
+			<result property="schoiceOrder" column="SCHOICE_ORDER"/>
+			<result property="changeName" column="CHANGE_NAME"/>
+		</collection>
+	</resultMap>
+	
+	<sql id="searchSurveyValue">
+		<if test="searchValue != null">
+			AND PS.SURVEY_TITLE LIKE '%'|| #{searchValue} ||'%'
+		</if>
+	</sql>
+	<sql id="searchSurveyCategory">
+		<if test="interests != null">
+			AND PS.SCATEGORY_NO = #{interests}
+		</if>
+	</sql>
+	<sql id="searchSurveyOrder">
+		<if test="frequency == null">
+			PS.SURVEY_NO DESC, SURVEY_DATE DESC,
+		</if>
+		<if test="frequency == 'recentOrder'">
+			PS.SURVEY_NO DESC, SURVEY_DATE DESC, 
+		</if>
+		<if test="frequency == 'rankingOrder'">
+			SURVEY_LIKE DESC, 
+		</if>
+	</sql>
+	<select id="panelSurveyList" resultMap="panelSurveyListMap">
+		SELECT (SELECT COUNT(*) FROM SURVEYREPLY WHERE SURVEY_NO = PS.SURVEY_NO) REPLY_COUNT, SURVEY_LIKE, PS.SURVEY_NO, PS.SURVEY_TITLE, TO_CHAR(PS.SURVEY_DATE, 'YYYY-MM-DD') SURVEY_DATE, M.USER_NAME, C.SCATEGORY_NAME, PS.SURVEY_CONTEXT, SC.SCHOICE_NO, SC.SURVEY_NO, SC.SCHOICE_CONTEXT, SC.SCHOICE_ORDER, UF.CHANGE_NAME
+	    FROM PANELSURVEY PS
+	    JOIN SURVEYCHOICE SC ON (PS.SURVEY_NO = SC.SURVEY_NO)
+	    LEFT JOIN UPLOADFILE UF ON (UF.SCHOICE_NO = SC.SCHOICE_NO)
+	    JOIN MEMBER M ON(M.MNO = PS.MNO)
+	    JOIN SURVEYCATEGORY C ON (C.SCATEGORY_NO = PS.SCATEGORY_NO)
+	    WHERE PANELSURVEY_STATUS = 'Y'
+	    <include refid="searchSurveyValue"/>
+	    <include refid="searchSurveyCategory"/>
+	    ORDER BY <include refid="searchSurveyOrder"/> SC.SCHOICE_NO ASC
+	</select>
+	
+	<select id="likeCheck" parameterType="_int" resultType="_int">
+		SELECT SURVEY_NO
+		FROM LIKEHISTORY
+		WHERE MNO = #{mno}
+	</select>
+	
+	<update id="minusLikeCount" parameterType="_int">
+		UPDATE PANELSURVEY SET
+		SURVEY_LIKE = (SELECT SURVEY_LIKE FROM PANELSURVEY WHERE SURVEY_NO = #{surveyNo}) - 1
+		WHERE SURVEY_NO = #{surveyNo}
+	</update>
+	
+	<update id="plusLikeCount" parameterType="_int">
+		UPDATE PANELSURVEY SET
+		SURVEY_LIKE = (SELECT SURVEY_LIKE FROM PANELSURVEY WHERE SURVEY_NO = #{surveyNo}) + 1
+		WHERE SURVEY_NO = #{surveyNo}
+	</update>
+	
+	<delete id="deleteLikeHistory" parameterType="PanelSurvey">
+		DELETE FROM LIKEHISTORY
+		WHERE SURVEY_NO = #{surveyNo}
+		AND MNO = #{mno}
+	</delete>
+	
+	<insert id="addLikeHistory" parameterType="PanelSurvey">
+		INSERT INTO LIKEHISTORY VALUES
+		(SEQ_LIKEHISTORY.NEXTVAL, #{surveyNo}, #{mno})
+	</insert>
+	
+	<resultMap type="map" id="statisticMap">
+		<result property="choiceContext" column="SCHOICE_CONTEXT"/>
+		<result property="choiceCount" column="CHOICE_COUNT"/>
+	</resultMap>
+	
+	<select id="statisticList" parameterType="_int" resultMap="statisticMap">
+		SELECT SC.SCHOICE_CONTEXT, COUNT(SC.SCHOICE_CONTEXT) AS CHOICE_COUNT FROM SURVEYHISTORY SH
+		JOIN SURVEYCHOICE SC ON (SC.SCHOICE_NO = SH.SCHOICE_NO)
+		WHERE SH.SURVEY_NO = #{surveyNo}
+		GROUP BY SC.SCHOICE_CONTEXT
+		ORDER BY CHOICE_COUNT DESC
+	</select>
+	
+	<resultMap type="map" id="replyMap">
+		<result property="surveyReplyNo" column="SURVEYREPLY_NO"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="surveyReplyContext" column="SURVEYREPLY_CONTEXT"/>
+		<result property="surveyReplyDate" column="SURVEYREPLY_DATE"/>
+		<result property="surveyReplyRefrid" column="SURVEYREPLY_REFRID"/>
+	</resultMap>
+	
+	<select id="replyList" parameterType="_int" resultMap="replyMap">
+		SELECT SR.SURVEYREPLY_NO, M.USER_NAME, SR.SURVEYREPLY_CONTEXT, TO_CHAR(SR.SURVEYREPLY_DATE + 9 / (24) + 71 / (24 * 60 * 60), 'YYYY-MM-DD "at" HH:MI AM') AS SURVEYREPLY_DATE, SR.SURVEYREPLY_REFRID
+		FROM SURVEYREPLY SR
+		JOIN PANELSURVEY PS ON (PS.SURVEY_NO = SR.SURVEY_NO)
+		JOIN MEMBER M ON(M.MNO = SR.MNO)
+		WHERE SR.SURVEY_NO = #{surveyNo}
+		ORDER BY SR.SURVEYREPLY_DATE ASC
+	</select>
+	
+	<select id="voteCheck" parameterType="Vote" resultType="_int">
+		SELECT COUNT(*)
+		FROM SURVEYHISTORY
+		WHERE SURVEY_NO = #{surveyNo}
+		AND MNO = #{mno}
+	</select>
+	
+	<insert id="voteSurvey" parameterType="Vote">
+		INSERT INTO SURVEYHISTORY VALUES
+		(SEQ_SURVEYHISTORY.NEXTVAL, #{choiceNo}, #{surveyNo}, #{mno}, SYSDATE)
+		<selectKey keyProperty="surveyHistoryNo" resultType="_int" order="AFTER">
+  			SELECT SEQ_SURVEYHISTORY.CURRVAL FROM DUAL
+  		</selectKey>
+	</insert>
+	
+	<update id="insertPanelReward" parameterType="Vote">
+		UPDATE PANELREWARD SET REWARD_POINT = (SELECT REWARD_POINT FROM PANELREWARD WHERE MNO = #{mno})
+		WHERE MNO = #{mno}
+	</update>
+	
+	<insert id="insertSurveyRewardHistory" parameterType="Vote">
+		INSERT INTO REWARDHISTORY VALUES 
+		(SEQ_REWARDHISTORY.NEXTVAL, ((SELECT REWARD_POINT FROM PANELREWARD WHERE MNO = #{mno}) + 1), '패널 서베이', '+1', #{mno}, SYSDATE, NULL, #{surveyHistoryNo}, NULL, NULL)
+	</insert>
+	
+	<insert id="replyUpload" parameterType="SurveyReply">
+		INSERT INTO SURVEYREPLY VALUES
+		(SEQ_SURVEYREPLY.NEXTVAL, #{surveyReplyContext}, SYSDATE, NULL, #{surveyNo}, #{mno})
+		<selectKey keyProperty="surveyReplyNo" resultType="_int" order="AFTER">
+  			SELECT SEQ_SURVEYREPLY.CURRVAL FROM DUAL
+  		</selectKey>
+	</insert>
+	
+	<insert id="rereplyUpload" parameterType="SurveyReply">
+		INSERT INTO SURVEYREPLY VALUES
+		(SEQ_SURVEYREPLY.NEXTVAL, #{surveyReplyContext}, SYSDATE, #{surveyReplyRefRid}, #{surveyNo}, #{mno})
+		<selectKey keyProperty="surveyReplyNo" resultType="_int" order="AFTER">
+  			SELECT SEQ_SURVEYREPLY.CURRVAL FROM DUAL
+  		</selectKey>
+	</insert>
 </mapper>
 
 

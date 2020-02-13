@@ -4,6 +4,7 @@ package com.opera.survway.panel.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
@@ -23,12 +25,16 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelSurvey;
 import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.SurveyReply;
+import com.opera.survway.panel.model.vo.Vote; 
 import com.opera.survway.panel.model.vo.SurveyReward;
 
 
@@ -713,7 +719,7 @@ public class PanelServiceImpl implements PanelService {
 		return 0;
 	}
 
-	/**
+  /**
 	 * @throws InquiryException 
 	 * @Author	:hansol
 	 * @CreateDate	:2020. 2. 12.
@@ -727,11 +733,174 @@ public class PanelServiceImpl implements PanelService {
 		
 		if(result <0) {
 			throw new InquiryException("참여한 설문조사 listCount 조회 실패");
+    }
+		return result;
+	}
+  
+  /**
+	 * @throws SurveyException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 패널 서베이 문항 작성
+	 */
+	@Override
+	public int uploadSurvey(PanelSurvey panelSurvey, ArrayList<UploadFile> uploadFileList) throws SurveyException {
+		int result = 0;
+		int result1 = pd.uploadSurvey(sqlSession, panelSurvey);
+		if(result1 > 0) {
+			int result2 = 0;
+			for(int i = 0; i < panelSurvey.getChoiceList().size(); i++) {
+				panelSurvey.getChoiceList().get(i).setSurveyNo(panelSurvey.getSurveyNo());
+			}
+			for(int i = 0; i < panelSurvey.getChoiceList().size(); i++) {
+				result2 += pd.uploadSurveyChoice(sqlSession, panelSurvey.getChoiceList().get(i));
+			}
+			if(result2 == panelSurvey.getChoiceList().size()) {
+				if(uploadFileList != null) {
+					for(int i = 0; i < panelSurvey.getChoiceList().size(); i++) {
+						uploadFileList.get(i).setSchoiceNo(panelSurvey.getChoiceList().get(i).getSchoiceNo());
+					}
+					int result3 = 0;
+					for(int i = 0; i < uploadFileList.size(); i++) {
+						result3 += pd.uploadSurveyChoiceImage(sqlSession, uploadFileList.get(i));
+					}
+					if(result3 == uploadFileList.size()) {
+						result = 1;
+					}
+				}else {
+					result = 1;
+				}
+			}
+		}
+		
+		if(!(result > 0)) {
+			throw new SurveyException("서베이 문항 작성 실패");
+		}
+		return result;
+	} 
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 패널 서베이 문항 수
+	 */
+	@Override
+	public int getPanelSurveyList(SearchSurvey searchSurvey) {
+		return pd.getPanelSurveyList(sqlSession, searchSurvey);
+	}
+
+	/**
+	 * @throws SelectException 
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 패널 서베이 문항 리스트
+	 */
+	@Override
+	public List<Map<String, Object>> panelSurveyList(SearchSurvey searchSurvey, int offsetSize) throws SelectException {
+		List<Map<String, Object>> panelSurveyList = pd.panelSurveyList(sqlSession, searchSurvey, offsetSize);
+		
+		if(panelSurveyList == null) {
+			throw new SelectException("패널 서베이 리스트 조회 실패");
+		}
+		return panelSurveyList;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 좋아요 한 서베이 체크
+	 */
+	@Override
+	public List<Integer> likeCheck(int mno) {
+		return pd.likeCheck(sqlSession, mno);
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 좋아요 증가 및 감소
+	 */
+	@Override
+	public int changeLikeCount(int surveyNo, int mno, String status) {
+		int result = 0;
+		PanelSurvey panelSurvey = new PanelSurvey();
+		panelSurvey.setMno(mno);
+		panelSurvey.setSurveyNo(surveyNo);
+		
+		if(status.equals("minus")) { 
+			result = pd.minusLikeCount(sqlSession, surveyNo);
+			pd.deleteLikeHistory(sqlSession, panelSurvey);
+		}else if(status.equals("plus")) {
+			result = pd.plusLikeCount(sqlSession, surveyNo);
+			pd.addLikeHistory(sqlSession, panelSurvey);
 		}
 		return result;
 	}
 
 	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 통계 리스트
+	 */
+	@Override
+	public List<Map<String, Object>> statisticList(int surveyNo) {
+		return pd.statisticList(sqlSession, surveyNo);
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 댓글 리스트
+	 */
+	@Override
+	public List<Map<String, Object>> replyList(int surveyNo) {
+		return pd.replyList(sqlSession, surveyNo);
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 투표여부 확인
+	 */
+	@Override
+	public boolean voteCheck(Vote vote) {
+		boolean alreadyVoted = false;
+		
+		int result = pd.voteCheck(sqlSession, vote);
+		
+		if(result > 0) {
+			alreadyVoted = true;
+		}else {
+			alreadyVoted = false;
+		}
+		
+		return alreadyVoted;
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 투표
+	 */
+	@Override
+	public int voteSurvey(Vote vote) {
+		int result = pd.voteSurvey(sqlSession, vote);
+		if(result > 0) {
+			pd.insertSurveyRewardHistory(sqlSession, vote);
+			pd.insertPanelReward(sqlSession, vote);
+		}
+    return result;
+	}
+  /**
 	 * @throws InquiryException 
 	 * @Author	:im233
 	 * @CreateDate	:2020. 2. 12.
@@ -788,10 +957,31 @@ public class PanelServiceImpl implements PanelService {
 		if(result1>0 && result2>0) {
 			result = 1;
 		}
-		
 		return result;
 	}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 댓글 달기
+	 */
+	@Override 
+	public int replyUpload(SurveyReply surveyReply) {
+		return pd.replyUpload(sqlSession, surveyReply);
+	}
+
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 대댓글 달기
+	 */
+	@Override 
+	public int rereplyUpload(SurveyReply surveyReply) {
+		return pd.rereplyUpload(sqlSession, surveyReply);
+   }
+  
 	/**
 	 * @Author	:hansol
 	 * @CreateDate	:2020. 2. 13.
@@ -802,5 +992,5 @@ public class PanelServiceImpl implements PanelService {
 	public List<PanelResearchList> selectAllPanelResearchRetryList(PanelResearchList rl) {
 		List<PanelResearchList> list = pd.selectAllPanelResearchRetryList(sqlSession, rl);
 		return list;
-	}
+  }	
 }

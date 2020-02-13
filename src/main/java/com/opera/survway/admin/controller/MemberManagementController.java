@@ -73,19 +73,16 @@ public class MemberManagementController {
 				searchInput = queryMap.get("searchInput").get(0);
 				searchMember.setSearchInput(searchInput);
 			}
-			System.out.println(searchMember);
 		}
 	  
 		int listCount = 0;
 		try {
 			listCount = as.getListCountPanel(searchMember);
-			System.out.println(listCount);
 			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 			
 			searchMember.setPi(pi);
 			
 			List<AllMember> memberList = as.memberInfoManagement(searchMember); 
-			
 			model.addAttribute("memberList", memberList);
 			model.addAttribute("pi", pi);
 			
