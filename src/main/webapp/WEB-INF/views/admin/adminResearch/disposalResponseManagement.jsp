@@ -77,12 +77,14 @@
 	#pagingArea span {
 		margin-left: 5px;
 		margin-right: 5px;
+		color: black;
 		font-size: 10pt;
 	}
 	#pagingArea span:hover {
 		margin-left: 5px;
 		margin-right: 5px;
 		font-size: 10pt;
+		color: dodgerblue;
 		cursor: pointer;
 	}
 	.detail {
@@ -116,8 +118,7 @@
 			<tr>
 				<td>
 					<div id="approvalBtnArea">
-						<button onclick="location.href='disposalResponseManagement.admin'" id="clickBtn">폐기응답 목록</button>
-						<button onclick="location.href='poorResponseList.admin'">불량응답 목록</button>
+
 					</div>
 				</td>
 			</tr>
@@ -149,24 +150,59 @@
 				<th style="width: 35%;">분류</th>
 				<th style="width: 20%;">상세보기</th>
 			</tr>
-			<c:forEach var="i" begin="0" end="9">
+			<c:forEach var="disposal" items="${ disposalResponseList }">
 				<tr class="tableContext">
-					<td>폐기응답번호</td>
-					<td>패널번호</td>
-					<td>리서치</td>
-					<td>분류</td>
+					<td>${ disposal.disposalNo }</td>
+					<td>${ disposal.mno }</td>
+					<td>${ disposal.researchNo }</td>
+					<td>${ disposal.disposalReason }</td>
 					<td><button class="detail">상세보기</button></td>
 				</tr>
 			</c:forEach>
 		</table>
 		<div id="pagingArea" align="center">
-			<span>[처음]</span>
-			<span>[이전]</span>
-			<c:forEach var="i" begin="1" end="10">
-				<span><c:out value="${ i }"/></span>
+			<c:url var="researchFirst" value="disposalResponseManagement.adminResearch">
+				<c:param name="currentPage" value="${1}"/>
+			</c:url>
+			<a href="${researchFirst}"><span>[처음]</span></a>&nbsp;
+			
+			<c:if test="${pi.currentPage <= 1}">
+				<span>[이전]</span> &nbsp;
+			</c:if>
+			<c:if test="${pi.currentPage > 1}">
+				<c:url var="researchBack" value="disposalResponseManagement.adminResearch">
+					<c:param name="currentPage" value="${pi.currentPage - 1}"/>
+				</c:url>
+				<a href="${researchBack}"><span>[이전]</span></a>&nbsp;
+			</c:if>
+			
+			<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
+				<c:if test="${p eq pi.currentPage }">
+					<span style="color: #4169E1; font-weight: bold; font-size: 15pt;">${ p }</span>
+				</c:if>
+				<c:if test="${p ne pi.currentPage }">
+					<c:url var="researchCheck" value="disposalResponseManagement.adminResearch">
+						<c:param name="currentPage" value="${ p }"/>
+					</c:url>
+					<a href="${ researchCheck }"><span>${ p }</span></a>
+				</c:if>
+				
 			</c:forEach>
-			<span>[다음]</span>
-			<span>[마지막]</span>
+			
+			<c:if test="${pi.currentPage < pi.maxPage}">
+				<c:url var="researchNext" value="disposalResponseManagement.adminResearch">
+					<c:param name="currentPage" value="${pi.currentPage + 1}"/>
+				</c:url>
+				&nbsp;<a href="${researchNext}"><span>[다음]</span></a>
+			</c:if>
+			<c:if test="${pi.currentPage >= pi.maxPage}">
+				&nbsp; <span>[다음]</span>
+			</c:if>
+			
+			<c:url var="researchEnd" value="disposalResponseManagement.adminResearch">
+				<c:param name="currentPage" value="${pi.maxPage}"/>
+			</c:url>
+			<a href="${researchEnd}"><span>[마지막]</span></a>&nbsp;
 		</div>
 	</div>
 		
@@ -184,7 +220,6 @@
 					<tr>
 						<th>패널 번호</th>
 						<td colspan="3">98772</td>
-<!-- 					</tr> -->
 					<tr>
 						<th>리서치 번호</th>
 						<td colspan="3">279</td>

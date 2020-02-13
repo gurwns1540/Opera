@@ -138,4 +138,8 @@ public interface AdminService {
 
 	int getResearchCount();
 
+	int getListCountdisposalResponseList() throws SelectException;
+
+	List<Map<String, String>> disposalResponseList(PageInfo pi) throws SelectException;
+
 }
