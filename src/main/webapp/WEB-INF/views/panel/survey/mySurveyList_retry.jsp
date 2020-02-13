@@ -293,7 +293,7 @@
 	<script>
 		$("#searchBtn").click(function(){
 			 $("#search").submit();
-		 )};
+		 }); 
 	</script>
 </body>
 </html>
