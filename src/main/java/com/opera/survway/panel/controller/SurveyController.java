@@ -58,7 +58,13 @@ public class SurveyController {
 	public String selectSurveyList(HttpServletRequest request, Model model) {
 		
 		//request에서 패널정보 받아오기
-		PanelMember loginUser = (PanelMember)request.getSession().getAttribute("loginUser");
+		PanelMember loginUser = new PanelMember();
+		if(request.getSession().getAttribute("loginUser") != null) {
+			loginUser = (PanelMember)request.getSession().getAttribute("loginUser");
+		}else {
+			return "redirect:panelResult.panel?message=notLoginAccess";
+		}
+		int mno = loginUser.getMno();
 		
 		//뷰페이지로 보낼 변수들 선언
 		List<Research> researchList = null;
@@ -304,8 +310,14 @@ public class SurveyController {
 	@RequestMapping("mySurveyList_complete.survey")
 	public String showMySurveyList_complete(HttpSession session,HttpServletRequest request, PanelResearchList rl,
 												Model model) {
-		PanelMember panelMember = (PanelMember) session.getAttribute("loginUser");
+		PanelMember panelMember = new PanelMember();
+		if(session.getAttribute("loginUser") != null) {
+			panelMember = (PanelMember)session.getAttribute("loginUser");
+		}else {
+			return "redirect:panelResult.panel?message=notLoginAccess";
+		}
 		int mno = panelMember.getMno();
+		
 		String queryString = request.getQueryString();
 
 		Map<String, List<String>> queryMap = null;
@@ -354,7 +366,12 @@ public class SurveyController {
 	@RequestMapping("mySurveyList_retry.survey")
 	public String showMySurveyList_retry(HttpSession session,HttpServletRequest request, PanelResearchList rl,
 											Model model) {
-		PanelMember panelMember = (PanelMember) session.getAttribute("loginUser");
+		PanelMember panelMember = new PanelMember();
+		if(session.getAttribute("loginUser") != null) {
+			panelMember = (PanelMember)session.getAttribute("loginUser");
+		}else {
+			return "redirect:panelResult.panel?message=notLoginAccess";
+		}
 		int mno = panelMember.getMno();
 		String queryString = request.getQueryString();
 

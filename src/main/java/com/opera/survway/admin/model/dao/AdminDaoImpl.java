@@ -484,4 +484,19 @@ public class AdminDaoImpl implements AdminDao{
 	public int mergeVideoQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req) {
 		return sqlSession.update("Admin.updateVideoQuestion",req);
 	}
+
+	@Override
+	public int getPanelCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getPanelCount");
+	}
+
+	@Override
+	public int getCorpCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getCorpCount");
+	}
+
+	@Override
+	public int getResearchCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getResearchCount");
+	}
 }

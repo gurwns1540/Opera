@@ -977,4 +977,19 @@ public class AdminServiceImpl implements AdminService{
 		return rq;
 	}
 
+	@Override
+	public int getPanelCount() {
+		return ad.getPanelCount(sqlSession);
+	}
+
+	@Override
+	public int getCorpCount() {
+		return ad.getCorpCount(sqlSession);
+	}
+
+	@Override
+	public int getResearchCount() {
+		return ad.getResearchCount(sqlSession);
+	}
+
 }
