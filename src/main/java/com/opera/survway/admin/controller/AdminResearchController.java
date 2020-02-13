@@ -704,7 +704,7 @@ public class AdminResearchController {
 		ufo.setOriginName(originFileName); //오리지널 이름 넣기
 		ufo.setFilePath(savePath); //파일 경로 넣기
 		
-		int result =0;
+		int result = 0;
 		result = as.uploadAudio(ufo);
 		
 		try { 
@@ -713,6 +713,33 @@ public class AdminResearchController {
 			e.printStackTrace(); 
 		}
 		 
+		mv.addObject("ufo", ufo);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	@PostMapping("uploadFileReport.adminResearch")
+	public ModelAndView uploadReport(HttpServletRequest request, ModelAndView mv, MultipartFile file) {
+		String root = request.getSession().getServletContext().getRealPath("resources"); //루트
+		String savePath = root + "\\uploadFiles"; //저장경로
+		
+		String originFileName = file.getOriginalFilename(); //파일 원본이름가져오기
+		String ext = originFileName.substring(originFileName.lastIndexOf(".")); //확장자
+		String saveFile = OperaFileNamePolicy.getRandomString() + ext; //랜덤이름+확장자
+		UploadFile ufo =new UploadFile();  //업로드 파일 객체 생성
+		ufo.setChangeName(saveFile); //change이름 넣기
+		ufo.setOriginName(originFileName); //오리지널 이름 넣기
+		ufo.setFilePath(savePath); //파일 경로 넣기
+		
+		int result =0;
+		result = as.uploadReport(ufo);
+		
+		try { 
+			file.transferTo(new File(savePath + "\\" + saveFile)); 
+		} catch(IllegalStateException | IOException e) { 
+			e.printStackTrace(); 
+		}
+		
 		mv.addObject("ufo", ufo);
 		mv.setViewName("jsonView");
 		return mv;
@@ -788,45 +815,12 @@ public class AdminResearchController {
 	
 	@PostMapping("selectResearchGraph.adminResearch")
 	public ModelAndView selectResearchGraph(ModelAndView mv, int researchNo) {
-//		System.out.println(researchNo);
-//		List<ResearchHistory> researchHistoryList = as.selectResearchHistoryList(researchNo);
-//		List<RquestionNo> rquestionNoList = as.selectRquestionNoList(researchNo);
-//		List<ResearchGraphTemp> countList = null;
-//		System.out.println(researchHistoryList);
-//		System.out.println(rquestionNoList);
-//		
-//		Gson gson = new Gson();
-//		String testJson = gson.toJson(researchHistoryList);
-//		String[] jsonArr = new String[rquestionNoList.size()];
-//		
-//		System.out.println(testJson);
-//		
-//		
-//		for(int i = 0; i < rquestionNoList.size(); i++) {
-//			ResearchGraphTemp temp = new ResearchGraphTemp();
-//			temp.setResearchNo(researchNo);
-//			System.out.println("123 : S : " + rquestionNoList.get(i));
-//			int rno = rquestionNoList.get(i).getRquestionNo();
-//			temp.setRquestionNo(rno);
-//			countList = as.selectResearchHistoryCountList(temp);
-//			
-//			jsonArr[i] = gson.toJson(countList);
-////			System.out.println("=====JSON TEST=====");
-////			System.out.println(jsonArr[i]);
-////			System.out.println("=====JSON TEST=====");
-//		}
-//		
-//		System.out.println("=====JSON TEST=====");
-//		System.out.println(countList);
-//		System.out.println("=====JSON TEST=====");
-////		mv.addObject("result", result);
 		ResearchGraphTemp temp = null;
 		Gson gson = new Gson();
 		List<RquestionNo> rquestionNoList = as.selectRquestionNoList(researchNo);		//문제번호 불러오는 리스트
 		String[] jsonArr = new String[rquestionNoList.size()];
 		String testJson = null;
 		for(int i = 0; i < rquestionNoList.size(); i++) {
-//			System.out.println("rquestionNo : " + rquestionNoList.get(i).getRquestionNo());
 			temp = new ResearchGraphTemp();
 			temp.setResearchNo(researchNo);
 			temp.setRquestionNo(rquestionNoList.get(i).getRquestionNo());
@@ -842,12 +836,43 @@ public class AdminResearchController {
 		return mv;
 	}
 	
-	//리서치 보고서 작성 대기 목록-통계처리
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 리서치 보고서 작성 대기 관리 - 통계처리
+	 */
 	@RequestMapping("researchReportStandbyList.admin")
 	public String forwardResearchReportStandbyList(Model model) {
 		List<ResearchReport> researchReportList = as.selectResearchReportList();
 		model.addAttribute("researchReportList", researchReportList);
 		return "adminResearch/researchReportStandbyList";
+	}
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 리서치 보고서 작성 대기 관리 - 보고서 작성
+	 */
+	@RequestMapping("researchReportWriteList.admin")
+	public String forwardResearchReportWriteList(Model model) {
+		List<ResearchReport> researchReportList = as.selectResearchReportList();
+		model.addAttribute("researchReportList", researchReportList);
+		return "adminResearch/researchReportWriteList";
+	}
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 리서치 보고서 작성 대기 관리 - 결과전송
+	 */
+	@RequestMapping("researchReportSendList.admin")
+	public String forwardResearchReportSendList(Model model) {
+		List<ResearchReport> researchReportList = as.selectResearchReportList();
+		model.addAttribute("researchReportList", researchReportList);
+		return "adminResearch/researchReportSendList";
 	}
 	
 	/**
