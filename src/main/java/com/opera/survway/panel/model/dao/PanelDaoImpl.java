@@ -625,4 +625,9 @@ public class PanelDaoImpl implements PanelDao{
 	public int replyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply) {
 		return sqlSession.insert("Panel.replyUpload", surveyReply);
   }
+
+	@Override
+	public PanelMember getPanelInfo(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.selectOne("Panel.selectPanelInfo", answer);
+	}
 }

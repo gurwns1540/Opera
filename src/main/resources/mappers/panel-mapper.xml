@@ -5,7 +5,7 @@
   
 <mapper namespace="Panel">
 	
-	<resultMap type="com.opera.survway.panel.model.vo.PanelMember" id="panelMemberResultSet">
+	<resultMap type="PanelMember" id="panelMemberResultSet">
 		<id property="mno" column="MNO"/>
 		<result property="userId" column="USER_ID"/>
 		<result property="userPwd" column="USER_PWD"/>
@@ -944,6 +944,14 @@
   			SELECT SEQ_SURVEYREPLY.CURRVAL FROM DUAL
   		</selectKey>
 	</insert>
+	
+	<select id="selectPanelInfo" parameterType="InsertAnswer" resultMap="panelMemberResultSet">
+		SELECT *
+		FROM MEMBER
+		JOIN PANEL USING (MNO)
+		WHERE MNO = #{ mno }
+	</select>
+	
 </mapper>
 
 
