@@ -264,7 +264,9 @@ public class MemberManagementController {
 			String setfrom = "yychani94@gmail.com";         
 		    String tomail  = newPanel.getUserEmail();     // 받는 사람 이메일
 		    String title   = "서브웨이 Thanks Survey 결과입니다.";      // 제목
-		    String content = text +" 라는 이유로 thanksSurvey가 반려 되셨습니다.";
+		    String content = "안녕하세요"+newPanel.getUserName()+"님, ThanksSurvey에 참여해주셔서 감사함니다"+"<br>"+
+		    					text +" 라는 이유로 thanksSurvey가 반려 되셨습니다."+"<br>"+
+		    					"thanksSurvey는 3회까지 재참여가 가능하니 다시 참여해주시기 바랍니다. ";
 		   
 		    try {
 				MimeMessage message = mailSender.createMimeMessage();
