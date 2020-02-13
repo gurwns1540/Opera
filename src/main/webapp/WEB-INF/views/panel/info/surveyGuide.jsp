@@ -10,8 +10,8 @@
 	background-color: white;
 	height: 150px;
 	width: 200px;
-	margin-left: 150px;
-	margin-top: 30px;
+	margin-left: 80px;
+	margin-top: 50px;
 	color: black;
 }
 
@@ -21,6 +21,9 @@
 }
 .onlineResearch{
 	margin-bottom: 70px;
+}
+.onlineResearchImg{
+	display: inline-flex;
 }
 </style>
 <body>
@@ -52,7 +55,7 @@
 			<div class="ui teal inverted segment"
 				style="width: 100%; height: 250px;" align="center">
 				<h2 class="ui grey header"
-					style="color: white !important; margin-left: 20px; margin-top: 20px;">조사종류</h2>
+					style="color: white !important; margin-left: 20px; margin-top: 5px;">조사종류</h2>
 				<div style="margin-left: 30px;"></div>
 				<div class="researchType" align="center">
 					<img src="resources/images/researchType1.PNG" style="width: 100%">
@@ -70,9 +73,12 @@
 					<li>조사 응답시간, 난이도에 따라 적립금이 달라집니다.</li>
 					<li>조사 대상이 아닌 분은 중간에 중단될 수 있습니다.</li>
 				</ul>
+				<div style="height:30px;"></div>
 				<div class="onlineResearchImg" style="margin-left:20px;">
 					<img src="resources/images/research1.png" style="width: 50%">
+					<img src="resources/images/research2.png" style="width: 50%">
 				</div>
+				<div style="height:30px;"></div>
 				<div class="ui list" style="margin-left: 20px;">
 					<div class="item">
 						<i class="plus icon"></i>
