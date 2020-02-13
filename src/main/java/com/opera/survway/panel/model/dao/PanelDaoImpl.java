@@ -446,7 +446,7 @@ public class PanelDaoImpl implements PanelDao{
 
 	@Override
 	public int insertRewardHistory(SqlSessionTemplate sqlSession, SurveyReward reward) {
-		return sqlSession.insert("Panel.insertRewardHistory", reward);
+		return sqlSession.insert("Panel.insertSurveyRewardHistory", reward);
 	}
 
 	@Override
@@ -541,7 +541,7 @@ public class PanelDaoImpl implements PanelDao{
 
 	@Override
 	public int insertSurveyRewardHistory(SqlSessionTemplate sqlSession, Vote vote) {
-		return sqlSession.insert("Panel.insertSurveyRewardHistory", vote);
+		return sqlSession.insert("Panel.insertPanelSurveyRewardHistory", vote);
 	}
   @Override
 	public int uploadSurvey(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey) {

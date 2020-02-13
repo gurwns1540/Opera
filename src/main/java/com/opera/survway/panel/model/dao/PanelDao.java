@@ -161,7 +161,7 @@ public interface PanelDao {
 
 	int insertAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer);
   
-  int uploadSurvey(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
+	int uploadSurvey(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
 
 	int uploadSurveyChoice(SqlSessionTemplate sqlSession, PanelSurveyChoice panelSurveyChoice);
 

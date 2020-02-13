@@ -924,7 +924,7 @@
 		WHERE MNO = #{mno}
 	</update>
 	
-	<insert id="insertSurveyRewardHistory" parameterType="Vote">
+	<insert id="insertPanelSurveyRewardHistory" parameterType="Vote">
 		INSERT INTO REWARDHISTORY VALUES 
 		(SEQ_REWARDHISTORY.NEXTVAL, ((SELECT REWARD_POINT FROM PANELREWARD WHERE MNO = #{mno}) + 1), '패널 서베이', '+1', #{mno}, SYSDATE, NULL, #{surveyHistoryNo}, NULL, NULL)
 	</insert>

@@ -996,7 +996,7 @@ public class PanelServiceImpl implements PanelService {
 		//해당 정보 넘겨서 패널리워드 테이블에 업데이트
 		int result1 = pd.updateSurveyReard(sqlSession, reward);
 		//리워드히스토리에 관련 정보 인서트
-		int result2 = pd.insertSurveyRewardHistory(sqlSession, reward);
+		int result2 = pd.insertRewardHistory(sqlSession, reward);
 		
 		if(result1>0 && result2>0) {
 			result = 1;
