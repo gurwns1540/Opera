@@ -78,7 +78,7 @@ public interface PanelDao {
 
 	int insertCashOutHistory(SqlSessionTemplate sqlSession, Reward r);
 
-	int insertRewardHistory(SqlSessionTemplate sqlSession, Reward r);
+	int insertRewardHistory(SqlSessionTemplate sqlSession, Reward reward);
 
 	int updatePanelReward(SqlSessionTemplate sqlSession, Reward r);
 
@@ -138,9 +138,9 @@ public interface PanelDao {
 
 	int uploadSurveyChoiceImage(SqlSessionTemplate sqlSession, UploadFile uploadFile);
 
-	int getPanelSurveyList(SqlSessionTemplate sqlSession);
+	int getPanelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey);
 
-	List<Map<String, Object>> panelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey);
+	List<Map<String, Object>> panelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey, int offsetSize);
 
 	List<Integer> likeCheck(SqlSessionTemplate sqlSession, int mno);
 
@@ -163,5 +163,9 @@ public interface PanelDao {
 	int replyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply);
 
 	int rereplyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply);
+
+	int insertPanelReward(SqlSessionTemplate sqlSession, Vote vote);
+
+	int insertSurveyRewardHistory(SqlSessionTemplate sqlSession, Vote vote);
 
 }

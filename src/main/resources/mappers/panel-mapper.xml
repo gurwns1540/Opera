@@ -678,6 +678,8 @@
 		SELECT COUNT(*)
 		FROM PANELSURVEY
 		WHERE PANELSURVEY_STATUS = 'Y'
+		<include refid="searchSurveyValue"/>
+	    <include refid="searchSurveyCategory"/>
 	</select>
 	
 	<resultMap type="map" id="panelSurveyListMap">
@@ -709,10 +711,10 @@
 	</sql>
 	<sql id="searchSurveyOrder">
 		<if test="frequency == null">
-			SURVEY_DATE DESC, 
+			PS.SURVEY_NO DESC, SURVEY_DATE DESC,
 		</if>
 		<if test="frequency == 'recentOrder'">
-			SURVEY_DATE DESC, 
+			PS.SURVEY_NO DESC, SURVEY_DATE DESC, 
 		</if>
 		<if test="frequency == 'rankingOrder'">
 			SURVEY_LIKE DESC, 
@@ -770,6 +772,7 @@
 		JOIN SURVEYCHOICE SC ON (SC.SCHOICE_NO = SH.SCHOICE_NO)
 		WHERE SH.SURVEY_NO = #{surveyNo}
 		GROUP BY SC.SCHOICE_CONTEXT
+		ORDER BY CHOICE_COUNT DESC
 	</select>
 	
 	<resultMap type="map" id="replyMap">
@@ -799,6 +802,19 @@
 	<insert id="voteSurvey" parameterType="Vote">
 		INSERT INTO SURVEYHISTORY VALUES
 		(SEQ_SURVEYHISTORY.NEXTVAL, #{choiceNo}, #{surveyNo}, #{mno}, SYSDATE)
+		<selectKey keyProperty="surveyHistoryNo" resultType="_int" order="AFTER">
+  			SELECT SEQ_SURVEYHISTORY.CURRVAL FROM DUAL
+  		</selectKey>
+	</insert>
+	
+	<update id="insertPanelReward" parameterType="Vote">
+		UPDATE PANELREWARD SET REWARD_POINT = (SELECT REWARD_POINT FROM PANELREWARD WHERE MNO = #{mno})
+		WHERE MNO = #{mno}
+	</update>
+	
+	<insert id="insertSurveyRewardHistory" parameterType="Vote">
+		INSERT INTO REWARDHISTORY VALUES 
+		(SEQ_REWARDHISTORY.NEXTVAL, ((SELECT REWARD_POINT FROM PANELREWARD WHERE MNO = #{mno}) + 1), '패널 서베이', '+1', #{mno}, SYSDATE, NULL, #{surveyHistoryNo}, NULL, NULL)
 	</insert>
 	
 	<insert id="replyUpload" parameterType="SurveyReply">

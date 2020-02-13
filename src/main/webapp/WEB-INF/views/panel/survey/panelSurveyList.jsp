@@ -11,154 +11,169 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
 </head>
 <style>
-
-div.ui.right.attached.rail {
-	width: 200px !important;
-	height:auto;
-	display: inline-block;
-	border-radius: 0px;
-	padding-top: 0px;
+	div.ui.right.attached.rail {
+		width: 200px !important;
+		height:auto;
+		display: inline-block;
+		border-radius: 0px;
+		padding-top: 0px;
+		
+	}
 	
-}
-
-div.ui.segment {
-	position: relative;
-	background: #fff;
-	-webkit-box-shadow: 0 1px 2px 0 rgba(34, 36, 38, .15);
-	box-shadow: 0 1px 2px 0 rgba(34, 36, 38, .15);
-	margin: 1rem 0;
-	padding: 1em 1em;
-	border-radius: 0px;
-	border: 1px solid rgba(34, 36, 38, .15);
-	height: inherit;
-}
-
-div.ui.segment.leftArea {
-	position: relative;
-	background: white;
-	-webkit-box-shadow: 0;
-	box-shadow: 0 1px 2px 0 white;
-	margin: 1rem 0;
-	padding: 1em 1em;
-	padding-left:0px;
-	padding-right:0px;
-	border-radius: 0px;
-	border: 1px solid white;
-	height: inherit;
-	margin-right:-30px;
-	height:58%;
-}
-
-#firstWing {
-	height: 50px;
-	-webkit-box-shadow: 0;
-	box-shadow: 0 1px 2px 0 white;
-	border: 1px solid white;
-	padding: 0px;
-	/*position:fixed;*/
-	/* top:204px; */
-}
-
-#secondWing {
-	height: 37px;
-	-webkit-box-shadow: 0;
-	box-shadow: 0 1px 2px 0 white;
-	border: 1px solid white;
-	padding: 0px;
-	/* position:fixed;
-	top:250px; */
-}
-#thirdWing {
-	height: 75px;
-	width:inherit;
-	/* position:fixed;
-	top:298px; */
-}
-#fourthWing {
-	height: 235px;
-	width: inherit;
-	padding: 13px;
-	/* position:fixed;
-	top:384px; */
-	background-color:white;
-}
-#fifthWing {
-	height: 30px;
-	-webkit-box-shadow: 0;
-	box-shadow: 0 1px 2px 0 white;
-	border: 1px solid white;
-	padding: 0px;
-	/* position:fixed;
-	top:627px; */
-}
-#panelSurvayUpload {
-	background-color: #00679A;
-	width: 200px;
-	height: inherit;
-	color: white;
-	border: none;
-	cursor: pointer;
-	font-size:11pt;
-}
-#mySurveyBtn {
-	background-color: #A0A0A0;
-	width: 200px;
-	height: inherit;
-	color: white;
-	border: none;
-	cursor: pointer;
-	font-size:10pt;
-}
-.voteBtn {
-	background-color: #CC3399;
-	width: 150px;
-	height: 40px;
-	color: white;
-	border: none;
-	cursor: pointer;
-	font-size:0.9vw;
-}
-#searchInput, .ui.action.input {
-	width: 160px;
-	height: 37px;
-	font-size: 11pt;
-}
-div.ui.segment.eachSurveyBox {
-	background-color:#F2F2F4;
-	padding:8px;
-	cursor:pointer;
-}
-.ui.basic.button, .ui.toggle.button {
-    height: 25px;
-    width: 90px;
-    font-size: 0.5vw;
-    background-color: white;
-    box-shadow: 0 0 0 1px rgba(34,36,38,.15) inset;
-}
-.ui.basic.button:hover,.ui.toggle.button:hover {
-	box-shadow:0 0 0 1px #CC3399 inset;
-}
-.ui.button.toggle.active {
-	background-color:#CC3399 !important;
-}
-.noImage {
-	width: 50% !important;
-}
-textarea:focus {
-	outline: none;
-}
-.ui.reply.form {
-	width: 100% !important;
-	height: 180px;
-}
-.show {display:block} /*보여주기*/
-
-.hide {display:none} /*숨기기*/
-
-.ui.comments .comment>.comments {
-    margin: 0 0 0.5em 1.5em !important;
-    padding: 0em 0 0em 1em !important;
-}
+	div.ui.segment {
+		position: relative;
+		background: #fff;
+		-webkit-box-shadow: 0 1px 2px 0 rgba(34, 36, 38, .15);
+		box-shadow: 0 1px 2px 0 rgba(34, 36, 38, .15);
+		margin: 1rem 0;
+		padding: 1em 1em;
+		border-radius: 0px;
+		border: 1px solid rgba(34, 36, 38, .15);
+		height: inherit;
+	}
+	
+	div.ui.segment.leftArea {
+		position: relative;
+		background: white;
+		-webkit-box-shadow: 0;
+		box-shadow: 0 1px 2px 0 white;
+		margin: 1rem 0;
+		padding: 1em 1em;
+		padding-left:0px;
+		padding-right:0px;
+		border-radius: 0px;
+		border: 1px solid white;
+		height: inherit;
+		margin-right:-30px;
+		height:58%;
+	}
+	
+	#firstWing {
+		height: 50px;
+		-webkit-box-shadow: 0;
+		box-shadow: 0 1px 2px 0 white;
+		border: 1px solid white;
+		padding: 0px;
+		/*position:fixed;*/
+		/* top:204px; */
+	}
+	
+	#secondWing {
+		height: 37px;
+		-webkit-box-shadow: 0;
+		box-shadow: 0 1px 2px 0 white;
+		border: 1px solid white;
+		padding: 0px;
+		/* position:fixed;
+		top:250px; */
+	}
+	#thirdWing {
+		height: 75px;
+		width:inherit;
+		/* position:fixed;
+		top:298px; */
+	}
+	#fourthWing {
+		height: 235px;
+		width: inherit;
+		padding: 13px;
+		/* position:fixed;
+		top:384px; */
+		background-color:white;
+	}
+	#fifthWing {
+		height: 30px;
+		-webkit-box-shadow: 0;
+		box-shadow: 0 1px 2px 0 white;
+		border: 1px solid white;
+		padding: 0px;
+		/* position:fixed;
+		top:627px; */
+	}
+	#panelSurvayUpload {
+		background-color: #00679A;
+		width: 200px;
+		height: inherit;
+		color: white;
+		border: none;
+		cursor: pointer;
+		font-size:11pt;
+	}
+	#mySurveyBtn {
+		background-color: #A0A0A0;
+		width: 200px;
+		height: inherit;
+		color: white;
+		border: none;
+		cursor: pointer;
+		font-size:10pt;
+	}
+	.voteBtn {
+		background-color: #CC3399;
+		width: 150px;
+		height: 40px;
+		color: white;
+		border: none;
+		cursor: pointer;
+		font-size:0.9vw;
+	}
+	#searchInput, .ui.action.input {
+		width: 160px;
+		height: 37px;
+		font-size: 11pt;
+	}
+	div.ui.segment.eachSurveyBox {
+		background-color:#F2F2F4;
+		padding:8px;
+		cursor:pointer;
+	}
+	.ui.basic.button, .ui.toggle.button {
+	    height: 25px;
+	    width: 90px;
+	    font-size: 0.5vw;
+	    background-color: white;
+	    box-shadow: 0 0 0 1px rgba(34,36,38,.15) inset;
+	}
+	.ui.basic.button:hover,.ui.toggle.button:hover {
+		box-shadow:0 0 0 1px #CC3399 inset;
+	}
+	.ui.button.toggle.active {
+		background-color:#CC3399 !important;
+	}
+	.noImage {
+		width: 50% !important;
+	}
+	textarea:focus {
+		outline: none;
+	}
+	.ui.reply.form {
+		width: 100% !important;
+		height: 180px;
+	}
+	.show {display:block} /*보여주기*/
+	
+	.hide {display:none} /*숨기기*/
+	
+	.ui.comments .comment>.comments {
+	    margin: 0 0 0.5em 1.5em !important;
+	    padding: 0em 0 0em 1em !important;
+	}
+	#reportTable {
+		width: 100%;
+	}
+	#reportTable th {
+		width: 30%;
+		border-bottom: 1px dashed #DEDFE2;
+		padding-top: 20px; 
+		padding-bottom: 20px;
+		padding-left: 5%;
+	}
+	#reportTable td {
+		width: 70%;
+		border-bottom: 1px dashed #DEDFE2;
+		padding-top: 20px; 
+		padding-bottom: 20px;
+	}
 </style>
 <body>
 	<div class="wrap">
@@ -187,7 +202,7 @@ textarea:focus {
 
 
 			<div class="ui segment leftArea">
-				<div style="padding-right: 3%; height: auto; margin-bottom: 100px;">
+				<div style="padding-right: 3%; height: auto; margin-bottom: 100px;" id="enter">
 					<c:forEach var="survey" items="${surveyList}">
 						<div class="eachPanelSurvey ui segment" style="width:90%; margin:0 auto; margin-bottom:70px;">
 							<input type="hidden" value="${ survey.surveyNo }" class="surveyNo">
@@ -268,7 +283,7 @@ textarea:focus {
 										<td>
 											<button class="like ui toggle button"><i class="heart outline icon"></i> 좋아요 ${ survey.surveyLike }</button>
 											<button class="replyModal ui basic button"><i class="comment dots outline icon"></i> 댓글  ${ survey.replyCount }</button>
-											<button class="report ui basic button"><i class="bell outline icon"></i> 신고</button>
+											<button class="reportModal ui basic button"><i class="bell outline icon"></i> 신고</button>
 										</td>
 										<td style="text-align:right;">
 											<button class="voteBtn">투표하기</button>
@@ -405,12 +420,143 @@ textarea:focus {
 			</div>
 		</div>
 
+		<div class="ui tiny modal" id="reportModal">
+			<div class="header">신고하기</div>
+			<div class="content" style="padding-top: 0;">
+				<table id="reportTable">
+					<tr>
+						<th>신고 사유</th>
+						<td>
+							<div class="ui form">
+								<div class="grouped fields">
+									<div class="field">
+										<div class="ui radio checkbox">
+											<input type="radio" name="reportReason" id="ad" value="광고/스팸성" checked="checked">
+											<label for="ad">광고/스팸성</label>
+										</div>
+									</div>
+									<div class="field">
+										<div class="ui radio checkbox">
+											<input type="radio" name="reportReason" id="abuse" value="욕설/비방">
+											<label for="abuse">욕설/비방</label>
+										</div>
+									</div>
+									<div class="field">
+										<div class="ui radio checkbox">
+											<input type="radio" name="reportReason" id="violence" value="폭력/불건전한 내용">
+											<label for="violence">폭력/불건전한 내용</label>
+										</div>
+									</div>
+									<div class="field">
+										<div class="ui radio checkbox">
+											<input type="radio" name="reportReason" id="privacy" value="개인정보 침해">
+											<label for="privacy">개인정보 침해</label>
+										</div>
+									</div>
+									<div class="field">
+										<div class="ui radio checkbox">
+											<input type="radio" name="reportReason" id="etc" value="기타">
+											<label for="etc">기타</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>내용<br><span id="bytes">0</span>/200</th>
+						<td>
+							<div class="ui form" style="margin: 0 auto;">
+						        <textarea name="reportTextArea" id="reportTextArea" placeholder="신고 내용을 입력해주세요" style="resize: none; line-height: 30px;"></textarea>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="actions">
+				<div class="ui blue button" id="reportApprove">Approve</div>
+				<div class="ui cancel button">Cancel</div>
+			</div>
+		</div>
 		<jsp:include page="/WEB-INF/views/panel/common/footer.jsp"/>
 	</div>
 	<!-- wrap end -->
+	
+	<script>
+		$(document).on("click", "#reportApprove", function(){
+			var reportTextArea = $("#reportTextArea").val();
+		})
+		$("#reportTextArea").keyup(function(){
+			viewDisplay(this);
+		})
+		var calByte = {
+			getByteLength : function(s) {
+		
+				if (s == null || s.length == 0) {
+					return 0;
+				}
+				var size = 0;
+		
+				for ( var i = 0; i < s.length; i++) {
+					size += this.charByteSize(s.charAt(i));
+				}
+		
+				return size;
+			},
+				
+			cutByteLength : function(s, len) {
+		
+				if (s == null || s.length == 0) {
+					return 0;
+				}
+				var size = 0;
+				var rIndex = s.length;
+		
+				for ( var i = 0; i < s.length; i++) {
+					size += this.charByteSize(s.charAt(i));
+					if( size == len ) {
+						rIndex = i + 1;
+						break;
+					} else if( size > len ) {
+						rIndex = i;
+						break;
+					}
+				}
+		
+				return s.substring(0, rIndex);
+			},
+		
+			charByteSize : function(ch) {
+		
+				if (ch == null || ch.length == 0) {
+					return 0;
+				}
+		
+				var charCode = ch.charCodeAt(0);
+		
+				if (charCode <= 0x00007F) {
+					return 1;
+				} else if (charCode <= 0x0007FF) {
+					return 2;
+				} else if (charCode <= 0x00FFFF) {
+					return 3;
+				} else {
+					return 4;
+				}
+			}
+		};
+		
+		function viewDisplay(obj) {
+			$("#bytes").html( Math.floor(calByte.getByteLength( obj.value )/3) );
+			
+		}
+	</script>
 	<c:if test="${ !empty sessionScope.loginUser }">
 		<script>
 			$(function(){
+				likeCheck();
+			});
+			function likeCheck(){
 				var mno = "${ loginUser.mno }";
 				$.ajax({
 					url:"likeCheck.survey",
@@ -423,7 +569,9 @@ textarea:focus {
 						for(var i = 0; i < likeSurveyList.length; i++){
 							$(".surveyNo").each(function(){
 								if($(this).val() == likeSurveyList[i]){
-									$(this).parent().find(".like").addClass('active');
+									if(!$(this).parent().find(".like").hasClass('active')){
+										$(this).parent().find(".like").addClass('active');
+									}
 								}
 							})
 						}
@@ -431,8 +579,7 @@ textarea:focus {
 					}
 					
 				});
-			});
-			
+			}
 			$(document).on("click", ".voteBtn", function(){
 				var mno = "${ loginUser.mno }";
 				var surveyNo = $(this).parent().parent().parent().parent().parent().parent().find(".surveyNo").val();
@@ -546,7 +693,7 @@ textarea:focus {
 				$content.append($text);
 				$content.append($replyBtn);
 				$content.append($rereplyArea);
-				
+				var $rereplyComments = $('<div class="comments">');
 				$.ajax({
 					url:"replyUpload.survey",
 					type:"post",
@@ -561,7 +708,7 @@ textarea:focus {
 						var $replyNo = $('<input type="hidden" class="replyNo" value="' + data.surveyReplyNo + '">');
 						$content.append($replyNo);
 						$commentClass.append($content);
-						
+						$commentClass.append($rereplyComments);
 						$("#replyContext").val("");
 						$(".rereplyContext").each(function(){
 							$(this).val("");
@@ -643,10 +790,17 @@ textarea:focus {
 				$(this).parent().parent().parent().parent().find(".comments").append($rereplyComment);
 				
 			})
-			
+			$(document).on("click", ".reportModal.ui.basic.button", function(){
+				surveyNo = $(this).parent().parent().parent().parent().parent().parent().find(".surveyNo").val();
+				mno = "${ loginUser.mno }";
+				
+				$("#reportModal").modal("show");
+			});
 		</script>
 	</c:if>
 	<script>
+		var list = [];
+		$(".ui.radio").checkbox();
 		$(document).on("click", ".replyModal.ui.basic.button", function(){
 			var surveyTitle = $(this).parent().parent().parent().parent().parent().parent().find(".surveyTitle").text();
 			$("#replyModal").find(".header").eq(0).text(surveyTitle);
@@ -814,13 +968,88 @@ textarea:focus {
 		$(document).on("click", ".ui.segment.eachSurveyBox", function(){
 			$(this).find(".choicebox").prop("checked", true);
 		});
+		var currentPage = 1;
+		$(window).scroll(function() {
+		    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+		    	var maxPage = Number("${ searchSurvey.pi.maxPage }");
+		    	
+		    	var choiceCount = 0;
+		    	currentPage += 1;
+		    	if(maxPage >= currentPage){
+			    	var searchValue = "${param.searchValue}";
+			    	var interests = "${param.interests}";
+			    	var frequency = "${param.frequency}";
+			    	
+			    	$.ajax({
+			    		url:"panelSurveyListsAjax.survey",
+			    		type:"get",
+			    		data:{
+			    			currentPageStr:currentPage,
+			    			searchValue:searchValue,
+			    			interests:interests,
+			    			frequency:frequency,
+			    			choiceSize:list.length
+			    		},
+			    		success:function(data){
+			    			console.log(data);
+			    			var surveyList = data.surveyList;
+			    			for(var i = 0; i < surveyList.length; i++){
+			    				var $eachPanelSurvey = $('<div class="eachPanelSurvey ui segment" style="width:90%; margin:0 auto; margin-bottom:70px;">');
+			    				var $surveyNoInput = $('<input type="hidden" value="' + surveyList[i].surveyNo + '" class="surveyNo">');
+			    				var $surveyHead = $('<div class="surveyTitleArea"> <table style="width:100%;"> <tr> <td style="padding-left:0px; width: 40px;"> <img src="resources/images/q.png" alt="" class="icon" style="width:40px; height:40px;"> </td> <td style="vertical-align: middle;"> <span style="font-size:1vw; font-weight:bold; color:#2B2B2B; padding-left:5px;" class="surveyTitle">' + surveyList[i].surveyTitle + '</span> </td> </tr> <tr> <td colspan="2" style="text-align:right;"> <span style="font-size:0.8vw; font-weight:bold; margin-right:10px; color:#008499;">카테고리 : </span> <span style="font-size:0.8vw; font-weight:bold;">' + surveyList[i].scategoryName + '</span> </td> </tr> </table> </div> <hr> <div class="surveyDescriptionArea"> <table style="width:100%;"> <tr> <td> <textarea style="height:130px; line-height: 30px !important; width:100%; border:1px solid white;font-size:0.9vw; resize:none; line-height:150%;" readonly>' + surveyList[i].surveyContext + '</textarea> </td> </tr> <tr> <td style="text-align:right;"> <span style="font-size:0.75vw; font-weight:bold; color:#717171;"></span> </td> </tr> </table> </div> <hr>');
+			    				
+			    				$eachPanelSurvey.append($surveyNoInput);
+			    				$eachPanelSurvey.append($surveyHead);
+			    				
+			    				var $choiceArea = $('<div class="choiceArea">');
+			    				var $columnGrid = $('<div class="ui four column grid" id="surveyListArea" style="width: inherit; margin: 0 auto;">');
+			    				
+			    				var choiceList = surveyList[i].choiceList;
+			    				for(var j = 0; j < choiceList.length; j++){
+			    					if(choiceList[j].changeName != null){
+			    						var $choice = $('<div class="column"> <div class="ui segment eachSurveyBox"> <div class="eachBox" style="height:200px;"> <div class="imgArea" style="height:80%; width:100%; margin:0 auto;"> <img src="resources/uploadFiles/' + choiceList[j].changeName + '" style="height:100%; width:100%;"> </div> <div class="choiceNameArea" style="padding-top:10px;"> <div class="ui radio checkbox" style="margin-bottom: 9px;"> <input type="radio" class="choicebox" name="interests" id="choice' + choiceList[j].schoiceNo + '" value="' + choiceList[j].schoiceOrder + '"> <label for="choice' + choiceList[j].schoiceNo + '" style="cursor: pointer;"> ' + choiceList[j].schoiceContext + '</label> </div> </div> </div> </div> </div>');	
+			    					}else {
+			    						var $choice = $('<div class="column noImage"> <div class="ui segment eachSurveyBox"> <div class="eachBox" style="height:70px;"> <div class="choiceNameArea" style="padding-top:10px;"> <div class="ui radio checkbox" style="margin-bottom: 9px;"> <input type="radio" class="choicebox" name="interests" id="choice' + choiceList[j].schoiceNo + '" value="' + choiceList[j].schoiceOrder + '"> <label for="choice' + choiceList[j].schoiceNo + '" style="cursor: pointer;"> ' + choiceList[j].schoiceContext + '</label> </div> </div> </div> </div> </div>');
+			    					}
+			    					$columnGrid.append($choice);
+			    				}
+			    				$choiceArea.append($columnGrid);
+			    				$eachPanelSurvey.append($choiceArea);
+			    				
+			    				var $bottomArea = $('<div class="bottomArea" style="margin-top:30px;"> <table style="width:100%;"> <tr> <td> <button class="like ui toggle button"><i class="heart outline icon"></i> 좋아요 ' + surveyList[i].surveyLike + '</button> <button class="replyModal ui basic button"><i class="comment dots outline icon"></i> 댓글  ' + surveyList[i].replyCount + '</button> <button class="reportModal ui basic button"><i class="bell outline icon"></i> 신고</button> </td> <td style="text-align:right;"> <button class="voteBtn">투표하기</button> </td> </tr> </table> </div>');
+			    				$eachPanelSurvey.append($bottomArea);
+			    				$("#enter").append($eachPanelSurvey);
+			    				likeCheck();
+			    			}
+			    		}
+			    	});															
+		    	}
+		    }
+		});
 	</script>
+			    	
+   	<c:forEach items="${surveyList}" var="item">
+   		<c:forEach items="${ item.choiceList }" var="item2">
+	   		<script>
+	   			list.push("${item2}");
+	   		</script>
+   		</c:forEach>
+   	</c:forEach>
 	<c:if test="${ empty sessionScope.loginUser }"> 
 		<script>
 			$(".panelSurvay").click(function() {
 				Swal.fire('안내', '로그인 후 이용해주세요', 'warning').then(function(){
 					location.href="panelLogin.panel";
 				});
+			});
+			$(document).on("click", ".reportModal.ui.basic.button", function(){
+				Swal.fire('안내', '로그인 후 이용해주세요', 'warning');
+			});
+			$(document).on("click", ".like", function(){
+				Swal.fire('안내', '로그인 후 이용해주세요', 'warning');
+			});
+			$(document).on("click", ".voteBtn", function(){
+				Swal.fire('안내', '로그인 후 이용해주세요', 'warning');
 			});
 		</script>
 	</c:if>

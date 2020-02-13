@@ -418,16 +418,20 @@ public class PanelDaoImpl implements PanelDao{
 	}
 
 	@Override
-	public int getPanelSurveyList(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("Panel.getPanelSurveyList");
+	public int getPanelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey) {
+		return sqlSession.selectOne("Panel.getPanelSurveyList", searchSurvey);
 	}
 
 	@Override
-	public List<Map<String, Object>> panelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey) {
+	public List<Map<String, Object>> panelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey, int offsetSize) {
+		
 		int offset = (searchSurvey.getPi().getCurrentPage() - 1) * searchSurvey.getPi().getLimit();
 		
-		RowBounds rowBounds = new RowBounds(offset, searchSurvey.getPi().getLimit());
+		if(offsetSize != 0) {
+			offset = offsetSize + 1;
+		}
 		
+		RowBounds rowBounds = new RowBounds(offset, searchSurvey.getPi().getLimit());
 		return sqlSession.selectList("Panel.panelSurveyList", searchSurvey, rowBounds);
 	}
 
@@ -484,5 +488,15 @@ public class PanelDaoImpl implements PanelDao{
 	@Override
 	public int rereplyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply) {
 		return sqlSession.insert("Panel.rereplyUpload", surveyReply);
+	}
+
+	@Override
+	public int insertPanelReward(SqlSessionTemplate sqlSession, Vote vote) {
+		return sqlSession.update("Panel.insertPanelReward", vote); 
+	}
+
+	@Override
+	public int insertSurveyRewardHistory(SqlSessionTemplate sqlSession, Vote vote) {
+		return sqlSession.insert("Panel.insertSurveyRewardHistory", vote);
 	}
 }

@@ -110,9 +110,9 @@ public interface PanelService {
 
 	int uploadSurvey(PanelSurvey panelSurvey, ArrayList<UploadFile> uploadFileList) throws SurveyException;
 
-	int getPanelSurveyList();
+	int getPanelSurveyList(SearchSurvey searchSurvey);
 
-	List<Map<String, Object>> panelSurveyList(SearchSurvey searchSurvey) throws SelectException;
+	List<Map<String, Object>> panelSurveyList(SearchSurvey searchSurvey, int offsetSize) throws SelectException;
 
 	List<Integer> likeCheck(int mno);
 

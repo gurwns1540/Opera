@@ -45,7 +45,7 @@
 		<c:if test="${ param.message eq 'uploadSurvey' }">
 			<script>
 				Swal.fire('서베이 등록완료', '서베이 등록이 완료되었습니다.', 'success').then(function(){
-					location.href="panelLogin.panel";
+					location.href="panelSurveyLists.survey";
 				});
 			</script>
 		</c:if>

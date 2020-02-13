@@ -313,7 +313,7 @@ public class SurveyController {
 		try {
 			ps.uploadSurvey(panelSurvey, uploadFileList);
 			
-			return "redirect:panelMain.panel";
+			return "redirect:panelResult.panel?message=uploadSurvey";
 		} catch (SurveyException e) {
 			model.addAttribute("msg", e.getMessage());
 			return "redirect:errorPage.me";
@@ -341,6 +341,7 @@ public class SurveyController {
 		String searchValue = "";
 		
 		SearchSurvey searchSurvey = new SearchSurvey();
+		
 		if (queryString != null) {
 			queryMap = Util.splitQuery(queryString);
 			if (queryMap.containsKey("currentPage")) {
@@ -361,15 +362,15 @@ public class SurveyController {
 		}
 		int listCount = 0;
 		try {
-			listCount = ps.getPanelSurveyList();
+			listCount = ps.getPanelSurveyList(searchSurvey);
 			PageInfo pi =Pagination.getPageInfo(currentPage, listCount);
 
 			searchSurvey.setPi(pi);
 			
-			List<Map<String, Object>> surveyList = ps.panelSurveyList(searchSurvey);
+			List<Map<String, Object>> surveyList = ps.panelSurveyList(searchSurvey, 0);
 			
+			//System.out.println(surveyList.size());
 			System.out.println(surveyList);
-			
 			model.addAttribute("surveyList",surveyList);
 			model.addAttribute("searchSurvey",searchSurvey);
 
@@ -482,6 +483,12 @@ public class SurveyController {
 		return mv;
 	}
 	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 대댓글 작성
+	 */
 	@PostMapping("rereplyUpload.survey")
 	public ModelAndView rereplyUpload(ModelAndView mv, String reply, String userName, String surveyNoStr, String mnoStr, String replyNoStr) {
 		SurveyReply surveyReply = new SurveyReply();
@@ -497,5 +504,56 @@ public class SurveyController {
 		mv.addObject("surveyReplyNo", surveyReplyNo);
 		mv.setViewName("jsonView");
 		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 패널 서베이 ajax 페이징
+	 */
+	@GetMapping("panelSurveyListsAjax.survey")
+	public ModelAndView panelSurveyListsAjax(ModelAndView mv, String currentPageStr, String searchValue, String interests, String frequency, String choiceSize) {
+		
+		System.out.println(choiceSize);
+		int offsetSize = Integer.parseInt(choiceSize);
+		SearchSurvey searchSurvey = new SearchSurvey();
+		int currentPage = 2;
+
+		if (currentPageStr != null && !currentPageStr.equals("")) {
+			currentPage = Integer.parseInt(currentPageStr);
+		}
+		if (frequency != null && !frequency.equals("")) {
+			searchSurvey.setFrequency(frequency);
+		}
+		if (interests != null && !interests.equals("")) {
+			searchSurvey.setInterests(interests);
+		}
+		if (searchValue != null && !searchValue.equals("")) {
+			searchSurvey.setSearchValue(searchValue);
+		}
+		//System.out.println(currentPage);
+		int listCount = 0;
+		try {
+			listCount = ps.getPanelSurveyList(searchSurvey);
+			PageInfo pi =Pagination.getPageInfo(currentPage, listCount);
+			
+			searchSurvey.setPi(pi);
+			
+			//System.out.println(searchSurvey);
+			List<Map<String, Object>> surveyList = ps.panelSurveyList(searchSurvey, offsetSize);
+			
+			//System.out.println(surveyList.size());
+			mv.addObject("surveyList",surveyList);
+			mv.addObject("searchSurvey",searchSurvey);
+			mv.setViewName("jsonView");
+			return mv;
+
+		} catch (SelectException e) {
+			e.printStackTrace();
+			return mv;
+		}
+		
+		
 	}
 }

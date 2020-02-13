@@ -686,7 +686,7 @@ public class PanelServiceImpl implements PanelService {
 				result2 += pd.uploadSurveyChoice(sqlSession, panelSurvey.getChoiceList().get(i));
 			}
 			if(result2 == panelSurvey.getChoiceList().size()) {
-				if(!uploadFileList.isEmpty()) {
+				if(uploadFileList != null) {
 					for(int i = 0; i < panelSurvey.getChoiceList().size(); i++) {
 						uploadFileList.get(i).setSchoiceNo(panelSurvey.getChoiceList().get(i).getSchoiceNo());
 					}
@@ -716,8 +716,8 @@ public class PanelServiceImpl implements PanelService {
 	 * @Description : 패널 서베이 문항 수
 	 */
 	@Override
-	public int getPanelSurveyList() {
-		return pd.getPanelSurveyList(sqlSession);
+	public int getPanelSurveyList(SearchSurvey searchSurvey) {
+		return pd.getPanelSurveyList(sqlSession, searchSurvey);
 	}
 
 	/**
@@ -728,8 +728,8 @@ public class PanelServiceImpl implements PanelService {
 	 * @Description : 패널 서베이 문항 리스트
 	 */
 	@Override
-	public List<Map<String, Object>> panelSurveyList(SearchSurvey searchSurvey) throws SelectException {
-		List<Map<String, Object>> panelSurveyList = pd.panelSurveyList(sqlSession, searchSurvey);
+	public List<Map<String, Object>> panelSurveyList(SearchSurvey searchSurvey, int offsetSize) throws SelectException {
+		List<Map<String, Object>> panelSurveyList = pd.panelSurveyList(sqlSession, searchSurvey, offsetSize);
 		
 		if(panelSurveyList == null) {
 			throw new SelectException("패널 서베이 리스트 조회 실패");
@@ -822,7 +822,12 @@ public class PanelServiceImpl implements PanelService {
 	 */
 	@Override
 	public int voteSurvey(Vote vote) {
-		return pd.voteSurvey(sqlSession, vote);
+		int result = pd.voteSurvey(sqlSession, vote);
+		if(result > 0) {
+			pd.insertSurveyRewardHistory(sqlSession, vote);
+			pd.insertPanelReward(sqlSession, vote);
+		}
+		return result;
 	}
 
 	/**
