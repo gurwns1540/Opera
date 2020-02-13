@@ -210,6 +210,7 @@
 					<div class="ui input" style="width: 85%;">
 						<input type="text" placeholder="문항 작성" class="questionInput" value="${question.rquestionContext }">
 						<input type="hidden" class="questionOrder">
+						<input type="hidden" class="questionNo" value="${question.questionNo}">
 					</div>
 					<div style="width: fit-content; float: right;" id="deleteQuiz">
 						<i class="large times icon"></i>
@@ -264,11 +265,6 @@
   		});
   		//온로드라서 로딩되자 마자 작동함
   		$(function(){
-		 	$( "#sortable" ).sortable({
-		 		placeholder: "ui-state-highlight"
-		 	});
-		 	$( "#sortable" ).disableSelection();
-		 	
 		 	var research = "${research}";
 		 	console.log(research);
 		 	sort();
@@ -285,13 +281,14 @@
   		
   		
   		$(document).on("click","#editTsComplete",function(){
-  			var questionOrderArr = []; // 문항 번호 배열
+  			var questionOrderArr = []; // 문항 번호
   			var choiceOrderArr =[]; //보기 번호 배열
   			var questionTitleArr= []; //질문 타이틀
   			var choiceTitleArr =[]; //보기 번호 내용
   			var questionFormArr =[];//질문 형식 번호(주관식인지 객관식인지)
+  			var questionNo =[]; //시퀀스 문제 번호
   			
-  			$(".questionOrder").each(function(){
+  			$(".questionNo").each(function(){
   				questionOrderArr.push($(this).val()); //question오더의value값을 순서대로 넣어줌
   			})
   			
@@ -312,12 +309,16 @@
   			$(".qn").each(function(){
   				questionFormArr.push($(this).val());
   			})
-  			
+  			$(".questionNo").each(function () {
+				questionNo.push($(this).val());
+			})
+			
   			console.log(questionOrderArr);
   			console.log(choiceOrderArr);
   			console.log(questionTitleArr);
   			console.log(choiceTitleArr);
   			console.log(questionFormArr);
+  			console.log(questionNo);
   			
   			Swal.fire({
   			  title: '이대로 저장하시겠습니까?',
@@ -338,7 +339,8 @@
 		  					choiceOrderArr:choiceOrderArr,
 		  					questionTitleArr:questionTitleArr,
 		  					choiceTitleArr:choiceTitleArr,
-		  					questionFormArr:questionFormArr 
+		  					questionFormArr:questionFormArr, 
+		  					questionNo:questionNo
 		  				},
 		  				success:function(data){
 		  					Swal.fire(
@@ -395,12 +397,12 @@
   				$(this).parent().parent().find(".choiceArea").html('<div class="choice"> <div class="ui input" style="width: 300px;"> <input type="text" placeholder="보기 작성" class="choiceInput"> <input type="hidden" class="choiceOrder"> </div> <span class="add"> <i class="plus circle icon"></i> </span><span class="delete"><i class="minus circle icon"></i></span> </div>');
   			}
   		})
-		$("#sortable").sortable({
+		/* $("#sortable").sortable({
 			placeholder:"ui-state-hilight",
 			update:function(event,ui){
 				sort();
 			}
-		})
+		}) */
   		
   			
   		$(document).on("click", ".add", function(){

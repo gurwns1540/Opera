@@ -341,7 +341,7 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Override
 	public int insertQuestion(SqlSessionTemplate sqlSession, ResearchQuestion question) {
-		return sqlSession.insert("Admin.tsInsertQuestion", question);
+		return sqlSession.update("Admin.tsUpdateQuestion", question); 
 	}
 
 	@Override

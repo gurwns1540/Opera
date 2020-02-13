@@ -595,7 +595,7 @@ public class AdminResearchController {
 	}
 	
 	@PostMapping("tsQaManagementUpdate.adminResearch")
-	public ModelAndView tsQaManagementUpdate(ModelAndView mv, @RequestParam(value="questionOrderArr") String[] questionOrderArr, @RequestParam(value="choiceOrderArr") String[] choiceOrderArr, @RequestParam(value="questionTitleArr") String[] questionTitleArr, @RequestParam(value="choiceTitleArr") String[] choiceTitleArr, @RequestParam(value="questionFormArr") String[] questionFormArr) {
+	public ModelAndView tsQaManagementUpdate(ModelAndView mv, @RequestParam(value="questionOrderArr") String[] questionOrderArr, @RequestParam(value="choiceOrderArr") String[] choiceOrderArr, @RequestParam(value="questionTitleArr") String[] questionTitleArr, @RequestParam(value="choiceTitleArr") String[] choiceTitleArr, @RequestParam(value="questionFormArr") String[] questionFormArr,String[] questionNo) {
 		
 		int choiceIndex = 0;
 		ArrayList<ResearchQuestion> questionList = new ArrayList<>();
@@ -605,7 +605,7 @@ public class AdminResearchController {
 			researchQuestion.setQuestionOrder(Integer.parseInt(questionOrderArr[i]));
 			researchQuestion.setRquestionContext(questionTitleArr[i]);
 			researchQuestion.setQuestionFormNo(Integer.parseInt(questionFormArr[i]));
-			
+			researchQuestion.setQuestionNo(Integer.parseInt(questionNo[i])); //추가20.02.13			
 			if(Integer.parseInt(questionFormArr[i]) == 1) {
 				ArrayList<ResearchChoice> choiceList = new ArrayList<>();
 				
