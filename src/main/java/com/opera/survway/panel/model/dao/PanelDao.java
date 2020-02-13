@@ -147,7 +147,7 @@ public interface PanelDao {
 
 	int updateSurveyReard(SqlSessionTemplate sqlSession, SurveyReward reward);
 
-	int insertSurveyRewardHistory(SqlSessionTemplate sqlSession, SurveyReward reward);
+	int insertRewardHistory(SqlSessionTemplate sqlSession, SurveyReward reward);
 
 	ResearchQuestion getPcQuestion(SqlSessionTemplate sqlSession);
 
