@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <style>
 	.ui.statistic>.label, .ui.statistics .statistic>.label {
+	
     	font-size: 0.7em !important;
     }
     .ui.statistic>.value img, .ui.statistics .statistic>.value img {
@@ -21,6 +22,9 @@
     #research>.label, #research .statistic>.label {
     	font-size: 1em !important;
     }
+    .ui.statistic>.value~.label, .ui.statistics .statistic>.value~.label {
+	    margin-top: 0.5em !important;
+	}
 </style>
 </head>
 <body>
