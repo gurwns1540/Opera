@@ -442,6 +442,33 @@
 					}
 				});
 				
+				
+				//nextBtn1 클릭 시 pc조사가 있는 경우
+				$(document).on("click", "#nextBtn1", function(){
+					
+					var pcCount = $(document).find("#pcCount").val();
+					var pcAnswer = $(document).find("pcAnswer").val();
+					var answer = "";
+					
+					if( Number(pcCount) > 0 ){
+						
+						$(this).parent().parent().find('input:checked').each(function(){
+							answer = $(this).val();
+						});
+						
+						if(answer != pcAnswer) {
+							Swal.fire('안내', '회원님께서는 해당 서베이에 참여할 수 있는 PC환경이 아닌 것으로 간주되어 설문조사를 종료합니다.', 'warning').then((result) => {
+								location.href="surveyList.survey";	
+							});
+						}
+						
+					}
+					
+				});
+				
+				
+				
+				
 				//마지막 nextBtn을 누르면 설문조사 끝난 시간 기록 및 응답 인서트, 리워드 계산 결과 리턴
 				var endTime = "";
 				$(document).on("click", ".button[id*=nextBtn]", function(){
@@ -675,17 +702,16 @@
 								
 								//1-2. 문제에 사진 유
 								if(qchangeName != "") {
-									/* if(rquestionVideolink != "" && totalOrder == 1) {
-										var $mediaArea = $('<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;"><div class="media" style="margin:0 auto; text-align:center; width:80%;"><audio id="audioTag" controls loop style="vertical-align: middle; "><source id="audio" src="resources/uploadfiles/' + qchangeName + '" type="audio/mpeg"></audio></div></div>');
-									}else{
+									if(mediaExplain=="음성") {
+										var $mediaArea = $('<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;"> <div class="media" style="margin:0 auto; text-align:center;"> <audio id="audioTag" controls loop style="vertical-align: middle; "> <source id="audio" src="resources/uploadFiles/' + qchangeName + '" type="audio/mpeg"> </audio> </div>');
+									}else if(mediaExplain=="영상"){
 										var $mediaArea = $('<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;"> <div class="media" style="margin:0 auto; text-align:center;"> <img src="resources/uploadFiles/' + qchangeName + '" style="height:320px; max-width:90%; margin:0 auto;"> </div> <div class="mediaExplain ui stacked segment" style="margin:0 auto; margin-top: 20px; width:90%; height:auto; padding:15px;"> <span>' + mediaExplain + '</span> </div> </div>');
-									} */
-									var $mediaArea = $('<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;"> <div class="media" style="margin:0 auto; text-align:center;"> <img src="resources/uploadFiles/' + qchangeName + '" style="height:320px; max-width:90%; margin:0 auto;"> </div> <div class="mediaExplain ui stacked segment" style="margin:0 auto; margin-top: 20px; width:90%; height:auto; padding:15px;"> <span>' + mediaExplain + '</span> </div> </div>');
+									}
 									$choiceArea.append($mediaArea);
 								}
 								
 								//1-3. 문제에 영상 유
-								if(rquestionVideolink != "") {
+								if(rquestionVideolink != "" && mediaExplain != "영상") {
 									var video = rquestionVideolink.substr(rquestionVideolink.lastIndexOf("/", rquestionVideolink.length), 12);
 									var $mediaArea = $('<div class="mediaArea" style="width:inherit; height:auto; margin:0 auto;"> <div class="media" style="margin:0 auto; text-align:center;"> <iframe style="margin:0 auto; height:320px; width:90%;" src="https://www.youtube.com/embed' + video + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> </div> <div class="mediaExplain ui stacked segment" style="margin:0 auto; margin-top: 20px; width:90%; height:auto; padding:15px;"> <span>' + mediaExplain + '</span> </div> </div>');
 									$choiceArea.append($mediaArea);
@@ -890,6 +916,7 @@
 		</div>
 		<!-- wrap end -->
 	</c:if>
+	
 	<c:if test="${ loginUser == null }">
 		<script>
 			location.href="panelResult.panel?message=notLoginAccess";
@@ -897,44 +924,3 @@
 	</c:if>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
