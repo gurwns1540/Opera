@@ -8,22 +8,27 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.filefilter.OrFileFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.opera.survway.admin.model.exception.ResearchException;
 import com.opera.survway.admin.model.service.AdminService;
+import com.opera.survway.admin.model.vo.Choice;
 import com.opera.survway.admin.model.vo.MailingList;
+import com.opera.survway.admin.model.vo.Question;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp2;
+import com.opera.survway.admin.model.vo.ResearchReport;
+import com.opera.survway.admin.model.vo.RquestionNo;
+import com.opera.survway.admin.model.vo.ResearchOne;
 import com.opera.survway.common.model.vo.OperaFileNamePolicy;
-import com.opera.survway.admin.model.vo.ResearchTarget;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
 import com.opera.survway.common.model.vo.ResearchState;
@@ -630,6 +635,23 @@ public class AdminResearchController {
 		return mv;
 	}
 	
+	@PostMapping("researchTargetMailing.adminResearch")
+	public ModelAndView researchTargetMailing(ModelAndView mv, int researchNo) {
+//		ResearchTarget target = as.researchTargetMailing(researchNo);
+		Boolean result;
+		try {
+			result = as.researchTargetMailing(researchNo);
+			System.out.println(result);
+			mv.addObject("result", result);
+		} catch (ResearchException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		System.out.println(target);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
 	@RequestMapping("groupMailingWaitingList.admin")
 	public String forwardGroupMailingWaitingList(HttpServletRequest request, Model model) {
 		// Post로 보낸걸 queryString이라고 한다
@@ -682,8 +704,6 @@ public class AdminResearchController {
 		ufo.setOriginName(originFileName); //오리지널 이름 넣기
 		ufo.setFilePath(savePath); //파일 경로 넣기
 		
-		System.out.println(ufo);
-		
 		int result =0;
 		result = as.uploadAudio(ufo);
 		
@@ -695,20 +715,18 @@ public class AdminResearchController {
 		 
 		mv.addObject("ufo", ufo);
 		mv.setViewName("jsonView");
-		
-		System.out.println(originFileName);
-		System.out.println(saveFile);
 		return mv;
-		
 	}
 	
-	
-	
-	
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 10.
+	 * @ModifyDate  : 2020. 2. 10.
+	 * @Description : pc환경조사_오디오ver저장
+	 */
 	@PostMapping("audioEnviron.adminResearch")
-	public ModelAndView audioEnviron(ModelAndView mv, @RequestParam(value="questionTitle") String questionTitle,String [] choiceTitleArr,String[] choiceOrderArr) {
-		Research r = new Research();
-		int result =0;
+	public ModelAndView audioEnviron(ModelAndView mv, @RequestParam(value="questionTitle") String questionTitle,@RequestParam(value="choiceTitleArr") String [] choiceTitleArr,@RequestParam(value="choiceOrderArr") String[] choiceOrderArr ,@RequestParam(value="titleContext") String titleContext,@RequestParam(value="questionFormNo") String questionFormNo) {
+		//questionTitle,choicetitle
 		System.out.println(questionTitle);
 		for(int i = 0; i < choiceOrderArr.length; i++) {
 			System.out.println(choiceOrderArr[i]);
@@ -718,12 +736,155 @@ public class AdminResearchController {
 		}
 		
 		
+		//1.이거로 해서 delete부터
+	   int result =as.audioEnviron(questionTitle,choiceTitleArr,choiceOrderArr,titleContext,questionFormNo);  
 		
-		//as.audioEnviron(questionTitle,choiceTitleArr,choiceOrderArr);
-		
-		mv.addObject("r",r);
+	   System.out.println("questionTitle"+questionTitle);
+	   System.out.println("titleContext:"+titleContext);
+		mv.addObject("result",result);
 		mv.setViewName("jsonView");
 		
+		return mv;
+	}
+	
+	/**
+	 * @Author      : hjheo
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 이거는 pc환경조사 select
+	 */
+	@RequestMapping("pcQaManagement.adminResearch")
+	public String pcQaManagement(Model model) {
+		ResearchQuestion question = as.pcQaManagement();
+				System.out.println(question);
+		//초이스리스트는 컬렉션으로		
+		model.addAttribute("pcQa", question);
+		return "pcQaManagement";
+	}
+	
+	@PostMapping("video.adminResearch")
+	public ModelAndView videoInsert(HttpServletRequest request,ModelAndView mv, String questionTitle,String [] choiceTitleArr,String[] choiceOrderArr,String titleContext, String questionFormNo,String videoAdress ) {
+		for(int i = 0; i < choiceOrderArr.length; i++) {
+			System.out.println(choiceOrderArr[i]);
+		}
+		for(int i = 0; i < choiceTitleArr.length; i++) {
+			System.out.println(choiceTitleArr[i]);
+		}
+		String videoLink = (videoAdress.replace("https://", "")).replace("http://", "");
+		
+		System.out.println(videoLink);
+		
+		int result =as.videoInsert(questionTitle,choiceTitleArr,choiceOrderArr,titleContext,questionFormNo,videoLink);
+		
+	
+		System.out.println("result:"+result);
+		System.out.println("videoLink"+videoLink);
+		
+		
+		
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	@PostMapping("selectResearchGraph.adminResearch")
+	public ModelAndView selectResearchGraph(ModelAndView mv, int researchNo) {
+//		System.out.println(researchNo);
+//		List<ResearchHistory> researchHistoryList = as.selectResearchHistoryList(researchNo);
+//		List<RquestionNo> rquestionNoList = as.selectRquestionNoList(researchNo);
+//		List<ResearchGraphTemp> countList = null;
+//		System.out.println(researchHistoryList);
+//		System.out.println(rquestionNoList);
+//		
+//		Gson gson = new Gson();
+//		String testJson = gson.toJson(researchHistoryList);
+//		String[] jsonArr = new String[rquestionNoList.size()];
+//		
+//		System.out.println(testJson);
+//		
+//		
+//		for(int i = 0; i < rquestionNoList.size(); i++) {
+//			ResearchGraphTemp temp = new ResearchGraphTemp();
+//			temp.setResearchNo(researchNo);
+//			System.out.println("123 : S : " + rquestionNoList.get(i));
+//			int rno = rquestionNoList.get(i).getRquestionNo();
+//			temp.setRquestionNo(rno);
+//			countList = as.selectResearchHistoryCountList(temp);
+//			
+//			jsonArr[i] = gson.toJson(countList);
+////			System.out.println("=====JSON TEST=====");
+////			System.out.println(jsonArr[i]);
+////			System.out.println("=====JSON TEST=====");
+//		}
+//		
+//		System.out.println("=====JSON TEST=====");
+//		System.out.println(countList);
+//		System.out.println("=====JSON TEST=====");
+////		mv.addObject("result", result);
+		ResearchGraphTemp temp = null;
+		Gson gson = new Gson();
+		List<RquestionNo> rquestionNoList = as.selectRquestionNoList(researchNo);		//문제번호 불러오는 리스트
+		String[] jsonArr = new String[rquestionNoList.size()];
+		String testJson = null;
+		for(int i = 0; i < rquestionNoList.size(); i++) {
+//			System.out.println("rquestionNo : " + rquestionNoList.get(i).getRquestionNo());
+			temp = new ResearchGraphTemp();
+			temp.setResearchNo(researchNo);
+			temp.setRquestionNo(rquestionNoList.get(i).getRquestionNo());
+			List<ResearchGraphTemp2> countList = as.selectResearchHistoryCountList(temp);
+			jsonArr[i] = gson.toJson(countList);
+			
+		}
+		testJson = gson.toJson(jsonArr);
+		mv.addObject("jsonArr", jsonArr);
+		mv.addObject("");
+		mv.addObject("questionCount", rquestionNoList.size());
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	//리서치 보고서 작성 대기 목록-통계처리
+	@RequestMapping("researchReportStandbyList.admin")
+	public String forwardResearchReportStandbyList(Model model) {
+		List<ResearchReport> researchReportList = as.selectResearchReportList();
+		model.addAttribute("researchReportList", researchReportList);
+		return "adminResearch/researchReportStandbyList";
+	}
+	
+	/**
+	 * @Author      : yhj
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 해당 리서치 문제랑 통계자로 보는 ajax
+	 */
+	@PostMapping("selectResearchDetail.adminResearch")
+	public ModelAndView selectResearchDetail(ModelAndView mv, int researchNo) {
+		List<Question> question = as.selectQuestionList(researchNo);
+		String[] jsonArr = new String[question.size()];
+		String[] jsonChoiceArr = new String[question.size()];
+		Gson gson = new Gson();
+		ResearchGraphTemp temp = null;
+		for(int i = 0; i < question.size(); i++) {
+			temp = new ResearchGraphTemp();
+			temp.setResearchNo(researchNo);
+			temp.setRquestionNo(question.get(i).getRquestionNo());
+			List<ResearchGraphTemp2> countList = as.selectResearchHistoryCountList(temp);
+			List<Choice> choiceList = as.selectChoiceList(question.get(i).getRquestionNo());
+			jsonArr[i] = gson.toJson(countList);
+			jsonChoiceArr[i] = gson.toJson(choiceList);
+		}
+		mv.addObject("question", question);
+		mv.addObject("jsonArr", jsonArr);
+		mv.addObject("jsonChoiceArr", jsonChoiceArr);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	@PostMapping("selectResearchOne.adminResearch")
+	public ModelAndView selectResearchOne(ModelAndView mv, int researchNo) {
+		ResearchOne r = as.selectResearchOne(researchNo);
+		System.out.println(r);
+		mv.addObject("r", r);
+		mv.setViewName("jsonView");
 		return mv;
 	}
 }

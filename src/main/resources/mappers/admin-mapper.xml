@@ -87,6 +87,57 @@
 		<id property="mailingHistoryNo" column="MAILINGHISTORY_NO"/>
 	</resultMap>
 	
+	<resultMap type="ResearchReport" id="researchReportResultMap">
+		<id property="researchNo" column="RESEARCH_NO"/>
+		<result property="companyName" column="COMPANY_NAME"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="startPeriod" column="START_PERIOD"/>
+		<result property="endPeriod" column="END_PERIOD"/>
+	</resultMap>
+	
+	<resultMap type="ResearchHistory" id="researchHistoryResultMap">
+		<id property="researchHistoryNo" column="RESEARCHHISTORY_NO"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="researchDisposal" column="RESEARCH_DISPOSAL"/>
+		<result property="researchTime" column="RESEARCH_TIME"/>
+		<result property="rquestionNo" column="RQUESTION_NO"/>
+		<result property="researchResponseDate" column="RESEARCH_RESPONSE_DATE"/>
+		<result property="rquestionResponse" column="RQUESTION_RESPONSE"/>
+	</resultMap>
+	
+	<resultMap type="RquestionNo" id="rquestionNoResultMap">
+		<id property="rquestionNo" column="RQUESTION_NO"/>
+		<result property="researchOrder" column="RESEARCH_ORDER"/>
+	</resultMap>
+	
+	<resultMap type="ResearchGraphTemp" id="researchGraphTempResultMap">
+		<id property="rquestionResponse" column="RQUESTION_RESPONSE"/>
+		<result property="count" column="COUNT"/>
+	</resultMap>
+	
+	<resultMap type="Question" id="questionResultMap">
+		<id property="researchOrder" column="RESEARCH_ORDER"/>
+		<result property="rquestionNo" column="RQUESTION_NO"/>
+		<result property="rquestionContext" column="RQUESTION_CONTEXT"/>
+	</resultMap>
+	
+	<resultMap type="Choice" id="choiceResultMap">
+		<id property="rchoiceOrder" column="RCHOICE_ORDER"/>
+		<result property="rchoiceContext" column="RCHOICE_CONTEXT"/>
+	</resultMap>
+	
+	<resultMap type="ResearchOne" id="researchResultMap">
+		<id property="researchNo" column="RESEARCH_NO"/>
+		<result property="researchName" column="RESEARCH_NAME"/>
+		<result property="researchPerpose" column="RESEARCH_PERPOSE"/>
+		<result property="researchEngagementGoals" column="RESEARCH_ENGAGEMENT_GOALS"/>
+		<result property="targetGender" column="TARGET_GENDER"/>
+		<result property="targetAgeRange" column="TARGET_AGERANGE"/>
+		<result property="targetLocation" column="TARGET_LOCATION"/>
+		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+	</resultMap>
+	
 	<sql id="searchUserType">
 		<if test="userType != null">
 			AND USER_TYPE = #{userType}
@@ -202,20 +253,24 @@
 	</select>
 
 	<select id="getListCountNewPanel" resultType="_int">
-		SELECT COUNT(*)
+		SELECT COUNT(DISTINCT(USER_ID))
 		FROM MEMBER M
 		JOIN PANEL P ON (P.MNO = M.MNO)
-		WHERE CERTIFICATION = 'Y'
-		AND PANELLEVEL_NO = 1
+        LEFT JOIN RESEARCHHISTORY RH ON  (P.MNO = RH.MNO)
+		WHERE M.CERTIFICATION = 'Y'
+		AND P.PANELLEVEL_NO = 1
+        AND RH.RESEARCH_NO =1
 		<include refid="newPanelSearchInputName"/>
 	</select>
 	
 	<select id="selectNewPanelList" resultMap="newPanelResultSet">
 		SELECT
-        M.MNO,  M.USER_NAME, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
+        DISTINCT(M.MNO),  M.USER_NAME, TO_CHAR(M.ENT_DATE, 'YYYY-MM-DD') AS ENT_DATE
         FROM MEMBER M
         JOIN PANEL P ON (P.MNO = M.MNO)
+        LEFT JOIN RESEARCHHISTORY RH ON (RH.MNO = M.MNO)
 		WHERE CERTIFICATION = 'Y'
+        AND RESEARCH_NO =1
 		AND PANELLEVEL_NO = 1
 		<include refid="newPanelSearchInputName"/>
 		ORDER BY ENT_DATE DESC
@@ -820,5 +875,126 @@
 				UPDATE SET CHANGE_NAME=#{changeName}
 			WHEN NOT MATCHED THEN
 				INSERT VALUES (SEQ_UPLOADFILE.NEXTVAL, 'pc환경조사',#{originName},#{changeName},#{filePath},SYSDATE,'Y', NULL, NULL, NULL, NULL, NULL, 2) 
+	</update>
+	
+	<update id="updatePanelLevel" parameterType="_int">
+		UPDATE PANEL SET PANELLEVEL_NO = 4 WHERE MNO = #{mno}
+	</update>
+	
+	<select id="selectResearchPeriod" parameterType="_int" resultType="String">
+		SELECT TO_CHAR(TO_DATE(SUBSTR(RESEARCH_PERIOD, 10, 8),'YY/MM/DD'),'YYYY/MM/DD') FROM RESEARCH
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<select id="selectResearchReportList" resultMap="researchReportResultMap">
+		SELECT R.RESEARCH_NO, C.COMPANY_NAME, R.RESEARCH_NAME, TO_CHAR(TO_DATE(SUBSTR(R.RESEARCH_PERIOD, 0 ,8),'YY/MM/DD'),'YYYY/MM/DD') AS "START_PERIOD", TO_CHAR(TO_DATE(SUBSTR(R.RESEARCH_PERIOD, 10 ,8),'YY/MM/DD'),'YYYY/MM/DD') AS "END_PERIOD", MAX(RSH.RESEARCH_STATE_NO), MAX(RSH.RESEARCH_CHANGEDATE)
+		FROM RESEARCH R
+		JOIN RSTATUSHISTORY RSH ON(R.RESEARCH_NO = RSH.RESEARCH_NO)
+		JOIN CORP C ON (R.MNO = C.MNO)
+		WHERE RSH.RESEARCH_STATE_NO = 7
+		GROUP BY R.RESEARCH_NO, C.COMPANY_NAME, R.RESEARCH_NAME, R.RESEARCH_PERIOD, RSH.RESEARCH_STATE_NO
+	</select>
+	
+	<select id="selectResearchHistoryList" parameterType="_int" resultMap="researchHistoryResultMap">
+		SELECT RH.RESEARCHHISTORY_NO, RH.RESEARCH_NO, RH.MNO, RH.RESEARCH_DISPOSAL, RH.RESEARCH_TIME, RH.RQUESTION_NO, RH.RESEARCH_RESPONSE_DATE, RH.RQUESTION_RESPONSE
+		FROM RESEARCHHISTORY RH
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<select id="selectRquestionNoList" parameterType="_int" resultMap="rquestionNoResultMap">
+		SELECT RQUESTION_NO, RESEARCH_ORDER
+		FROM RESEARCHQUESTION
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<select id="selectResearchHistoryCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM RESEARCHHISTORY
+		WHERE RESEARCH_NO = #{researchNo}
+	</select>
+	<select id="selectResearchHistoryCountList" parameterType="ResearchGraphTemp" resultMap="researchGraphTempResultMap">
+		SELECT RQUESTION_RESPONSE, COUNT(*) AS "COUNT"
+		FROM RESEARCHHISTORY
+		WHERE RESEARCH_NO = #{researchNo}
+		AND RQUESTION_NO = #{rquestionNo}
+		GROUP BY RQUESTION_RESPONSE
+		ORDER BY COUNT(*) DESC
+	</select>
+	
+	<select id="selectQuestionList" parameterType="_int" resultMap="questionResultMap">
+		SELECT RQ.RESEARCH_ORDER, RQ.RQUESTION_NO, RQ.RQUESTION_CONTEXT
+		FROM RESEARCHQUESTION RQ
+		WHERE RQ.RESEARCH_NO = #{researchNo}
+	</select>
+	
+	<select id="selectChoiceList" parameterType="_int" resultMap="choiceResultMap">
+		SELECT RCHOICE_ORDER, RCHOICE_CONTEXT
+		FROM RESEARCHCHOICE
+		WHERE RQUESTION_NO = #{researchNo}
+	</select>
+	
+	<select id="selectResearchOne" parameterType="_int" resultMap="researchResultMap">
+		SELECT R.RESEARCH_NO, R.RESEARCH_NAME, R.RESEARCH_PERPOSE, R.RESEARCH_ENGAGEMENT_GOALS, RT.TARGET_GENDER, RT.TARGET_AGERANGE, RT.TARGET_LOCATION, R.RESEARCH_PERIOD
+		FROM RESEARCH R
+		JOIN RESEARCHTARGET RT ON(R.RESEARCH_NO = RT.RESEARCH_NO)
+		WHERE R.RESEARCH_NO = #{researchNo}
+	</select>
+
+  	<delete id="deletePanelThanksSurvey" parameterType="_int">
+		DELETE FROM RESEARCHHISTORY WHERE MNO = #{mno} AND RESEARCH_NO =1
+	</delete>
+	
+  	<delete id="deleteChoice">
+		DELETE FROM RESEARCHCHOICE
+		WHERE RQUESTION_NO =(SELECT RQUESTION_NO FROM RESEARCHQUESTION WHERE RESEARCH_NO=2)
+	</delete>
+	
+	<update id="updateQuestion" parameterType="ResearchQuestion">
+		MERGE INTO RESEARCHQUESTION
+		USING DUAL
+		ON(RESEARCH_NO=2)
+		WHEN MATCHED THEN
+			UPDATE SET RQUESTION_CONTEXT=#{rquestionContext},QUESTION_FORM_NO=#{questionFormNo}, MEDIA_EXPLAIN = #{mediaExplain}
+		WHEN NOT MATCHED THEN
+		INSERT VALUES (#{questionFormNo},SEQ_QUESTION.NEXTVAL,2,NULL,#{mediaExplain}, 1,#{rquestionContext})
+	</update>
+	
+	<insert id="insertAudioChoice" parameterType="ResearchChoice">
+		INSERT INTO RESEARCHCHOICE
+		VALUES(SEQ_CHOICE.NEXTVAL, #{choiceContext}, (SELECT RQUESTION_NO FROM RESEARCHQUESTION WHERE RESEARCH_NO = 2), #{choiceOrder})
+	</insert>
+	
+	<resultMap type="ResearchQuestion" id="pcQaMap">
+		<result property="questionNo" column="RQUESTION_NO"/>
+		<result property="rquestionContext" column="RQUESTION_CONTEXT"/>
+		<result property="questionFormNo" column="QUESTION_FORM_NO"/>
+		<result property="mediaExist" column="CHANGE_NAME"/>
+		<result property="mediaExplain" column="MEDIA_EXPLAIN"/>
+		<result property="questionVideoLink" column="RQUESTION_VIDEOLINK"/>
+		<collection property="requestChoiceList" column="RQUESTION_NO" ofType="ResearchChoice" javaType="java.util.List">
+			<result property="choiceNo" column="RCHOICE_NO"/>
+			<result property="choiceOrder" column="RCHOICE_ORDER"/>
+			<result property="choiceContext" column="RCHOICE_CONTEXT"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectPcQa" resultMap="pcQaMap">
+		SELECT * 
+	    FROM RESEARCHQUESTION Q
+	    LEFT JOIN RESEARCHCHOICE R ON(Q.RQUESTION_NO =R.RQUESTION_NO)
+        LEFT JOIN UPLOADFILE UF ON(UF.RESEARCH_NO = Q.RESEARCH_NO)
+        LEFT JOIN RESEARCHQUESTION RQ ON (UF.RESEARCH_NO=RQ.RESEARCH_NO)
+	    WHERE Q.RESEARCH_NO=2
+	    ORDER BY R.RCHOICE_ORDER ASC
+	</select>
+	
+	<update id="updateVideoQuestion">
+		MERGE INTO RESEARCHQUESTION
+		USING DUAL
+		ON(RESEARCH_NO=2)
+		WHEN MATCHED THEN
+			UPDATE SET RQUESTION_CONTEXT=#{rquestionContext},QUESTION_FORM_NO=#{questionFormNo}, MEDIA_EXPLAIN = #{mediaExplain},RQUESTION_VIDEOLINK=#{questionVideoLink}
+		WHEN NOT MATCHED THEN
+		INSERT VALUES (#{questionFormNo},SEQ_QUESTION.NEXTVAL,2,#{questionVideoLink},#{mediaExplain}, 1,#{rquestionContext})
 	</update>
 </mapper>

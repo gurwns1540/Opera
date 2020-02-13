@@ -20,6 +20,7 @@ import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.PanelSurvey;
+import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
@@ -27,6 +28,7 @@ import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
 import com.opera.survway.panel.model.vo.SurveyReply;
 import com.opera.survway.panel.model.vo.Vote;
+import com.opera.survway.panel.model.vo.SurveyReward;
 
 
 
@@ -88,7 +90,7 @@ public interface PanelService {
 
 	List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi);
 
-	List<ResearchQuestion> getResearchQuestionList(String researchNo) throws SelectException;
+	List<ResearchQuestion> getResearchQuestionList(String researchNo, String rquestionVideolink) throws SelectException;
 
 	Research getResearchInfo(String researchNo) throws SelectException;
 
@@ -109,6 +111,16 @@ public interface PanelService {
 	int insertAnswer(InsertAnswer answer);
 
 	int uploadSurvey(PanelSurvey panelSurvey, ArrayList<UploadFile> uploadFileList) throws SurveyException;
+
+	int getListCountPanelResearch(PanelResearchList rl) throws InquiryException;
+
+	List<PanelResearchList> selectAllPanelResearchList(PanelResearchList rl);
+
+	int getListCountPanelResearchRetry(PanelResearchList rl) throws InquiryException;
+
+	List<PanelResearchList> selectAllPanelResearchRetryList(PanelResearchList rl);
+	
+  int insertSurveyReward(SurveyReward reward);
 
 	int getPanelSurveyList(SearchSurvey searchSurvey);
 

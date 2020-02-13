@@ -134,7 +134,7 @@
 					<th style="width: 10%;">기업명</th>
 					<th style="width: 30%;">리서치 제목</th>
 					<th style="width: 10%;">응답인원/목표인원</th>
-					<th style="width: 10%;">예상완료시간</th>
+					<th style="width: 10%;">예상완료날짜</th>
 					<th style="width: 10%;">최근전송날짜</th>
 					<th style="width: 10%;">상태</th>
 					<th style="width: 10%;">메일전송</th>
@@ -147,14 +147,14 @@
 						<td>${ mailingList.companyName }</td>
 						<td>${ mailingList.researchName }</td>
 						<td>10 / ${ mailingList.researchEngagementGoals }</td>
-						<td>예상완료시간</td>
+						<td>${ mailingList.researchPeriod }</td>
 						<td>${ mailingList.currentMailingDate }</td>
 						<td>
 							<c:if test="${ mailingList.researchStateNo == 5 }">
 								리서치 대기중
 							</c:if>
 							<c:if test="${ mailingList.researchStateNo == 6 }">
-								리서치 배포중
+								${ mailingList.researchStatus }차 배포중
 							</c:if>
 						</td>
 						<td><input type="button" value="메일 전송" class="sendBtn"></td>
@@ -246,19 +246,9 @@
 		  	cancelButtonColor: '#d33',
 		  	confirmButtonText: 'Yes'
 		}).then((result) => {
-		  	/* if (result.value) {
-			  	$("#sendMailModal").modal("show");
-			  	setTimeout(function() {
-			  		$("#sendMailModal").modal("hide");
-			  		Swal.fire(
-						'메일 전송 완료!',
-						'메일 전송을 완료 하였습니다.',
-						'success'
-					)
-				}, 3000);
-		  } */
 		  console.log(result.value);
 		  if(result.value) {
+			  $("#sendMailModal").modal("show");
 			  $.ajax({
 				  url: "researchTargetMailing.adminResearch",
 				  type: "post",
@@ -266,7 +256,10 @@
 					  researchNo: researchNo
 				  },
 				  success: function(data) {
-					  console.log(data.result);
+					  		$("#sendMailModal").modal("hide");
+					  		Swal.fire('메일 전송 완료!', '메일 전송을 완료 하였습니다.', 'success').then(function(){
+					  			location.reload()
+					  		});
 				  },
 				  error: function(data) {
 					  console.log("ajax 실패");

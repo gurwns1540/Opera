@@ -36,6 +36,15 @@
 		<typeAlias type="com.opera.survway.panel.model.vo.PanelSurveyChoice" alias="PanelSurveyChoice"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.Vote" alias="Vote"/>
 		<typeAlias type="com.opera.survway.panel.model.vo.SurveyReply" alias="SurveyReply"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.PanelResearchList" alias="PanelResearchList"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.ResearchReport" alias="ResearchReport"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.ResearchHistory" alias="ResearchHistory"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.RquestionNo" alias="RquestionNo"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.ResearchGraphTemp" alias="ResearchGraphTemp"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.Question" alias="Question"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.Choice" alias="Choice"/>
+		<typeAlias type="com.opera.survway.admin.model.vo.ResearchOne" alias="ResearchOne"/>
+		<typeAlias type="com.opera.survway.panel.model.vo.SurveyReward" alias="SurveyReward"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/panel-mapper.xml"/>

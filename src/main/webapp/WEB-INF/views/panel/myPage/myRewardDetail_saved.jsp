@@ -130,7 +130,7 @@
 									<td>${reward.rewardHistoryNo }</td>
 									<td>
 									<c:choose>
-									<c:when test="${reward.researchHistoryNo != 0}">
+									<c:when test="${reward.researchName != null || !empty reward.researchName}">
 										${reward.researchName }
 									</c:when> <c:when test="${reward.sHistoryNo != 0}">
 										${reward.surveyTitle }

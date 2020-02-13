@@ -384,8 +384,8 @@
 		
 		});
 		$(".detail").on("click", function(){
-			var mno = $(this).parent().siblings().eq(0).text();
-
+			mno = $(this).parent().siblings().eq(0).text();
+			
 			$.ajax({
 				url:"selectNewPanel.memberManagement",
 				type:"post",
@@ -432,17 +432,37 @@
 			  confirmButtonText: 'Yes'
 			}).then((result) => {
 			  if (result.value) {
-			    Swal.fire(
-			      '승인!',
-			      '이 패널은 승인되었습니다.',
-			      'success'
-			    )
+				$.ajax({
+					url:"newPanelMailing.memberManagement",
+					type:"post",
+					data:{
+						mno:mno
+					},
+					success:function(data){
+						
+						if(data.result){
+							Swal.fire(
+								      '승인!',
+								      '이 패널은 승인되었습니다.',
+								      'success'
+								      )
+						}
+						setTimeout(function(){
+						    location.reload();
+						},1500)
+					},
+					error:function(){
+						console.log("실패");
+					}
+				});
+			    
 			  }else {
 				  $('#research').modal('show');
 			  }
 			})
 		});
 		$("#referBtn").on("click", function(){
+			
 			const start = async function() {
 				const { value: text } = await Swal.fire({
 					  input: 'textarea',
@@ -459,6 +479,7 @@
 				});
 	
 				if (text) {
+					
 					Swal.fire({
 					  title: '정말 반려하시겠습니까?',
 					  text: "이 결정은 되돌릴 수 없습니다!",
@@ -469,11 +490,31 @@
 					  confirmButtonText: 'Yes'
 					}).then((result) => {
 					  if (result.value) {
-						  Swal.fire(
-				      		'반려!',
-				      		'이 패널은 반려되었습니다.',
-				      		'success'
-				    		)
+						  
+						  $.ajax({
+							  url:"newPanelReferMailing.memberManagement",
+							  type:"post",
+							  data:{
+								  mno:mno,
+								  text:text
+							  },
+							  success:function(data){
+								  
+								  Swal.fire(
+								      		'반려!',
+								      		'이 패널은 반려되었습니다.',
+								      		'success'
+								    		) 
+								   setTimeout(function(){
+						    	   	location.reload();
+								   },1500)
+							  },
+							  error:function(){
+								  console.log("에러");
+							  }
+							  
+						  });
+						    
 					  }else {
 						  $('#research').modal('show');
 					  }

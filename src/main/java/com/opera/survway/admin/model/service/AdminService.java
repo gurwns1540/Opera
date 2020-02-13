@@ -7,10 +7,17 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.admin.model.vo.Choice;
 import com.opera.survway.admin.model.vo.MailingList;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.PanelThanksSurvey;
-import com.opera.survway.admin.model.vo.ResearchTarget;
+import com.opera.survway.admin.model.vo.Question;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp2;
+import com.opera.survway.admin.model.vo.ResearchHistory;
+import com.opera.survway.admin.model.vo.ResearchOne;
+import com.opera.survway.admin.model.vo.ResearchReport;
+import com.opera.survway.admin.model.vo.RquestionNo;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.PageInfo;
@@ -97,5 +104,30 @@ public interface AdminService {
 	List<MailingList> selectMailingList(MailingList list);
 
 	int getListCountMailingList(MailingList list);
+
+	List<ResearchReport> selectResearchReportList();
+
+	List<ResearchHistory> selectResearchHistoryList(int researchNo);
+
+	List<RquestionNo> selectRquestionNoList(int researchNo);
+
+	List<ResearchGraphTemp2> selectResearchHistoryCountList(ResearchGraphTemp temp);
+
+	List<Question> selectQuestionList(int researchNo);
+
+	List<Choice> selectChoiceList(int researchNo);
+
+	ResearchOne selectResearchOne(int researchNo);
+
+	int updatePanelLevel(int mno) throws ResearchException;
+
+	int deletePanelThanksSurvey(int mno) throws ResearchException;
+
+	int audioEnviron(String questionTitle, String[] choiceTitleArr, String[] choiceOrderArr,String titleContex,String questionFormNo);
+
+	ResearchQuestion pcQaManagement();
+
+	int videoInsert(String questionTitle, String[] choiceTitleArr, String[] choiceOrderArr, String titleContext,
+			String questionFormNo, String videoAdress);
 
 }

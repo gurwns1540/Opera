@@ -8,11 +8,19 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.admin.model.vo.Choice;
 import com.opera.survway.admin.model.vo.MailingList;
 import com.opera.survway.admin.model.vo.MailingReceiver;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.PanelThanksSurvey;
+import com.opera.survway.admin.model.vo.Question;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp2;
+import com.opera.survway.admin.model.vo.ResearchHistory;
+import com.opera.survway.admin.model.vo.ResearchOne;
+import com.opera.survway.admin.model.vo.ResearchReport;
 import com.opera.survway.admin.model.vo.ResearchTarget;
+import com.opera.survway.admin.model.vo.RquestionNo;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.admin.model.vo.TargetMember;
 import com.opera.survway.common.model.vo.AllMember;
@@ -351,45 +359,21 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectList("Admin.selectPanelTs",ps);
 	}
 
-	/**
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 2. 10.
-	 * @ModifyDate  : 2020. 2. 10.
-	 * @Description : 메일링리스트 불러오기
-	 */
 	@Override
 	public List<MailingList> selectMailingList(SqlSessionTemplate sqlSession, MailingList list) {
 		return sqlSession.selectList("Admin.selectMailingList", list);
 	}
 
-	/**
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 2. 10.
-	 * @ModifyDate  : 2020. 2. 10.
-	 * @Description : 메일링 카운트
-	 */
 	@Override
 	public int getListCountMailingList(SqlSessionTemplate sqlSession, MailingList list) {
 		return sqlSession.selectOne("Admin.selectCountMailingList", list);
 	}
 
-	/**
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 2. 10.
-	 * @ModifyDate  : 2020. 2. 10.
-	 * @Description : 메일링 히스토리 insert
-	 */
 	@Override
 	public int insertMailingHistory(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.insert("Admin.insertMailingHistory", researchNo);
 	}
 
-	/**
-	 * @Author      : yhj
-	 * @CreateDate  : 2020. 2. 10.
-	 * @ModifyDate  : 2020. 2. 10.
-	 * @Description : 리서치상태변경이력 insert
-	 */
 	@Override
 	public int insertRStatusHistory(SqlSessionTemplate sqlSession, int researchNo) {
 		return sqlSession.insert("Admin.insertRStatusHistory", researchNo);
@@ -404,5 +388,100 @@ public class AdminDaoImpl implements AdminDao{
 	public int insertMailingReceiver(SqlSessionTemplate sqlSession, MailingReceiver mr) {
 		return sqlSession.insert("Admin.insertMailingReceiver", mr);
 	}
+	
+	@Override
+	public int insertMailingHistoryRe(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.insert("Admin.insertMailingHistoryRe", researchNo);
+	}
 
+	@Override
+	public int selectMailingHistoryOrder(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectMailingHistoryOrder", researchNo);
+	}
+
+	@Override
+	public String selectMailingHistoryCurrentDate(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectMailingHistoryCurrentDate", researchNo);
+	}
+
+	@Override
+	public String selectResearchPeriod(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectResearchPeriod", researchNo);
+	}
+
+	@Override
+	public List<ResearchReport> selectResearchReportList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectList("Admin.selectResearchReportList");
+	}
+
+	@Override
+	public List<ResearchHistory> selectResearchHistoryList(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.selectResearchHistoryList", researchNo);
+	}
+
+	@Override
+	public List<RquestionNo> selectRquestionNoList(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.selectRquestionNoList", researchNo);
+	}
+
+	@Override
+	public int selectResearchHistoryCount(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectResearchHistoryCount", researchNo);
+	}
+
+	@Override
+	public List<ResearchGraphTemp2> selectResearchHistoryCountList(SqlSessionTemplate sqlSession,
+			ResearchGraphTemp temp) {
+		return sqlSession.selectList("Admin.selectResearchHistoryCountList", temp);
+	}
+
+	@Override
+	public List<Question> selectQuestionList(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.selectQuestionList", researchNo);
+	}
+
+	@Override
+	public List<Choice> selectChoiceList(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectList("Admin.selectChoiceList", researchNo);
+	}
+
+	@Override
+	public ResearchOne selectResearchOne(SqlSessionTemplate sqlSession, int researchNo) {
+		return sqlSession.selectOne("Admin.selectResearchOne", researchNo);
+	}
+	
+	@Override
+	public int updatePanelLevel(SqlSessionTemplate sqlSession, int mno) {
+		return sqlSession.update("Admin.updatePanelLevel",mno);
+	}
+
+	@Override
+	public int deletePanelThanksSurvey(SqlSessionTemplate sqlSession, int mno) {
+		return sqlSession.delete("Admin.deletePanelThanksSurvey",mno);
+	}
+	
+	@Override
+	public int deleteChoice(SqlSessionTemplate sqlSession) {
+		return sqlSession.update("Admin.deleteChoice");
+	}
+
+	@Override
+	public int mergeQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req) {
+		return sqlSession.update("Admin.updateQuestion",req); 
+	}
+
+	@Override 
+	public int insertAudioChoice(SqlSessionTemplate sqlSession, ResearchChoice choice) {
+		return sqlSession.insert("Admin.insertAudioChoice", choice);
+	}
+
+	@Override
+	public ResearchQuestion pcQaManagement(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.selectPcQa");
+	}
+
+	@Override
+	public int mergeVideoQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req) {
+		return sqlSession.update("Admin.updateVideoQuestion",req);
+	}
 }

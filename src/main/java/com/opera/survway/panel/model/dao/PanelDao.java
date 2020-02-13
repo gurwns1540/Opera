@@ -15,10 +15,12 @@ import com.opera.survway.panel.model.vo.AttemptInsert;
 import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.vo.Inquiry;
+import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.PanelSurvey;
 import com.opera.survway.panel.model.vo.PanelSurveyChoice;
+import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
@@ -27,6 +29,7 @@ import com.opera.survway.panel.model.vo.SearchNotice;
 import com.opera.survway.panel.model.vo.SearchSurvey;
 import com.opera.survway.panel.model.vo.SurveyReply;
 import com.opera.survway.panel.model.vo.Vote;
+import com.opera.survway.panel.model.vo.SurveyReward;
 
 public interface PanelDao {
 
@@ -132,7 +135,33 @@ public interface PanelDao {
 
 	int insertRewardUserHistory(SqlSessionTemplate sqlSession, PanelMember pm);
 
-	int uploadSurvey(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
+	int getListCountPanelResearech(SqlSessionTemplate sqlSession, PanelResearchList rl);
+
+	List<PanelResearchList> selectAllPanelResearchList(SqlSessionTemplate sqlSession, PanelResearchList rl);
+
+	int getListCountPanelResearchRetry(SqlSessionTemplate sqlSession, PanelResearchList rl);
+
+	List<PanelResearchList> selectAllPanelResearchRetryList(SqlSessionTemplate sqlSession, PanelResearchList rl);
+
+  int selectPanelReward(SqlSessionTemplate sqlSession, int mno);
+
+	int updateSurveyReard(SqlSessionTemplate sqlSession, SurveyReward reward);
+
+	int insertSurveyRewardHistory(SqlSessionTemplate sqlSession, SurveyReward reward);
+
+	ResearchQuestion getPcQuestion(SqlSessionTemplate sqlSession);
+
+	List<ResearchChoice> getPcChoices(SqlSessionTemplate sqlSession, int rquestionNo);
+
+	List<ResearchQuestion> getTargetQuestions(SqlSessionTemplate sqlSession, String researchNo);
+
+	List<ResearchChoice> getTargetChoiceList(SqlSessionTemplate sqlSession, int rquestionNo);
+
+	int selectRquestionNo(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int insertAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer);
+  
+  int uploadSurvey(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey);
 
 	int uploadSurveyChoice(SqlSessionTemplate sqlSession, PanelSurveyChoice panelSurveyChoice);
 

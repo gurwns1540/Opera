@@ -6,11 +6,19 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.opera.survway.admin.model.exception.ResearchException;
+import com.opera.survway.admin.model.vo.Choice;
 import com.opera.survway.admin.model.vo.MailingList;
 import com.opera.survway.admin.model.vo.MailingReceiver;
 import com.opera.survway.admin.model.vo.PanelRewardHistory;
 import com.opera.survway.admin.model.vo.PanelThanksSurvey;
+import com.opera.survway.admin.model.vo.Question;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp;
+import com.opera.survway.admin.model.vo.ResearchGraphTemp2;
+import com.opera.survway.admin.model.vo.ResearchHistory;
+import com.opera.survway.admin.model.vo.ResearchOne;
+import com.opera.survway.admin.model.vo.ResearchReport;
 import com.opera.survway.admin.model.vo.ResearchTarget;
+import com.opera.survway.admin.model.vo.RquestionNo;
 import com.opera.survway.admin.model.vo.SearchMember;
 import com.opera.survway.admin.model.vo.TargetMember;
 import com.opera.survway.common.model.vo.AllMember;
@@ -132,11 +140,50 @@ public interface AdminDao {
 	int insertMailingReceiver(SqlSessionTemplate sqlSession, MailingReceiver mr);
 
 	int uploadAudio(SqlSessionTemplate sqlSession, UploadFile ufo);
+	
+	int insertMailingHistoryRe(SqlSessionTemplate sqlSession, int researchNo);
 
 	int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, int researchNo);
 
-	List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals) throws ResearchException;
+	List<TargetMember> getTargetList(SqlSessionTemplate sqlSession, ResearchTarget target, int researchEngagementGoals)
+			throws ResearchException;
 
 	ResearchTarget researchTargetMailing(SqlSessionTemplate sqlSession, int researchNo);
+
+	int selectMailingHistoryOrder(SqlSessionTemplate sqlSession, int researchNo);
+
+	String selectMailingHistoryCurrentDate(SqlSessionTemplate sqlSession, int researchNo);
+ 
+	String selectResearchPeriod(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<ResearchReport> selectResearchReportList(SqlSessionTemplate sqlSession);
+
+	List<ResearchHistory> selectResearchHistoryList(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<RquestionNo> selectRquestionNoList(SqlSessionTemplate sqlSession, int researchNo);
+
+	int selectResearchHistoryCount(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<ResearchGraphTemp2> selectResearchHistoryCountList(SqlSessionTemplate sqlSession, ResearchGraphTemp temp);
+
+	List<Question> selectQuestionList(SqlSessionTemplate sqlSession, int researchNo);
+
+	List<Choice> selectChoiceList(SqlSessionTemplate sqlSession, int researchNo);
+
+	ResearchOne selectResearchOne(SqlSessionTemplate sqlSession, int researchNo);
+	
+	int updatePanelLevel(SqlSessionTemplate sqlSession, int mno);
+
+	int deletePanelThanksSurvey(SqlSessionTemplate sqlSession, int mno);
+
+	int deleteChoice(SqlSessionTemplate sqlSession);
+
+	int mergeQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req);
+
+	int insertAudioChoice(SqlSessionTemplate sqlSession, ResearchChoice choice);
+
+	ResearchQuestion pcQaManagement(SqlSessionTemplate sqlSession);
+
+	int mergeVideoQuestion(SqlSessionTemplate sqlSession, ResearchQuestion req);
 
 }
