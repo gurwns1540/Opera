@@ -38,7 +38,7 @@ public interface PanelDao {
 	String selectEncPassword(SqlSessionTemplate sqlSession, String userId);
 
 	int insertInquiry(SqlSessionTemplate sqlSession, Inquiry i);
-  
+
 	int insertTermsPanel(SqlSessionTemplate sqlSession, PanelMember pm);
 
 	int updateMemberInfo(SqlSessionTemplate sqlSession, PanelMember pm);
@@ -136,7 +136,7 @@ public interface PanelDao {
 
 	List<PanelResearchList> selectAllPanelResearchRetryList(SqlSessionTemplate sqlSession, PanelResearchList rl);
 
-  int selectPanelReward(SqlSessionTemplate sqlSession, int mno);
+	int selectPanelReward(SqlSessionTemplate sqlSession, int mno);
 
 	int updateSurveyReard(SqlSessionTemplate sqlSession, SurveyReward reward);
 
@@ -153,5 +153,25 @@ public interface PanelDao {
 	int selectRquestionNo(SqlSessionTemplate sqlSession, InsertAnswer answer);
 
 	int insertAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int selectResearchhistoryNo(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int insertDisposalHistsory(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int insertNondisposalhistory(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int countValidAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int insertRstatusHistory(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int selectPanelTernaryCount(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int updateTernaryCount(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int insertTernaryOutHistory(SqlSessionTemplate sqlSession, InsertAnswer answer);
+
+	int updateBlack(SqlSessionTemplate sqlSession, InsertAnswer answer);
 
 }

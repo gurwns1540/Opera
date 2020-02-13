@@ -19,11 +19,16 @@ public class InsertAnswer {
 	private int pcCount;
 	private int targetCount;
 	private int researchOrder;
+	private String disposalReason;
+	private int researchhistoryNo;
+	private int ternaryCount;
+	private String ternaryReason;
 	
 	public InsertAnswer() {}
 
 	public InsertAnswer(int mno, int researchNo, String totalAnswer, String researchTime, String researchDisposal,
-			int rquestionNo, String rquestionResponse, int pcCount, int targetCount, int researchOrder) {
+			int rquestionNo, String rquestionResponse, int pcCount, int targetCount, int researchOrder,
+			String disposalReason, int researchhistoryNo, int ternaryCount, String ternaryReason) {
 		super();
 		this.mno = mno;
 		this.researchNo = researchNo;
@@ -35,6 +40,10 @@ public class InsertAnswer {
 		this.pcCount = pcCount;
 		this.targetCount = targetCount;
 		this.researchOrder = researchOrder;
+		this.disposalReason = disposalReason;
+		this.researchhistoryNo = researchhistoryNo;
+		this.ternaryCount = ternaryCount;
+		this.ternaryReason = ternaryReason;
 	}
 
 	public int getMno() {
@@ -117,12 +126,46 @@ public class InsertAnswer {
 		this.researchOrder = researchOrder;
 	}
 
+	public String getDisposalReason() {
+		return disposalReason;
+	}
+
+	public void setDisposalReason(String disposalReason) {
+		this.disposalReason = disposalReason;
+	}
+
+	public int getResearchhistoryNo() {
+		return researchhistoryNo;
+	}
+
+	public void setResearchhistoryNo(int researchhistoryNo) {
+		this.researchhistoryNo = researchhistoryNo;
+	}
+
+	public int getTernaryCount() {
+		return ternaryCount;
+	}
+
+	public void setTernaryCount(int ternaryCount) {
+		this.ternaryCount = ternaryCount;
+	}
+
+	public String getTernaryReason() {
+		return ternaryReason;
+	}
+
+	public void setTernaryReason(String ternaryReason) {
+		this.ternaryReason = ternaryReason;
+	}
+
 	@Override
 	public String toString() {
 		return "InsertAnswer [mno=" + mno + ", researchNo=" + researchNo + ", totalAnswer=" + totalAnswer
 				+ ", researchTime=" + researchTime + ", researchDisposal=" + researchDisposal + ", rquestionNo="
 				+ rquestionNo + ", rquestionResponse=" + rquestionResponse + ", pcCount=" + pcCount + ", targetCount="
-				+ targetCount + ", researchOrder=" + researchOrder + "]";
+				+ targetCount + ", researchOrder=" + researchOrder + ", disposalReason=" + disposalReason
+				+ ", researchhistoryNo=" + researchhistoryNo + ", ternaryCount=" + ternaryCount + ", ternaryReason="
+				+ ternaryReason + "]";
 	}
 	
 }

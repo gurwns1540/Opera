@@ -36,8 +36,8 @@ public interface PanelService {
 	List<Inquiry> selectAllMyInquiry(Inquiry i) throws InquiryException;
 
 	int getListCountInquiry(Inquiry iq) throws InquiryException;
-  
-  int updateMemberInfo(PanelMember pm);
+
+	int updateMemberInfo(PanelMember pm);
 
 	int updatePassword(PanelMember pm);
 
@@ -62,7 +62,7 @@ public interface PanelService {
 	Reward getPanelReward(int mno) throws RewardException;
 
 	int insertCashOutHistory(Reward r) throws RewardException;
-  
+
 	List<ResearchQuestion> getTsQuestionList() throws SelectException;
 
 	int insertFaq(Faq faq) throws InquiryException;
@@ -78,7 +78,7 @@ public interface PanelService {
 	int answerInquiry(Inquiry i) throws InquiryException;
 
 	int deleteAnswerInquiry(Inquiry i) throws InquiryException;
-  
+
 	int getCountMyResearch(PanelMember loginUser);
 
 	List<Research> getMyResearchList(PanelMember loginUser, PageInfo pi);
@@ -87,7 +87,7 @@ public interface PanelService {
 
 	Research getResearchInfo(String researchNo) throws SelectException;
 
-  int writeNotice(Notice n);
+	int writeNotice(Notice n);
 
 	int editNotice(Notice n);
 
@@ -110,9 +110,9 @@ public interface PanelService {
 	int getListCountPanelResearchRetry(PanelResearchList rl) throws InquiryException;
 
 	List<PanelResearchList> selectAllPanelResearchRetryList(PanelResearchList rl);
-	
-  int insertSurveyReward(SurveyReward reward);
 
+	int insertSurveyReward(SurveyReward reward);
 
+	int disposalAnswer(InsertAnswer answer);
 
 }

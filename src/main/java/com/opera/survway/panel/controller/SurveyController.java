@@ -236,6 +236,8 @@ public class SurveyController {
 		String maxReward = splitReward[1];
 		int check = Integer.parseInt(answerCheck);
 		
+		String disposalReason = "";
+		
 		//일단 최고reward로 초기화한 후 아래 조건들에 걸리면 최저로 변경
 		String finalReward = maxReward;
 		//시간제한
@@ -247,6 +249,18 @@ public class SurveyController {
 			finalReward = minReward;
 		}
 		
+		if(finalReward.equals(minReward)) {
+			disposalReason = "시간제한";
+		}
+		
+		if(check==1) {
+			disposalReason = "불량응답";
+		}
+		
+		if(finalReward.equals(minReward) && check==1) {
+			disposalReason = "시간제한,불량응답";
+		}
+		
 		InsertAnswer answer = new InsertAnswer();
 		answer.setMno(Integer.parseInt(mno));
 		answer.setResearchNo(Integer.parseInt(researchNo));
@@ -255,8 +269,12 @@ public class SurveyController {
 		answer.setResearchTime(surveyTime);
 		answer.setTargetCount(Integer.parseInt(targetCount));
 		answer.setPcCount(Integer.parseInt(pcCount));
+		answer.setDisposalReason(disposalReason);
 		
 		int insertResult = ps.insertAnswer(answer);
+		
+		int disposalResult = ps.disposalAnswer(answer);
+		
 		
 		mv.addObject("finalReward", finalReward);
 		mv.setViewName("jsonView");
@@ -383,35 +401,4 @@ public class SurveyController {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
