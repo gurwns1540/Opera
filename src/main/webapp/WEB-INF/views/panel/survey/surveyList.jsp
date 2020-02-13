@@ -475,8 +475,10 @@
 						var minTime = $(document).find("#minTime").val();
 						var maxTime = $(document).find("#maxTime").val();
 						var reward = $(document).find("#reward").val();
+						var pcCount = $(document).find("#pcCount").val();
+						var pcAnswer = $(document).find("#pcAnswer").val();
 						var targetCount = $(document).find("#targetCount").val();
-						var pcCount = $(document).find("#pcQuestion").val();
+						var targetAnswer = $(document).find("#targetAnswer").val();
 						var mno = $(document).find("#mno").val();
 						var researchNo = $(document).find("#researchNo").val();
 						var panellevelNo = $(document).find("#panellevelNo").val();
@@ -509,8 +511,10 @@
 								mno:mno,
 								researchNo:researchNo,
 								answerCheck:answerCheck,
+								pcCount:pcCount,
+								pcAnswer:pcAnswer,
 								targetCount:targetCount,
-								pcCount:pcCount
+								targetAnswer:targetAnswer
 								},
 							success:function(data){
 								
@@ -597,16 +601,16 @@
 							var rquestionList = data.researchQuestionList;
 							var reward = data.researchReward;
 							var qCount = data.questionCount;
+							var pcCount = data.pcCount;
+							var pcAnswer = data.pcAnswer;
 							var targetCount = data.targetCount;
+							var targetAnswer = data.targetAnswer;
 							var time = data.time;
 							var minTime = data.minTime;
 							var maxTime = data.maxTime;
 							var userName = data.userName;
 							var panellevelNo = data.panellevelNo;
-							var pcQuestion = 0;
-							if(data.rquestionVideolink != null) {
-								pcQuestion = 1;
-							}
+
 							
 							//나중에 쓸 변수들 input으로 박아놓기
 							var $qCountInput = $('<input type="text" id="qCount" value="' + qCount + '" style="display:none;">');
@@ -621,10 +625,15 @@
 							$("#modalAppendArea").append($panellevelNoInput);
 							var $researchNoInput = $('<input type="text" id="researchNo" value="' + researchNo + '" style="display:none;">');
 							$("#modalAppendArea").append($researchNoInput);
+							var $pcCountInput = $('<input type="text" id="pcCount" value="' + pcCount + '" style="display:none;">');
+							$("#modalAppendArea").append($pcCountInput);
+							var $pcAnswerInput = $('<input type="text" id="pcAnswer" value="' + pcAnswer + '" style="display:none;">');
+							$("#modalAppendArea").append($pcAnswerInput);
 							var $targetCountInput = $('<input type="text" id="targetCount" value="' + targetCount + '" style="display:none;">');
 							$("#modalAppendArea").append($targetCountInput);
-							var $pcQuestionInput = $('<input type="text" id="pcQuestion" value="' + pcQuestion + '" style="display:none;">');
-							$("#modalAppendArea").append($pcQuestionInput);
+							var $targetAnswerInput = $('<input type="text" id="targetAnswer" value="' + targetAnswer + '" style="display:none;">');
+							$("#modalAppendArea").append($targetAnswerInput);
+							
 							
 							var $tsQ0 = $('<div class="ui overlay fullscreen modal" id="Q0"> <div class="header" style="height:61px; padding:5px;"> <table style="width:100%;"> <tr> <td style="width:30%; height:inherit;transform:translateY(-4px);"> <img src="resources/images/footerLogo.png" alt="" id="footerImg"> </td> <td style="width:70%; height:inherit; padding-right:20px;"> <div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;"> 0 of ' + qCount + ' done </div> <div class="ui indicating progress active" data-value="0" data-total="' + qCount + '" id="progress0" data-percent="0%" style="margin-top:10px; width:40%; float:right;"> <input type="text" value="0" style="display:none;"> <div class="bar" style="transition-duration: 200ms; display: block; width:0%;"> <div class="progress">0%</div> </div> </div> </td> </tr> </table> </div> <div class="content insetBox"> <div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);"> <div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;"> <span style="line-height:180%; font-size:1.1vw;"> <b>' + userName + '</b>님, 안녕하세요.<br>서브웨이 패널회원으로 가입해주셔서 감사합니다.<br><br>지금부터 몇 가지 기본 정보를 여쭙고자 합니다.<br><br><u>본 조사에 참여하셔야 앞으로 ' + userName + '님께 맞는 조사를 제공</u>해드릴 수 있으니,<br>성실한 답변을 부탁드립니다. </span> </div> <div class="actions" style="text-align:center; margin-top:70px;"> <button class="ui blue button" id="nextBtn0" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button> </div> </div> </div> <div class="actions"> <div class="ui primary approve button" style="background-color:#6A6A6A;"> 돌아가기 </div> </div> </div>');
 							var $otherQ0 = $('<div class="ui overlay fullscreen modal" id="Q0"> <div class="header" style="height:61px; padding:5px;"> <table style="width:100%;"> <tr> <td style="width:30%; height:inherit;transform:translateY(-4px);"> <img src="resources/images/footerLogo.png" alt="" id="footerImg"> </td> <td style="width:70%; height:inherit; padding-right:20px;"> <div class="label" style="margin-top:10px; width:60%; float:left; font-size:15px; text-align:right; padding-right:10px;"> 0 of ' + qCount + ' done </div> <div class="ui indicating progress active" data-value="0" data-total="' + qCount + '" id="progress0" data-percent="0%" style="margin-top:10px; width:40%; float:right;"> <input type="text" value="0" style="display:none;"> <div class="bar" style="transition-duration: 200ms; display: block; width:0%;"> <div class="progress">0%</div> </div> </div> </td> </tr> </table> </div> <div class="content insetBox"> <div class="modalContainer ui raised segment" style="width:50%; min-height:600px; margin:0 auto; margin-top:30px; position:absolute; top:46%; left:50%; transform: translate(-50%, -50%);"> <div class="ui segment" style="height:330px; width:80%; margin:0 auto; margin-top:100px; padding:25px; background-color:#EFEFEF;"> <span style="line-height:180%; font-size:1.1vw;"> <b>' + userName + '</b>님, 안녕하세요.<br><br>본 조사의 예상 소요시간은 ' + time + '분이며, 조사 목적 또는 패널님의 응답 퀄리티에 따라 ' + researchReward + 'P의 리워드를 받으실 수 있습니다.<br><br>설문 답변 소요시간이 ' + minTime + '분 미만인 경우 또는 ' + maxTime + '분을 초과하는 경우,<br>답변에 상관 없이 최저 리워드를 드리니 시간을 엄수하여 주시기 바랍니다. </span> </div> <div class="actions" style="text-align:center; margin-top:70px;"> <button class="ui blue button" id="nextBtn0" style="border-radius:2px; font-size:18px;">다 음 <i class="right chevron icon"></i></button> </div> </div> </div> <div class="actions"> <div class="ui primary approve button" style="background-color:#6A6A6A;"> 돌아가기 </div> </div> </div>');
