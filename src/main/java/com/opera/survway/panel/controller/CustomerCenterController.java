@@ -141,7 +141,12 @@ public class CustomerCenterController {
 
 		int listCount = 0;
 
-		PanelMember loginUser = (PanelMember) session.getAttribute("loginUser");
+		PanelMember loginUser = new PanelMember();
+		if(session.getAttribute("loginUser") != null) {
+			loginUser = (PanelMember)session.getAttribute("loginUser");
+		}else {
+			return "redirect:panelResult.panel?message=notLoginAccess";
+		}
 		int mno = loginUser.getMno();
 		
 		

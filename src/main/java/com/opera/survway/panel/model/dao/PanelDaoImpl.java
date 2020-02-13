@@ -2,6 +2,7 @@ package com.opera.survway.panel.model.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.SelectException;
 import com.opera.survway.panel.model.vo.AttemptInsert;
@@ -18,12 +20,17 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelSurvey;
+import com.opera.survway.panel.model.vo.PanelSurveyChoice;
 import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchChoice;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.SurveyReply;
+import com.opera.survway.panel.model.vo.Vote;
 import com.opera.survway.panel.model.vo.SurveyReward;
 
 
@@ -398,7 +405,7 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.update("Panel.insertRewardUserHistory", pm);
 	}
 
-	@Override
+  @Override
 	public int getListCountPanelResearech(SqlSessionTemplate sqlSession, PanelResearchList rl) {
 		
 		return sqlSession.selectOne("Panel.getListCountPanelResearch",rl);
@@ -522,4 +529,100 @@ public class PanelDaoImpl implements PanelDao{
 		return sqlSession.update("Panel.updatePanellevelNoBlack", answer);
 	}
 	
+	@Override
+	public int rereplyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply) {
+		return sqlSession.insert("Panel.rereplyUpload", surveyReply);
+	}
+
+	@Override
+	public int insertPanelReward(SqlSessionTemplate sqlSession, Vote vote) {
+		return sqlSession.update("Panel.insertPanelReward", vote); 
+	}
+
+	@Override
+	public int insertSurveyRewardHistory(SqlSessionTemplate sqlSession, Vote vote) {
+		return sqlSession.insert("Panel.insertSurveyRewardHistory", vote);
+	}
+  @Override
+	public int uploadSurvey(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey) {
+		return sqlSession.insert("Panel.uploadSurvey", panelSurvey);
+	}
+
+	@Override
+	public int uploadSurveyChoice(SqlSessionTemplate sqlSession, PanelSurveyChoice panelSurveyChoice) {
+		return sqlSession.insert("Panel.uploadSurveyChoice", panelSurveyChoice);
+	}
+
+	@Override
+	public int uploadSurveyChoiceImage(SqlSessionTemplate sqlSession, UploadFile uploadFile) {
+		return sqlSession.insert("Panel.uploadSurveyChoiceImage", uploadFile);
+	}
+
+	@Override
+	public int getPanelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey) {
+		return sqlSession.selectOne("Panel.getPanelSurveyList", searchSurvey);
+	}
+
+	@Override
+	public List<Map<String, Object>> panelSurveyList(SqlSessionTemplate sqlSession, SearchSurvey searchSurvey, int offsetSize) {
+		
+		int offset = (searchSurvey.getPi().getCurrentPage() - 1) * searchSurvey.getPi().getLimit();
+		
+		if(offsetSize != 0) {
+			offset = offsetSize + 1;
+		}
+		
+		RowBounds rowBounds = new RowBounds(offset, searchSurvey.getPi().getLimit());
+		return sqlSession.selectList("Panel.panelSurveyList", searchSurvey, rowBounds);
+	}
+
+	@Override
+	public List<Integer> likeCheck(SqlSessionTemplate sqlSession, int mno) {
+		return sqlSession.selectList("Panel.likeCheck", mno);
+	}
+
+	@Override
+	public int minusLikeCount(SqlSessionTemplate sqlSession, int surveyNo) {
+		return sqlSession.insert("Panel.minusLikeCount", surveyNo);
+	}
+
+	@Override
+	public int plusLikeCount(SqlSessionTemplate sqlSession, int surveyNo) {
+		return sqlSession.insert("Panel.plusLikeCount", surveyNo);
+	}
+
+	@Override
+	public int deleteLikeHistory(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey) {
+		return sqlSession.delete("Panel.deleteLikeHistory", panelSurvey);
+	}
+
+	@Override
+	public int addLikeHistory(SqlSessionTemplate sqlSession, PanelSurvey panelSurvey) {
+		return sqlSession.delete("Panel.addLikeHistory", panelSurvey);
+	}
+
+	@Override
+	public List<Map<String, Object>> statisticList(SqlSessionTemplate sqlSession, int surveyNo) {
+		return sqlSession.selectList("Panel.statisticList", surveyNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> replyList(SqlSessionTemplate sqlSession, int surveyNo) {
+		return sqlSession.selectList("Panel.replyList", surveyNo);
+	}
+
+	@Override
+	public int voteCheck(SqlSessionTemplate sqlSession, Vote vote) {
+		return sqlSession.selectOne("Panel.voteCheck", vote);
+	}
+
+	@Override
+	public int voteSurvey(SqlSessionTemplate sqlSession, Vote vote) {
+		return sqlSession.insert("Panel.voteSurvey", vote);
+	}
+
+	@Override
+	public int replyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply) {
+		return sqlSession.insert("Panel.replyUpload", surveyReply);
+  }
 }

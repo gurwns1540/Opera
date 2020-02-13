@@ -1,10 +1,13 @@
 package com.opera.survway.panel.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.servlet.ModelAndView;
 
 import com.opera.survway.common.model.vo.PageInfo;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.LoginException;
 import com.opera.survway.exception.RewardException;
@@ -16,11 +19,15 @@ import com.opera.survway.panel.model.vo.Inquiry;
 import com.opera.survway.panel.model.vo.InsertAnswer;
 import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
+import com.opera.survway.panel.model.vo.PanelSurvey;
 import com.opera.survway.panel.model.vo.PanelResearchList;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.Reward;
 import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.SurveyReply;
+import com.opera.survway.panel.model.vo.Vote;
 import com.opera.survway.panel.model.vo.SurveyReward;
 
 
@@ -103,6 +110,8 @@ public interface PanelService {
 
 	int insertAnswer(InsertAnswer answer);
 
+	int uploadSurvey(PanelSurvey panelSurvey, ArrayList<UploadFile> uploadFileList) throws SurveyException;
+
 	int getListCountPanelResearch(PanelResearchList rl) throws InquiryException;
 
 	List<PanelResearchList> selectAllPanelResearchList(PanelResearchList rl);
@@ -114,5 +123,25 @@ public interface PanelService {
 	int insertSurveyReward(SurveyReward reward);
 
 	int disposalAnswer(InsertAnswer answer);
+
+  int getPanelSurveyList(SearchSurvey searchSurvey);
+
+	List<Map<String, Object>> panelSurveyList(SearchSurvey searchSurvey, int offsetSize) throws SelectException;
+
+	List<Integer> likeCheck(int mno);
+
+	int changeLikeCount(int surveyNo, int mno, String status);
+
+	List<Map<String, Object>> statisticList(int surveyNo);
+
+	List<Map<String, Object>> replyList(int surveyNo);
+
+	boolean voteCheck(Vote vote);
+
+	int voteSurvey(Vote vote);
+
+	int replyUpload(SurveyReply surveyReply);
+
+	int rereplyUpload(SurveyReply surveyReply);
 
 }

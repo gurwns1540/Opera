@@ -320,6 +320,7 @@
 		JOIN CORP C ON (C.MNO = R.MNO)
         JOIN RSTATUSHISTORY RH ON (RH.RESEARCH_CHANGEDATE = LATELY_HISTORY.LAST_DATE)
 		WHERE RESEARCH_STATE_NO = 1
+		ORDER BY R.RESEARCH_NO DESC
 	</select>
 	
 	<resultMap type="map" id="researchApprovalDetailMap">

@@ -1,5 +1,8 @@
 package com.opera.survway.panel.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,22 +15,33 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.opera.survway.common.model.vo.OperaFileNamePolicy;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
+import com.opera.survway.common.model.vo.UploadFile;
 import com.opera.survway.common.model.vo.Util;
 import com.opera.survway.exception.InquiryException;
 import com.opera.survway.exception.SelectException;
+import com.opera.survway.exception.SurveyException;
 import com.opera.survway.panel.model.service.PanelService;
 import com.opera.survway.panel.model.vo.AttemptInsert;
 import com.opera.survway.panel.model.vo.Faq;
 import com.opera.survway.panel.model.vo.InsertAnswer;
+import com.opera.survway.panel.model.vo.Notice;
 import com.opera.survway.panel.model.vo.PanelMember;
 import com.opera.survway.panel.model.vo.PanelResearchList;
+import com.opera.survway.panel.model.vo.PanelSurvey;
+import com.opera.survway.panel.model.vo.PanelSurveyChoice;
 import com.opera.survway.panel.model.vo.Research;
 import com.opera.survway.panel.model.vo.ResearchQuestion;
 import com.opera.survway.panel.model.vo.SurveyReward;
+import com.opera.survway.panel.model.vo.SearchNotice;
+import com.opera.survway.panel.model.vo.SearchSurvey;
+import com.opera.survway.panel.model.vo.SurveyReply;
+import com.opera.survway.panel.model.vo.Vote;
 
 @Controller
 public class SurveyController {
@@ -400,5 +414,309 @@ public class SurveyController {
 		return mv;
 	}
 	
-}
 
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 패널 서베이 작성 이동
+	 */
+	@RequestMapping("panelSurvayUpload.survey")
+	public String panelSurvayUpload() {
+		return "panelSurvayUpload";
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 패널 서베이 문항 작성
+	 */
+	@PostMapping("uploadSurvey.survey")
+	public String uploadSurvey(Model model, HttpServletRequest request, String surveyContext, String category, String surveyTitle, String[] choiceOrder, String[] choiceInput, MultipartFile[] imageChoiceUpload) {
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "\\uploadFiles";
+		ArrayList<UploadFile> uploadFileList = null;
+		if(imageChoiceUpload.length != 0) {
+			uploadFileList = new ArrayList<>();
+			for(MultipartFile file : imageChoiceUpload) {
+				UploadFile uploadFile = new UploadFile();
+	 			String originFileName = file.getOriginalFilename();
+	 			String ext = originFileName.substring(originFileName.lastIndexOf("."));
+	 			String saveFile = OperaFileNamePolicy.getRandomString() + ext;
+	 			
+	 			uploadFile.setFilePath(savePath);
+	 			uploadFile.setOriginName(originFileName);
+	 			uploadFile.setChangeName(saveFile);
+				
+				uploadFileList.add(uploadFile);
+				try {
+					file.transferTo(new File(savePath + "\\" + saveFile));
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		ArrayList<PanelSurveyChoice> choiceList = new ArrayList<>();
+		for(int i = 0; i < choiceOrder.length; i++) {
+			PanelSurveyChoice choice = new PanelSurveyChoice();
+			choice.setSchoiceOrder(Integer.parseInt(choiceOrder[i]));
+			choice.setSchoiceContext(choiceInput[i]);
+			
+			choiceList.add(choice);
+		}
+		PanelSurvey panelSurvey = new PanelSurvey();
+		panelSurvey.setScategoryNo(Integer.parseInt(category));
+		panelSurvey.setMno(((PanelMember)request.getSession().getAttribute("loginUser")).getMno());
+		panelSurvey.setSurveyTitle(surveyTitle);
+		panelSurvey.setChoiceList(choiceList);
+		panelSurvey.setSurveyContext(surveyContext);
+		
+		try {
+			ps.uploadSurvey(panelSurvey, uploadFileList);
+			
+			return "redirect:panelResult.panel?message=uploadSurvey";
+		} catch (SurveyException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
+		
+		
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 패널 서베이 리스트 조회
+	 */
+	@RequestMapping("panelSurveyLists.survey")
+	public String panelSurveyList(HttpServletRequest request, Model model) {
+		
+		String queryString = request.getQueryString();
+
+		Map<String, List<String>> queryMap = null;
+
+		int currentPage = 1;
+		String frequency = "";
+		String interests = "";
+		String searchValue = "";
+		
+		SearchSurvey searchSurvey = new SearchSurvey();
+		
+		if (queryString != null) {
+			queryMap = Util.splitQuery(queryString);
+			if (queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+			if (queryMap.containsKey("frequency")) {
+				frequency = queryMap.get("frequency").get(0);
+				searchSurvey.setFrequency(frequency);
+			}
+			if (queryMap.containsKey("interests")) {
+				interests = queryMap.get("interests").get(0);
+				searchSurvey.setInterests(interests);
+			}
+			if (queryMap.containsKey("searchValue")) {
+				searchValue = queryMap.get("searchValue").get(0);
+				searchSurvey.setSearchValue(searchValue);
+			}
+		}
+		int listCount = 0;
+		try {
+			listCount = ps.getPanelSurveyList(searchSurvey);
+			PageInfo pi =Pagination.getPageInfo(currentPage, listCount);
+
+			searchSurvey.setPi(pi);
+			
+			List<Map<String, Object>> surveyList = ps.panelSurveyList(searchSurvey, 0);
+			
+			//System.out.println(surveyList.size());
+			System.out.println(surveyList);
+			model.addAttribute("surveyList",surveyList);
+			model.addAttribute("searchSurvey",searchSurvey);
+
+			return "panelSurveyList";
+
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 11.
+	 * @ModifyDate  : 2020. 2. 11.
+	 * @Description : 좋아요 한 서베이 체크
+	 */
+	@PostMapping("likeCheck.survey")
+	public ModelAndView likeCheck(ModelAndView mv, String mno) {
+		List<Integer> likeSurveyList = ps.likeCheck(Integer.parseInt(mno));
+		
+		mv.addObject("likeSurveyList", likeSurveyList);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 좋아요 증가 및 감소
+	 */
+	@PostMapping("changeLikeCount.survey")
+	public ModelAndView changeLikeCount(ModelAndView mv, String surveyNoStr, String likeStatus, String mnoStr) {
+		int surveyNo = Integer.parseInt(surveyNoStr);
+		int mno = Integer.parseInt(mnoStr);
+		int result = ps.changeLikeCount(surveyNo, mno, likeStatus);
+
+		mv.addObject("result", result);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 통계에 필요한 데이터와 댓글 리스트
+	 */
+	@PostMapping("statisticAndReply.survey")
+	public ModelAndView statisticAndReply(ModelAndView mv, String surveyNoStr) {
+		int surveyNo = Integer.parseInt(surveyNoStr);
+		List<Map<String, Object>> statisticList = ps.statisticList(surveyNo);
+		List<Map<String, Object>> replyList = ps.replyList(surveyNo);
+		
+		mv.addObject("statisticList", statisticList);
+		mv.addObject("replyList", replyList);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 12.
+	 * @ModifyDate  : 2020. 2. 12.
+	 * @Description : 서베이 투표확인 및 투표
+	 */
+	@PostMapping("vote.survey")
+	public ModelAndView vote(ModelAndView mv, String mnoStr, String surveyNoStr, String choiceNoStr) {
+		int mno = Integer.parseInt(mnoStr);
+		int surveyNo = Integer.parseInt(surveyNoStr);
+		int choiceNo = Integer.parseInt(choiceNoStr);
+		
+		Vote vote = new Vote();
+		vote.setMno(mno);
+		vote.setSurveyNo(surveyNo);
+		vote.setChoiceNo(choiceNo);
+		
+		boolean alreadyVoted = ps.voteCheck(vote);
+		
+		if(alreadyVoted == false) {
+			int result = ps.voteSurvey(vote);
+		}
+		
+		mv.addObject("alreadyVoted", alreadyVoted);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 댓글 작성
+	 */
+	@PostMapping("replyUpload.survey")
+	public ModelAndView replyUpload(ModelAndView mv, String reply, String userName, String surveyNoStr, String mnoStr) {
+		
+		SurveyReply surveyReply = new SurveyReply();
+		surveyReply.setMno(Integer.parseUnsignedInt(mnoStr));
+		surveyReply.setSurveyNo(Integer.parseInt(surveyNoStr));
+		surveyReply.setSurveyReplyContext(reply);
+		int surveyReplyNo = 0; 
+		
+		ps.replyUpload(surveyReply);
+		surveyReplyNo = surveyReply.getSurveyReplyNo();
+		
+		mv.addObject("surveyReplyNo", surveyReplyNo);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 대댓글 작성
+	 */
+	@PostMapping("rereplyUpload.survey")
+	public ModelAndView rereplyUpload(ModelAndView mv, String reply, String userName, String surveyNoStr, String mnoStr, String replyNoStr) {
+		SurveyReply surveyReply = new SurveyReply();
+		surveyReply.setMno(Integer.parseUnsignedInt(mnoStr));
+		surveyReply.setSurveyNo(Integer.parseInt(surveyNoStr));
+		surveyReply.setSurveyReplyContext(reply);
+		surveyReply.setSurveyReplyRefRid(Integer.parseInt(replyNoStr));
+		int surveyReplyNo = 0; 
+		
+		ps.rereplyUpload(surveyReply);
+		surveyReplyNo = surveyReply.getSurveyReplyNo();
+		
+		mv.addObject("surveyReplyNo", surveyReplyNo);
+		mv.setViewName("jsonView");
+		return mv;
+	}
+	
+	/**
+	 * @Author      : Ungken
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 패널 서베이 ajax 페이징
+	 */
+	@GetMapping("panelSurveyListsAjax.survey")
+	public ModelAndView panelSurveyListsAjax(ModelAndView mv, String currentPageStr, String searchValue, String interests, String frequency, String choiceSize) {
+		
+		System.out.println(choiceSize);
+		int offsetSize = Integer.parseInt(choiceSize);
+		SearchSurvey searchSurvey = new SearchSurvey();
+		int currentPage = 2;
+
+		if (currentPageStr != null && !currentPageStr.equals("")) {
+			currentPage = Integer.parseInt(currentPageStr);
+		}
+		if (frequency != null && !frequency.equals("")) {
+			searchSurvey.setFrequency(frequency);
+		}
+		if (interests != null && !interests.equals("")) {
+			searchSurvey.setInterests(interests);
+		}
+		if (searchValue != null && !searchValue.equals("")) {
+			searchSurvey.setSearchValue(searchValue);
+		}
+		//System.out.println(currentPage);
+		int listCount = 0;
+		try {
+			listCount = ps.getPanelSurveyList(searchSurvey);
+			PageInfo pi =Pagination.getPageInfo(currentPage, listCount);
+			
+			searchSurvey.setPi(pi);
+			
+			//System.out.println(searchSurvey);
+			List<Map<String, Object>> surveyList = ps.panelSurveyList(searchSurvey, offsetSize);
+			
+			//System.out.println(surveyList.size());
+			mv.addObject("surveyList",surveyList);
+			mv.addObject("searchSurvey",searchSurvey);
+			mv.setViewName("jsonView");
+			return mv;
+
+		} catch (SelectException e) {
+			e.printStackTrace();
+			return mv;
+		}
+		
+		
+	}
+}
