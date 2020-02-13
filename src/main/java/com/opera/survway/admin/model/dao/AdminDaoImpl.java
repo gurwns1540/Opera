@@ -505,4 +505,18 @@ public class AdminDaoImpl implements AdminDao{
 	public int getResearchCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("Admin.getResearchCount");
 	}
+
+	@Override
+	public int getListCountdisposalResponseList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("Admin.getListCountdisposalResponseList");
+	}
+
+	@Override
+	public List<Map<String, String>> disposalResponseList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getLimit();
+
+		RowBounds rowBounds = new RowBounds(offset, pi.getLimit());
+		
+		return sqlSession.selectList("Admin.disposalResponseList", null, rowBounds);
+	}
 }

@@ -1009,4 +1009,24 @@ public class AdminServiceImpl implements AdminService{
 		return ad.getResearchCount(sqlSession);
 	}
 
+	@Override
+	public int getListCountdisposalResponseList() throws SelectException {
+		int getListCountdisposalResponseList = ad.getListCountdisposalResponseList(sqlSession);
+
+		if(getListCountdisposalResponseList == 0) {
+			throw new SelectException("폐기 응답 수 조회 실패");
+		}
+		return getListCountdisposalResponseList;
+	}
+
+	@Override
+	public List<Map<String, String>> disposalResponseList(PageInfo pi) throws SelectException {
+		List<Map<String, String>> disposalResponseList = ad.disposalResponseList(sqlSession, pi);
+		
+		if(disposalResponseList == null) {
+			throw new SelectException("폐기 응답 조회 실패");
+		}
+		return disposalResponseList;
+	}
+
 }

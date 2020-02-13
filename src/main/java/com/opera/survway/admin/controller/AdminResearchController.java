@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -911,6 +912,39 @@ public class AdminResearchController {
 		mv.addObject("r", r);
 		mv.setViewName("jsonView");
 		return mv;
+	}
+	
+	
+	@RequestMapping("disposalResponseManagement.adminResearch")
+	public String disposalResponseManagement(Model model, HttpServletRequest request) {
+		String queryString = request.getQueryString();
+		
+		Map<String, List<String>> queryMap =  null;
+		
+		int currentPage = 1; 
+		
+		if(queryString != null) { 
+			queryMap = Util.splitQuery(queryString);
+			if(queryMap.containsKey("currentPage")) {
+				currentPage = Integer.parseInt(queryMap.get("currentPage").get(0));
+			}
+		}
+	  
+		int listCount = 0;
+		try {
+			listCount = as.getListCountdisposalResponseList();
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			List<Map<String, String>> disposalResponseList = as.disposalResponseList(pi);
+			
+			model.addAttribute("disposalResponseList", disposalResponseList);
+			model.addAttribute("pi", pi);
+			return "disposalResponseManagement";
+		} catch (SelectException e) {
+			model.addAttribute("msg", e.getMessage());
+			return "redirect:errorPage.me";
+		}
 	}
 	
 }

@@ -192,4 +192,8 @@ public interface AdminDao {
 
 	int getResearchCount(SqlSessionTemplate sqlSession);
 
+	int getListCountdisposalResponseList(SqlSessionTemplate sqlSession);
+
+	List<Map<String, String>> disposalResponseList(SqlSessionTemplate sqlSession, PageInfo pi);
+
 }

@@ -1021,4 +1021,21 @@
 	<select id="getResearchCount" resultType="_int">
 		SELECT COUNT(*) FROM RESEARCH
 	</select>
+	
+	<select id="getListCountdisposalResponseList" resultType="_int">
+		SELECT COUNT(*) FROM DISPOSALHISTORY
+	</select>
+	
+	<resultMap type="map" id="disposalResponseListMap">
+		<result property="disposalNo" column="DISPOSAL_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="researchNo" column="RESEARCH_NO"/>
+		<result property="disposalReason" column="DISPOSAL_REASON"/>
+	</resultMap>
+	<select id="disposalResponseList" resultMap="disposalResponseListMap">
+		SELECT DH.DISPOSAL_NO, RH.MNO, RH.RESEARCH_NO, DH.DISPOSAL_REASON
+		FROM DISPOSALHISTORY DH
+		JOIN RESEARCHHISTORY RH ON(RH.RESEARCHHISTORY_NO = DH.RESEARCHHISTORY_NO)
+		ORDER BY DH.DISPOSAL_NO DESC
+	</select>
 </mapper>
