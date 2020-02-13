@@ -135,14 +135,15 @@
 	</select>
 	
 	<select id="showMyRewardDetailSaved" resultMap="RewardResultSet" parameterType="Reward">
-			SELECT RW.REWARDHISTORY_NO, RW.AFTERCHANGE_POINT, RW.CHANGE_REASON, RW.CHANGE_AMOUNT, RW.MNO,REWARD_CHANGEDATE,RW.SHISTORY_NO ,R.RESEARCH_NAME,PS.SURVEY_TITLE
+			SELECT RW.REWARDHISTORY_NO, RW.AFTERCHANGE_POINT, RW.CHANGE_REASON, RW.CHANGE_AMOUNT, RW.MNO,REWARD_CHANGEDATE,RW.SHISTORY_NO,RW.RESEARCHHISTORY_NO,R.RESEARCH_NAME,PS.SURVEY_TITLE
 			FROM REWARDHISTORY RW
 			LEFT JOIN SURVEYHISTORY SH ON(RW.SHISTORY_NO = SH.SHISTORY_NO)
 			LEFT JOIN PANELSURVEY PS ON(SH.SURVEY_NO = PS.SURVEY_NO)
-			LEFT JOIN RESEARCH R ON(RW.RESEARCH_NO = R.RESEARCH_NO)
+            LEFT JOIN RESEARCHHISTORY RH ON(RW.RESEARCHHISTORY_NO = RH.RESEARCHHISTORY_NO)
+			LEFT JOIN RESEARCH R ON(RH.RESEARCH_NO = R.RESEARCH_NO)
 			WHERE RW.MNO = #{mno}
 			AND CHANGE_AMOUNT LIKE '%' || '+' || '%'
-            ORDER BY REWARD_CHANGEDATE DESC
+			ORDER BY REWARD_CHANGEDATE DESC
 	</select>
 	
 	<select id="getListCountRewardUsed" resultType="_int" parameterType="Reward">
@@ -153,6 +154,7 @@
 	</select>
 	
 	<select id="showMyRewardDetailUsed" resultMap="RewardResultSet" parameterType="Reward">
+		
 		SELECT *
 		FROM REWARDHISTORY RH
 		LEFT JOIN PANELSURVEY PS ON(RH.SURVEY_NO = PS.SURVEY_NO)
@@ -371,9 +373,9 @@
 		SELECT * 
 		FROM FAQ
 		WHERE FAQ_STATUS = 'Y'
+		ORDER BY FAQ_NO DESC
 		<include refid="searchCategoryFaq"/>
 		<include refid="faqTitleExist"/>
-		ORDER BY FAQ_NO DESC
 	</select>
 	
 	<sql id="searchCategoryFaq">
@@ -657,45 +659,7 @@
 									WHERE MNO = #{mno}), '추천인', '+500', #{mno}, SYSDATE, NULL, NULL, NULL, NULL)
 	</insert>
 	
-	<resultMap type="PanelResearchList" id="PanelResearchList">
-		<result property="researchNo" column="RESEARCH_NO"/>
-	   	<result property="researchResponseDate" column="RESEARCH_RESPONSE_DATE"/>
-	   	<result property="attemptDate" column="ATTEMPT_DATE"/>
-	   	<result property="researchName" column="RESEARCH_NAME"/>
-	   	<result property="mno" column="MNO"/>
-	</resultMap>
-	<select id="getListCountPanelResearch" parameterType="PanelResearchList" resultType="_int">
-		SELECT NVL(COUNT(DISTINCT RH.RESEARCH_NO), 0)
-		FROM RESEARCHHISTORY RH
-		LEFT JOIN RESEARCH R ON (RH.RESEARCH_NO = R.RESEARCH_NO)
-		WHERE RH.MNO = #{mno}
-	</select>
-	
-	<select id="selectAllPanelResearchList" resultMap="PanelResearchList" parameterType="PanelResearchList">
-		SELECT RH.RESEARCH_NO, MAX(RH.RESEARCH_RESPONSE_DATE) AS RESEARCH_RESPONSE_DATE,R.RESEARCH_NAME
-		FROM RESEARCHHISTORY RH
-		LEFT JOIN RESEARCH R ON (RH.RESEARCH_NO = R.RESEARCH_NO)
-		WHERE RH.MNO = #{mno}
-        GROUP BY RH.RESEARCH_NO, R.RESEARCH_NAME
-        ORDER BY 2 DESC
-	</select>
-	
-	<select id="getListCountPanelResearchRetry" parameterType="PanelResearchList" resultType="_int">
-		SELECT NVL(COUNT(*),0) FROM ATTEMPTPARTICIPANT
-		WHERE MNO =#{mno} AND RESEARCH_NO NOT IN
-		(SELECT RESEARCH_NO FROM RESEARCHHISTORY WHERE MNO=#{mno})
-	</select>
-	
-	<select id="selectAllPanelResearchRetryList" resultMap="PanelResearchList" parameterType="PanelResearchList">
-		SELECT AT.RESEARCH_NO, R.RESEARCH_NAME, AT.ATTEMPT_DATE
-		FROM ATTEMPTPARTICIPANT AT
-		LEFT JOIN RESEARCH R ON (AT.RESEARCH_NO = R.RESEARCH_NO)
-		WHERE AT.MNO =#{mno} AND AT.RESEARCH_NO NOT IN
-		(SELECT RESEARCH_NO FROM RESEARCHHISTORY WHERE MNO=#{mno})
-		ORDER BY 3 DESC
-	</select>
-
-  <select id="getCurrentPanelReward" parameterType="_int" resultType="_int">
+	<select id="getCurrentPanelReward" parameterType="_int" resultType="_int">
 		SELECT REWARD_POINT
 		FROM PANELREWARD
 		WHERE MNO =#{ mno }
@@ -751,6 +715,55 @@
 	<insert id="insertAnswer" parameterType="InsertAnswer">
 		INSERT INTO RESEARCHHISTORY VALUES(SEQ_RESEARCHHISTORY.NEXTVAL, #{ researchNo }, #{ mno }, NULL, #{ researchTime }, #{ rquestionNo }, SYSDATE, #{ rquestionResponse })
 	</insert>
+	
+	<select id="selectResearchhistoryNo" parameterType="InsertAnswer" resultType="_int">
+		SELECT MAX(RESEARCHHISTORY_NO)
+		FROM RESEARCHHISTORY
+		WHERE MNO = #{ mno }
+	</select>
+	
+	<insert id="insertDisposalHistory" parameterType="InsertAnswer">
+		INSERT INTO DISPOSALHISTORY VALUES(SEQ_DISPOSALHISTORY.NEXTVAL, #{ researchhistoryNo }, #{ disposalReason })
+	</insert>
+	
+	<insert id="insertNondisposalHistory" parameterType="InsertAnswer">
+		INSERT INTO NONDISPOSALHISTORY VALUES(SEQ_NONDISPOSALHISTORY.NEXTVAL, #{ researchhistoryNo })
+	</insert>
+	
+	<select id="selectCountValidAnswer" parameterType="InsertAnswer" resultType="_int">
+		SELECT COUNT(*)
+		FROM NONDISPOSALHISTORY
+		JOIN RESEARCHHISTORY USING (RESEARCHHISTORY_NO)
+		WHERE RESEARCH_NO = #{ researchNo }
+	</select>
+	
+	<select id="selectResearchEngagementGoals" parameterType="InsertAnswer" resultType="_int">
+		SELECT RESEARCH_ENGAGEMENT_GOALS
+		FROM RESEARCH
+		WHERE RESEARCH_NO = #{ researchNo }
+	</select>
+	
+	<insert id="insertRstatusHistorySeven" parameterType="InsertAnswer">
+		INSERT INTO RSTATUSHISTORY VALUES(SEQ_RSTATUSHISTORY.NEXTVAL, #{ researchNo }, 7, SYSDATE, NULL)
+	</insert>
+	
+	<select id="selectTernaryCount" parameterType="InsertAnswer" resultType="_int">
+		SELECT TERNARY_COUNT
+		FROM PANELTERNARY
+		WHERE MNO = #{ mno }
+	</select>
+	
+	<update id="updateTernaryCount" parameterType="InsertAnswer">
+		UPDATE PANELTERNARY SET TERNARY_COUNT = #{ ternaryCount } WHERE MNO = #{ mno }
+	</update>
+	
+	<insert id="insertTernaryOutHistory" parameterType="InsertAnswer">
+		INSERT INTO TERNARYOUTHISTORY VALUES(SEQ_TERNARYOUTHISTORY.NEXTVAL, #{ ternaryCount }, #{ ternaryReason }, #{ mno } )
+	</insert>
+	
+	<update id="updatePanellevelNoBlack" parameterType="InsertAnswer">
+		UPDATE PANEL SET PANELLEVEL_NO = 6 WHERE MNO = #{ mno }
+	</update>
 	
   <insert id="uploadSurvey" parameterType="PanelSurvey">
 		INSERT INTO PANELSURVEY VALUES
@@ -932,5 +945,7 @@
   		</selectKey>
 	</insert>
 </mapper>
+
+
 
 

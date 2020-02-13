@@ -478,6 +478,56 @@ public class PanelDaoImpl implements PanelDao{
 	public int insertAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer) {
 		return sqlSession.insert("Panel.insertAnswer", answer);
 	}
+
+	@Override
+	public int selectResearchhistoryNo(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.selectOne("Panel.selectResearchhistoryNo", answer);
+	}
+
+	@Override
+	public int insertDisposalHistsory(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.insert("Panel.insertDisposalHistory", answer);
+	}
+
+	@Override
+	public int insertNondisposalhistory(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.insert("Panel.insertNondisposalHistory", answer);
+	}
+
+	@Override
+	public int countValidAnswer(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.selectOne("Panel.selectCountValidAnswer", answer);
+	}
+
+	@Override
+	public int selectResearchEngagementGoals(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.selectOne("Panel.selectResearchEngagementGoals", answer);
+	}
+
+	@Override
+	public int insertRstatusHistory(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.insert("Panel.insertRstatusHistorySeven", answer);
+	}
+
+	@Override
+	public int selectPanelTernaryCount(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.selectOne("Panel.selectTernaryCount", answer);
+	}
+
+	@Override
+	public int updateTernaryCount(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.update("Panel.updateTernaryCount", answer);
+	}
+
+	@Override
+	public int insertTernaryOutHistory(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.insert("Panel.insertTernaryOutHistory", answer);
+	}
+
+	@Override
+	public int updateBlack(SqlSessionTemplate sqlSession, InsertAnswer answer) {
+		return sqlSession.update("Panel.updatePanellevelNoBlack", answer);
+	}
 	
 	@Override
 	public int rereplyUpload(SqlSessionTemplate sqlSession, SurveyReply surveyReply) {

@@ -414,6 +414,7 @@
 				//nextBtn0을 누르면 설문조사 시작 시간 기록 및 조사시도 테이블에 ajax로 insert(일반설문조사일때만)
 				var startTime = "";
 				$(document).on("click", "#nextBtn0", function(){
+					
 					startTime = new Date();
 					console.log("startTime : " + startTime);
 					
@@ -484,16 +485,16 @@
 							researchNo = '1';
 						}
 						
-						//1이면 정규식에 어긋난거, 일단 1로 set
-						var answerCheck = 1;
+						//1이면 정규식에 어긋난거, 일단 0으로 set
+						var answerCheck = 0;
 						
-						//한글체크(자음모음 안됨)
-						var check1 = /[가-힣]/;
-						//특수문자체크
-						var check2 = /[~!@#$%^&*()_+|<>?:{}]/;
+						//자모음만있는거 거르기
+						var check1 = /[ㄱ-ㅎ]{1,}/gi;
+						var check2 = /[ㅏ-ㅣ]{1,}/gi;
+						var check3 = /[~!@#$%^&*()_+|<>?:{}]{1,}/gi;
 						
-						if(check1.test(totalAnswer) && check1.test(totalAnswer)) {
-							answerCheck = 0;
+						if(check1.test(totalAnswer) || check2.test(totalAnswer) || check3.test(totalAnswer)) {
+							answerCheck = 1;
 						}
 						
 						$.ajax({
@@ -545,10 +546,7 @@
 							researchNo:researchNo
 							},
 						success:function(data){
-							
-							console.log("리워드 인서트 성공");
-							/* location.relocate? */
-							
+							location.href="myRewardMain.myPage";
 						},
 						error:function(status){
 							console.log(status);
@@ -557,6 +555,10 @@
 					
 				});
 				
+				
+				$(document).on("click", ".ui.primary.approve.button", function(){
+					location.href="surveyList.survey";
+				});
 				
 				
 				//설문조사 응답 모아서 보낼 배열 선언
@@ -875,7 +877,6 @@
 					});
 				});
 				
-				//Swal.fire('안내', '답변을 입력해주세요.', 'warning');
 			</script>
 		</div>
 		<!-- wrap end -->

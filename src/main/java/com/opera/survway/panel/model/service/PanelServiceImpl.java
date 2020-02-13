@@ -49,9 +49,6 @@ public class PanelServiceImpl implements PanelService {
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	
-	
-	
-	
 	/**
 	 * @Author      : Oh
 	 * @CreateDate  : 2020-01-19
@@ -716,6 +713,53 @@ public class PanelServiceImpl implements PanelService {
 			//RESEARCHHISTORY에 인서트
 			int insertResult = pd.insertAnswer(sqlSession, answer);
 		}
+		
+		//해당회원이 방금 인서트한 히스토리중 최근 시퀀스no 조회
+		int lastResearchhistoryNo = pd.selectResearchhistoryNo(sqlSession, answer);
+		answer.setResearchhistoryNo(lastResearchhistoryNo);
+		
+		//폐기일경우 폐기테이블 insert
+		if( (answer.getDisposalReason()).equals("시간제한") || (answer.getDisposalReason()).equals("불량응답") || (answer.getDisposalReason()).equals("시간제한,불량응답") ) {
+			int result = pd.insertDisposalHistsory(sqlSession, answer);
+		}else {
+			int result = pd.insertNondisposalhistory(sqlSession, answer);
+		}
+		
+		
+		//불량응답한 회원 3진아웃 count 올리기
+		if( (answer.getDisposalReason()).equals("불량응답") || (answer.getDisposalReason()).equals("시간제한,불량응답") ) {
+			//패널 기존 3진아웃 횟수 조회
+			int ternaryCount = pd.selectPanelTernaryCount(sqlSession, answer);
+			
+			if(ternaryCount == 2) {
+				ternaryCount = 0;
+				answer.setTernaryCount(ternaryCount);
+				answer.setTernaryReason("블랙리스트 등록");
+				//해당 회원 패널레벨 6으로 변경
+				int blackResult = pd.updateBlack(sqlSession, answer);
+			}else {
+				ternaryCount++;
+				answer.setTernaryCount(ternaryCount);
+				answer.setTernaryReason("불량응답 기록");
+			}
+			
+			//ternaryCount 업데이트 및 ternaryout history 인서트
+			int ternaryUpdate = pd.updateTernaryCount(sqlSession, answer);
+			int ternaryInsert = pd.insertTernaryOutHistory(sqlSession, answer);
+			
+		}
+		
+		
+		
+		//먼저 비폐기테이블에서 해당 리서치에 대한 유효응답 갯수를 count
+		int validAnswer = pd.countValidAnswer(sqlSession, answer);
+		//해당 리서치의 목표인원 조회
+		int researchEngagementGoals = pd.selectResearchEngagementGoals(sqlSession, answer);
+		//목표인원이 채워지면 리서치 상태를 7로 변경
+		if(validAnswer >= researchEngagementGoals) {
+			int result = pd.insertRstatusHistory(sqlSession, answer);
+		}
+		
 		return 0;
 	}
 
@@ -992,5 +1036,17 @@ public class PanelServiceImpl implements PanelService {
 	public List<PanelResearchList> selectAllPanelResearchRetryList(PanelResearchList rl) {
 		List<PanelResearchList> list = pd.selectAllPanelResearchRetryList(sqlSession, rl);
 		return list;
-  }	
+	}
+
+	/**
+	 * @Author      : Sooo
+	 * @CreateDate  : 2020. 2. 13.
+	 * @ModifyDate  : 2020. 2. 13.
+	 * @Description : 폐기테이블 또는 비폐기테이블에 데이터 쌓기
+	 */
+	@Override
+	public int disposalAnswer(InsertAnswer answer) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
