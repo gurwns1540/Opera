@@ -199,6 +199,7 @@
 					<td>
 						<select class="ui dropdown" id="researchEngagementGoals" name="researchEngagementGoals">
 							<option value="">목표 인원 수</option>
+							<option value="3">3명(시연용)</option>
 							<option value="100">100명</option>
 							<option value="200">200명</option>
 							<option value="300">300명</option>

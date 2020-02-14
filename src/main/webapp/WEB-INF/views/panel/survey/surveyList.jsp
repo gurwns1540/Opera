@@ -447,7 +447,7 @@
 				$(document).on("click", "#nextBtn1", function(){
 					
 					var pcCount = $(document).find("#pcCount").val();
-					var pcAnswer = $(document).find("pcAnswer").val();
+					var pcAnswer = $(document).find("#pcAnswer").val();
 					var answer = "";
 					
 					if( Number(pcCount) > 0 ){

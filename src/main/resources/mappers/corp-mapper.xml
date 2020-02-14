@@ -76,7 +76,7 @@
 	
 	<insert id="insertResearch" parameterType="CorpResearch">
 		INSERT INTO RESEARCH VALUES
-		(SEQ_RESEARCH.NEXTVAL, #{researchName}, #{researchEngagementGoals}, #{researchPeriod}, #{mno}, #{researchPerpose}, NULL, NULL, NULL)
+		(SEQ_RESEARCH.NEXTVAL, #{researchName}, #{researchEngagementGoals}, #{researchPeriod}, #{mno}, #{researchPerpose}, '50~200', NULL, NULL)
 		<selectKey keyProperty="researchNo" resultType="_int" order="AFTER">
 			SELECT SEQ_RESEARCH.CURRVAL FROM DUAL
 		</selectKey>

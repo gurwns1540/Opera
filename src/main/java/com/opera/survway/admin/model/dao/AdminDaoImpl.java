@@ -196,7 +196,7 @@ public class AdminDaoImpl implements AdminDao{
 	public int updateResearchPrice(SqlSessionTemplate sqlSession, ResearchState researchState) {
 		return sqlSession.update("Admin.updateResearchPrice", researchState);
 	}
-
+	
 	@Override
 	public int getListResearchWaitingPayment(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("Admin.getListResearchWaitingPayment");

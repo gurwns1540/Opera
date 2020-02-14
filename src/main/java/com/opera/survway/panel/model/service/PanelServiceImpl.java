@@ -733,7 +733,7 @@ public class PanelServiceImpl implements PanelService {
 		int startIndex = eachResponse.length - count;
 		//문제order를 다시 set하기위한 int 선언
 		int rquestionOrder = 1;
-		for(int i=startIndex; i<eachResponse.length; i++) {
+		for(int i=startIndex; i<eachResponse.length - 1; i++) {
 			//문제 order로 rquestionNo 가져오기
 			answer.setResearchOrder(rquestionOrder);
 			int rquestionNo = pd.selectRquestionNo(sqlSession, answer);

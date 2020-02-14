@@ -220,7 +220,7 @@
 				var videoLinkStr = videoLink.substr(videoLink.lastIndexOf("/", videoLink.length), 12);
 				console.log(videoLinkStr);
 				$("#videoArea").html("");
-				$("#videoArea").html('<iframe style="width: 100%;" src="https://www.youtube.com/embed' + videoLinkStr + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+				$("#videoArea").html('<iframe style="width: 500px; height: 289px;" src="https://www.youtube.com/embed' + videoLinkStr + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
 			})
 		</script>
 	</c:if>

@@ -461,11 +461,11 @@
 	
 	<update id="updateResearchPrice" parameterType="ResearchState">
 		UPDATE RESEARCH SET
-		RESEARCH_PRICE = #{price}
+		RESEARCH_PRICE = #{price},
 		RESEARCH_REWARD = '50~1200'
 		WHERE RESEARCH_NO = #{researchNo}
 	</update>
-	
+
 	<select id="getListResearchWaitingPayment" resultType="_int">
 		SELECT COUNT(*)
 		FROM RESEARCH R
