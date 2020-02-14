@@ -2,13 +2,19 @@ package com.opera.survway.admin.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +35,7 @@ import com.opera.survway.admin.model.vo.ResearchGraphTemp2;
 import com.opera.survway.admin.model.vo.ResearchReport;
 import com.opera.survway.admin.model.vo.RquestionNo;
 import com.opera.survway.admin.model.vo.ResearchOne;
+import com.opera.survway.common.model.vo.AllMember;
 import com.opera.survway.common.model.vo.OperaFileNamePolicy;
 import com.opera.survway.common.model.vo.PageInfo;
 import com.opera.survway.common.model.vo.Pagination;
@@ -45,6 +52,8 @@ public class AdminResearchController {
 
 	@Autowired
 	AdminService as;
+	@Autowired
+	private JavaMailSender mailSender; // Mail Sender
 	
 	/**
 	 * @Author      : Ungken
@@ -945,6 +954,63 @@ public class AdminResearchController {
 			model.addAttribute("msg", e.getMessage());
 			return "redirect:errorPage.me";
 		}
+	}
+	@PostMapping("researchReportMailing.adminResearch")
+	public ModelAndView researchReportMailing(ModelAndView mv, int researchNo) {
+		InetAddress inet;
+		String svrIp = "";
+		try {
+			inet = InetAddress.getLocalHost();
+			svrIp = inet.getHostAddress();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+		int memberMno = as.selectResearchOne(researchNo).getMno();
+		AllMember m;
+		try {
+			m = as.selectMember(memberMno);
+			
+			//메일 전송 부분 시작
+			String setfrom = "yychani94@gmail.com";         
+		    String tomail  = m.getUserEmail();    // 받는 사람 이메일
+		    String title   = "리서치 완료되었습니다.";      // 제목
+//		    String content = "test이메일입니다. 리서치 하세요";
+		    String content = "<form action='http://" + svrIp + ":8001/survway/panelLogin.panel' method='GET'> "
+					+ "<p> 안녕하세요, 서브웨이입니다. <br> 회원님께서 요청하신 리서치에 대한 결과가 나왔습니다. 확인바랍니다. </p> "
+//					+ "<input type='hidden' name='userId' value='" + pm.getUserId() + "'>"
+					+ "<button type='submit' style='width: 370px; cursor: pointer; height: 70px; border: 0;  background: #00679A; color: white; font-size: 20pt; margin-top: 10px;'>결과 확인하기</button>"
+				+ " </form>";    // 내용
+		   
+		    try {
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+				 
+				messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
+				messageHelper.setTo(tomail);     // 받는사람 이메일
+				messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+				messageHelper.setText(content);  // 메일 내용
+
+				String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + content; 
+				messageHelper.setText(contents, true); 
+				
+				FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
+				messageHelper.addInline("logo", file);
+
+				mailSender.send(message);
+				mv.addObject("result", true);
+		    } catch(Exception e){
+		      System.out.println(e);
+		      mv.addObject("result", false);
+		    }
+			//메일 전송 부분 끝
+			mv.setViewName("jsonView");
+			
+		} catch (SelectException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		return mv;
 	}
 	
 }

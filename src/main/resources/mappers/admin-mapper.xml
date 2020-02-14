@@ -136,6 +136,7 @@
 		<result property="targetAgeRange" column="TARGET_AGERANGE"/>
 		<result property="targetLocation" column="TARGET_LOCATION"/>
 		<result property="researchPeriod" column="RESEARCH_PERIOD"/>
+		<result property="mno" column="MNO"/>
 	</resultMap>
 	
 	<sql id="searchUserType">
@@ -950,7 +951,7 @@
 	</select>
 	
 	<select id="selectResearchOne" parameterType="_int" resultMap="researchResultMap">
-		SELECT R.RESEARCH_NO, R.RESEARCH_NAME, R.RESEARCH_PERPOSE, R.RESEARCH_ENGAGEMENT_GOALS, RT.TARGET_GENDER, RT.TARGET_AGERANGE, RT.TARGET_LOCATION, R.RESEARCH_PERIOD
+		SELECT R.RESEARCH_NO, R.RESEARCH_NAME, R.RESEARCH_PERPOSE, R.RESEARCH_ENGAGEMENT_GOALS, RT.TARGET_GENDER, RT.TARGET_AGERANGE, RT.TARGET_LOCATION, R.RESEARCH_PERIOD, R.MNO
 		FROM RESEARCH R
 		JOIN RESEARCHTARGET RT ON(R.RESEARCH_NO = RT.RESEARCH_NO)
 		WHERE R.RESEARCH_NO = #{researchNo}

@@ -1,5 +1,8 @@
 package com.opera.survway.admin.model.service;
 
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +11,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -593,6 +597,15 @@ public class AdminServiceImpl implements AdminService{
 	 */
 	@Override
 	public boolean researchTargetMailing(int researchNo) throws ResearchException {
+		InetAddress inet;
+		String svrIp = "";
+		try {
+			inet = InetAddress.getLocalHost();
+			svrIp = inet.getHostAddress();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+		
 		ResearchTarget target = ad.researchTargetMailing(sqlSession, researchNo);
 		if(!target.getTargetAgeRange().equals("all")) {
 			String[] targetAgeRange = target.getTargetAgeRange().split("-");
@@ -617,7 +630,7 @@ public class AdminServiceImpl implements AdminService{
 		System.out.println("=================================");
 		System.out.println(targetList);
 		System.out.println("=================================");
-		    
+		ResearchOne research = ad.selectResearchOne(sqlSession, researchNo);   
 		    //메일링 히스토리
 			if(target.getResearchStateNo() == 5) {
 				int insertMailingHistory = ad.insertMailingHistory(sqlSession, target.getResearchNo());
@@ -641,7 +654,12 @@ public class AdminServiceImpl implements AdminService{
 								String setfrom = "yychani94@gmail.com";         
 							    String tomail  = targetList.get(i).getTargetEmail();     // 받는 사람 이메일
 							    String title   = "리서치 안내메일입니다.";      // 제목
-							    String content = "test이메일입니다. 리서치 하세요";
+//							    String content = "test이메일입니다. 리서치 하세요";
+							    String content = "<form action='http://" + svrIp + ":8001/survway/panelLogin.panel' method='GET'> "
+				    					+ "<p> 안녕하세요, 서브웨이입니다. <br> 회원님께서 참여 가능하신 설문조사가 등록되었으니 참여하시고 리워드 받아가세요! </p> "
+//				    					+ "<input type='hidden' name='userId' value='" + pm.getUserId() + "'>"
+				    					+ "<button type='submit' style='width: 370px; cursor: pointer; height: 70px; border: 0;  background: #00679A; color: white; font-size: 20pt; margin-top: 10px;'>리서치 참여하기</button>"
+				    				+ " </form>";    // 내용
 							   
 							    try {
 									MimeMessage message = mailSender.createMimeMessage();
@@ -655,8 +673,8 @@ public class AdminServiceImpl implements AdminService{
 									String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + content; 
 									messageHelper.setText(contents, true); 
 									
-//									FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
-//									messageHelper.addInline("logo", file);
+									FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
+									messageHelper.addInline("logo", file);
 
 									mailSender.send(message);
 							    } catch(Exception e){
@@ -686,8 +704,14 @@ public class AdminServiceImpl implements AdminService{
 						//메일 전송 부분 시작
 						String setfrom = "yychani94@gmail.com";         
 					    String tomail  = targetList.get(i).getTargetEmail();     // 받는 사람 이메일
-					    String title   = "리서치 안내메일입니다.";      // 제목
-					    String content = "test이메일입니다. 리서치 하세요";
+					    String title   = "서브웨이 설문조사 알림입니다.";      // 제목
+//					    String content = "test이메일입니다. 리서치 하세요";
+					    String content = "<form action='http://" + svrIp + ":8001/survway/panelLogin.panel' method='GET'> "
+					    					+ "<p> 안녕하세요, 서브웨이입니다. <br> 회원님께서 참여 가능하신 설문조사가 등록되었으니 참여하시고 리워드 받아가세요! </p> "
+//					    					+ "<input type='hidden' name='userId' value='" + pm.getUserId() + "'>"
+					    					+ "<button type='submit' style='width: 370px; cursor: pointer; height: 70px; border: 0;  background: #00679A; color: white; font-size: 20pt; margin-top: 10px;'>리서치 참여하기</button>"
+					    				+ " </form>";    // 내용
+						   
 					   
 					    try {
 							MimeMessage message = mailSender.createMimeMessage();
@@ -701,8 +725,8 @@ public class AdminServiceImpl implements AdminService{
 							String contents = "<img src=\"cid:logo\" style='width: 420px;'>" + content; 
 							messageHelper.setText(contents, true); 
 							
-//							FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
-//							messageHelper.addInline("logo", file);
+							FileSystemResource file = new FileSystemResource(new File("C:\\images\\survwayLogo.png")); 
+							messageHelper.addInline("logo", file);
 
 							mailSender.send(message);
 					    } catch(Exception e){

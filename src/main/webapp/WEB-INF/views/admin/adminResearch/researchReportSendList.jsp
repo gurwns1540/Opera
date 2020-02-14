@@ -248,6 +248,13 @@
   		</div>
 	</div>
 	
+	<div class="ui tiny modal" id="sendMailModal">
+		<div class="header">메일 전송중</div>
+		<div class="content" style="margin: 0 auto; width: fit-content;">
+			<img alt="sendMail.gif" src="${ contextPath }/resources/images/sendMail.gif" style="width: 400px;">
+		</div>
+	</div>
+	
 	<script>
 		$(".detail").on("click", function(){
 			researchNo = $(this).parent().parent().children().eq(0).text();
@@ -330,11 +337,35 @@
 			  confirmButtonText: 'Yes'
 			}).then((result) => {
 			  if (result.value) {
-			    Swal.fire(
-			      '반영!',
-			      '기업에게 결과를 전달하였습니다.',
-			      'success'
-			    )
+// 			    Swal.fire(
+// 			      '반영!',
+// 			      '기업에게 결과를 전달하였습니다.',
+// 			      'success'
+// 			    )
+				  $("#sendMailModal").modal("show");
+				  $.ajax({
+					  url: "researchReportMailing.adminResearch",
+					  type: "post",
+					  data: {
+						  researchNo: researchNo
+					  },
+					  success: function(data) {
+						  if(data.result) {
+							  $("#sendMailModal").modal("hide");
+						  		Swal.fire('반영!', '기업에게 결과를 전달하였습니다.', 'success').then(function(){
+						  			location.reload()
+						  		});
+						  } else {
+							  $("#sendMailModal").modal("hide");
+						  		Swal.fire('실패!', '기업에게 결과를 전달하지 못했습니다.', 'error').then(function(){
+						  			location.reload()
+						  		});
+						  }
+					  },
+					  error: function(data) {
+						  console.log("ajax 실패");
+					  }
+				  });
 			  }else {
 				  $('#research').modal('show');
 			  }
