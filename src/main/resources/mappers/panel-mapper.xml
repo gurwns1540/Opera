@@ -245,7 +245,7 @@
   		<selectKey keyProperty="afterChangePoint" resultType="_int" order="BEFORE">
   			SELECT REWARD_POINT-(SELECT CASHOUT_AMOUNT FROM CASHOUT WHERE CASHOUT_NO =#{cashoutNo}) FROM PANELREWARD WHERE MNO=#{mno}
   		</selectKey>
-  		INSERT INTO REWARDHISTORY VALUES(SEQ_REWARDHISTORY.NEXTVAL, #{afterChangePoint},'캐시 아웃',#{changeAmount},#{mno},SYSDATE, NULL,#{cashoutHistoryNo},NULL,NULL)
+  		INSERT INTO REWARDHISTORY VALUES(SEQ_REWARDHISTORY.NEXTVAL, #{afterChangePoint},'캐시 아웃',#{changeAmount},#{mno},SYSDATE, #{cashoutHistoryNo},NULL,NULL,NULL)
   	</insert>
   	
   	<update id="updatePanelReard" parameterType="Reward">
