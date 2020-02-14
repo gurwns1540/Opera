@@ -777,7 +777,11 @@
 	
 	<select id="getPanelSurveyList" resultType="_int">
 		SELECT COUNT(*)
-		FROM PANELSURVEY
+		FROM PANELSURVEY PS
+		JOIN SURVEYCHOICE SC ON (PS.SURVEY_NO = SC.SURVEY_NO)
+	    LEFT JOIN UPLOADFILE UF ON (UF.SCHOICE_NO = SC.SCHOICE_NO)
+	    JOIN MEMBER M ON(M.MNO = PS.MNO)
+	    JOIN SURVEYCATEGORY C ON (C.SCATEGORY_NO = PS.SCATEGORY_NO)
 		WHERE PANELSURVEY_STATUS = 'Y'
 		<include refid="searchSurveyValue"/>
 	    <include refid="searchSurveyCategory"/>
@@ -802,12 +806,12 @@
 	
 	<sql id="searchSurveyValue">
 		<if test="searchValue != null">
-			AND PS.SURVEY_TITLE LIKE '%'|| #{searchValue} ||'%'
+			AND SURVEY_TITLE LIKE '%'|| #{searchValue} ||'%'
 		</if>
 	</sql>
 	<sql id="searchSurveyCategory">
-		<if test="interests != null">
-			AND PS.SCATEGORY_NO = #{interests}
+		<if test="interests != 0">
+			AND C.SCATEGORY_NO = #{interests}
 		</if>
 	</sql>
 	<sql id="searchSurveyOrder">

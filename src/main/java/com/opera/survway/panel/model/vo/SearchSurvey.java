@@ -4,11 +4,11 @@ import com.opera.survway.common.model.vo.PageInfo;
 
 public class SearchSurvey {
 	private String frequency;
-	private String interests;
+	private int interests;
 	private String searchValue;
 	private PageInfo pi;
 	public SearchSurvey() {}
-	public SearchSurvey(String frequency, String interests, String searchValue, PageInfo pi) {
+	public SearchSurvey(String frequency, int interests, String searchValue, PageInfo pi) {
 		super();
 		this.frequency = frequency;
 		this.interests = interests;
@@ -21,10 +21,10 @@ public class SearchSurvey {
 	public void setFrequency(String frequency) {
 		this.frequency = frequency;
 	}
-	public String getInterests() {
+	public int getInterests() {
 		return interests;
 	}
-	public void setInterests(String interests) {
+	public void setInterests(int interests) {
 		this.interests = interests;
 	}
 	public String getSearchValue() {
@@ -44,5 +44,6 @@ public class SearchSurvey {
 		return "SearchSurvey [frequency=" + frequency + ", interests=" + interests + ", searchValue=" + searchValue
 				+ ", pi=" + pi + "]";
 	}
+	
 	
 }

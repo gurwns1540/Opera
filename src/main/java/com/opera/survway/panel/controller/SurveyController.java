@@ -562,7 +562,7 @@ public class SurveyController {
 			}
 			if (queryMap.containsKey("interests")) {
 				interests = queryMap.get("interests").get(0);
-				searchSurvey.setInterests(interests);
+				searchSurvey.setInterests(Integer.parseInt(interests));
 			}
 			if (queryMap.containsKey("searchValue")) {
 				searchValue = queryMap.get("searchValue").get(0);
@@ -736,7 +736,7 @@ public class SurveyController {
 			searchSurvey.setFrequency(frequency);
 		}
 		if (interests != null && !interests.equals("")) {
-			searchSurvey.setInterests(interests);
+			searchSurvey.setInterests(Integer.parseInt(interests));
 		}
 		if (searchValue != null && !searchValue.equals("")) {
 			searchSurvey.setSearchValue(searchValue);
