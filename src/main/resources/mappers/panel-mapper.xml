@@ -219,6 +219,7 @@
 	 
 	 <select id="selectMainNoticeList" resultMap="noticeListResultMap" parameterType="Notice">
 	 	SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_DATE FROM NOTICE
+	 	WHERE NOTICE_STATUS='Y'
 	 	ORDER BY NOTICE_NO DESC
 	 </select>
   	<select id="selectMainResearchList" resultMap="MainResearchResultSet" parameterType="PanelResearch">

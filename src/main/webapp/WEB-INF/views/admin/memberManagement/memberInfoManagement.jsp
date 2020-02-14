@@ -451,7 +451,7 @@
 				url:"fileDown.memberManagement",
 				type:"post",
 				data:{
-					file:$("#corpImage").prop("src");
+					file:$("#corpImage").prop("src")
 				},
 				success:function(data){
 					console.log(data);
