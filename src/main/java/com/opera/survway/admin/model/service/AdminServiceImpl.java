@@ -866,7 +866,6 @@ public class AdminServiceImpl implements AdminService{
 		List<ResearchHistory> historyList = ad.selectResearchHistoryList(sqlSession, researchNo);
 		System.out.println(historyList);
 		
-		
 //		List<Integer> selectRquestionNoList = ad.selectRquestionNoList(sqlSession, researchNo);
 //		System.out.println(selectRquestionNoList);
 		return historyList;
