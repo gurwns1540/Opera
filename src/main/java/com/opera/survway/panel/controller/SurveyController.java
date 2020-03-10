@@ -293,17 +293,17 @@ public class SurveyController {
 			finalReward = minReward;
 		}
 		
-//		if(finalReward.equals(minReward)) {
-//			disposalReason = "시간제한";
-//		}
+		if(finalReward.equals(minReward)) {
+			disposalReason = "시간제한";
+		}
 		
 		if(check==1) {
 			disposalReason = "불량응답";
 		}
 		
-//		if(finalReward.equals(minReward) && check==1) {
-//			disposalReason = "시간제한,불량응답";
-//		}
+		if(finalReward.equals(minReward) && check==1) {
+			disposalReason = "시간제한,불량응답";
+		}
 		
 		System.out.println("응답인서트 컨트롤러 pcAnswer : " + pcAnswer);
 		System.out.println("응답인서트 컨트롤러 targetAnswer : " + targetAnswer);
