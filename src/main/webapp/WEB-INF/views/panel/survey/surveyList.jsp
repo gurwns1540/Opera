@@ -11,7 +11,6 @@
    .ui.segment {
       border-radius: 0px;
    }
-   
    .eachSurveyBox {
       height: 210px;
    }
