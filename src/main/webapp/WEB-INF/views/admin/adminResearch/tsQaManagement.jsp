@@ -256,7 +256,7 @@
 			$(this).parent().parent().remove();
 		});
 		$(".topMenu:nth-child(2)").addClass("active");
-		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(9)").addClass("on");
+		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(8)").addClass("on");
 	</script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   	<script>

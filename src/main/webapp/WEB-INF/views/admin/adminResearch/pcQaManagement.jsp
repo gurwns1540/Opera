@@ -504,7 +504,8 @@
 			$("#videoArea").html('<iframe style="width: 100%;" src="https://www.youtube.com/embed' + videoLinkStr + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
 		})
 		
-		
+		$(".topMenu:nth-child(2)").addClass("active");
+		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(9)").addClass("on");
 		
 		
 		
