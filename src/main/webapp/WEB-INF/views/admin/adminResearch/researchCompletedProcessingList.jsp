@@ -241,7 +241,7 @@
 	
 	
 		$(".topMenu:nth-child(2)").addClass("active");
-		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(8)").addClass("on");
+		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(7)").addClass("on");
 	</script>
 </body>
 </html>

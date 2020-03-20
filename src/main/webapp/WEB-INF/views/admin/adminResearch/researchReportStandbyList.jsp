@@ -435,7 +435,7 @@
 		$('.ui.accordion').accordion();
 		
 		$(".topMenu:nth-child(2)").addClass("active");
-		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(7)").addClass("on");
+		$(".topMenu:nth-child(2)").find(".innerMenu:nth-child(6)").addClass("on");
 		
 		
 		function drawChart(idStr, chartLabels, chartData) {
